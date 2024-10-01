@@ -1,0 +1,4 @@
+package com.core.data.datasource.retailerdatasource
+
+interface RetailerDataSource:ProductRetailerDataSource,CustomerDataSource,OrderRetailerDataSource {
+}
