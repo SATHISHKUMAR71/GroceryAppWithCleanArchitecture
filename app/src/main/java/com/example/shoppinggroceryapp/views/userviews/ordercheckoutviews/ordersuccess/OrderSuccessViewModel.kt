@@ -2,6 +2,23 @@ package com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.orders
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.core.domain.order.CartMapping
+import com.core.domain.order.DailySubscription
+import com.core.domain.order.MonthlyOnce
+import com.core.domain.order.OrderDetails
+import com.core.domain.order.TimeSlot
+import com.core.domain.order.WeeklyOnce
+import com.core.domain.products.CartWithProductData
+import com.core.usecases.customerusecase.cart.AddCartForUser
+import com.core.usecases.customerusecase.cart.GetCartForUser
+import com.core.usecases.customerusecase.cart.UpdateCart
+import com.core.usecases.customerusecase.orders.AddDailySubscription
+import com.core.usecases.customerusecase.orders.AddMonthlySubscription
+import com.core.usecases.customerusecase.orders.AddOrder
+import com.core.usecases.customerusecase.orders.AddTimeSlot
+import com.core.usecases.customerusecase.orders.AddWeeklySubscription
+import com.core.usecases.customerusecase.orders.GetOrderDetailsWithCartId
+import com.core.usecases.customerusecase.orders.GetOrderWithProductsByOrderId
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartMappingEntity
@@ -11,19 +28,25 @@ import com.example.shoppinggroceryapp.framework.db.entity.order.OrderDetailsEnti
 import com.example.shoppinggroceryapp.framework.db.entity.order.TimeSlotEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.WeeklyOnceEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.CartWithProductDataEntity
-class OrderSuccessViewModel(var retailerDao: RetailerDao):ViewModel() {
+class OrderSuccessViewModel(private val mAddOrder: AddOrder,
+                            private val mGetOrderWithProductsByOrderId: GetOrderWithProductsByOrderId,
+                            private val mAddMonthlySubscription: AddMonthlySubscription,
+                            private val mAddWeeklySubscription: AddWeeklySubscription,
+                            private val mAddDailySubscription: AddDailySubscription,
+                            private val mAddTimeSlot: AddTimeSlot,
+                            private val mUpdateCart:UpdateCart,
+                            private val mAddCartForUser:AddCartForUser,
+                            private val mGetCartForUser:GetCartForUser):ViewModel() {
     val lock = Any()
     var gotOrder: OrderDetailsEntity? = null
     var orderedId:MutableLiveData<Long> = MutableLiveData()
-    var cartItems:List<CartWithProductDataEntity>? = null
-    var newCart:MutableLiveData<CartMappingEntity> = MutableLiveData()
-    var orderWithCart:MutableLiveData<Map<OrderDetailsEntity,List<CartWithProductDataEntity>>> = MutableLiveData()
+    var newCart:MutableLiveData<CartMapping> = MutableLiveData()
+    var orderWithCart:MutableLiveData<Map<OrderDetails,List<CartWithProductData>>> = MutableLiveData()
     fun placeOrder(cartId:Int,paymentMode:String,addressId:Int,deliveryStatus:String,paymentStatus:String,deliveryFrequency:String){
         Thread {
             synchronized(lock) {
-                orderedId.postValue(retailerDao.addOrder(
-                    OrderDetailsEntity(
-                        0,
+                orderedId.postValue(mAddOrder.invoke(
+                    OrderDetails(0,
                         orderedDate = DateGenerator.getCurrentDate(),
                         deliveryDate = DateGenerator.getDeliveryDate(),
                         cartId = cartId,
@@ -31,72 +54,70 @@ class OrderSuccessViewModel(var retailerDao: RetailerDao):ViewModel() {
                         paymentStatus = paymentStatus,
                         addressId = addressId,
                         deliveryStatus = deliveryStatus,
-                        deliveryFrequency = deliveryFrequency
-                    )))
+                        deliveryFrequency = deliveryFrequency)))
             }
         }.start()
     }
 
-    fun getOrderAndCorrespondingCart(cartId:Int){
+    fun getOrderAndCorrespondingCart(orderId:Int){
         Thread {
             synchronized(lock) {
-                println(retailerDao.getOrder(cartId))
-                orderWithCart.postValue(retailerDao.getOrderWithProductsWithOrderId(cartId))
+                orderWithCart.postValue(mGetOrderWithProductsByOrderId.invoke(orderId))
             }
 
         }.start()
     }
 
-    fun addMonthlySubscription(monthlyOnceEntity: MonthlyOnceEntity){
+    fun addMonthlySubscription(monthlyOnce: MonthlyOnce){
         Thread{
-            retailerDao.addMonthlyOnceSubscription(monthlyOnceEntity)
+            mAddMonthlySubscription.invoke(monthlyOnce)
             getSubscriptionDetails()
         }.start()
     }
 
-    fun addWeeklySubscription(weeklyOnceEntity: WeeklyOnceEntity){
+    fun addWeeklySubscription(weeklyOnce: WeeklyOnce){
         Thread{
-            retailerDao.addWeeklyOnceSubscription(weeklyOnceEntity)
+            mAddWeeklySubscription.invoke(weeklyOnce)
             getSubscriptionDetails()
         }.start()
     }
 
-    fun addDailySubscription(dailySubscriptionEntity: DailySubscriptionEntity){
+    fun addDailySubscription(dailySubscription: DailySubscription){
         Thread{
-            retailerDao.addDailySubscription(dailySubscriptionEntity)
+            mAddDailySubscription.invoke(dailySubscription)
             getSubscriptionDetails()
         }.start()
     }
 
-    fun addOrderToTimeSlot(timeSlotEntity: TimeSlotEntity){
+    fun addOrderToTimeSlot(timeSlot: TimeSlot){
         Thread{
-            retailerDao.addTimeSlot(timeSlotEntity)
+            mAddTimeSlot.invoke(timeSlot)
         }.start()
     }
 
     fun getSubscriptionDetails(){
-        for(i in retailerDao.getOrderTimeSlot()){
-            println("FOR PRODUCTS ORDER ID ${i.orderId} TIME SLOTS: ${i.timeId}")
-        }
-        println("==========")
-        for(i in retailerDao.getDailySubscription()){
-            println("FOR PRODUCTS ORDER ID ${i.orderId} Daily Subscription ")
-        }
-        println("==========")
-        for(i in retailerDao.getWeeklySubscriptionList()){
-            println("FOR PRODUCTS ORDER ID ${i.orderId} week id ${i.weekId} Weekly Subscription ")
-        }
-        println("==========")
-        for(i in retailerDao.getMonthlySubscriptionList()){
-            println("FOR PRODUCTS ORDER ID ${i.orderId} month id ${i.dayOfMonth} Monthly Subscription ")
-        }
+//        for(i in retailerDao.getOrderTimeSlot()){
+//            println("FOR PRODUCTS ORDER ID ${i.orderId} TIME SLOTS: ${i.timeId}")
+//        }
+//        println("==========")
+//        for(i in retailerDao.getDailySubscription()){
+//            println("FOR PRODUCTS ORDER ID ${i.orderId} Daily Subscription ")
+//        }
+//        println("==========")
+//        for(i in retailerDao.getWeeklySubscriptionList()){
+//            println("FOR PRODUCTS ORDER ID ${i.orderId} week id ${i.weekId} Weekly Subscription ")
+//        }
+//        println("==========")
+//        for(i in retailerDao.getMonthlySubscriptionList()){
+//            println("FOR PRODUCTS ORDER ID ${i.orderId} month id ${i.dayOfMonth} Monthly Subscription ")
+//        }
     }
     fun updateAndAssignNewCart(cartId: Int,userId:Int){
         Thread {
             synchronized(lock) {
-                retailerDao.updateCartMapping(CartMappingEntity(cartId, userId, "not available"))
-                retailerDao.addCartForUser(CartMappingEntity(0, userId, "available"))
-                newCart.postValue(retailerDao.getCartForUser(userId))
+                mUpdateCart.invoke(CartMapping(cartId, userId, "not available"))
+                mAddCartForUser.invoke(CartMapping(0, userId, "available"))
+                newCart.postValue(mGetCartForUser.invoke(userId))
             }
         }.start()
     }

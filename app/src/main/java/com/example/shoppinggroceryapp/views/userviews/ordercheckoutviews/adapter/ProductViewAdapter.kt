@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.core.domain.products.CartWithProductData
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.entity.products.CartWithProductDataEntity
 import com.example.shoppinggroceryapp.helpers.imagehandlers.SetProductImage
@@ -15,7 +16,7 @@ import java.io.File
 class ProductViewAdapter(var file:File):RecyclerView.Adapter<ProductViewAdapter.ProductViewPagerHolder>() {
 
     companion object{
-        var productsList = listOf<CartWithProductDataEntity>()
+        var productsList = listOf<CartWithProductData>()
     }
     inner class ProductViewPagerHolder(productView:View):RecyclerView.ViewHolder(productView){
         val imageView = productView.findViewById<ImageView>(R.id.imageViewProductViewPager)

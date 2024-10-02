@@ -18,20 +18,32 @@ import com.core.usecases.customerusecase.cart.GetProductsByCartId
 import com.core.usecases.customerusecase.cart.GetProductsWithCartData
 import com.core.usecases.customerusecase.cart.GetSpecificProductInCart
 import com.core.usecases.customerusecase.cart.RemoveProductInCart
+import com.core.usecases.customerusecase.cart.UpdateCart
 import com.core.usecases.customerusecase.cart.UpdateCartItems
+import com.core.usecases.customerusecase.help.AddCustomerRequest
+import com.core.usecases.customerusecase.orders.AddDailySubscription
+import com.core.usecases.customerusecase.orders.AddMonthlySubscription
+import com.core.usecases.customerusecase.orders.AddOrder
+import com.core.usecases.customerusecase.orders.AddTimeSlot
+import com.core.usecases.customerusecase.orders.AddWeeklySubscription
 import com.core.usecases.customerusecase.orders.GetOrderDetailsWithOrderId
 import com.core.usecases.customerusecase.orders.GetOrderForUser
 import com.core.usecases.customerusecase.orders.GetOrderForUserDailySubscription
 import com.core.usecases.customerusecase.orders.GetOrderForUserMonthlySubscription
 import com.core.usecases.customerusecase.orders.GetOrderForUserWeeklySubscription
+import com.core.usecases.customerusecase.orders.GetOrderWithProductsByOrderId
 import com.core.usecases.customerusecase.orders.GetOrdersForUserNoSubscription
 import com.core.usecases.customerusecase.orders.GetPurchasedProducts
 import com.core.usecases.customerusecase.orders.UpdateOrderDetails
+import com.core.usecases.customerusecase.orders.UpdateTimeSlot
 import com.core.usecases.customerusecase.products.GetAllProducts
 import com.core.usecases.customerusecase.products.GetBrandName
 import com.core.usecases.customerusecase.products.GetImagesForProduct
+import com.core.usecases.customerusecase.products.GetOfferedProducts
 import com.core.usecases.customerusecase.products.GetProductByName
 import com.core.usecases.customerusecase.products.GetProductsByCategory
+import com.core.usecases.customerusecase.products.GetProductsById
+import com.core.usecases.customerusecase.products.GetRecentlyViewedProducts
 import com.core.usecases.retailerusecase.customer.GetCustomerRequestWithName
 import com.core.usecases.retailerusecase.orders.GetAllOrders
 import com.core.usecases.retailerusecase.orders.GetDailyOrders
@@ -63,6 +75,8 @@ import com.core.usecases.retailerusecase.products.productmanagement.ProductManag
 import com.core.usecases.userusecase.AddNewUser
 import com.core.usecases.userusecase.AddProductInRecentList
 import com.core.usecases.userusecase.AddSearchQueryInDb
+import com.core.usecases.userusecase.GetChildNames
+import com.core.usecases.userusecase.GetParentCategories
 import com.core.usecases.userusecase.GetSearchList
 import com.core.usecases.userusecase.GetUser
 import com.core.usecases.userusecase.GetUserByInputData
@@ -92,6 +106,12 @@ import com.example.shoppinggroceryapp.views.userviews.addressview.getaddress.Get
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressList
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressViewModel
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartViewModel
+import com.example.shoppinggroceryapp.views.userviews.category.CategoryViewModel
+import com.example.shoppinggroceryapp.views.userviews.help.HelpViewModel
+import com.example.shoppinggroceryapp.views.userviews.home.HomeViewModel
+import com.example.shoppinggroceryapp.views.userviews.offer.OfferViewModel
+import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersuccess.OrderSuccessViewModel
+import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersummary.OrderSummaryViewModel
 
 class GroceryAppViewModelFactory(private val userRepository: UserRepository,private val retailerRepository: RetailerRepository,private val customerRepository: CustomerRepository):ViewModelProvider.Factory {
     private val mGetSearchList: GetSearchList by lazy { GetSearchList(userRepository) }
@@ -165,6 +185,22 @@ class GroceryAppViewModelFactory(private val userRepository: UserRepository,priv
     private val mAddNewAddress: AddNewAddress by lazy { AddNewAddress(customerRepository) }
     private val mUpdateAddress: UpdateAddress by lazy { UpdateAddress(customerRepository) }
     private val mGetAddressList: GetAllAddress by lazy { GetAllAddress(customerRepository) }
+    private val mGetParentCategories: GetParentCategories by lazy { GetParentCategories(userRepository) }
+    private val mGetChildNames: GetChildNames by lazy { GetChildNames(userRepository) }
+    private val mAddCustomerRequest: AddCustomerRequest by lazy { AddCustomerRequest(customerRepository) }
+    private val mGetRecentlyViewedProducts: GetRecentlyViewedProducts by lazy { GetRecentlyViewedProducts(customerRepository) }
+    private val mGetProductsById: GetProductsById by lazy { GetProductsById(customerRepository) }
+    private val mGetOfferedProducts: GetOfferedProducts by lazy { GetOfferedProducts(customerRepository) }
+    private val mAddOrder: AddOrder by lazy { AddOrder(customerRepository) }
+    private val mGetOrderWithProductsByOrderId: GetOrderWithProductsByOrderId by lazy { GetOrderWithProductsByOrderId(customerRepository) }
+    private val mAddMonthlySubscription: AddMonthlySubscription by lazy { AddMonthlySubscription(customerRepository) }
+    private val mAddWeeklySubscription: AddWeeklySubscription by lazy { AddWeeklySubscription(customerRepository) }
+    private val mAddDailySubscription: AddDailySubscription by lazy { AddDailySubscription(customerRepository) }
+    private val mAddTimeSlot: AddTimeSlot by lazy { AddTimeSlot(customerRepository) }
+    private val mUpdateCart: UpdateCart by lazy { UpdateCart(customerRepository) }
+    private val mAddCartForUser:AddCartForUser by lazy { AddCartForUser(customerRepository) }
+    private val mUpdateTimeSlot: UpdateTimeSlot by lazy { UpdateTimeSlot(userRepository) }
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T = with(modelClass){
         when{
             isAssignableFrom(SearchViewModel::class.java) -> {
@@ -195,7 +231,7 @@ class GroceryAppViewModelFactory(private val userRepository: UserRepository,priv
                 ProductDetailViewModel(mDeleteProduct, mGetBrandName, mGetProductsByCartId, mGetProductInRecentList, mAddProductInRecentList, mGetSpecificProductInCart, mGetProductsByCategory, mAddProductInCart, mUpdateCartItems, mRemoveProductInCart, mGetImagesForProduct, mAddDeletedProductInDb)
             }
             isAssignableFrom(ProductListViewModel::class.java)->{
-                ProductListViewModel(mGetProductsByCategory, mGetProductByName, mGetAllProducts, mGetSpecificProductInCart, mGetBrandName, mRemoveProductInCart, mUpdateCartItems, mGetCartItems)
+                ProductListViewModel(mGetProductsByCategory, mGetProductByName, mGetAllProducts,mAddProductInCart, mGetSpecificProductInCart, mGetBrandName, mRemoveProductInCart, mUpdateCartItems, mGetCartItems)
             }
             isAssignableFrom(GetAddressViewModel::class.java)->{
                 GetAddressViewModel(mAddNewAddress, mUpdateAddress)
@@ -205,6 +241,24 @@ class GroceryAppViewModelFactory(private val userRepository: UserRepository,priv
             }
             isAssignableFrom(CartViewModel::class.java)->{
                 CartViewModel(mGetProductsByCartId,mGetCartItems,mGetAddressList)
+            }
+            isAssignableFrom(CategoryViewModel::class.java)->{
+                CategoryViewModel(mGetParentCategories, mGetChildNames)
+            }
+            isAssignableFrom(HelpViewModel::class.java)->{
+                HelpViewModel(mGetProductsWithCartData, mAddCustomerRequest)
+            }
+            isAssignableFrom(HomeViewModel::class.java)->{
+                HomeViewModel(mGetRecentlyViewedProducts,mGetProductsById)
+            }
+            isAssignableFrom(OfferViewModel::class.java)->{
+                OfferViewModel(mGetOfferedProducts)
+            }
+            isAssignableFrom(OrderSuccessViewModel::class.java)->{
+                OrderSuccessViewModel(mAddOrder, mGetOrderWithProductsByOrderId, mAddMonthlySubscription, mAddWeeklySubscription, mAddDailySubscription, mAddTimeSlot, mUpdateCart, mAddCartForUser, mGetCartForUser)
+            }
+            isAssignableFrom(OrderSuccessViewModel::class.java)->{
+                OrderSummaryViewModel(mGetProductsWithCartData, mUpdateOrderDetails, mUpdateTimeSlot, mAddMonthlySubscription, mAddWeeklySubscription, mAddDailySubscription, mGetSpecificMonthlyOrderWithOrderId, mGetSpecificWeeklyOrderWithOrderId, mGetSpecificDailyOrderWithOrderId, mRemoveOrderFromDailySubscription, mRemoveOrderFromWeeklySubscription, mRemoveOrderFromMonthlySubscription)
             }
             else -> {
                 throw IllegalArgumentException("unknown viewmodel: ${modelClass.name}")

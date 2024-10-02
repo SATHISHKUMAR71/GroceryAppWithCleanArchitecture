@@ -7,11 +7,16 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.example.shoppinggroceryapp.framework.db.dataclass.ChildCategoryName
 import com.example.shoppinggroceryapp.framework.db.dataclass.CustomerRequestWithName
 import com.example.shoppinggroceryapp.framework.db.entity.help.CustomerRequestEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartMappingEntity
+import com.example.shoppinggroceryapp.framework.db.entity.order.DailySubscriptionEntity
+import com.example.shoppinggroceryapp.framework.db.entity.order.MonthlyOnceEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.OrderDetailsEntity
+import com.example.shoppinggroceryapp.framework.db.entity.order.TimeSlotEntity
+import com.example.shoppinggroceryapp.framework.db.entity.order.WeeklyOnceEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.CartWithProductDataEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.CategoryEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.DeletedProductListEntity
@@ -29,7 +34,20 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addUser(userEntity: UserEntity):Long
 
+    @Query("SELECT CategoryEntity.categoryName FROM CategoryEntity Where CategoryEntity.parentCategoryName=:parent")
+    fun getChildName(parent:String):List<ChildCategoryName>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addTimeSlot(timeSlotEntity: TimeSlotEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addMonthlyOnceSubscription(monthlyOnceEntity: MonthlyOnceEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addWeeklyOnceSubscription(weeklyOnceEntity: WeeklyOnceEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addDailySubscription(dailySubscriptionEntity: DailySubscriptionEntity)
 
     @Query("SELECT productId FROM ProductEntity Where productId=1")
     fun initDB():Long
@@ -58,7 +76,8 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addCustomerRequest(customerRequestEntity: CustomerRequestEntity)
 
-
+    @Query("SELECT * FROM ParentCategoryEntity")
+    fun getParentCategoryList():List<ParentCategoryEntity>
 
 
     @Query("SELECT * FROM ProductEntity Order By productId DESC")
@@ -236,6 +255,9 @@ interface UserDao {
     )
     fun getProductsWithCartData(cartId:Int):List<CartWithProductDataEntity>
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun addOrder(order:OrderDetailsEntity):Long
+
     @Query(
         "SELECT DeletedProductListEntity.mainImage AS mainImage,DeletedProductListEntity.productName AS productName,DeletedProductListEntity.productDescription as productDescription,CartEntity.totalItems as totalItems,CartEntity.unitPrice as unitPrice,DeletedProductListEntity.manufactureDate AS manufactureDate" +
                 ",DeletedProductListEntity.expiryDate as expiryDate,DeletedProductListEntity.productQuantity as productQuantity,BrandDataEntity.brandName as brandName FROM CartEntity Join DeletedProductListEntity ON DeletedProductListEntity.productId=CartEntity.productId JOIN BrandDataEntity ON BrandDataEntity.brandId=DeletedProductListEntity.brandId WHERE CartEntity.cartId=:cartId"
@@ -299,7 +321,7 @@ interface UserDao {
     @Update
     fun updateCartMapping(cartMappingEntity: CartMappingEntity)
     @Query("SELECT * FROM CartEntity WHERE CartEntity.cartId=:cartId and CartEntity.productId=:productId")
-    fun getSpecificCart(cartId:Int,productId:Int): CartEntity
+    fun getSpecificCart(cartId:Int,productId:Int): CartEntity?
     @Update
     fun updateCartItems(cartEntity: CartEntity)
 

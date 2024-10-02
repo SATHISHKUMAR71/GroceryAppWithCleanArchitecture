@@ -87,7 +87,7 @@ class ProductListAdapter(var fragment: Fragment,
     }
 
     override fun onBindViewHolder(holder: ProductLargeImageHolder, position: Int) {
-
+        println("ON PRODUCT BIND VIEW HOLDER ${productEntityList[position]}")
         if(size==0){
         }
         else{

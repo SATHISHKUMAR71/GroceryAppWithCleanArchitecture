@@ -11,12 +11,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.core.domain.products.ParentCategory
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.dataclass.ChildCategoryName
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
 
-class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: List<ParentCategoryEntity>, private var childCategoryList:List<List<ChildCategoryName>>, var imageLoader: ImageLoaderAndGetter):RecyclerView.Adapter<MainCategoryAdapter.MainCategoryHolder>() {
+class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: List<ParentCategory>, private var childCategoryList:List<List<String>>, var imageLoader: ImageLoaderAndGetter):RecyclerView.Adapter<MainCategoryAdapter.MainCategoryHolder>() {
 
     companion object{
         var expandedData = mutableSetOf<Int>()

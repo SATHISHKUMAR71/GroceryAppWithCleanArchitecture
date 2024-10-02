@@ -4,7 +4,11 @@ import com.core.data.datasource.customerdatasource.CustomerDataSource
 import com.core.domain.help.CustomerRequest
 import com.core.domain.order.Cart
 import com.core.domain.order.CartMapping
+import com.core.domain.order.DailySubscription
+import com.core.domain.order.MonthlyOnce
 import com.core.domain.order.OrderDetails
+import com.core.domain.order.TimeSlot
+import com.core.domain.order.WeeklyOnce
 import com.core.domain.products.CartWithProductData
 import com.core.domain.products.Images
 import com.core.domain.products.ParentCategory
@@ -15,6 +19,10 @@ import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 import com.example.shoppinggroceryapp.framework.db.entity.help.CustomerRequestEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartMappingEntity
+import com.example.shoppinggroceryapp.framework.db.entity.order.DailySubscriptionEntity
+import com.example.shoppinggroceryapp.framework.db.entity.order.MonthlyOnceEntity
+import com.example.shoppinggroceryapp.framework.db.entity.order.TimeSlotEntity
+import com.example.shoppinggroceryapp.framework.db.entity.order.WeeklyOnceEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
 import com.example.shoppinggroceryapp.framework.db.entity.user.AddressEntity
 
@@ -64,6 +72,7 @@ class CustomerDataSourceImpl(private var userDao: UserDao):CustomerDataSource,Co
     }
 
     override fun getCartItems(cartId: Int): List<Cart> {
+        println("**** update items in cart called: in db ${userDao.getCartItems(cartId)} $cartId")
         return userDao.getCartItems(cartId).map { Cart(it.cartId,it.productId,it.totalItems,it.unitPrice) }
     }
 
@@ -74,6 +83,7 @@ class CustomerDataSourceImpl(private var userDao: UserDao):CustomerDataSource,Co
 
     override fun addItemsToCart(cart: Cart) {
         userDao.addItemsToCart(CartEntity(cart.cartId,cart.productId,cart.totalItems,cart.unitPrice))
+        println("**** update items in cart called: Added Items to Cart $cart ${getCartItems(cart.cartId)}")
     }
 
     override fun getProductsWithCartData(cartId: Int): List<CartWithProductData> {
@@ -95,9 +105,12 @@ class CustomerDataSourceImpl(private var userDao: UserDao):CustomerDataSource,Co
         userDao.updateCartMapping(CartMappingEntity(cartMapping.cartId,cartMapping.userId,cartMapping.status))
     }
 
-    override fun getSpecificCart(cartId: Int, productId: Int): Cart {
+    override fun getSpecificCart(cartId: Int, productId: Int): Cart? {
         var cart = userDao.getSpecificCart(cartId,productId)
-        return Cart(cart.cartId,cart.productId,cart.totalItems,cart.unitPrice)
+        println("CART 0909: $cart $cartId $productId")
+        return cart?.let {
+            Cart(cart.cartId,cart.productId,cart.totalItems,cart.unitPrice)
+        }
     }
 
     override fun updateCartItems(cart: Cart) {
@@ -131,6 +144,10 @@ class CustomerDataSourceImpl(private var userDao: UserDao):CustomerDataSource,Co
 
     override fun getOrder(cartId: Int): OrderDetails {
         return convertOrderEntityToOrderDetails(userDao.getOrder(cartId))
+    }
+
+    override fun addOrder(order: OrderDetails): Long {
+        return userDao.addOrder(convertOrderDetailsToOrderDetailsEntity(order))
     }
 
     override fun updateOrderDetails(orderDetails: OrderDetails) {
@@ -210,6 +227,22 @@ class CustomerDataSourceImpl(private var userDao: UserDao):CustomerDataSource,Co
     override fun getAddressListForUser(userId: Int): List<Address> {
         return userDao.getAddressListForUser(userId).map { address -> Address(address.addressId,address.userId,address.addressContactName,address.addressContactNumber,address.buildingName
             ,address.streetName,address.city,address.state,address.country,address.postalCode) }
+    }
+
+    override fun addTimeSlot(timeSlot: TimeSlot) {
+        userDao.addTimeSlot(TimeSlotEntity(timeSlot.orderId,timeSlot.timeId))
+    }
+
+    override fun addMonthlyOnceSubscription(monthlyOnce: MonthlyOnce) {
+        userDao.addMonthlyOnceSubscription(MonthlyOnceEntity(monthlyOnce.orderId,monthlyOnce.dayOfMonth))
+    }
+
+    override fun addWeeklyOnceSubscription(weeklyOnce: WeeklyOnce) {
+        userDao.addWeeklyOnceSubscription(WeeklyOnceEntity(weeklyOnce.orderId,weeklyOnce.weekId))
+    }
+
+    override fun addDailySubscription(dailySubscription: DailySubscription) {
+        userDao.addDailySubscription(DailySubscriptionEntity(dailySubscription.orderId))
     }
 
 }

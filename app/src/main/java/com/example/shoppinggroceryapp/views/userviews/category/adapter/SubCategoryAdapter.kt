@@ -13,7 +13,7 @@ import com.example.shoppinggroceryapp.framework.db.dataclass.ChildCategoryName
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 
 
-class SubCategoryAdapter(var fragment: Fragment,var categoryList: List<ChildCategoryName>):RecyclerView.Adapter<SubCategoryAdapter.SubcategoryHolder>() {
+class SubCategoryAdapter(var fragment: Fragment,var categoryList: List<String>):RecyclerView.Adapter<SubCategoryAdapter.SubcategoryHolder>() {
 
     var size =0
     inner class SubcategoryHolder(itemView:View):RecyclerView.ViewHolder(itemView){
@@ -35,7 +35,7 @@ class SubCategoryAdapter(var fragment: Fragment,var categoryList: List<ChildCate
             holder.categoryName.text = text
         }
         else{
-            holder.categoryName.text = categoryList[position].categoryName
+            holder.categoryName.text = categoryList[position]
             holder.itemView.setOnClickListener {
                 Toast.makeText(fragment.context,"Item Clicked",Toast.LENGTH_SHORT).show()
             }
@@ -43,7 +43,7 @@ class SubCategoryAdapter(var fragment: Fragment,var categoryList: List<ChildCate
         holder.itemView.setOnClickListener {
             var productListFrag = ProductListFragment().apply {
                 arguments = Bundle().apply {
-                    putString("category",categoryList[position].categoryName)
+                    putString("category",categoryList[position])
                 }
             }
 //

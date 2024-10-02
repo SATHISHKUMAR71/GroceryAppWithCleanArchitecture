@@ -8,11 +8,19 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.core.data.repository.CustomerRepository
+import com.core.data.repository.RetailerRepository
+import com.core.data.repository.UserRepository
+import com.core.domain.products.ParentCategory
 import com.example.shoppinggroceryapp.R
+import com.example.shoppinggroceryapp.framework.data.CustomerDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.RetailerDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.framework.db.dataclass.ChildCategoryName
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
+import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
@@ -49,10 +57,14 @@ class CategoryFragment: Fragment() {
         ProductListFragment.dis50Val = false
         FilterFragment.list = null
         val view =  inflater.inflate(R.layout.fragment_category, container, false)
-        var childList:List<List<ChildCategoryName>>? = null
-        var parentList:List<ParentCategoryEntity>? = null
+        var childList:List<List<String>>? = null
+        var parentList:List<ParentCategory>? = null
+        val db1 = AppDatabase.getAppDatabase(requireContext())
+        val retailerRepository = RetailerRepository(RetailerDataSourceImpl(db1.getRetailerDao()))
+        val customerRepository = CustomerRepository(CustomerDataSourceImpl(db1.getUserDao()))
+        val userRepository = UserRepository(UserDataSourceImpl(db1.getUserDao(),db1.getRetailerDao()))
         val categoryViewModel = ViewModelProvider(this,
-            CategoryViewModelFactory(AppDatabase.getAppDatabase(requireContext()).getProductDao())
+           GroceryAppViewModelFactory(userRepository, retailerRepository, customerRepository)
         )[CategoryViewModel::class.java]
         mainCategoryRV = view.findViewById(R.id.categoryRecyclerView)
 

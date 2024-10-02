@@ -32,8 +32,7 @@ interface RetailerDao: UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addNewBrand(brandDataEntity: BrandDataEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addTimeSlot(timeSlotEntity: TimeSlotEntity)
+
 
     @Update
     fun updateTimeSlot(timeSlotEntity: TimeSlotEntity)
@@ -81,14 +80,7 @@ interface RetailerDao: UserDao {
     @Query("SELECT * FROM MonthlyOnceEntity Where MonthlyOnceEntity.orderId=:orderId")
     fun getOrderedDayForMonthlySubscription(orderId:Int):MonthlyOnceEntity
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addMonthlyOnceSubscription(monthlyOnceEntity: MonthlyOnceEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addWeeklyOnceSubscription(weeklyOnceEntity: WeeklyOnceEntity)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addDailySubscription(dailySubscriptionEntity: DailySubscriptionEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addProduct(productEntity: ProductEntity)
@@ -123,8 +115,7 @@ interface RetailerDao: UserDao {
 
 
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun addOrder(order:OrderDetailsEntity):Long
+
 
     @Query("SELECT CustomerRequestEntity.helpId,CustomerRequestEntity.userId,CustomerRequestEntity.requestedDate,CustomerRequestEntity.orderId,CustomerRequestEntity.request,UserEntity.userFirstName,UserEntity.userLastName,UserEntity.userEmail,UserEntity.userPhone FROM CustomerRequestEntity JOIN UserEntity ON UserEntity.userId=CustomerRequestEntity.userId ORDER BY CustomerRequestEntity.helpId DESC")
     fun getDataFromCustomerReqWithName():List<CustomerRequestWithName>

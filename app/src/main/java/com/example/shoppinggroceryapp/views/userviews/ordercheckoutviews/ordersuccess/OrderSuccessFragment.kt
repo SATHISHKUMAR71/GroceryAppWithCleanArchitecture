@@ -9,10 +9,20 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
+import com.core.data.repository.CustomerRepository
+import com.core.data.repository.RetailerRepository
+import com.core.data.repository.UserRepository
+import com.core.domain.order.DailySubscription
+import com.core.domain.order.MonthlyOnce
+import com.core.domain.order.TimeSlot
+import com.core.domain.order.WeeklyOnce
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.MainActivity.Companion.cartId
 import com.example.shoppinggroceryapp.MainActivity.Companion.userId
 import com.example.shoppinggroceryapp.R
+import com.example.shoppinggroceryapp.framework.data.CustomerDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.RetailerDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail.OrderDetailFragment
@@ -21,6 +31,7 @@ import com.example.shoppinggroceryapp.framework.db.entity.order.DailySubscriptio
 import com.example.shoppinggroceryapp.framework.db.entity.order.MonthlyOnceEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.TimeSlotEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.WeeklyOnceEntity
+import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.PaymentFragment
 import com.google.android.material.appbar.MaterialToolbar
@@ -38,8 +49,13 @@ class OrderSuccessFragment : Fragment() {
 
 
         val view =  inflater.inflate(R.layout.fragment_order_confirmation, container, false)
+        val db1 = AppDatabase.getAppDatabase(requireContext())
+        val retailerRepository = RetailerRepository(RetailerDataSourceImpl(db1.getRetailerDao()))
+        val customerRepository = CustomerRepository(CustomerDataSourceImpl(db1.getUserDao()))
+        val userRepository = UserRepository(UserDataSourceImpl(db1.getUserDao(),db1.getRetailerDao()))
+
         val orderSuccessViewModel = ViewModelProvider(this,
-            OrderSuccessViewModelFactory(AppDatabase.getAppDatabase(requireContext()).getRetailerDao())
+            GroceryAppViewModelFactory(userRepository, retailerRepository, customerRepository)
         )[OrderSuccessViewModel::class.java]
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object :OnBackPressedCallback(true){
@@ -68,19 +84,19 @@ class OrderSuccessFragment : Fragment() {
             val dayOfMonth = arguments?.getInt("dayOfMonth")
             if(deliveryFrequency!="Once"){
                 selectedTimeSlot?.let {selectedSlot ->
-                    orderSuccessViewModel.addOrderToTimeSlot(TimeSlotEntity(it.toInt(),selectedSlot))
+                    orderSuccessViewModel.addOrderToTimeSlot(TimeSlot(it.toInt(),selectedSlot))
                 }
                 if(deliveryFrequency=="Daily"){
-                    orderSuccessViewModel.addDailySubscription(DailySubscriptionEntity(it.toInt()))
+                    orderSuccessViewModel.addDailySubscription(DailySubscription(it.toInt()))
                 }
                 else if(deliveryFrequency=="Weekly Once"){
                     dayOfWeek?.let {weekId->
-                        orderSuccessViewModel.addWeeklySubscription(WeeklyOnceEntity(it.toInt(),weekId))
+                        orderSuccessViewModel.addWeeklySubscription(WeeklyOnce(it.toInt(),weekId))
                     }
                 }
                 else if(deliveryFrequency=="Monthly Once"){
                     dayOfMonth?.let {monthNumber->
-                        orderSuccessViewModel.addMonthlySubscription(MonthlyOnceEntity(it.toInt(),monthNumber))
+                        orderSuccessViewModel.addMonthlySubscription(MonthlyOnce(it.toInt(),monthNumber))
                     }
                 }
 

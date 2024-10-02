@@ -33,6 +33,7 @@ class LoginViewModel(private var mGetUser: GetUser,private var mGetUserByInputDa
     fun assignCartForUser(){
         Thread{
             val cart: CartMapping? = mGetCartForUser.invoke(user.value?.userId?:-1)
+            println("cart 0909 : $cart")
             if(cart==null){
                 addCartForUser.invoke(CartMapping(0,user.value?.userId?:-1,"available"))
                 val newCart: CartMapping? =  mGetCartForUser.invoke(user.value?.userId?:-1)

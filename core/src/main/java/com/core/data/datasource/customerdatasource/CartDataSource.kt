@@ -7,7 +7,7 @@ import com.core.domain.products.Product
 
 interface CartDataSource {
 
-    fun getCartForUser(userId:Int): CartMapping
+    fun getCartForUser(userId:Int): CartMapping?
     fun addCartForUser(cartMapping:CartMapping)
     fun getCartItems(cartId:Int):List<Cart>
     fun getProductsByCartId(cartId:Int):List<Product>
@@ -16,6 +16,6 @@ interface CartDataSource {
     fun getDeletedProductsWithCartId(cartId:Int):List<CartWithProductData>
     fun removeProductInCart(cart: Cart)
     fun updateCartMapping(cartMapping: CartMapping)
-    fun getSpecificCart(cartId:Int,productId:Int):Cart
+    fun getSpecificCart(cartId:Int,productId:Int):Cart?
     fun updateCartItems(cart: Cart)
 }

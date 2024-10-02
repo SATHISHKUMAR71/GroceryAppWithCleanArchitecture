@@ -4,7 +4,11 @@ import com.core.data.datasource.customerdatasource.CustomerDataSource
 import com.core.domain.help.CustomerRequest
 import com.core.domain.order.Cart
 import com.core.domain.order.CartMapping
+import com.core.domain.order.DailySubscription
+import com.core.domain.order.MonthlyOnce
 import com.core.domain.order.OrderDetails
+import com.core.domain.order.TimeSlot
+import com.core.domain.order.WeeklyOnce
 import com.core.domain.products.CartWithProductData
 import com.core.domain.products.Images
 import com.core.domain.products.Product
@@ -81,7 +85,7 @@ open class CustomerRepository(private var customerDataSource: CustomerDataSource
         return customerDataSource.getAddress(addressId)
     }
 
-    fun getCartForUser(userId:Int): CartMapping {
+    fun getCartForUser(userId:Int): CartMapping? {
         return customerDataSource.getCartForUser(userId)
     }
     fun addCartForUser(cartMapping:CartMapping){
@@ -145,7 +149,7 @@ open class CustomerRepository(private var customerDataSource: CustomerDataSource
         customerDataSource.updateCartMapping(cartMapping)
     }
 
-    fun getSpecificCart(cartId:Int,productId:Int):Cart{
+    fun getSpecificCart(cartId:Int,productId:Int):Cart?{
         return customerDataSource.getSpecificCart(cartId,productId)
     }
 
@@ -154,6 +158,24 @@ open class CustomerRepository(private var customerDataSource: CustomerDataSource
     }
     fun getImagesForProduct(productId: Long):List<Images>{
         return customerDataSource.getImagesForProduct(productId)
+    }
+    fun addOrder(order: OrderDetails): Long {
+        return customerDataSource.addOrder(order)
+    }
+    fun addTimeSlot(timeSlot: TimeSlot) {
+        customerDataSource.addTimeSlot(timeSlot)
+    }
+
+    fun addMonthlyOnceSubscription(monthlyOnce: MonthlyOnce) {
+        customerDataSource.addMonthlyOnceSubscription(monthlyOnce)
+    }
+
+    fun addWeeklyOnceSubscription(weeklyOnce: WeeklyOnce) {
+        customerDataSource.addWeeklyOnceSubscription(weeklyOnce)
+    }
+
+    fun addDailySubscription(dailySubscription: DailySubscription) {
+        customerDataSource.addDailySubscription(dailySubscription)
     }
 
     fun updateOrderDetails(orderDetails: OrderDetails){

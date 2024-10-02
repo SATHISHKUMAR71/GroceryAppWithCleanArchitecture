@@ -5,6 +5,7 @@ import com.core.domain.order.DailySubscription
 import com.core.domain.order.MonthlyOnce
 import com.core.domain.order.TimeSlot
 import com.core.domain.order.WeeklyOnce
+import com.core.domain.products.ParentCategory
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
 import com.core.domain.search.SearchHistory
 
@@ -14,13 +15,19 @@ class UserRepository (private var userDataSource: UserDataSource){
         userDataSource.addSearchQueryInDb(searchHistory)
     }
 
+    fun getParentCategoryList():List<ParentCategory>{
+        return userDataSource.getParentCategoryList()
+    }
+
+    fun getChildName(parent: String): List<String> {
+        return userDataSource.getChildName(parent)
+    }
+
     fun getSearchHistory(userId: Int):List<SearchHistory>{
         return userDataSource.getSearchHistory(userId)
     }
 
-    fun addTimeSlot(timeSlot: TimeSlot){
-        userDataSource.addTimeSlot(timeSlot)
-    }
+
 
     fun updateTimeSlot(timeSlot: TimeSlot){
         userDataSource.updateTimeSlot(timeSlot)

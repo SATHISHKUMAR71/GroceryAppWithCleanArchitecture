@@ -10,15 +10,22 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.core.data.repository.CustomerRepository
+import com.core.data.repository.RetailerRepository
+import com.core.data.repository.UserRepository
+import com.core.domain.help.CustomerRequest
 import com.core.domain.order.OrderDetails
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
+import com.example.shoppinggroceryapp.framework.data.CustomerDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.RetailerDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.framework.db.entity.help.CustomerRequestEntity
-import com.example.shoppinggroceryapp.framework.db.entity.order.OrderDetailsEntity
+import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -45,10 +52,12 @@ class Help : Fragment() {
             parentFragmentManager.popBackStack()
         }
         val req = view.findViewById<TextView>(R.id.customerRequestHelpFrag)
+        val db1 = AppDatabase.getAppDatabase(requireContext())
+        val retailerRepository = RetailerRepository(RetailerDataSourceImpl(db1.getRetailerDao()))
+        val customerRepository = CustomerRepository(CustomerDataSourceImpl(db1.getUserDao()))
+        val userRepository = UserRepository(UserDataSourceImpl(db1.getUserDao(),db1.getRetailerDao()))
         helpViewModel = ViewModelProvider(this,
-            HelpViewModelFactory(
-                AppDatabase.getAppDatabase(requireContext()).getUserDao()
-            )
+            GroceryAppViewModelFactory(userRepository, retailerRepository, customerRepository)
         )[HelpViewModel::class.java]
         val orderGroup = view.findViewById<LinearLayout>(R.id.orderViewLayout)
         if(selectedOrder ==null){
@@ -88,7 +97,7 @@ class Help : Fragment() {
                     Toast.makeText(requireContext(),"Request Sent Successfully",Toast.LENGTH_SHORT).show()
                     var orderId = selectedOrder!!.orderId
                     helpViewModel.sendReq(
-                        CustomerRequestEntity(0,MainActivity.userId.toInt(),
+                        CustomerRequest(0,MainActivity.userId.toInt(),
                         DateGenerator.getCurrentDate(),
                         orderId,req.text.toString())
                     )

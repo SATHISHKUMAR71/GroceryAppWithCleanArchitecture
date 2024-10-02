@@ -6,7 +6,6 @@ import com.core.domain.order.TimeSlot
 import com.core.domain.order.WeeklyOnce
 
 interface SubscriptionDataSource {
-    fun addTimeSlot(timeSlot: TimeSlot)
     fun updateTimeSlot(timeSlot: TimeSlot)
     fun deleteFromWeeklySubscription(weeklyOnce: WeeklyOnce)
     fun deleteFromMonthlySubscription(monthlyOnce: MonthlyOnce)

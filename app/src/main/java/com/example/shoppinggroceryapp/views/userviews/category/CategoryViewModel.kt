@@ -2,34 +2,33 @@ package com.example.shoppinggroceryapp.views.userviews.category
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.core.domain.products.ParentCategory
+import com.core.usecases.userusecase.GetChildNames
+import com.core.usecases.userusecase.GetParentCategories
 import com.example.shoppinggroceryapp.framework.db.dao.ProductDao
 import com.example.shoppinggroceryapp.framework.db.dataclass.ChildCategoryName
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
 
-class CategoryViewModel(var productDao: ProductDao):ViewModel() {
+class CategoryViewModel(private val mGetParentCategories: GetParentCategories,
+                        private val mGetChildNames: GetChildNames):ViewModel() {
 
-    var parentList:MutableLiveData<List<ParentCategoryEntity>> = MutableLiveData()
-    var childList:MutableLiveData<List<List<ChildCategoryName>>> = MutableLiveData()
+    var parentList:MutableLiveData<List<ParentCategory>> = MutableLiveData()
+    var childList:MutableLiveData<List<List<String>>> = MutableLiveData()
     var parentCategoryEntity:ParentCategoryEntity? = null
     fun getParentCategory(){
         Thread{
-            parentList.postValue(productDao.getParentCategoryList())
+            parentList.postValue(mGetParentCategories.invoke())
         }.start()
     }
 
     fun getChildWithParentName(){
         Thread{
-            var list = mutableListOf<List<ChildCategoryName>>()
+            var list = mutableListOf<List<String>>()
             for(i in parentList.value!!){
-                list.add(productDao.getChildName(i.parentCategoryName))
+                list.add(mGetChildNames.invoke(i.parentCategoryName))
             }
             childList.postValue(list)
         }.start()
     }
 
-    fun updateParentCategory(parentCategoryEntity: ParentCategoryEntity){
-        Thread{
-            productDao.updateParentCategory(parentCategoryEntity)
-        }.start()
-    }
 }

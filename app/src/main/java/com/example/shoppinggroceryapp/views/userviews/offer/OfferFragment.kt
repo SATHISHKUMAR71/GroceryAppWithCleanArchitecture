@@ -13,10 +13,18 @@ import androidx.annotation.OptIn
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.core.data.repository.CustomerRepository
+import com.core.data.repository.RetailerRepository
+import com.core.data.repository.UserRepository
+import com.core.domain.products.Product
 import com.example.shoppinggroceryapp.R
+import com.example.shoppinggroceryapp.framework.data.CustomerDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.RetailerDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
+import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
@@ -44,8 +52,8 @@ class OfferFragment : Fragment() {
     }
     private lateinit var filterAndSortLayout:LinearLayout
     private lateinit var filterCount:TextView
-    private var realList = mutableListOf<ProductEntity>()
-    var productEntities = listOf<ProductEntity>()
+    private var realList = mutableListOf<Product>()
+    var productEntities = listOf<Product>()
     private lateinit var offerList:RecyclerView
     private lateinit var adapter: ProductListAdapter
     private lateinit var offerViewModel: OfferViewModel
@@ -80,14 +88,19 @@ class OfferFragment : Fragment() {
         filterCount = view.findViewById<TextView>(R.id.filterCountTextViewOffer)
         filterAndSortLayout = view.findViewById(R.id.linearLayout15)
         val sortButton = view.findViewById<MaterialButton>(R.id.sortButton)
+        val db1 = AppDatabase.getAppDatabase(requireContext())
+        val retailerRepository = RetailerRepository(RetailerDataSourceImpl(db1.getRetailerDao()))
+        val customerRepository = CustomerRepository(CustomerDataSourceImpl(db1.getUserDao()))
+        val userRepository = UserRepository(UserDataSourceImpl(db1.getUserDao(),db1.getRetailerDao()))
+
         val filterButton = view.findViewById<MaterialButton>(R.id.filterButton)
         val fileDir = File(requireContext().filesDir,"AppImages")
         adapter = ProductListAdapter(this,fileDir,"O",false,productListViewModel = ViewModelProvider(this,
-            ProductListViewModelFactory(AppDatabase.getAppDatabase(requireContext()).getUserDao())
+            GroceryAppViewModelFactory(userRepository, retailerRepository, customerRepository)
         )[ProductListViewModel::class.java])
         adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
         offerViewModel = ViewModelProvider(this,
-            OfferViewModelFactory(AppDatabase.getAppDatabase(requireContext()).getUserDao())
+            GroceryAppViewModelFactory(userRepository, retailerRepository, customerRepository)
         )[OfferViewModel::class.java]
         if(FilterFragment.list!=null){
             if(FilterFragment.list!!.isEmpty()){
@@ -178,7 +191,7 @@ class OfferFragment : Fragment() {
         }
         val sorter  = ProductSorter()
         BottomSheetDialogFragment.selectedOption.observe(viewLifecycleOwner){
-            var newList: List<ProductEntity> = mutableListOf()
+            var newList: List<Product> = mutableListOf()
             if(it==0){
                 if(FilterFragment.list==null) {
                     newList = sorter.sortByDate(productEntities)

@@ -19,8 +19,18 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.core.data.repository.CustomerRepository
+import com.core.data.repository.RetailerRepository
+import com.core.data.repository.UserRepository
+import com.core.domain.order.DailySubscription
+import com.core.domain.order.MonthlyOnce
+import com.core.domain.order.TimeSlot
+import com.core.domain.order.WeeklyOnce
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
+import com.example.shoppinggroceryapp.framework.data.CustomerDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.RetailerDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
@@ -31,6 +41,7 @@ import com.example.shoppinggroceryapp.framework.db.entity.order.DailySubscriptio
 import com.example.shoppinggroceryapp.framework.db.entity.order.MonthlyOnceEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.TimeSlotEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.WeeklyOnceEntity
+import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressList
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.PaymentFragment
@@ -81,8 +92,13 @@ class OrderSummaryFragment : Fragment() {
         val continueToPayment = view.findViewById<MaterialButton>(R.id.continueButtonOrderSummary)
         val viewProductDetails = view.findViewById<MaterialButton>(R.id.viewPriceDetailsButtonOrderSummary)
         val orderSummaryToolBar = view.findViewById<MaterialToolbar>(R.id.orderSummaryToolbar)
+        val db1 = AppDatabase.getAppDatabase(requireContext())
+        val retailerRepository = RetailerRepository(RetailerDataSourceImpl(db1.getRetailerDao()))
+        val customerRepository = CustomerRepository(CustomerDataSourceImpl(db1.getUserDao()))
+        val userRepository = UserRepository(UserDataSourceImpl(db1.getUserDao(),db1.getRetailerDao()))
+
         orderSummaryViewModel = ViewModelProvider(this,
-            OrderSummaryViewModelFactory(retailerDao = AppDatabase.getAppDatabase(requireContext()).getRetailerDao())
+            GroceryAppViewModelFactory(userRepository, retailerRepository, customerRepository)
         )[OrderSummaryViewModel::class.java]
         val recyclerViewProducts = view.findViewById<RecyclerView>(R.id.orderListRecyclerView)
         deliveryFrequency = view.findViewById<MaterialAutoCompleteTextView>(R.id.deliveryFrequency)
@@ -345,11 +361,11 @@ class OrderSummaryFragment : Fragment() {
         if(tmpAddress!=0 && tmpCart != 0 && tmpOrderId!=0){
             OrderListFragment.selectedOrder?.let {
                 orderSummaryViewModel.updateOrderDetails(it.copy(deliveryFrequency = deliveryFrequency.text.toString()))
-                orderSummaryViewModel.updateTimeSlot(TimeSlotEntity(tmpOrderId!!,timeId))
+                orderSummaryViewModel.updateTimeSlot(TimeSlot(tmpOrderId!!,timeId))
                 when(deliveryFrequency.text.toString()){
-                    "Monthly Once" -> {orderSummaryViewModel.updateMonthly(MonthlyOnceEntity(tmpOrderId!!,dayOfMonth!!))}
-                    "Weekly Once" -> {orderSummaryViewModel.updateWeekly(WeeklyOnceEntity(tmpOrderId!!,dayOfWeek!!))}
-                    "Daily" -> {orderSummaryViewModel.updateDaily(DailySubscriptionEntity(tmpOrderId!!))}
+                    "Monthly Once" -> {orderSummaryViewModel.updateMonthly(MonthlyOnce(tmpOrderId!!,dayOfMonth!!))}
+                    "Weekly Once" -> {orderSummaryViewModel.updateWeekly(WeeklyOnce(tmpOrderId!!,dayOfWeek!!))}
+                    "Daily" -> {orderSummaryViewModel.updateDaily(DailySubscription(tmpOrderId!!))}
                     "Once" -> {
                         orderSummaryViewModel.deleteDaily(tmpOrderId!!)
                         orderSummaryViewModel.deleteWeekly(tmpOrderId!!)

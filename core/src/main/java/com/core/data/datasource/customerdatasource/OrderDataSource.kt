@@ -11,6 +11,7 @@ interface OrderDataSource {
     fun getOrdersForUserMonthlySubscription(userID:Int):List<OrderDetails>
     fun getOrdersForUserNoSubscription(userID:Int):List<OrderDetails>
     fun getOrder(cartId:Int):OrderDetails
+    fun addOrder(order:OrderDetails):Long
     fun updateOrderDetails(orderDetails: OrderDetails)
     fun getOrderWithProductsWithOrderId(orderId: Int):Map<OrderDetails,List<CartWithProductData>>
     fun getOrderDetailsWithOrderId(orderId:Int):OrderDetails

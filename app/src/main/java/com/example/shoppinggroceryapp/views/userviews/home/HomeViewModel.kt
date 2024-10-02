@@ -2,20 +2,26 @@ package com.example.shoppinggroceryapp.views.userviews.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.core.domain.products.Product
+import com.core.usecases.customerusecase.products.GetProductsById
+import com.core.usecases.customerusecase.products.GetRecentlyViewedProducts
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.framework.db.dao.ProductDao
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 
-class HomeViewModel(var productDao: ProductDao):ViewModel() {
+class HomeViewModel(private val mGetRecentlyViewedProducts: GetRecentlyViewedProducts,
+                    private val mGetProductsById: GetProductsById):ViewModel() {
 
-    var recentlyViewedList:MutableLiveData<MutableList<ProductEntity>> = MutableLiveData()
+    var recentlyViewedList:MutableLiveData<MutableList<Product>> = MutableLiveData()
     fun getRecentlyViewedItems(){
         Thread{
-            val list = mutableListOf<ProductEntity>()
-            val recentlyViewedProduct = productDao.getRecentlyViewedProducts(MainActivity.userId.toInt())
+
+            val list = mutableListOf<Product>()
+            val recentlyViewedProduct =mGetRecentlyViewedProducts.invoke(MainActivity.userId.toInt())
             for(i in recentlyViewedProduct){
-                var productEntity:ProductEntity? = productDao.getProductById(i.toLong())
-                productEntity?.let {
+
+                var product: Product? = mGetProductsById.invoke(i.toLong())
+                product?.let {
                     list.add(it)
                 }
             }

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.order.Cart
 import com.core.domain.products.Product
+import com.core.usecases.customerusecase.cart.AddProductInCart
 import com.core.usecases.customerusecase.cart.GetCartItems
 import com.core.usecases.customerusecase.cart.GetSpecificProductInCart
 import com.core.usecases.customerusecase.cart.RemoveProductInCart
@@ -20,6 +21,7 @@ import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCategory,
                            private val mGetProductByName: GetProductByName,
                            private val mGetAllProducts: GetAllProducts,
+                           private val mAddProductInCart: AddProductInCart,
                            private val mGetSpecificProductInCart: GetSpecificProductInCart,
                            private val mGetBrandName: GetBrandName,
                            private val mRemoveProductInCart: RemoveProductInCart,
@@ -62,6 +64,11 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
         }.start()
     }
 
+    fun addItemsInCart(cart: Cart){
+        Thread{
+            mAddProductInCart.invoke(cart)
+        }.start()
+    }
     fun getBrandName(brandId:Long,callbackBrand: (String?) -> Unit){
         Thread{
             callbackBrand(mGetBrandName.invoke(brandId))
@@ -76,7 +83,9 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
 
     fun updateItemsInCart(cart: Cart){
         Thread{
-            mUpdateCartItems.invoke(cart)
+            println("**** update items in cart called: $cart")
+            mAddProductInCart.invoke(cart)
+            println("**** update items in cart called: cart items ${mGetCartItems.invoke(1)}")
         }.start()
     }
 

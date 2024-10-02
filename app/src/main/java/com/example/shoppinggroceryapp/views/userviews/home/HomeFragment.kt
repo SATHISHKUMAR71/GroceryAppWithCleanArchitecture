@@ -80,15 +80,16 @@ class HomeFragment : Fragment() {
         ProductListFragment.dis50Val = false
         FilterFragment.list = null
         val view =inflater.inflate(R.layout.fragment_home, container, false)
-        homeViewModel = ViewModelProvider(this,
-            HomeViewModelFactory(AppDatabase.getAppDatabase(requireContext()).getProductDao())
-        )[HomeViewModel::class.java]
-        recentItems = view.findViewById(R.id.recentlyViewedItemsHomeFrag)
-        homeFragNestedScroll =  view.findViewById(R.id.nestedScrollViewHomeFrag)
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val retailerRepository = RetailerRepository(RetailerDataSourceImpl(db1.getRetailerDao()))
         val customerRepository = CustomerRepository(CustomerDataSourceImpl(db1.getUserDao()))
         val userRepository = UserRepository(UserDataSourceImpl(db1.getUserDao(),db1.getRetailerDao()))
+
+        homeViewModel = ViewModelProvider(this,
+            GroceryAppViewModelFactory(userRepository, retailerRepository, customerRepository)
+        )[HomeViewModel::class.java]
+        recentItems = view.findViewById(R.id.recentlyViewedItemsHomeFrag)
+        homeFragNestedScroll =  view.findViewById(R.id.nestedScrollViewHomeFrag)
 
         var adapter = ProductListAdapter(this,File(requireContext().filesDir,"AppImages"),"P",true,productListViewModel = ViewModelProvider(this,
             GroceryAppViewModelFactory(userRepository, retailerRepository, customerRepository)

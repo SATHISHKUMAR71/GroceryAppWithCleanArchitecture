@@ -5,6 +5,7 @@ import com.core.domain.order.DailySubscription
 import com.core.domain.order.MonthlyOnce
 import com.core.domain.order.TimeSlot
 import com.core.domain.order.WeeklyOnce
+import com.core.domain.products.ParentCategory
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
 import com.core.domain.search.SearchHistory
 import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
@@ -16,7 +17,7 @@ import com.example.shoppinggroceryapp.framework.db.entity.order.WeeklyOnceEntity
 import com.example.shoppinggroceryapp.framework.db.entity.recentlyvieweditems.RecentlyViewedItemsEntity
 import com.example.shoppinggroceryapp.framework.db.entity.search.SearchHistoryEntity
 
-class UserDataSourceImpl(private var userDao: UserDao, private var retailerDao: RetailerDao):UserDataSource {
+class UserDataSourceImpl(private var userDao: UserDao, private var retailerDao: RetailerDao):UserDataSource,ConvertionHelper() {
     override fun getProductForQuery(query: String): List<String> {
         return userDao.getProductForQuery(query)
     }
@@ -29,6 +30,14 @@ class UserDataSourceImpl(private var userDao: UserDao, private var retailerDao: 
         retailerDao.addProductInRecentlyViewedItems(RecentlyViewedItemsEntity(recentlyViewedItems.recentlyViewedId,recentlyViewedItems.userId,recentlyViewedItems.productId))
     }
 
+    override fun getParentCategoryList(): List<ParentCategory> {
+        return  userDao.getParentCategoryList().map { ParentCategory(it.parentCategoryName,it.parentCategoryImage,it.parentCategoryDescription,it.isEssential) }
+    }
+
+    override fun getChildName(parent: String): List<String> {
+        return userDao.getChildName(parent).map { it.categoryName }
+    }
+
     override fun addSearchQueryInDb(searchHistory: SearchHistory) {
         userDao.addSearchQueryInDb(SearchHistoryEntity(searchHistory.searchText,searchHistory.userId))
     }
@@ -37,9 +46,7 @@ class UserDataSourceImpl(private var userDao: UserDao, private var retailerDao: 
         return userDao.getSearchHistory(userId).map { SearchHistory(it.searchText,it.userId) }
     }
 
-    override fun addTimeSlot(timeSlot: TimeSlot) {
-        retailerDao.addTimeSlot(TimeSlotEntity(timeSlot.orderId,timeSlot.timeId))
-    }
+
 
     override fun updateTimeSlot(timeSlot: TimeSlot) {
         retailerDao.updateTimeSlot(TimeSlotEntity(timeSlot.orderId,timeSlot.timeId))

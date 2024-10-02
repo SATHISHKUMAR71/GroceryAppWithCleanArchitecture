@@ -2,15 +2,18 @@ package com.example.shoppinggroceryapp.views.userviews.help
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.core.domain.help.CustomerRequest
+import com.core.usecases.customerusecase.cart.GetProductsWithCartData
+import com.core.usecases.customerusecase.help.AddCustomerRequest
 import com.example.shoppinggroceryapp.framework.db.dao.UserDao
-import com.example.shoppinggroceryapp.framework.db.entity.help.CustomerRequestEntity
 
-class HelpViewModel(var userDao: UserDao):ViewModel() {
+class HelpViewModel(private val mGetProductsWithCartData: GetProductsWithCartData,
+                    private val mAddCustomerRequest: AddCustomerRequest):ViewModel() {
     var productList:MutableLiveData<String> = MutableLiveData()
 
     fun assignProductList(selectedCartId:Int){
         Thread {
-            var cartItems = userDao.getProductsWithCartId(selectedCartId)
+            val cartItems = mGetProductsWithCartData.invoke(selectedCartId)
             var value = productList.value?:""
             for (i in cartItems) {
                  value += i.productName + " (${i.totalItems}) "
@@ -19,9 +22,9 @@ class HelpViewModel(var userDao: UserDao):ViewModel() {
         }.start()
     }
 
-    fun sendReq(customerRequestEntity: CustomerRequestEntity){
+    fun sendReq(customerRequest: CustomerRequest){
         Thread{
-            userDao.addCustomerRequest(customerRequestEntity)
+            mAddCustomerRequest.invoke(customerRequest)
         }.start()
     }
 }
