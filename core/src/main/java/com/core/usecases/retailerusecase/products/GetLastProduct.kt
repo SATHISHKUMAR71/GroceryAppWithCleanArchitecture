@@ -4,7 +4,7 @@ import com.core.data.repository.RetailerRepository
 import com.core.domain.products.Product
 
 class GetLastProduct(private val retailerRepository: RetailerRepository) {
-    fun invoke():Product{
+    fun invoke():Product?{
         return retailerRepository.getLastProduct()
     }
 }

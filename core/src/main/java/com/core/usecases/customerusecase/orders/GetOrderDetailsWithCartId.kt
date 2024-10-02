@@ -5,6 +5,6 @@ import com.core.domain.order.OrderDetails
 
 class GetOrderDetailsWithCartId (private val customerRepository: CustomerRepository) {
     fun invoke(cartId:Int):OrderDetails{
-        return customerRepository.getOrder(cartId)
+        return customerRepository.getOrder(cartId)!!
     }
 }

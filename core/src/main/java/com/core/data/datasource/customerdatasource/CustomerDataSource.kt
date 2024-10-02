@@ -10,7 +10,7 @@ interface CustomerDataSource: CartDataSource, OrderDataSource, ProductDataSource
     fun updateUser(user: User)
     fun updateAddress(address: Address)
     fun addCustomerRequest(customerRequest: CustomerRequest)
-    fun getUser(emailOrPhone:String,password:String):User
-    fun getUserData(emailOrPhone:String):User
-    fun getOrderDetails(orderId:Int):OrderDetails
+    fun getUser(emailOrPhone:String,password:String):User?
+    fun getUserData(emailOrPhone:String):User?
+    fun getOrderDetails(orderId:Int):OrderDetails?
 }

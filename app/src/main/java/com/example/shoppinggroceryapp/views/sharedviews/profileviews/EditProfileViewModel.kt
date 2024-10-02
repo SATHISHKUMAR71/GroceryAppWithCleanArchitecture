@@ -22,42 +22,46 @@ class EditProfileViewModel(private var mUpdateExistingUser:UpdateExistingUser,pr
     fun saveDetails(oldEmail:String,firstName:String,lastName:String,email:String,phone: String,image:String){
         Thread {
 
-            val user = mGetUserByInputData.invoke(oldEmail)
-            val userEntityTmp = User(
-                userId = user.userId,
-                userImage = image,
-                userFirstName = firstName,
-                userLastName = lastName,
-                userEmail = email,
-                userPhone = phone,
-                userPassword = user.userPassword,
-                dateOfBirth = user.dateOfBirth,
-                isRetailer = user.isRetailer)
-            mUpdateExistingUser.invoke(userEntityTmp)
+            val user1 = mGetUserByInputData.invoke(oldEmail)
+            user1?.let {user ->
+                val userEntityTmp = User(
+                    userId = user.userId,
+                    userImage = image,
+                    userFirstName = firstName,
+                    userLastName = lastName,
+                    userEmail = email,
+                    userPhone = phone,
+                    userPassword = user.userPassword,
+                    dateOfBirth = user.dateOfBirth,
+                    isRetailer = user.isRetailer)
+                mUpdateExistingUser.invoke(userEntityTmp)
+            }
         }.start()
     }
 
     fun saveUserImage(oldEmail:String,mainImage:String){
         Thread {
-            val user = mGetUserByInputData.invoke(oldEmail)
-            mUpdateExistingUser.invoke(User(
-                userId = user.userId,
-                userImage = mainImage,
-                userFirstName = user.userFirstName,
-                userLastName = user.userLastName,
-                userEmail = user.userEmail,
-                userPhone = user.userPhone,
-                userPassword = user.userPassword,
-                dateOfBirth = user.dateOfBirth,
-                isRetailer = user.isRetailer
-            ))
+            val user1 = mGetUserByInputData.invoke(oldEmail)
+            user1?.let {user ->
+                mUpdateExistingUser.invoke(User(
+                    userId = user.userId,
+                    userImage = mainImage,
+                    userFirstName = user.userFirstName,
+                    userLastName = user.userLastName,
+                    userEmail = user.userEmail,
+                    userPhone = user.userPhone,
+                    userPassword = user.userPassword,
+                    dateOfBirth = user.dateOfBirth,
+                    isRetailer = user.isRetailer
+                ))
+            }
         }.start()
     }
 
     fun getPurchasedProducts(userId:Int){
         Thread{
             val list = mutableListOf<Product>()
-            for(i in mGetPurchasedProducts.invoke(userId)){
+            for(i in mGetPurchasedProducts.invoke(userId)?: listOf()){
                 for(j in mGetProductsByCartId.invoke(i.cartId)){
                     if(j !in list){
                         list.add(j)

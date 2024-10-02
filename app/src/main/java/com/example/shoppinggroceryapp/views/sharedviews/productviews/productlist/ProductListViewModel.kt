@@ -50,10 +50,10 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
         Thread {
 
             var list = mGetProductsByCategory.invoke(category)
-            if(list.isEmpty()) {
+            if(list?.isEmpty() == true) {
                 list = mGetProductByName.invoke(category)
             }
-            productEntityCategoryList.postValue(list)
+            productEntityCategoryList.postValue(list?: listOf())
         }.start()
     }
 

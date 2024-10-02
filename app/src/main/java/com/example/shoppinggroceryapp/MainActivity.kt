@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             if (cart == null) {
                 db2.addCartForUser(CartMappingEntity(0, userId = userId.toInt(), "available"))
                 val newCart = db2.getCartForUser(userId.toInt())
-                cartId = newCart.cartId
+                cartId = newCart?.cartId?:-1
             } else {
                 cartId = cart.cartId
             }

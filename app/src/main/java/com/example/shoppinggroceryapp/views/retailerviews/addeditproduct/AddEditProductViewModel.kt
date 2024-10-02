@@ -85,32 +85,42 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
     }
 
     fun updateInventory(brandName:String, isNewProduct:Boolean, product: Product, productId:Long?, imageList: List<String>, deletedImageList:MutableList<String>){
-        var brand: BrandData
+        var brand: BrandData?
         Thread{
             synchronized(ProductDetailViewModel.brandLock) {
 
                 brand = productGetters.mGetBandWithName.invoke(brandName)
-                var prod:Product
-                var lastProduct: Product
+                var prod:Product = product
+                var lastProduct: Product? = product
                 if (brand == null) {
                     productSetters.mAddNewBrand.invoke(BrandData(0,brandName))
                     brand = productGetters.mGetBandWithName.invoke(brandName)
                 }
+
                 if (isNewProduct) {
-                    prod = product.copy(brandId = brand.brandId)
-                    productSetters.mAddProduct.invoke(prod)
-                    lastProduct = productGetters.mGetLastProduct.invoke()
+                    brand?.let {
+                        prod = product.copy(brandId = it.brandId)
+                        productSetters.mAddProduct.invoke(prod)
+                        lastProduct = productGetters.mGetLastProduct.invoke()
+                    }
+
                 } else {
-                    prod = product.copy(brandId = brand.brandId, productId = productId!!)
-                    productSetters.mUpdateProduct.invoke(prod)
-                    lastProduct = prod
+                    brand?.let {
+                        prod = product.copy(brandId = it.brandId, productId = productId!!)
+                        productSetters.mUpdateProduct.invoke(prod)
+                        lastProduct = prod
+                    }
                 }
 
                 for(j in deletedImageList){
-                    productDeleteUseCases.mDeleteProductImage.invoke(productGetters.mGetImage.invoke(j))
+                    productGetters.mGetImage.invoke(j)
+                        ?.let { productDeleteUseCases.mDeleteProductImage.invoke(it) }
                 }
+
                 for(i in imageList){
-                    productSetters.mAddProductImage.invoke(Images(0,lastProduct.productId,i))
+                    lastProduct?.let {
+                        productSetters.mAddProductImage.invoke(Images(0,it.productId,i))
+                    }
                 }
                 ProductListFragment.selectedProductEntity.postValue(prod)
             }

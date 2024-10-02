@@ -16,14 +16,14 @@ class SearchViewModel(var mGetSearchList:GetSearchList, var mPerformProductSearc
     fun performSearch(query:String){
         Thread {
             var list = performSearchProduct(query)
-            list.addAll(mPerformProductSearch(query).toMutableList())
+            list.addAll(mPerformProductSearch(query)?: listOf<String>().toMutableList())
             searchedList.postValue(list)
             performSearchProduct(query)
         }.start()
     }
 
     private fun performSearchProduct(query:String):MutableList<String>{
-        val list = mPerformCategorySearch(query).toMutableList()
+        val list = (mPerformCategorySearch(query)?: mutableListOf<String>()).toMutableList()
         return list
     }
 
@@ -38,7 +38,7 @@ class SearchViewModel(var mGetSearchList:GetSearchList, var mPerformProductSearc
         Thread{
             val list = mutableListOf<String>()
             var i = 0
-            for(j in mGetSearchList(MainActivity.userId.toInt()).reversed()){
+            for(j in (mGetSearchList(MainActivity.userId.toInt())?: listOf()).reversed()){
                 list.add(j.searchText)
                 i++
                 if(i==10){

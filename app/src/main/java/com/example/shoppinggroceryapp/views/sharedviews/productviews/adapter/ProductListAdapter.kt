@@ -118,7 +118,9 @@ class ProductListAdapter(var fragment: Fragment,
             }
 
             productListViewModel.getBrandName(productEntityList[position].brandId){ brand ->
-                holder.brandName.text = brand
+                MainActivity.handler.post {
+                    holder.brandName.text = brand
+                }
             }
             if(productEntityList[position].offer>0f){
                 val str = "MRP ₹"+ productEntityList[position].price

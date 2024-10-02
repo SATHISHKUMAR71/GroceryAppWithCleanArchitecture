@@ -6,7 +6,7 @@ import com.core.domain.order.OrderDetails
 import com.core.domain.products.CartWithProductData
 
 class GetOrderWithProductsByOrderId(private val customerRepository: CustomerRepository)  {
-    fun invoke(orderId:Int):Map<OrderDetails,List<CartWithProductData>>{
+    fun invoke(orderId:Int):Map<OrderDetails,List<CartWithProductData>>?{
         return customerRepository.getOrderWithProductsWithOrderId(orderId)
     }
 }

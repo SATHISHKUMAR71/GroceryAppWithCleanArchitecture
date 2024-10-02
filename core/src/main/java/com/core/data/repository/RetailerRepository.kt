@@ -31,20 +31,20 @@ class RetailerRepository(private var retailerDataSource: RetailerDataSource){
         retailerDataSource.addNewBrand(brandData)
     }
 
-    fun getLastProduct():Product{
+    fun getLastProduct():Product?{
         return retailerDataSource.getLastProduct()
     }
     fun updateProduct(product: Product){
         retailerDataSource.updateProduct(product)
     }
 
-    fun getProductsInRecentList(productId:Long,user:Int):RecentlyViewedItems{
+    fun getProductsInRecentList(productId:Long,user:Int):RecentlyViewedItems?{
         return retailerDataSource.getProductsInRecentList(productId,user)
     }
-    fun getImagesForProduct(productId: Long):List<Images>{
+    fun getImagesForProduct(productId: Long):List<Images>?{
         return retailerDataSource.getImagesForProduct(productId)
     }
-    fun getSpecificImage(image:String):Images{
+    fun getSpecificImage(image:String):Images?{
         return retailerDataSource.getSpecificImage(image)
     }
     fun addDeletedProduct(deletedProductList: DeletedProductList){
@@ -54,14 +54,14 @@ class RetailerRepository(private var retailerDataSource: RetailerDataSource){
         retailerDataSource.deleteProduct(product)
     }
 
-    fun getBrandWithName(brandName:String):BrandData{
+    fun getBrandWithName(brandName:String):BrandData?{
         return retailerDataSource.getBrandWithName(brandName)
     }
 
-    fun getParentCategoryImageForParent(childCategoryName: String):String{
+    fun getParentCategoryImageForParent(childCategoryName: String):String?{
         return retailerDataSource.getParentCategoryImageForParent(childCategoryName)
     }
-    fun getParentCategoryImage(parentCategoryName: String):String{
+    fun getParentCategoryImage(parentCategoryName: String):String?{
         return retailerDataSource.getParentCategoryImage(parentCategoryName)
     }
     fun addProductImagesInDb(image: Images){
@@ -72,40 +72,40 @@ class RetailerRepository(private var retailerDataSource: RetailerDataSource){
         retailerDataSource.deleteProductImage(image)
     }
 
-    fun getParentCategoryName():Array<String>{
+    fun getParentCategoryName():Array<String>?{
         return retailerDataSource.getParentCategoryName()
     }
-    fun getParentCategoryNameForChild(childName: String): String {
+    fun getParentCategoryNameForChild(childName: String): String? {
         return retailerDataSource.getParentCategoryNameForChild(childName)
     }
-    fun getChildCategoryName():Array<String>{
+    fun getChildCategoryName():Array<String>?{
         return retailerDataSource.getChildCategoryName()
     }
-    fun getChildCategoryName(parentName:String):Array<String>{
+    fun getChildCategoryName(parentName:String):Array<String>?{
         return retailerDataSource.getChildCategoryName(parentName)
     }
 
-    fun getDataFromCustomerReqWithName():List<CustomerRequestWithName>{
+    fun getDataFromCustomerReqWithName():List<CustomerRequestWithName>?{
         return retailerDataSource.getDataFromCustomerReqWithName()
     }
 
-    fun getOrdersForRetailerWeeklySubscription(): List<OrderDetails> {
+    fun getOrdersForRetailerWeeklySubscription(): List<OrderDetails>? {
         return retailerDataSource.getOrdersForRetailerWeeklySubscription()
     }
 
-    fun getOrdersRetailerDailySubscription(): List<OrderDetails> {
+    fun getOrdersRetailerDailySubscription(): List<OrderDetails>? {
         return retailerDataSource.getOrdersRetailerDailySubscription()
     }
 
-    fun getOrdersForRetailerMonthlySubscription(): List<OrderDetails> {
+    fun getOrdersForRetailerMonthlySubscription(): List<OrderDetails>? {
         return retailerDataSource.getOrdersForRetailerMonthlySubscription()
     }
 
-    fun getOrdersForRetailerNoSubscription(): List<OrderDetails> {
+    fun getOrdersForRetailerNoSubscription(): List<OrderDetails>? {
         return retailerDataSource.getOrdersForRetailerNoSubscription()
     }
 
-    fun getAllOrders():List<OrderDetails>{
+    fun getAllOrders():List<OrderDetails>?{
         return retailerDataSource.getAllOrders()
     }
 }

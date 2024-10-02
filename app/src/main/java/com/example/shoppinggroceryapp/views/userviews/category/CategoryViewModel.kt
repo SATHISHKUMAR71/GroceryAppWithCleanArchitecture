@@ -25,7 +25,7 @@ class CategoryViewModel(private val mGetParentCategories: GetParentCategories,
         Thread{
             var list = mutableListOf<List<String>>()
             for(i in parentList.value!!){
-                list.add(mGetChildNames.invoke(i.parentCategoryName))
+                mGetChildNames.invoke(i.parentCategoryName)?.let { list.add(it) }
             }
             childList.postValue(list)
         }.start()

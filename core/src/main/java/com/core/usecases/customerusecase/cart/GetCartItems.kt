@@ -5,6 +5,6 @@ import com.core.domain.order.Cart
 
 class GetCartItems(private val customerRepository: CustomerRepository) {
     fun invoke(cartId:Int):List<Cart>{
-        return customerRepository.getCartItems(cartId)
+        return customerRepository.getCartItems(cartId)?: listOf()
     }
 }

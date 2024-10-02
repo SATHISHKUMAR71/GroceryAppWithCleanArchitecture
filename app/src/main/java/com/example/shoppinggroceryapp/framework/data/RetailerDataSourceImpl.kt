@@ -37,26 +37,26 @@ class RetailerDataSourceImpl(private var retailerDao: RetailerDao):RetailerDataS
         retailerDao.addNewBrand(BrandDataEntity(brandData.brandId,brandData.brandName))
     }
 
-    override fun getLastProduct(): Product {
-        return convertProductEntityToProduct(retailerDao.getLastProduct())
+    override fun getLastProduct(): Product? {
+        return retailerDao.getLastProduct()?.let { convertProductEntityToProduct(it) }
     }
 
     override fun updateProduct(product: Product) {
         retailerDao.updateProduct(convertProductToProductEntity(product))
     }
 
-    override fun getProductsInRecentList(productId: Long, userId: Int): RecentlyViewedItems {
-        return retailerDao.getProductsInRecentList(productId,userId).let {
+    override fun getProductsInRecentList(productId: Long, userId: Int): RecentlyViewedItems? {
+        return retailerDao.getProductsInRecentList(productId,userId)?.let {
             RecentlyViewedItems(it.recentlyViewedId,it.userId,it.productId)
         }
     }
 
-    override fun getImagesForProduct(productId: Long): List<Images> {
-        return retailerDao.getImagesForProduct(productId).map { Images(it.imageId,it.productId,it.images) }
+    override fun getImagesForProduct(productId: Long): List<Images>? {
+        return retailerDao.getImagesForProduct(productId)?.map { Images(it.imageId,it.productId,it.images) }
     }
 
-    override fun getSpecificImage(image: String): Images {
-        return retailerDao.getSpecificImage(image).let{
+    override fun getSpecificImage(image: String): Images? {
+        return retailerDao.getSpecificImage(image)?.let{
             Images(it.imageId,it.productId,it.images)
         }
     }
@@ -71,17 +71,17 @@ class RetailerDataSourceImpl(private var retailerDao: RetailerDao):RetailerDataS
         retailerDao.deleteProduct(convertProductToProductEntity(product))
     }
 
-    override fun getBrandWithName(brandName: String): BrandData {
-        return retailerDao.getBrandWithName(brandName).let {
+    override fun getBrandWithName(brandName: String): BrandData? {
+        return retailerDao.getBrandWithName(brandName)?.let {
             BrandData(it.brandId,it.brandName)
         }
     }
 
-    override fun getParentCategoryImageForParent(parentCategoryName: String): String {
+    override fun getParentCategoryImageForParent(parentCategoryName: String): String? {
         return retailerDao.getParentCategoryImageForParent(parentCategoryName)
     }
 
-    override fun getParentCategoryImage(parentCategoryName: String): String {
+    override fun getParentCategoryImage(parentCategoryName: String): String? {
         return retailerDao.getParentCategoryImage(parentCategoryName)
     }
 
@@ -97,42 +97,45 @@ class RetailerDataSourceImpl(private var retailerDao: RetailerDao):RetailerDataS
         }
     }
 
-    override fun getParentCategoryName(): Array<String> {
+    override fun getParentCategoryName(): Array<String>? {
         return retailerDao.getParentCategoryName()
     }
 
-    override fun getParentCategoryNameForChild(childName: String): String {
+    override fun getParentCategoryNameForChild(childName: String): String? {
         return retailerDao.getParentCategoryNameForChild(childName)
     }
 
-    override fun getChildCategoryName(): Array<String> {
+    override fun getChildCategoryName(): Array<String>? {
         return retailerDao.getChildCategoryName()
     }
 
-    override fun getChildCategoryName(parentName: String): Array<String> {
+    override fun getChildCategoryName(parentName: String): Array<String>? {
         return retailerDao.getChildCategoryName(parentName)
     }
 
-    override fun getDataFromCustomerReqWithName(): List<CustomerRequestWithName> {
-        return retailerDao.getDataFromCustomerReqWithName().map { CustomerRequestWithName(it.helpId,it.userId,it.requestedDate,it.orderId,it.request,it.userFirstName,it.userLastName,it.userEmail,it.userPhone) }
+    override fun getDataFromCustomerReqWithName(): List<CustomerRequestWithName>? {
+        return retailerDao.getDataFromCustomerReqWithName()?.map { CustomerRequestWithName(it.helpId,it.userId,it.requestedDate,it.orderId,it.request,it.userFirstName,it.userLastName,it.userEmail,it.userPhone) }
     }
-    override fun getOrdersForRetailerWeeklySubscription(): List<OrderDetails> {
-        return convertOrderDetailsEntityToOrderDetails(retailerDao.getOrdersForRetailerWeeklySubscription())
-    }
-
-    override fun getOrdersRetailerDailySubscription(): List<OrderDetails> {
-        return convertOrderDetailsEntityToOrderDetails(retailerDao.getOrdersRetailerDailySubscription())
+    override fun getOrdersForRetailerWeeklySubscription(): List<OrderDetails>? {
+        return retailerDao.getOrdersForRetailerWeeklySubscription()?.let { convertOrderDetailsEntityToOrderDetails(it) }
     }
 
-    override fun getOrdersForRetailerMonthlySubscription(): List<OrderDetails> {
-        return convertOrderDetailsEntityToOrderDetails(retailerDao.getOrdersForRetailerMonthlySubscription())
+    override fun getOrdersRetailerDailySubscription(): List<OrderDetails>? {
+        return retailerDao.getOrdersRetailerDailySubscription()
+            ?.let { convertOrderDetailsEntityToOrderDetails(it) }
     }
 
-    override fun getOrdersForRetailerNoSubscription(): List<OrderDetails> {
-        return convertOrderDetailsEntityToOrderDetails(retailerDao.getOrdersForRetailerNoSubscription())
+    override fun getOrdersForRetailerMonthlySubscription(): List<OrderDetails>? {
+        return retailerDao.getOrdersForRetailerMonthlySubscription()
+            ?.let { convertOrderDetailsEntityToOrderDetails(it) }
     }
 
-    override fun getAllOrders(): List<OrderDetails> {
-        return  convertOrderDetailsEntityToOrderDetails(retailerDao.getOrderDetails())
+    override fun getOrdersForRetailerNoSubscription(): List<OrderDetails>? {
+        return retailerDao.getOrdersForRetailerNoSubscription()
+            ?.let { convertOrderDetailsEntityToOrderDetails(it) }
+    }
+
+    override fun getAllOrders(): List<OrderDetails>? {
+        return retailerDao.getOrderDetails()?.let { convertOrderDetailsEntityToOrderDetails(it) }
     }
 }

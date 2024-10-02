@@ -26,11 +26,11 @@ open class CustomerRepository(private var customerDataSource: CustomerDataSource
         customerDataSource.updateUser(user)
     }
 
-    fun getProductByCategory(query:String):List<Product>{
+    fun getProductByCategory(query:String):List<Product>?{
         return customerDataSource.getProductByCategory(query)
     }
 
-    fun getRecentlyViewedProducts(userId: Int): List<Int> {
+    fun getRecentlyViewedProducts(userId: Int): List<Int>? {
         return customerDataSource.getRecentlyViewedProducts(userId)
     }
 
@@ -43,7 +43,7 @@ open class CustomerRepository(private var customerDataSource: CustomerDataSource
     }
 
 
-    fun getAddressListForUser(userId: Int): List<Address> {
+    fun getAddressListForUser(userId: Int): List<Address>? {
         return customerDataSource.getAddressListForUser(userId)
     }
 
@@ -51,37 +51,37 @@ open class CustomerRepository(private var customerDataSource: CustomerDataSource
         customerDataSource.addCustomerRequest(customerRequest)
     }
 
-    fun getOnlyProducts():List<Product>{
+    fun getOnlyProducts():List<Product>?{
         return customerDataSource.getOnlyProducts()
     }
 
-    fun getUser(emailOrPhone:String,password:String):User{
+    fun getUser(emailOrPhone:String,password:String):User?{
         return customerDataSource.getUser(emailOrPhone,password)
     }
 
-    fun getProductsById(productId:Long):Product{
+    fun getProductsById(productId:Long):Product?{
         return customerDataSource.getProductById(productId)
     }
 
-    fun getUserData(emailOrPhone: String):User{
+    fun getUserData(emailOrPhone: String):User?{
         return customerDataSource.getUserData(emailOrPhone)
     }
 
-    fun getOfferedProducts():List<Product>{
+    fun getOfferedProducts():List<Product>?{
         return customerDataSource.getOfferedProducts()
     }
-    fun getProductsForQuery(query:String):List<String>{
+    fun getProductsForQuery(query:String):List<String>?{
         return customerDataSource.getProductForQuery(query)
     }
 
-    fun getProductsByName(query: String): List<Product> {
+    fun getProductsByName(query: String): List<Product>? {
         return customerDataSource.getProductsByName(query)
     }
 
-    fun getProductForQueryName(query: String):List<String>{
+    fun getProductForQueryName(query: String):List<String>?{
         return customerDataSource.getProductForQueryName(query)
     }
-    fun getAddress(addressId:Int):Address{
+    fun getAddress(addressId:Int):Address?{
         return customerDataSource.getAddress(addressId)
     }
 
@@ -91,57 +91,57 @@ open class CustomerRepository(private var customerDataSource: CustomerDataSource
     fun addCartForUser(cartMapping:CartMapping){
         customerDataSource.addCartForUser(cartMapping)
     }
-    fun getBoughtProductsList(userId: Int):List<OrderDetails>{
+    fun getBoughtProductsList(userId: Int):List<OrderDetails>?{
         return customerDataSource.getBoughtProductsList(userId)
     }
-    fun getCartItems(cartId:Int):List<Cart>{
+    fun getCartItems(cartId:Int):List<Cart>? {
         return customerDataSource.getCartItems(cartId)
     }
-    fun getProductsByCartId(cartId:Int):List<Product>{
+    fun getProductsByCartId(cartId:Int):List<Product>? {
         return customerDataSource.getProductsByCartId(cartId)
     }
     fun addItemsToCart(cart:Cart){
         customerDataSource.addItemsToCart(cart)
     }
-    fun getProductsWithCartData(cartId:Int):List<CartWithProductData>{
+    fun getProductsWithCartData(cartId:Int):List<CartWithProductData>? {
         return customerDataSource.getProductsWithCartData(cartId)
     }
-    fun getDeletedProductsWithCartId(cartId:Int):List<CartWithProductData>{
+    fun getDeletedProductsWithCartId(cartId:Int):List<CartWithProductData>? {
         return customerDataSource.getDeletedProductsWithCartId(cartId)
     }
-    fun getOrdersForUser(userID:Int):List<OrderDetails>{
+    fun getOrdersForUser(userID:Int):List<OrderDetails>? {
         return customerDataSource.getOrdersForUser(userID)
     }
-    fun getOrdersForUserWeeklySubscription(userID:Int):List<OrderDetails>{
+    fun getOrdersForUserWeeklySubscription(userID:Int):List<OrderDetails>? {
         return customerDataSource.getOrdersForUserWeeklySubscription(userID)
     }
-    fun getOrdersForUserDailySubscription(userID:Int):List<OrderDetails>{
+    fun getOrdersForUserDailySubscription(userID:Int):List<OrderDetails>? {
         return customerDataSource.getOrdersForUserDailySubscription(userID)
     }
 
-    fun getOrdersForUserMonthlySubscription(userID:Int):List<OrderDetails>{
+    fun getOrdersForUserMonthlySubscription(userID:Int):List<OrderDetails>? {
         return customerDataSource.getOrdersForUserMonthlySubscription(userID)
     }
 
-    fun getOrdersForUserNoSubscription(userID:Int):List<OrderDetails>{
+    fun getOrdersForUserNoSubscription(userID:Int):List<OrderDetails>? {
         return customerDataSource.getOrdersForUserNoSubscription(userID)
     }
 
-    fun getOrder(cartId:Int):OrderDetails{
+    fun getOrder(cartId:Int):OrderDetails?{
         return customerDataSource.getOrder(cartId)
     }
-    fun getOrderWithProductsWithOrderId(orderId: Int):Map<OrderDetails,List<CartWithProductData>>{
+    fun getOrderWithProductsWithOrderId(orderId: Int):Map<OrderDetails,List<CartWithProductData>>?{
         return customerDataSource.getOrderWithProductsWithOrderId(orderId)
     }
 
-    fun getOrderDetails(orderId:Int):OrderDetails{
+    fun getOrderDetails(orderId:Int):OrderDetails?{
         return customerDataSource.getOrderDetails(orderId)
     }
     fun removeProductInCart(cart: Cart){
         return customerDataSource.removeProductInCart(cart)
     }
 
-    fun getBrandName(id:Long):String{
+    fun getBrandName(id:Long):String?{
         return customerDataSource.getBrandName(id)
     }
 
@@ -156,10 +156,10 @@ open class CustomerRepository(private var customerDataSource: CustomerDataSource
     fun updateCartItems(cart: Cart){
         return customerDataSource.updateCartItems(cart)
     }
-    fun getImagesForProduct(productId: Long):List<Images>{
+    fun getImagesForProduct(productId: Long):List<Images>?{
         return customerDataSource.getImagesForProduct(productId)
     }
-    fun addOrder(order: OrderDetails): Long {
+    fun addOrder(order: OrderDetails): Long? {
         return customerDataSource.addOrder(order)
     }
     fun addTimeSlot(timeSlot: TimeSlot) {

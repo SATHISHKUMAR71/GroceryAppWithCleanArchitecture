@@ -114,6 +114,7 @@ import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersu
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersummary.OrderSummaryViewModel
 
 class GroceryAppViewModelFactory(private val userRepository: UserRepository,private val retailerRepository: RetailerRepository,private val customerRepository: CustomerRepository):ViewModelProvider.Factory {
+
     private val mGetSearchList: GetSearchList by lazy { GetSearchList(userRepository) }
     private val mPerformProductSearch: PerformProductSearch by lazy { PerformProductSearch(userRepository) }
     private val mPerformCategorySearch: PerformCategorySearch by lazy { PerformCategorySearch(userRepository) }
@@ -201,6 +202,7 @@ class GroceryAppViewModelFactory(private val userRepository: UserRepository,priv
     private val mAddCartForUser:AddCartForUser by lazy { AddCartForUser(customerRepository) }
     private val mUpdateTimeSlot: UpdateTimeSlot by lazy { UpdateTimeSlot(userRepository) }
 
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T = with(modelClass){
         when{
             isAssignableFrom(SearchViewModel::class.java) -> {
@@ -257,7 +259,7 @@ class GroceryAppViewModelFactory(private val userRepository: UserRepository,priv
             isAssignableFrom(OrderSuccessViewModel::class.java)->{
                 OrderSuccessViewModel(mAddOrder, mGetOrderWithProductsByOrderId, mAddMonthlySubscription, mAddWeeklySubscription, mAddDailySubscription, mAddTimeSlot, mUpdateCart, mAddCartForUser, mGetCartForUser)
             }
-            isAssignableFrom(OrderSuccessViewModel::class.java)->{
+            isAssignableFrom(OrderSummaryViewModel::class.java)->{
                 OrderSummaryViewModel(mGetProductsWithCartData, mUpdateOrderDetails, mUpdateTimeSlot, mAddMonthlySubscription, mAddWeeklySubscription, mAddDailySubscription, mGetSpecificMonthlyOrderWithOrderId, mGetSpecificWeeklyOrderWithOrderId, mGetSpecificDailyOrderWithOrderId, mRemoveOrderFromDailySubscription, mRemoveOrderFromWeeklySubscription, mRemoveOrderFromMonthlySubscription)
             }
             else -> {

@@ -6,6 +6,6 @@ import com.core.domain.products.Product
 
 class GetProductsByCartId(private val customerRepository: CustomerRepository) {
     fun invoke(cartId:Int):List<Product>{
-        return customerRepository.getProductsByCartId(cartId)
+        return customerRepository.getProductsByCartId(cartId)!!
     }
 }

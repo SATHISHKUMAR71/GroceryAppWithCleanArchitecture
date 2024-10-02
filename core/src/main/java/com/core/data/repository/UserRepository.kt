@@ -15,15 +15,15 @@ class UserRepository (private var userDataSource: UserDataSource){
         userDataSource.addSearchQueryInDb(searchHistory)
     }
 
-    fun getParentCategoryList():List<ParentCategory>{
+    fun getParentCategoryList():List<ParentCategory>?{
         return userDataSource.getParentCategoryList()
     }
 
-    fun getChildName(parent: String): List<String> {
+    fun getChildName(parent: String): List<String>? {
         return userDataSource.getChildName(parent)
     }
 
-    fun getSearchHistory(userId: Int):List<SearchHistory>{
+    fun getSearchHistory(userId: Int):List<SearchHistory>?{
         return userDataSource.getSearchHistory(userId)
     }
 
@@ -45,27 +45,27 @@ class UserRepository (private var userDataSource: UserDataSource){
         userDataSource.deleteFromDailySubscription(dailySubscription)
     }
 
-    fun getDailySubscription():List<DailySubscription>{
+    fun getDailySubscription():List<DailySubscription>?{
         return userDataSource.getDailySubscription()
     }
 
-    fun getOrderTimeSlot():List<TimeSlot>{
+    fun getOrderTimeSlot():List<TimeSlot>?{
         return userDataSource.getOrderTimeSlot()
     }
 
-    fun getWeeklySubscriptionList():List<WeeklyOnce>{
+    fun getWeeklySubscriptionList():List<WeeklyOnce>?{
         return userDataSource.getWeeklySubscriptionList()
     }
 
-    fun getMonthlySubscriptionList():List<MonthlyOnce>{
+    fun getMonthlySubscriptionList():List<MonthlyOnce>?{
         return userDataSource.getMonthlySubscriptionList()
     }
 
-    fun getOrderedDayForWeekSubscription(orderId:Int):WeeklyOnce{
+    fun getOrderedDayForWeekSubscription(orderId:Int):WeeklyOnce?{
         return userDataSource.getOrderedDayForWeekSubscription(orderId)
     }
 
-    fun getOrderedDayForMonthlySubscription(orderId:Int):MonthlyOnce{
+    fun getOrderedDayForMonthlySubscription(orderId:Int):MonthlyOnce?{
         return userDataSource.getOrderForMonthlySubscription(orderId)
     }
 
@@ -73,18 +73,18 @@ class UserRepository (private var userDataSource: UserDataSource){
         userDataSource.addProductInRecentlyViewedItems(recentlyViewedItem)
     }
 
-    fun getOrderForDailySubscription(orderId:Int):DailySubscription{
+    fun getOrderForDailySubscription(orderId:Int):DailySubscription?{
         return userDataSource.getOrderForDailySubscription(orderId)
     }
 
-    fun getOrderedTimeSlot(orderId:Int):TimeSlot{
+    fun getOrderedTimeSlot(orderId:Int):TimeSlot?{
         return userDataSource.getOrderedTimeSlot(orderId)
     }
-    fun getProductsForQuery(query:String):List<String>{
+    fun getProductsForQuery(query:String):List<String>?{
         return userDataSource.getProductForQuery(query)
     }
 
-    fun getProductForQueryName(query: String):List<String>{
+    fun getProductForQueryName(query: String):List<String>?{
         return userDataSource.getProductForQueryName(query)
     }
 

@@ -18,11 +18,13 @@ class HomeViewModel(private val mGetRecentlyViewedProducts: GetRecentlyViewedPro
 
             val list = mutableListOf<Product>()
             val recentlyViewedProduct =mGetRecentlyViewedProducts.invoke(MainActivity.userId.toInt())
-            for(i in recentlyViewedProduct){
+            if (recentlyViewedProduct != null) {
+                for(i in recentlyViewedProduct){
 
-                var product: Product? = mGetProductsById.invoke(i.toLong())
-                product?.let {
-                    list.add(it)
+                    var product: Product? = mGetProductsById.invoke(i.toLong())
+                    product?.let {
+                        list.add(it)
+                    }
                 }
             }
             list.reverse()

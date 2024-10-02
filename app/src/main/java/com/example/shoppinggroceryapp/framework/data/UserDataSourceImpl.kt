@@ -18,11 +18,11 @@ import com.example.shoppinggroceryapp.framework.db.entity.recentlyvieweditems.Re
 import com.example.shoppinggroceryapp.framework.db.entity.search.SearchHistoryEntity
 
 class UserDataSourceImpl(private var userDao: UserDao, private var retailerDao: RetailerDao):UserDataSource,ConvertionHelper() {
-    override fun getProductForQuery(query: String): List<String> {
+    override fun getProductForQuery(query: String): List<String>? {
         return userDao.getProductForQuery(query)
     }
 
-    override fun getProductForQueryName(query: String): List<String> {
+    override fun getProductForQueryName(query: String): List<String>? {
         return userDao.getProductForQueryName(query)
     }
 
@@ -30,20 +30,20 @@ class UserDataSourceImpl(private var userDao: UserDao, private var retailerDao: 
         retailerDao.addProductInRecentlyViewedItems(RecentlyViewedItemsEntity(recentlyViewedItems.recentlyViewedId,recentlyViewedItems.userId,recentlyViewedItems.productId))
     }
 
-    override fun getParentCategoryList(): List<ParentCategory> {
-        return  userDao.getParentCategoryList().map { ParentCategory(it.parentCategoryName,it.parentCategoryImage,it.parentCategoryDescription,it.isEssential) }
+    override fun getParentCategoryList(): List<ParentCategory>? {
+        return  userDao.getParentCategoryList()?.map { ParentCategory(it.parentCategoryName,it.parentCategoryImage,it.parentCategoryDescription,it.isEssential) }
     }
 
-    override fun getChildName(parent: String): List<String> {
-        return userDao.getChildName(parent).map { it.categoryName }
+    override fun getChildName(parent: String): List<String>? {
+        return userDao.getChildName(parent)?.map { it.categoryName }
     }
 
     override fun addSearchQueryInDb(searchHistory: SearchHistory) {
         userDao.addSearchQueryInDb(SearchHistoryEntity(searchHistory.searchText,searchHistory.userId))
     }
 
-    override fun getSearchHistory(userId: Int): List<SearchHistory> {
-        return userDao.getSearchHistory(userId).map { SearchHistory(it.searchText,it.userId) }
+    override fun getSearchHistory(userId: Int): List<SearchHistory>? {
+        return userDao.getSearchHistory(userId)?.map { SearchHistory(it.searchText,it.userId) }
     }
 
 
@@ -64,42 +64,42 @@ class UserDataSourceImpl(private var userDao: UserDao, private var retailerDao: 
         retailerDao.deleteFromDailySubscription(DailySubscriptionEntity(dailySubscription.orderId))
     }
 
-    override fun getDailySubscription(): List<DailySubscription> {
-        return retailerDao.getDailySubscription().map { DailySubscription(it.orderId) }
+    override fun getDailySubscription(): List<DailySubscription>? {
+        return retailerDao.getDailySubscription()?.map { DailySubscription(it.orderId) }
     }
 
-    override fun getOrderTimeSlot(): List<TimeSlot> {
-        return retailerDao.getOrderTimeSlot().map { TimeSlot(it.orderId,it.timeId) }
+    override fun getOrderTimeSlot(): List<TimeSlot>? {
+        return retailerDao.getOrderTimeSlot()?.map { TimeSlot(it.orderId,it.timeId) }
     }
 
-    override fun getWeeklySubscriptionList(): List<WeeklyOnce> {
-        return retailerDao.getWeeklySubscriptionList().map { WeeklyOnce(it.orderId,it.weekId) }
+    override fun getWeeklySubscriptionList(): List<WeeklyOnce>? {
+        return retailerDao.getWeeklySubscriptionList()?.map { WeeklyOnce(it.orderId,it.weekId) }
     }
 
-    override fun getMonthlySubscriptionList(): List<MonthlyOnce> {
-        return retailerDao.getMonthlySubscriptionList().map { MonthlyOnce(it.orderId,it.dayOfMonth) }
+    override fun getMonthlySubscriptionList(): List<MonthlyOnce>? {
+        return retailerDao.getMonthlySubscriptionList()?.map { MonthlyOnce(it.orderId,it.dayOfMonth) }
     }
 
-    override fun getOrderedDayForWeekSubscription(orderId: Int): WeeklyOnce {
-        return retailerDao.getOrderedDayForWeekSubscription(orderId).let {
+    override fun getOrderedDayForWeekSubscription(orderId: Int): WeeklyOnce? {
+        return retailerDao.getOrderedDayForWeekSubscription(orderId)?.let {
             WeeklyOnce(it.orderId,it.weekId)
         }
     }
 
-    override fun getOrderForDailySubscription(orderId: Int): DailySubscription {
-        return retailerDao.getOrderForDailySubscription(orderId).let {
+    override fun getOrderForDailySubscription(orderId: Int): DailySubscription? {
+        return retailerDao.getOrderForDailySubscription(orderId)?.let {
             DailySubscription(it.orderId)
         }
     }
 
-    override fun getOrderForMonthlySubscription(orderId: Int): MonthlyOnce {
-        return retailerDao.getOrderedDayForMonthlySubscription(orderId).let {
+    override fun getOrderForMonthlySubscription(orderId: Int): MonthlyOnce? {
+        return retailerDao.getOrderedDayForMonthlySubscription(orderId)?.let {
             MonthlyOnce(it.orderId,it.dayOfMonth)
         }
     }
 
-    override fun getOrderedTimeSlot(orderId: Int): TimeSlot {
-        return retailerDao.getOrderedTimeSlot(orderId).let {
+    override fun getOrderedTimeSlot(orderId: Int): TimeSlot? {
+        return retailerDao.getOrderedTimeSlot(orderId)?.let {
             TimeSlot(it.orderId,it.timeId)
         }
     }
