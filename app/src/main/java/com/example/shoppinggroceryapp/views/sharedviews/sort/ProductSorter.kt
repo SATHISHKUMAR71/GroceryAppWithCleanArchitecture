@@ -19,12 +19,13 @@ class ProductSorter {
         return sortedList
     }
     fun sortByPriceHighToLow(productEntityList:List<Product>):List<Product>{
-        val sortedList =productEntityList.sortedWith(compareBy({it.price},{it.productId})).reversed()
+
+        val sortedList =productEntityList.sortedWith(compareBy({(it.price)-(it.price * it.offer/100)},{it.productId})).reversed()
         return sortedList
     }
 
     fun sortByPriceLowToHigh(productEntityList:List<Product>):List<Product>{
-        val sortedList =productEntityList.sortedWith(compareBy({it.price},{it.productId}))
+        val sortedList =productEntityList.sortedWith(compareBy({(it.price)-(it.price * it.offer/100)},{it.productId}))
         return sortedList
     }
 }
