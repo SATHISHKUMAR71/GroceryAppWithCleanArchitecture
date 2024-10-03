@@ -43,7 +43,7 @@ import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.views.userviews.cartview.FindNumberOfCartItems
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.helpers.permissionhandler.MicPermissionHandler
-import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
+import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.signup.SignUpFragment
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.CustomerRequestListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.search.SearchViewModel
@@ -111,14 +111,13 @@ class InitialFragment : Fragment() {
         val userRepository = UserRepository(UserDataSourceImpl(userDao))
         val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
         val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
-        val helpRepository: HelpRepository = HelpRepository(HelpDataSourceImpl(retailerDao),HelpDataSourceImpl(retailerDao))
         val orderRepository: OrderRepository = OrderRepository(OrderDataSourceImpl(retailerDao),OrderDataSourceImpl(retailerDao))
         val productRepository: ProductRepository = ProductRepository(ProductDataSourceImpl(retailerDao),ProductDataSourceImpl(retailerDao))
         val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
         val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(SubscriptionDataSourceImpl(userDao),SubscriptionDataSourceImpl(userDao),SubscriptionDataSourceImpl(userDao))
         val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
         searchViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository,authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppSharedVMFactory(userRepository, authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
         )[SearchViewModel::class.java]
         bottomNav = view.findViewById(R.id.bottomNav)
         searchBar = view.findViewById(R.id.searchBar)
@@ -291,7 +290,7 @@ class InitialFragment : Fragment() {
             }
         }
 
-        var cartListViewModel = ViewModelProvider(this,GroceryAppViewModelFactory(userRepository,authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository))[ProductListViewModel::class.java]
+        var cartListViewModel = ViewModelProvider(this,GroceryAppSharedVMFactory(userRepository,authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository))[ProductListViewModel::class.java]
         if(!isRetailer){
             cartListViewModel.getCartItems(MainActivity.cartId)
         }

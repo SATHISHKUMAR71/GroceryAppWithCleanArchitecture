@@ -40,7 +40,6 @@ import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.views.userviews.cartview.FindNumberOfCartItems
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
-import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.category.CategoryFragment
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment

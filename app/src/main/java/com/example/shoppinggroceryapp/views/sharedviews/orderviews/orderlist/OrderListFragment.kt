@@ -35,7 +35,6 @@ import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDa
 import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
-import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment

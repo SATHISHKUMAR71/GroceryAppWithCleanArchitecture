@@ -36,10 +36,10 @@ import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
+import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail.OrderDetailFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
-import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.PaymentFragment
 import com.google.android.material.appbar.MaterialToolbar
@@ -84,7 +84,7 @@ class OrderSuccessFragment : Fragment() {
         val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
 
         val orderSuccessViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppUserVMFactory(cartRepository, helpRepository, orderRepository, productRepository, subscriptionRepository, addressRepository)
         )[OrderSuccessViewModel::class.java]
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object :OnBackPressedCallback(true){

@@ -31,7 +31,6 @@ import com.example.shoppinggroceryapp.views.sharedviews.profileviews.EditProfile
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
-import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar

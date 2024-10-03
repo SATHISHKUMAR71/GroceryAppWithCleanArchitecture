@@ -47,10 +47,10 @@ import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
+import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.adapter.ProductViewAdapter
-import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressList
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.PaymentFragment
@@ -128,7 +128,7 @@ class OrderSummaryFragment : Fragment() {
         val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
 
         orderSummaryViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository,authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppUserVMFactory(cartRepository, helpRepository, orderRepository, productRepository, subscriptionRepository, addressRepository)
         )[OrderSummaryViewModel::class.java]
         val recyclerViewProducts = view.findViewById<RecyclerView>(R.id.orderListRecyclerView)
         deliveryFrequency = view.findViewById<MaterialAutoCompleteTextView>(R.id.deliveryFrequency)

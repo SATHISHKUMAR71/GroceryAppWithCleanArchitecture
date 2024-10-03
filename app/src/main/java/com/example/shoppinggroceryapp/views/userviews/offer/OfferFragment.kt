@@ -36,7 +36,7 @@ import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
-import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
+import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
@@ -133,7 +133,7 @@ class OfferFragment : Fragment() {
         )[ProductListViewModel::class.java])
         adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
         offerViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppUserVMFactory(cartRepository, helpRepository, orderRepository, productRepository, subscriptionRepository, addressRepository)
         )[OfferViewModel::class.java]
         if(FilterFragment.list!=null){
             if(FilterFragment.list!!.isEmpty()){

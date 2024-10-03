@@ -42,7 +42,6 @@ import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageHandler
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
 import com.example.shoppinggroceryapp.helpers.permissionhandler.interfaces.ImagePermissionHandler
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
-import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount

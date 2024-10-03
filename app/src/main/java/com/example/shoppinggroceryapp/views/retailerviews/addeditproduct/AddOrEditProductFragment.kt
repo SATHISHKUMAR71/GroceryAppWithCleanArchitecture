@@ -51,7 +51,6 @@ import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
 import com.example.shoppinggroceryapp.views.GroceryAppRetailerVMFactory
-import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.MaterialDatePicker
