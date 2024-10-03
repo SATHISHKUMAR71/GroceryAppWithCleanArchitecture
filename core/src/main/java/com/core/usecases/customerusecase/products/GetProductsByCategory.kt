@@ -1,10 +1,10 @@
 package com.core.usecases.customerusecase.products
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.ProductRepository
 import com.core.domain.products.Product
 
-class GetProductsByCategory(private val customerRepository: CustomerRepository) {
+class GetProductsByCategory(private val productRepository: ProductRepository) {
     fun invoke(query:String): List<Product>? {
-        return customerRepository.getProductByCategory(query)
+        return productRepository.getProductByCategory(query)
     }
 }

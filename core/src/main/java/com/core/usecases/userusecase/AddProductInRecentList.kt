@@ -1,11 +1,11 @@
 package com.core.usecases.userusecase
 
-import com.core.data.repository.RetailerRepository
+import com.core.data.repository.ProductRepository
 import com.core.data.repository.UserRepository
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
 
-class AddProductInRecentList(private val userRepository: UserRepository) {
+class AddProductInRecentList(private val productRepository: ProductRepository) {
     fun invoke(recentlyViewedItems: RecentlyViewedItems){
-        userRepository.addProductInRecentlyViewedItems(recentlyViewedItems)
+        productRepository.addProductInRecentlyViewedItems(recentlyViewedItems)
     }
 }

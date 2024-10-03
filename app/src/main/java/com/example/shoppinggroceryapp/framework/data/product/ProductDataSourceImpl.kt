@@ -1,23 +1,76 @@
-package com.example.shoppinggroceryapp.framework.data
+package com.example.shoppinggroceryapp.framework.data.product
 
-import com.core.data.datasource.retailerdatasource.RetailerDataSource
-import com.core.domain.help.CustomerRequestWithName
-import com.core.domain.order.OrderDetails
+import com.core.data.datasource.productdatasource.ProductDataSource
+import com.core.data.datasource.productdatasource.ProductRetailerDataSource
 import com.core.domain.products.BrandData
+import com.core.domain.products.CartWithProductData
 import com.core.domain.products.Category
 import com.core.domain.products.DeletedProductList
 import com.core.domain.products.Images
 import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
+import com.example.shoppinggroceryapp.framework.data.ConvertorHelper
 import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
 import com.example.shoppinggroceryapp.framework.db.entity.products.BrandDataEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.CategoryEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.DeletedProductListEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ImagesEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
+import com.example.shoppinggroceryapp.framework.db.entity.recentlyvieweditems.RecentlyViewedItemsEntity
 
-class RetailerDataSourceImpl(private var retailerDao: RetailerDao):RetailerDataSource,ConvertorHelper(){
+class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSource,ProductRetailerDataSource,ConvertorHelper() {
+    override fun getProductById(productId: Long): Product? {
+        return retailerDao.getProductById(productId)?.let {
+            convertProductEntityToProduct(it)
+        }
+    }
+
+    override fun getRecentlyViewedProducts(user: Int): List<Int>? {
+        return retailerDao.getRecentlyViewedProducts(user)
+    }
+
+    override fun getOnlyProducts(): List<Product>? {
+        return retailerDao.getOnlyProducts()?.map { convertProductEntityToProduct(it) }
+    }
+
+    override fun getOfferedProducts(): List<Product>? {
+        return retailerDao.getOfferedProducts()?.map { convertProductEntityToProduct(it) }
+    }
+
+    override fun getProductByCategory(query: String): List<Product>? {
+        return retailerDao.getProductByCategory(query)?.map { convertProductEntityToProduct(it) }
+    }
+
+    override fun getProductsByName(query: String): List<Product>? {
+        return retailerDao.getProductsByName(query)?.map { convertProductEntityToProduct(it) }
+    }
+
+    override fun getProductForQuery(query: String): List<String>? {
+        return retailerDao.getProductForQuery(query)
+    }
+
+    override fun getProductForQueryName(query: String): List<String>? {
+        return retailerDao.getProductForQueryName(query)
+    }
+
+    override fun getBrandName(id: Long): String? {
+        return retailerDao.getBrandName(id)
+    }
+
+    override fun getProductsByCartId(cartId: Int): List<Product>? {
+        return retailerDao.getProductsByCartId(cartId)?.let { productList ->
+            productList.map { Product(it.productId,it.brandId,it.categoryName,it.productName,it.productDescription
+                ,it.price,it.offer,it.productQuantity,it.mainImage,it.isVeg,it.manufactureDate,it.expiryDate,it.availableItems) }
+        }
+    }
+    override fun getDeletedProductsWithCartId(cartId: Int): List<CartWithProductData>? {
+        return retailerDao.getDeletedProductsWithCartId(cartId)?.let { cartProductList ->
+            cartProductList.map { CartWithProductData(it.mainImage,it.productName,it.productDescription,it.totalItems,it.unitPrice
+                ,it.manufactureDate,it.expiryDate,it.productQuantity,it.brandName) }
+        }
+
+    }
 
     override fun addProduct(product: Product) {
         retailerDao.addProduct(convertProductToProductEntity(product))
@@ -48,17 +101,11 @@ class RetailerDataSourceImpl(private var retailerDao: RetailerDao):RetailerDataS
             RecentlyViewedItems(it.recentlyViewedId,it.userId,it.productId)
         }
     }
-
-    override fun getImagesForProduct(productId: Long): List<Images>? {
-        return retailerDao.getImagesForProduct(productId)?.map { Images(it.imageId,it.productId,it.images) }
-    }
-
     override fun getSpecificImage(image: String): Images? {
         return retailerDao.getSpecificImage(image)?.let{
             Images(it.imageId,it.productId,it.images)
         }
     }
-
     override fun addDeletedProduct(deletedProductList: DeletedProductList) {
         deletedProductList.apply {
             retailerDao.addDeletedProduct(DeletedProductListEntity(productId,brandId,categoryName,productName,productDescription,price,offer,productQuantity, mainImage, isVeg, manufactureDate, expiryDate, availableItems))
@@ -111,29 +158,19 @@ class RetailerDataSourceImpl(private var retailerDao: RetailerDao):RetailerDataS
         return retailerDao.getChildCategoryName(parentName)
     }
 
-    override fun getDataFromCustomerReqWithName(): List<CustomerRequestWithName>? {
-        return retailerDao.getDataFromCustomerReqWithName()?.map { CustomerRequestWithName(it.helpId,it.userId,it.requestedDate,it.orderId,it.request,it.userFirstName,it.userLastName,it.userEmail,it.userPhone) }
-    }
-    override fun getOrdersForRetailerWeeklySubscription(): List<OrderDetails>? {
-        return retailerDao.getOrdersForRetailerWeeklySubscription()?.let { convertOrderDetailsEntityToOrderDetails(it) }
+    override fun addProductInRecentlyViewedItems(recentlyViewedItems: RecentlyViewedItems) {
+        retailerDao.addProductInRecentlyViewedItems(RecentlyViewedItemsEntity(recentlyViewedItems.recentlyViewedId,recentlyViewedItems.userId,recentlyViewedItems.productId))
     }
 
-    override fun getOrdersRetailerDailySubscription(): List<OrderDetails>? {
-        return retailerDao.getOrdersRetailerDailySubscription()
-            ?.let { convertOrderDetailsEntityToOrderDetails(it) }
+    override fun getParentCategoryList(): List<ParentCategory>? {
+        return  retailerDao.getParentCategoryList()?.map { ParentCategory(it.parentCategoryName,it.parentCategoryImage,it.parentCategoryDescription,it.isEssential) }
     }
 
-    override fun getOrdersForRetailerMonthlySubscription(): List<OrderDetails>? {
-        return retailerDao.getOrdersForRetailerMonthlySubscription()
-            ?.let { convertOrderDetailsEntityToOrderDetails(it) }
+    override fun getChildName(parent: String): List<String>? {
+        return retailerDao.getChildName(parent)?.map { it.categoryName }
     }
 
-    override fun getOrdersForRetailerNoSubscription(): List<OrderDetails>? {
-        return retailerDao.getOrdersForRetailerNoSubscription()
-            ?.let { convertOrderDetailsEntityToOrderDetails(it) }
-    }
-
-    override fun getAllOrders(): List<OrderDetails>? {
-        return retailerDao.getOrderDetails()?.let { convertOrderDetailsEntityToOrderDetails(it) }
+    override fun getImagesForProduct(productId: Long): List<Images>? {
+        return retailerDao.getImagesForProduct(productId)?.map { Images(it.imageId,it.productId,it.images) }
     }
 }

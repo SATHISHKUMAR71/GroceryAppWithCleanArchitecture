@@ -1,9 +1,9 @@
 package com.core.usecases.retailerusecase.products
 
-import com.core.data.repository.RetailerRepository
+import com.core.data.repository.ProductRepository
 
-class GetParentCategoryNameForChild(private val retailerRepository: RetailerRepository) {
+class GetParentCategoryNameForChild(private val productRepository: ProductRepository) {
     fun invoke(childName:String):String?{
-        return retailerRepository.getParentCategoryNameForChild(childName)
+        return productRepository.getParentCategoryNameForChild(childName)
     }
 }

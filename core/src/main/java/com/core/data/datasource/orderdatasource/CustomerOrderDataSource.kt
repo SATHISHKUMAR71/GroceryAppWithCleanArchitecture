@@ -1,9 +1,9 @@
-package com.core.data.datasource.customerdatasource
+package com.core.data.datasource.orderdatasource
 
 import com.core.domain.order.OrderDetails
 import com.core.domain.products.CartWithProductData
 
-interface OrderDataSource {
+interface CustomerOrderDataSource {
     fun getBoughtProductsList(userId: Int):List<OrderDetails>?
     fun getOrdersForUser(userID:Int):List<OrderDetails>?
     fun getOrdersForUserWeeklySubscription(userID:Int):List<OrderDetails>?

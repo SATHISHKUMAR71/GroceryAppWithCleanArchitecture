@@ -1,10 +1,10 @@
 package com.core.usecases.retailerusecase.orders
 
-import com.core.data.repository.RetailerRepository
+import com.core.data.repository.OrderRepository
 import com.core.domain.order.OrderDetails
 
-class GetWeeklyOrders(private var retailerRepository: RetailerRepository) {
+class GetWeeklyOrders(private var orderRepository: OrderRepository) {
     fun invoke(): List<OrderDetails>? {
-        return retailerRepository.getOrdersForRetailerWeeklySubscription()
+        return orderRepository.getOrdersForRetailerWeeklySubscription()
     }
 }

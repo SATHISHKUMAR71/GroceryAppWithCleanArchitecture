@@ -6,7 +6,6 @@ import com.core.domain.products.Product
 import com.core.usecases.customerusecase.products.GetProductsById
 import com.core.usecases.customerusecase.products.GetRecentlyViewedProducts
 import com.example.shoppinggroceryapp.MainActivity
-import com.example.shoppinggroceryapp.framework.db.dao.ProductDao
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 
 class HomeViewModel(private val mGetRecentlyViewedProducts: GetRecentlyViewedProducts,

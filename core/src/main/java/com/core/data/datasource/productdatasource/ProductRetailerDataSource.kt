@@ -1,4 +1,4 @@
-package com.core.data.datasource.retailerdatasource
+package com.core.data.datasource.productdatasource
 
 import com.core.domain.order.DailySubscription
 import com.core.domain.order.MonthlyOnce

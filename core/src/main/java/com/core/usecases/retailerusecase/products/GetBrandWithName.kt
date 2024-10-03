@@ -1,10 +1,10 @@
 package com.core.usecases.retailerusecase.products
 
-import com.core.data.repository.RetailerRepository
+import com.core.data.repository.ProductRepository
 import com.core.domain.products.BrandData
 
-class GetBrandWithName(private val retailerRepository: RetailerRepository) {
+class GetBrandWithName(private val productRepository: ProductRepository) {
     fun invoke(brandName:String):BrandData?{
-        return retailerRepository.getBrandWithName(brandName)
+        return productRepository.getBrandWithName(brandName)
     }
 }

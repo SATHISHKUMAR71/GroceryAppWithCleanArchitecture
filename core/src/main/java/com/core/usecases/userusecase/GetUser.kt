@@ -1,10 +1,10 @@
 package com.core.usecases.userusecase
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.AuthenticationRepository
 import com.core.domain.user.User
 
-class GetUser(private val customerRepository: CustomerRepository) {
+class GetUser(private val authenticationRepository: AuthenticationRepository) {
     fun invoke(emailOrPhone:String,password:String): User?{
-        return customerRepository.getUser(emailOrPhone,password)
+        return authenticationRepository.getUser(emailOrPhone,password)
     }
 }

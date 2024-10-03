@@ -1,10 +1,10 @@
 package com.core.usecases.retailerusecase.products
 
-import com.core.data.repository.RetailerRepository
+import com.core.data.repository.ProductRepository
 import com.core.domain.products.Images
 
-class DeleteProductImage(private val retailerRepository: RetailerRepository){
+class DeleteProductImage(private val productRepository: ProductRepository) {
     fun invoke(images: Images){
-        retailerRepository.deleteProductImage(images)
+        productRepository.deleteProductImage(images)
     }
 }

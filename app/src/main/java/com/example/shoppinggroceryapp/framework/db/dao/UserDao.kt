@@ -98,6 +98,32 @@ interface UserDao {
     @Query("SELECT * FROM ProductEntity WHERE ProductEntity.offer >= '10' Order By productId DESC")
     fun getOnlyProduct10():List<ProductEntity>?
 
+    @Update
+    fun updateTimeSlot(timeSlotEntity: TimeSlotEntity)
+
+
+    @Delete
+    fun deleteFromWeeklySubscription(weeklyOnceEntity: WeeklyOnceEntity)
+
+    @Delete
+    fun deleteFromMonthlySubscription(monthlyOnceEntity: MonthlyOnceEntity)
+
+    @Delete
+    fun deleteFromDailySubscription(dailySubscriptionEntity: DailySubscriptionEntity)
+
+    @Query("SELECT * FROM MonthlyOnceEntity Where MonthlyOnceEntity.orderId=:orderId")
+    fun getOrderedDayForMonthlySubscription(orderId:Int):MonthlyOnceEntity?
+
+    @Query("SELECT * FROM WeeklyOnceEntity Where WeeklyOnceEntity.orderId=:orderId")
+    fun getOrderedDayForWeekSubscription(orderId:Int):WeeklyOnceEntity?
+
+    @Query("SELECT * FROM DailySubscriptionEntity Where DailySubscriptionEntity.orderId=:orderId")
+    fun getOrderForDailySubscription(orderId:Int): DailySubscriptionEntity?
+
+    @Query("SELECT * FROM TimeSlotEntity Where TimeSlotEntity.orderId=:orderId")
+    fun getOrderedTimeSlot(orderId:Int):TimeSlotEntity?
+
+
     @Query("SELECT * FROM ProductEntity WHERE ProductEntity.offer >= '50' and ProductEntity.categoryName=:category ")
     fun getOnlyProduct50WithCat(category:String):List<ProductEntity>?
 

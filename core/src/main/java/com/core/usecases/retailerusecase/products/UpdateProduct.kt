@@ -1,10 +1,10 @@
 package com.core.usecases.retailerusecase.products
 
-import com.core.data.repository.RetailerRepository
+import com.core.data.repository.ProductRepository
 import com.core.domain.products.Product
 
-class UpdateProduct(private val retailerRepository: RetailerRepository) {
+class UpdateProduct(private val productRepository: ProductRepository) {
     fun invoke(product: Product){
-        retailerRepository.updateProduct(product)
+        productRepository.updateProduct(product)
     }
 }

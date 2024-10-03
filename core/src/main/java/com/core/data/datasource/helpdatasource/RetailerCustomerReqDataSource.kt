@@ -1,8 +1,7 @@
-package com.core.data.datasource.retailerdatasource
+package com.core.data.datasource.helpdatasource
 
 import com.core.domain.help.CustomerRequestWithName
-import com.core.domain.order.OrderDetails
 
-interface CustomerDataSource {
+interface RetailerCustomerReqDataSource {
     fun getDataFromCustomerReqWithName():List<CustomerRequestWithName>?
 }

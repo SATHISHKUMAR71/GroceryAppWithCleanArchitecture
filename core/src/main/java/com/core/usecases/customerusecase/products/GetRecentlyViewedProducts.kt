@@ -1,9 +1,9 @@
 package com.core.usecases.customerusecase.products
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.ProductRepository
 
-class GetRecentlyViewedProducts(private val customerRepository: CustomerRepository) {
+class GetRecentlyViewedProducts(private val productRepository: ProductRepository) {
     fun invoke(userId:Int):List<Int>?{
-        return customerRepository.getRecentlyViewedProducts(userId)
+        return productRepository.getRecentlyViewedProducts(userId)
     }
 }

@@ -17,17 +17,28 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.core.data.repository.CustomerRepository
-import com.core.data.repository.RetailerRepository
+import com.core.data.repository.AddressRepository
+import com.core.data.repository.AuthenticationRepository
+import com.core.data.repository.CartRepository
+import com.core.data.repository.HelpRepository
+import com.core.data.repository.OrderRepository
+import com.core.data.repository.ProductRepository
+import com.core.data.repository.SearchRepository
+import com.core.data.repository.SubscriptionRepository
 import com.core.data.repository.UserRepository
 import com.core.domain.order.Cart
 import com.core.domain.products.Product
-import com.core.usecases.retailerusecase.products.DeleteProduct
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
-import com.example.shoppinggroceryapp.framework.data.CustomerDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.RetailerDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.UserDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.authentication.AuthenticationDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.address.AddressDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.cart.CartDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.help.HelpDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.order.OrderDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.product.ProductDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.views.userviews.cartview.FindNumberOfCartItems
@@ -36,8 +47,6 @@ import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.category.CategoryFragment
 import com.example.shoppinggroceryapp.views.retailerviews.addeditproduct.AddOrEditProductFragment
-import com.example.shoppinggroceryapp.framework.db.entity.order.CartEntity
-import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
@@ -101,17 +110,37 @@ class ProductDetailFragment : Fragment() {
 //        cartViewModel = CartViewModel(AppDatabase.getAppDatabase(requireContext()).getUserDao())
         mrpTextView = view.findViewById<TextView>(R.id.productPriceProductDetail)
         discountedPrice = view.findViewById<TextView>(R.id.discountedPrice)
-        val retailerDao = AppDatabase.getAppDatabase(requireContext()).getRetailerDao()
         val db1 = AppDatabase.getAppDatabase(requireContext())
-        val retailerRepository = RetailerRepository(RetailerDataSourceImpl(db1.getRetailerDao()))
-        val customerRepository = CustomerRepository(CustomerDataSourceImpl(db1.getUserDao()))
-        val userRepository = UserRepository(UserDataSourceImpl(db1.getUserDao(),db1.getRetailerDao()))
+        val userDao = db1.getUserDao()
+        val retailerDao = db1.getRetailerDao()
+        val userRepository = UserRepository(UserDataSourceImpl(userDao))
+        val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
+        val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
+        val helpRepository: HelpRepository = HelpRepository(
+            HelpDataSourceImpl(retailerDao),
+            HelpDataSourceImpl(retailerDao)
+        )
+        val orderRepository: OrderRepository = OrderRepository(
+            OrderDataSourceImpl(retailerDao),
+            OrderDataSourceImpl(retailerDao)
+        )
+        val productRepository: ProductRepository = ProductRepository(
+            ProductDataSourceImpl(retailerDao),
+            ProductDataSourceImpl(retailerDao)
+        )
+        val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
+        val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(
+            SubscriptionDataSourceImpl(userDao),
+            SubscriptionDataSourceImpl(userDao),
+            SubscriptionDataSourceImpl(userDao)
+        )
+        val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
 
         productDetailViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository, retailerRepository, customerRepository)
+            GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
         )[ProductDetailViewModel::class.java]
         var productListViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository, retailerRepository, customerRepository)
+            GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
         )[ProductListViewModel::class.java]
         productDetailViewModel.getImagesForProducts(ProductListFragment.selectedProductEntity.value?.productId?:0)
         addProductButton = view.findViewById(R.id.addProductButtonProductDetail)

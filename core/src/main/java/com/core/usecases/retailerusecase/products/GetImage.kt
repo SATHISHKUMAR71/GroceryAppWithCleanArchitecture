@@ -1,10 +1,10 @@
 package com.core.usecases.retailerusecase.products
 
-import com.core.data.repository.RetailerRepository
+import com.core.data.repository.ProductRepository
 import com.core.domain.products.Images
 
-class GetImage(private val retailerRepository: RetailerRepository) {
+class GetImage(private val productRepository: ProductRepository) {
     fun invoke(image:String):Images?{
-        return retailerRepository.getSpecificImage(image)
+        return productRepository.getSpecificImage(image)
     }
 }

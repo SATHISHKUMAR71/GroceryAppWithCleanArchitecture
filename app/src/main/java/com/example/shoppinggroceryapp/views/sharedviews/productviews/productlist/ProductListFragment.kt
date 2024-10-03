@@ -15,17 +15,28 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.core.data.repository.CustomerRepository
-import com.core.data.repository.RetailerRepository
+import com.core.data.repository.AddressRepository
+import com.core.data.repository.AuthenticationRepository
+import com.core.data.repository.CartRepository
+import com.core.data.repository.HelpRepository
+import com.core.data.repository.OrderRepository
+import com.core.data.repository.ProductRepository
+import com.core.data.repository.SearchRepository
+import com.core.data.repository.SubscriptionRepository
 import com.core.data.repository.UserRepository
 import com.core.domain.products.Product
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
-import com.example.shoppinggroceryapp.framework.data.CustomerDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.RetailerDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.UserDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.authentication.AuthenticationDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.address.AddressDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.cart.CartDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.help.HelpDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.order.OrderDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.product.ProductDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
-import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 import com.example.shoppinggroceryapp.views.userviews.cartview.FindNumberOfCartItems
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
@@ -62,6 +73,7 @@ class ProductListFragment : Fragment() {
         var productListFirstVisiblePos:Int? = null
         var productListFilterCount =0
     }
+    private var firstTime = 0
     var category:String? = null
     private lateinit var productListViewModel: ProductListViewModel
     private lateinit var fileDir:File
@@ -90,6 +102,7 @@ class ProductListFragment : Fragment() {
         OfferFragment.dis40Val = false
         OfferFragment.dis50Val =false
         dis10Val = false
+        firstTime = 0
         dis20Val = false
         dis30Val = false
         dis40Val = false
@@ -103,17 +116,37 @@ class ProductListFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-
+        println("ON CREATE VIEW CALLED")
         val view =  inflater.inflate(R.layout.fragment_product_list, container, false)
-        val sortAndFilterLayout = view.findViewById<LinearLayout>(R.id.linearLayout15)
+
         fileDir = File(requireContext().filesDir,"AppImages")
         val db1 = AppDatabase.getAppDatabase(requireContext())
-        val retailerRepository = RetailerRepository(RetailerDataSourceImpl(db1.getRetailerDao()))
-        val customerRepository = CustomerRepository(CustomerDataSourceImpl(db1.getUserDao()))
-        val userRepository = UserRepository(UserDataSourceImpl(db1.getUserDao(),db1.getRetailerDao()))
-
+        val userDao = db1.getUserDao()
+        val retailerDao = db1.getRetailerDao()
+        val userRepository = UserRepository(UserDataSourceImpl(userDao))
+        val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
+        val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
+        val helpRepository: HelpRepository = HelpRepository(
+            HelpDataSourceImpl(retailerDao),
+            HelpDataSourceImpl(retailerDao)
+        )
+        val orderRepository: OrderRepository = OrderRepository(
+            OrderDataSourceImpl(retailerDao),
+            OrderDataSourceImpl(retailerDao)
+        )
+        val productRepository: ProductRepository = ProductRepository(
+            ProductDataSourceImpl(retailerDao),
+            ProductDataSourceImpl(retailerDao)
+        )
+        val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
+        val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(
+            SubscriptionDataSourceImpl(userDao),
+            SubscriptionDataSourceImpl(userDao),
+            SubscriptionDataSourceImpl(userDao)
+        )
+        val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
         productListViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository,retailerRepository, customerRepository)
+            GroceryAppViewModelFactory(userRepository,authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
         )[ProductListViewModel::class.java]
         adapter = ProductListAdapter(this,fileDir,"P",false,productListViewModel)
         adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
@@ -230,13 +263,35 @@ class ProductListFragment : Fragment() {
             if(productEntityList.isEmpty()) {
                 productEntityList = it.toMutableList()
             }
+            if(BottomSheetDialogFragment.selectedOption.value==null){
+                productEntityList  = it.toMutableList()
+            }
+            BottomSheetDialogFragment.selectedOption.value?.let {data ->
+
+                productEntityList  = it.toMutableList()
+                BottomSheetDialogFragment.selectedOption.value = data
+            }
+//            else{
+//
+//            }
+
+//            productEntityList  = it.toMutableList()
+
             realProductEntityList = it.toMutableList()
+            for (i in productEntityList){
+                println("AAAAA ${i.productName}")
+            }
+            for (i in it){
+                println("AAAAAB ${i.productName}")
+            }
             if(FilterFragment.list==null) {
 //                adapter.setProducts(it)
                 if(BottomSheetDialogFragment.selectedOption.value==null) {
+                    println("AAAAA  adapter if called")
                     adapter.setProducts(it)
                 }
                 else{
+                    println("AAAAA  adapter else called")
                     adapter.setProducts(productEntityList)
                 }
                 if (productRV.adapter == null) {
@@ -283,6 +338,7 @@ class ProductListFragment : Fragment() {
         val sorter  = ProductSorter()
         BottomSheetDialogFragment.selectedOption.observe(viewLifecycleOwner){
             if(it!=null) {
+                println("AAAAA value of each product: on Bottom Framgnet $it")
                 var newList = listOf<Product>()
                 if (it == 0) {
                     if (FilterFragment.list == null) {
@@ -321,17 +377,24 @@ class ProductListFragment : Fragment() {
                     adapter.setProducts(newList)
                 }
                 if (newList.isNotEmpty()) {
-                    productEntityList = newList.toMutableList()
+                    println("AAAAA List changed")
                     if (FilterFragment.list != null) {
                         if (FilterFragment.list!!.size == newList.size) {
                             FilterFragment.list = newList.toMutableList()
                         }
                     }
+                    else{
+                        productEntityList = newList.toMutableList()
+                    }
                 }
                 productRV.layoutManager?.let { layoutManager ->
-                    (layoutManager as LinearLayoutManager).scrollToPosition(0)
+                    println("Scrolled to on create vie: ### $productListFirstVisiblePos")
+                    (layoutManager as LinearLayoutManager).scrollToPosition(productListFirstVisiblePos?:0)
                 }
             }
+        }
+        for(i in productEntityList){
+            println("I VALUES : ${i.productName}")
         }
         return view
     }
@@ -406,6 +469,7 @@ class ProductListFragment : Fragment() {
         else if (productEntityList.isNotEmpty()) {
             adapter.setProducts(productEntityList)
         }
+        println("Scrolled to : ### $productListFirstVisiblePos")
         productRV.scrollToPosition(productListFirstVisiblePos ?: 0)
     }
 
@@ -414,6 +478,7 @@ class ProductListFragment : Fragment() {
         super.onPause()
         InitialFragment.hideSearchBar.value = false
         InitialFragment.hideBottomNav.value = false
+        productListFirstVisiblePos = (productRV.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
     }
 
     override fun onStop() {
@@ -421,7 +486,7 @@ class ProductListFragment : Fragment() {
         InitialFragment.hideSearchBar.value = false
         InitialFragment.hideBottomNav.value = false
         productRV.stopScroll()
-        productListFirstVisiblePos = (productRV.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+//        productListFirstVisiblePos = (productRV.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
         productListViewModel.cartEntityList.value = mutableListOf()
         if(InitialFragment.searchQueryList.size <2){
             InitialFragment.searchHint.value = ""
@@ -449,14 +514,6 @@ class ProductListFragment : Fragment() {
         dis30Val = false
         dis40Val = false
         dis50Val = false
-//        if(InitialFragment.searchQueryList.size <2){
-//            InitialFragment.searchHint.value = ""
-//            InitialFragment.searchQueryList = mutableListOf()
-//        }
-//        else{
-//            InitialFragment.searchHint.value = InitialFragment.searchQueryList[1]
-//            InitialFragment.searchQueryList.removeAt(0)
-//        }
     }
 
 

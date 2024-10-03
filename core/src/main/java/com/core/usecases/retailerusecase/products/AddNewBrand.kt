@@ -1,10 +1,10 @@
 package com.core.usecases.retailerusecase.products
 
-import com.core.data.repository.RetailerRepository
+import com.core.data.repository.ProductRepository
 import com.core.domain.products.BrandData
 
-class AddNewBrand(private val retailerRepository: RetailerRepository){
+class AddNewBrand(private val productRepository: ProductRepository) {
     fun invoke(brandData: BrandData){
-        retailerRepository.addNewBrand(brandData)
+        productRepository.addNewBrand(brandData)
     }
 }

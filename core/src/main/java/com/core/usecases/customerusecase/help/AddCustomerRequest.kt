@@ -1,10 +1,10 @@
 package com.core.usecases.customerusecase.help
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.HelpRepository
 import com.core.domain.help.CustomerRequest
 
-class AddCustomerRequest(private val customerRepository: CustomerRepository) {
+class AddCustomerRequest(private val helpRepository: HelpRepository) {
     fun invoke(customerRequest: CustomerRequest){
-        customerRepository.addCustomerRequest(customerRequest)
+        helpRepository.addCustomerRequest(customerRequest)
     }
 }

@@ -1,8 +1,8 @@
-package com.core.data.datasource.retailerdatasource
+package com.core.data.datasource.orderdatasource
 
 import com.core.domain.order.OrderDetails
 
-interface OrderRetailerDataSource {
+interface RetailerOrderDataSource {
     fun getOrdersForRetailerWeeklySubscription():List<OrderDetails>?
     fun getOrdersRetailerDailySubscription():List<OrderDetails>?
     fun getOrdersForRetailerMonthlySubscription():List<OrderDetails>?

@@ -1,10 +1,10 @@
 package com.core.usecases.customerusecase.cart
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.CartRepository
 import com.core.domain.products.CartWithProductData
 
-class GetDeletedProductsWithCarId(private val customerRepository: CustomerRepository) {
+class GetDeletedProductsWithCarId(private val cartRepository: CartRepository) {
     fun invoke(cartId:Int):List<CartWithProductData>{
-        return customerRepository.getDeletedProductsWithCartId(cartId)!!
+        return cartRepository.getDeletedProductsWithCartId(cartId)!!
     }
 }

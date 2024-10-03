@@ -1,10 +1,10 @@
 package com.core.usecases.retailerusecase.products
 
-import com.core.data.repository.RetailerRepository
+import com.core.data.repository.ProductRepository
 import com.core.domain.products.Images
 
-class AddProductImage(private val retailerRepository: RetailerRepository){
+class AddProductImage(private val productRepository: ProductRepository) {
     fun invoke(images: Images){
-        retailerRepository.addProductImagesInDb(images)
+        productRepository.addProductImagesInDb(images)
     }
 }

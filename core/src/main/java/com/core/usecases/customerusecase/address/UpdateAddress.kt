@@ -1,10 +1,10 @@
 package com.core.usecases.customerusecase.address
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.AddressRepository
 import com.core.domain.user.Address
 
-class UpdateAddress(private val customerRepository: CustomerRepository) {
+class UpdateAddress(private val addressRepository: AddressRepository) {
     fun invoke(address: Address){
-        customerRepository.updateAddress(address)
+        addressRepository.updateAddress(address)
     }
 }

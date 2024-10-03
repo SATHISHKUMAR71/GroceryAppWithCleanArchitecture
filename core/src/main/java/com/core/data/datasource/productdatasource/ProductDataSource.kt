@@ -1,9 +1,10 @@
-package com.core.data.datasource.customerdatasource
+package com.core.data.datasource.productdatasource
 
 import com.core.domain.products.CartWithProductData
 import com.core.domain.products.Images
 import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
+import com.core.domain.recentlyvieweditems.RecentlyViewedItems
 
 interface ProductDataSource {
     fun getProductById(productId:Long): Product?
@@ -18,4 +19,9 @@ interface ProductDataSource {
     fun getBrandName(id:Long):String?
     fun getDeletedProductsWithCartId(cartId:Int):List<CartWithProductData>?
     fun getImagesForProduct(productId: Long):List<Images>?
+
+
+    fun addProductInRecentlyViewedItems(recentlyViewedItems: RecentlyViewedItems)
+    fun getParentCategoryList():List<ParentCategory>?
+    fun getChildName(parent:String):List<String>?
 }

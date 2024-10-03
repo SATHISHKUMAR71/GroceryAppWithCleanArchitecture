@@ -1,10 +1,10 @@
 package com.core.usecases.customerusecase.cart
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.CartRepository
 import com.core.domain.order.Cart
 
-class GetCartItems(private val customerRepository: CustomerRepository) {
+class GetCartItems(private val cartRepository: CartRepository) {
     fun invoke(cartId:Int):List<Cart>{
-        return customerRepository.getCartItems(cartId)?: listOf()
+        return cartRepository.getCartItems(cartId)?: listOf()
     }
 }

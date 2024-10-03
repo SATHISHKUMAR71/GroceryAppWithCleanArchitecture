@@ -1,12 +1,8 @@
 package com.core.data.datasource.userdatasource
 
-import com.core.domain.products.ParentCategory
-import com.core.domain.recentlyvieweditems.RecentlyViewedItems
+import com.core.domain.user.User
 
-interface UserDataSource:SearchDataSource,SubscriptionDataSource{
-    fun getProductForQuery(query:String):List<String>?
-    fun getProductForQueryName(query:String):List<String>?
-    fun addProductInRecentlyViewedItems(recentlyViewedItems:RecentlyViewedItems)
-    fun getParentCategoryList():List<ParentCategory>?
-    fun getChildName(parent:String):List<String>?
+interface UserDataSource {
+    fun addNewUser(user: User)
+    fun updateUser(user: User)
 }

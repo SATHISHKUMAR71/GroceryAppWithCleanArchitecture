@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import com.core.domain.products.ParentCategory
 import com.core.usecases.userusecase.GetChildNames
 import com.core.usecases.userusecase.GetParentCategories
-import com.example.shoppinggroceryapp.framework.db.dao.ProductDao
 import com.example.shoppinggroceryapp.framework.db.dataclass.ChildCategoryName
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
 

@@ -1,9 +1,9 @@
 package com.core.usecases.customerusecase.products
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.ProductRepository
 
-class GetProductsQueryForName(private val customerRepository: CustomerRepository) {
+class GetProductsQueryForName(private val productRepository: ProductRepository) {
     fun invoke(query:String):List<String>?{
-        return customerRepository.getProductForQueryName(query)
+        return productRepository.getProductForQueryName(query)
     }
 }

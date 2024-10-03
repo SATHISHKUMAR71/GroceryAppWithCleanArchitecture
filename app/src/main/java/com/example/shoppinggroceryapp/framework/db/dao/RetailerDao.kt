@@ -34,19 +34,6 @@ interface RetailerDao: UserDao {
 
 
 
-    @Update
-    fun updateTimeSlot(timeSlotEntity: TimeSlotEntity)
-
-
-    @Delete
-    fun deleteFromWeeklySubscription(weeklyOnceEntity: WeeklyOnceEntity)
-
-    @Delete
-    fun deleteFromMonthlySubscription(monthlyOnceEntity: MonthlyOnceEntity)
-
-    @Delete
-    fun deleteFromDailySubscription(dailySubscriptionEntity: DailySubscriptionEntity)
-
     @Query("SELECT * FROM DailySubscriptionEntity")
     fun getDailySubscription():List<DailySubscriptionEntity>?
 
@@ -59,14 +46,6 @@ interface RetailerDao: UserDao {
     @Query("SELECT * FROM MonthlyOnceEntity")
     fun getMonthlySubscriptionList():List<MonthlyOnceEntity>?
 
-    @Query("SELECT * FROM WeeklyOnceEntity Where WeeklyOnceEntity.orderId=:orderId")
-    fun getOrderedDayForWeekSubscription(orderId:Int):WeeklyOnceEntity?
-
-    @Query("SELECT * FROM DailySubscriptionEntity Where DailySubscriptionEntity.orderId=:orderId")
-    fun getOrderForDailySubscription(orderId:Int): DailySubscriptionEntity?
-
-    @Query("SELECT * FROM TimeSlotEntity Where TimeSlotEntity.orderId=:orderId")
-    fun getOrderedTimeSlot(orderId:Int):TimeSlotEntity?
 
     @Query("SELECT CategoryEntity.categoryName FROM CategoryEntity")
     fun getChildCategoryName():Array<String>?
@@ -77,8 +56,6 @@ interface RetailerDao: UserDao {
     @Query("SELECT ParentCategoryEntity.parentCategoryName FROM ParentCategoryEntity")
     fun getParentCategoryName():Array<String>?
 
-    @Query("SELECT * FROM MonthlyOnceEntity Where MonthlyOnceEntity.orderId=:orderId")
-    fun getOrderedDayForMonthlySubscription(orderId:Int):MonthlyOnceEntity?
 
 
 

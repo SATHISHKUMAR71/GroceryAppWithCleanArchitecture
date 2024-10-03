@@ -1,10 +1,10 @@
 package com.core.usecases.customerusecase.cart
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.CartRepository
 import com.core.domain.order.CartMapping
 
-class AddCartForUser(private val customerRepository: CustomerRepository){
+class AddCartForUser(private val cartRepository: CartRepository){
     fun invoke(cartMapping: CartMapping){
-        customerRepository.addCartForUser(cartMapping)
+        cartRepository.addCartForUser(cartMapping)
     }
 }

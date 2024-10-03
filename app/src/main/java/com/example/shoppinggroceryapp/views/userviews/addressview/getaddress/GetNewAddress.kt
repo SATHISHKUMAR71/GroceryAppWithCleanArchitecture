@@ -9,20 +9,31 @@ import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.core.data.repository.CustomerRepository
-import com.core.data.repository.RetailerRepository
+import com.core.data.repository.AddressRepository
+import com.core.data.repository.AuthenticationRepository
+import com.core.data.repository.CartRepository
+import com.core.data.repository.HelpRepository
+import com.core.data.repository.OrderRepository
+import com.core.data.repository.ProductRepository
+import com.core.data.repository.SearchRepository
+import com.core.data.repository.SubscriptionRepository
 import com.core.data.repository.UserRepository
 import com.core.domain.user.Address
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
-import com.example.shoppinggroceryapp.framework.data.CustomerDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.RetailerDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.UserDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.authentication.AuthenticationDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.address.AddressDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.cart.CartDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.help.HelpDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.order.OrderDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.product.ProductDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
-import com.example.shoppinggroceryapp.framework.db.entity.user.AddressEntity
 import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressList
 import com.google.android.material.appbar.MaterialToolbar
@@ -69,10 +80,31 @@ class GetNewAddress : Fragment() {
         stateLayout = view.findViewById(R.id.addressStateLayout)
         postalCodeLayout = view.findViewById(R.id.addressPostalCodeLayout)
         val db1 = AppDatabase.getAppDatabase(requireContext())
-        val retailerRepository = RetailerRepository(RetailerDataSourceImpl(db1.getRetailerDao()))
-        val customerRepository = CustomerRepository(CustomerDataSourceImpl(db1.getUserDao()))
-        val userRepository = UserRepository(UserDataSourceImpl(db1.getUserDao(),db1.getRetailerDao()))
-        getAddressViewModel = ViewModelProvider(this, GroceryAppViewModelFactory(userRepository, retailerRepository, customerRepository))[GetAddressViewModel::class.java]
+        val userDao = db1.getUserDao()
+        val retailerDao = db1.getRetailerDao()
+        val userRepository = UserRepository(UserDataSourceImpl(userDao))
+        val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
+        val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
+        val helpRepository: HelpRepository = HelpRepository(
+            HelpDataSourceImpl(retailerDao),
+            HelpDataSourceImpl(retailerDao)
+        )
+        val orderRepository: OrderRepository = OrderRepository(
+            OrderDataSourceImpl(retailerDao),
+            OrderDataSourceImpl(retailerDao)
+        )
+        val productRepository: ProductRepository = ProductRepository(
+            ProductDataSourceImpl(retailerDao),
+            ProductDataSourceImpl(retailerDao)
+        )
+        val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
+        val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(
+            SubscriptionDataSourceImpl(userDao),
+            SubscriptionDataSourceImpl(userDao),
+            SubscriptionDataSourceImpl(userDao)
+        )
+        val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
+        getAddressViewModel = ViewModelProvider(this, GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository))[GetAddressViewModel::class.java]
         fullName = view.findViewById(R.id.fullName)
         phone = view.findViewById(R.id.addPhoneNumber)
         houseNo = view.findViewById(R.id.addAddressHouse)

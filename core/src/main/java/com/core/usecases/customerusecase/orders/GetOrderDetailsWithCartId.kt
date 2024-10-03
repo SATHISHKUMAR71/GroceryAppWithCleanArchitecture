@@ -1,10 +1,10 @@
 package com.core.usecases.customerusecase.orders
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.OrderRepository
 import com.core.domain.order.OrderDetails
 
-class GetOrderDetailsWithCartId (private val customerRepository: CustomerRepository) {
+class GetOrderDetailsWithCartId (private val orderRepository: OrderRepository) {
     fun invoke(cartId:Int):OrderDetails{
-        return customerRepository.getOrder(cartId)!!
+        return orderRepository.getOrder(cartId)!!
     }
 }

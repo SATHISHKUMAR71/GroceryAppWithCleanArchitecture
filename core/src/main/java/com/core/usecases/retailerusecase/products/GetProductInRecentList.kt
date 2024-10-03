@@ -1,10 +1,10 @@
 package com.core.usecases.retailerusecase.products
 
-import com.core.data.repository.RetailerRepository
+import com.core.data.repository.ProductRepository
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
 
-class GetProductInRecentList(private val retailerRepository: RetailerRepository) {
+class GetProductInRecentList(private val productRepository: ProductRepository) {
     fun invoke(productId:Long,userId:Int):RecentlyViewedItems?{
-        return retailerRepository.getProductsInRecentList(productId,userId)
+        return productRepository.getProductsInRecentList(productId,userId)
     }
 }

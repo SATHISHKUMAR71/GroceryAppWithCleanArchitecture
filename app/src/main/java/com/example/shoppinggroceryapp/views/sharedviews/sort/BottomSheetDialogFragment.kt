@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import androidx.lifecycle.MutableLiveData
 import com.example.shoppinggroceryapp.R
+import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFirstVisiblePos
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
@@ -27,6 +28,7 @@ class BottomSheetDialogFragment:BottomSheetDialogFragment() {
         val priceLowToHighRadioButton = view.findViewById<RadioButton>(R.id.priceLowToHighRadioButton)
         val discountRadioButton = view.findViewById<RadioButton>(R.id.discountRadioButton)
         val priceHighToLow = view.findViewById<RadioButton>(R.id.priceHighToLowRadioButton)
+        productListFirstVisiblePos = 0
         view.findViewById<MaterialButton>(R.id.sortByManufacturedDate).setOnClickListener {
             radioButtonManu.isChecked =true
             selectedOption.value = 0

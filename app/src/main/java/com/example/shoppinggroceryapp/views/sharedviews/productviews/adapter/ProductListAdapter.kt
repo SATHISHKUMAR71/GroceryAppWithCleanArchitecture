@@ -302,8 +302,13 @@ class ProductListAdapter(var fragment: Fragment,
 
     fun setProducts(newList:List<Product>){
         productsSize = newList.size
+        println("@@@@@ value of each product: set products called")
+        for(i in newList){
+            println("@@@@ value of each product: ${i.productName}")
+        }
+        println("@@@@ value of each product:==============")
         val diffUtil = CartItemsDiffUtil(productEntityList,newList)
-        for(i in 0..<newList.size){
+        for(i in newList.indices){
             countList.add(i,0)
         }
         val diffResults = DiffUtil.calculateDiff(diffUtil)

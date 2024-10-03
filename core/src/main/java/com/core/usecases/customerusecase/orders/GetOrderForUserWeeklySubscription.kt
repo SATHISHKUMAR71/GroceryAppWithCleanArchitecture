@@ -1,10 +1,10 @@
 package com.core.usecases.customerusecase.orders
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.OrderRepository
 import com.core.domain.order.OrderDetails
 
-class GetOrderForUserWeeklySubscription(private val customerRepository: CustomerRepository){
+class GetOrderForUserWeeklySubscription(private val orderRepository: OrderRepository){
     fun invoke(userId:Int):List<OrderDetails>?{
-        return customerRepository.getOrdersForUserWeeklySubscription(userId)
+        return orderRepository.getOrdersForUserWeeklySubscription(userId)
     }
 }

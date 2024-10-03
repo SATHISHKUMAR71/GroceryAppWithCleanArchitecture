@@ -1,10 +1,10 @@
 package com.core.usecases.customerusecase.cart
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.CartRepository
 import com.core.domain.order.Cart
 
-class UpdateCartItems(private val customerRepository: CustomerRepository) {
+class UpdateCartItems(private val cartRepository: CartRepository) {
     fun invoke(cart: Cart){
-        customerRepository.updateCartItems(cart)
+        cartRepository.updateCartItems(cart)
     }
 }

@@ -8,7 +8,6 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
-import com.example.shoppinggroceryapp.framework.db.dao.ProductDao
 import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
 import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 import com.example.shoppinggroceryapp.framework.db.entity.deals.DealsEntity
@@ -38,7 +37,6 @@ abstract class AppDatabase:RoomDatabase(){
 
     abstract fun getUserDao(): UserDao
     abstract fun getRetailerDao(): RetailerDao
-    abstract fun getProductDao(): ProductDao
 
     companion object{
 //        PREPOPULATED DATA WHEN THE DATABASE IS INSTALLED

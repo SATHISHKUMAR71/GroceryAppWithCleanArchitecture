@@ -1,10 +1,10 @@
 package com.core.usecases.customerusecase.orders
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.SubscriptionRepository
 import com.core.domain.order.MonthlyOnce
 
-class AddMonthlySubscription(private val customerRepository: CustomerRepository) {
+class AddMonthlySubscription(private val subscriptionRepository: SubscriptionRepository) {
     fun invoke(monthlyOnce: MonthlyOnce){
-        customerRepository.addMonthlyOnceSubscription(monthlyOnce)
+        subscriptionRepository.addMonthlyOnceSubscription(monthlyOnce)
     }
 }

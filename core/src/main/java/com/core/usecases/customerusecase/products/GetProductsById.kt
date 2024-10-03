@@ -1,10 +1,10 @@
 package com.core.usecases.customerusecase.products
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.ProductRepository
 import com.core.domain.products.Product
 
-class GetProductsById(private val customerRepository: CustomerRepository) {
+class GetProductsById(private val productRepository: ProductRepository) {
     fun invoke(productId:Long):Product?{
-        return customerRepository.getProductsById(productId)
+        return productRepository.getProductsById(productId)
     }
 }

@@ -1,10 +1,10 @@
 package com.core.usecases.customerusecase.address
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.AddressRepository
 import com.core.domain.user.Address
 
-class GetSpecificAddress(private val customerRepository: CustomerRepository) {
+class GetSpecificAddress(private val addressRepository: AddressRepository) {
     fun invoke(addressId:Int):Address{
-        return customerRepository.getAddress(addressId)!!
+        return addressRepository.getAddress(addressId)!!
     }
 }

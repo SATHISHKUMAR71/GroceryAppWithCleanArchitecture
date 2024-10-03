@@ -1,10 +1,10 @@
 package com.core.usecases.customerusecase.products
 
-import com.core.data.repository.CustomerRepository
+import com.core.data.repository.ProductRepository
 import com.core.domain.products.Images
 
-class GetImagesForProduct(private val customerRepository: CustomerRepository) {
+class GetImagesForProduct(private val productRepository: ProductRepository) {
     fun invoke(productId:Long):List<Images>?{
-        return customerRepository.getImagesForProduct(productId)
+        return productRepository.getImagesForProduct(productId)
     }
 }
