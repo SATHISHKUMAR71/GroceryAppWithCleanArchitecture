@@ -1,6 +1,5 @@
 package com.example.shoppinggroceryapp.framework.data
 
-import com.core.data.datasource.retailerdatasource.ProductRetailerDataSource
 import com.core.data.datasource.retailerdatasource.RetailerDataSource
 import com.core.domain.help.CustomerRequestWithName
 import com.core.domain.order.OrderDetails
@@ -17,9 +16,8 @@ import com.example.shoppinggroceryapp.framework.db.entity.products.CategoryEntit
 import com.example.shoppinggroceryapp.framework.db.entity.products.DeletedProductListEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ImagesEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
-import com.example.shoppinggroceryapp.framework.db.entity.recentlyvieweditems.RecentlyViewedItemsEntity
 
-class RetailerDataSourceImpl(private var retailerDao: RetailerDao):RetailerDataSource,ConvertionHelper(){
+class RetailerDataSourceImpl(private var retailerDao: RetailerDao):RetailerDataSource,ConvertorHelper(){
 
     override fun addProduct(product: Product) {
         retailerDao.addProduct(convertProductToProductEntity(product))

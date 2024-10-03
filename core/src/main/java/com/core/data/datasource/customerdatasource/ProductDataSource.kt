@@ -17,6 +17,5 @@ interface ProductDataSource {
     fun getProductsByCartId(cartId:Int):List<Product>?
     fun getBrandName(id:Long):String?
     fun getDeletedProductsWithCartId(cartId:Int):List<CartWithProductData>?
-    fun updateParentCategory(parentCategory: ParentCategory)
     fun getImagesForProduct(productId: Long):List<Images>?
 }

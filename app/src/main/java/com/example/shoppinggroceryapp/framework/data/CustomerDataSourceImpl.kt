@@ -11,7 +11,6 @@ import com.core.domain.order.TimeSlot
 import com.core.domain.order.WeeklyOnce
 import com.core.domain.products.CartWithProductData
 import com.core.domain.products.Images
-import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
 import com.core.domain.user.Address
 import com.core.domain.user.User
@@ -23,10 +22,9 @@ import com.example.shoppinggroceryapp.framework.db.entity.order.DailySubscriptio
 import com.example.shoppinggroceryapp.framework.db.entity.order.MonthlyOnceEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.TimeSlotEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.WeeklyOnceEntity
-import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
 import com.example.shoppinggroceryapp.framework.db.entity.user.AddressEntity
 
-class CustomerDataSourceImpl(private var userDao: UserDao):CustomerDataSource,ConvertionHelper() {
+class CustomerDataSourceImpl(private var userDao: UserDao):CustomerDataSource,ConvertorHelper() {
     override fun addNewUser(user: User) {
         userDao.addUser(convertUserToUserEntity(user))
     }
@@ -240,10 +238,6 @@ class CustomerDataSourceImpl(private var userDao: UserDao):CustomerDataSource,Co
 
     override fun getBrandName(id: Long): String? {
         return userDao.getBrandName(id)
-    }
-
-    override fun updateParentCategory(parentCategory: ParentCategory) {
-        userDao.updateParentCategory(ParentCategoryEntity(parentCategory.parentCategoryName,parentCategory.parentCategoryImage,parentCategory.parentCategoryDescription,parentCategory.isEssential))
     }
 
     override fun getImagesForProduct(productId: Long): List<Images>? {

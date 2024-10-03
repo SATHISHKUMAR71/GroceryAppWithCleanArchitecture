@@ -104,6 +104,7 @@ class OrderSummaryFragment : Fragment() {
         deliveryFrequency = view.findViewById<MaterialAutoCompleteTextView>(R.id.deliveryFrequency)
         deliveryFrequencyDay = view.findViewById<MaterialAutoCompleteTextView>(R.id.deliveryFrequencyDay)
         val scrollView = view.findViewById<ScrollView>(R.id.orderSummaryScrollView)
+        val deliveryDate = view.findViewById<TextView>(R.id.textView)
         noteForUserLayout = view.findViewById(R.id.noteForUserLayout)
         val deliveryFrequencyDayLayout = view.findViewById<LinearLayout>(R.id.deliveryFrequencyDayLayout)
         val timeSlotLayout = view.findViewById<LinearLayout>(R.id.timeSlotLayout)
@@ -116,13 +117,15 @@ class OrderSummaryFragment : Fragment() {
                 orderSummaryViewModel.getProductsWithCartId(cartId = it)
             }
         }
+        var expectedDeliveryDate = "Expected Delivery Date: ${DateGenerator.getDayAndMonth(DateGenerator.getDeliveryDate())}"
+        deliveryDate.text = expectedDeliveryDate
 
         tmpAddress?.let {
             if(it!=0) {
                 view.findViewById<LinearLayout>(R.id.deliveryAddressLayoutOrderSummary).visibility =
                     View.GONE
                 continueToPayment.text = "Update Order"
-                view.findViewById<TextView>(R.id.textView).visibility = View.GONE
+                deliveryDate.visibility = View.GONE
                 view.findViewById<LinearLayout>(R.id.priceDetailsOrderSummary).visibility =
                     View.GONE
                 view.findViewById<LinearLayout>(R.id.linearLayout11)
@@ -174,6 +177,8 @@ class OrderSummaryFragment : Fragment() {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun afterTextChanged(s: Editable?) {
                 if(s.toString()=="Weekly Once"){
+
+                    deliveryDate.visibility = View.GONE
                     var day = DateGenerator.getCurrentDay()
                     noteForUserLayout.visibility = View.VISIBLE
                     noteForUser.text = "Weekly deliveries kick off tomorrow! You can easily cancel your orders through your order history."
@@ -191,6 +196,7 @@ class OrderSummaryFragment : Fragment() {
                     timeSlotLayout.visibility = View.VISIBLE
                 }
                 else if(s.toString()=="Monthly Once"){
+                    deliveryDate.visibility = View.GONE
                     var day = DateGenerator.getCurrentDayOfMonth()
                     deliveryFrequencyDay.setText("")
                     var newDays = daysOfMonth.filter { it!=day }.toTypedArray()
@@ -208,6 +214,7 @@ class OrderSummaryFragment : Fragment() {
                     timeSlotLayout.visibility = View.VISIBLE
                 }
                 else if(s.toString() == "Daily"){
+                    deliveryDate.visibility = View.VISIBLE
                     deliveryFrequencyDay.setText("")
                     dayOfMonth.setText("")
                     noteForUserLayout.visibility = View.VISIBLE
@@ -221,6 +228,7 @@ class OrderSummaryFragment : Fragment() {
                     deliveryFrequencyDayLayout.visibility = View.GONE
                 }
                 else{
+                    deliveryDate.visibility = View.VISIBLE
                     weeklyOnce = false
                     once = true
                     monthlyOnce = false

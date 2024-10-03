@@ -15,4 +15,5 @@ interface OrderDataSource {
     fun updateOrderDetails(orderDetails: OrderDetails)
     fun getOrderWithProductsWithOrderId(orderId: Int):Map<OrderDetails,List<CartWithProductData>>?
     fun getOrderDetailsWithOrderId(orderId:Int):OrderDetails?
+    fun getOrderDetails(orderId:Int):OrderDetails?
 }

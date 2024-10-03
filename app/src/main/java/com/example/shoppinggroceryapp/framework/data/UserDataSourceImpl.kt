@@ -17,7 +17,7 @@ import com.example.shoppinggroceryapp.framework.db.entity.order.WeeklyOnceEntity
 import com.example.shoppinggroceryapp.framework.db.entity.recentlyvieweditems.RecentlyViewedItemsEntity
 import com.example.shoppinggroceryapp.framework.db.entity.search.SearchHistoryEntity
 
-class UserDataSourceImpl(private var userDao: UserDao, private var retailerDao: RetailerDao):UserDataSource,ConvertionHelper() {
+class UserDataSourceImpl(private var userDao: UserDao, private var retailerDao: RetailerDao):UserDataSource,ConvertorHelper() {
     override fun getProductForQuery(query: String): List<String>? {
         return userDao.getProductForQuery(query)
     }
