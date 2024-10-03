@@ -35,6 +35,8 @@ import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
+import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
+import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount
@@ -119,13 +121,13 @@ class HomeFragment : Fragment() {
         val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
 
         homeViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppUserVMFactory(cartRepository, helpRepository, orderRepository, productRepository, subscriptionRepository, addressRepository)
         )[HomeViewModel::class.java]
         recentItems = view.findViewById(R.id.recentlyViewedItemsHomeFrag)
         homeFragNestedScroll =  view.findViewById(R.id.nestedScrollViewHomeFrag)
 
         var adapter = ProductListAdapter(this,File(requireContext().filesDir,"AppImages"),"P",true,productListViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppSharedVMFactory(userRepository, authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
         )[ProductListViewModel::class.java])
         homeViewModel.getRecentlyViewedItems()
         recentItems.adapter = null

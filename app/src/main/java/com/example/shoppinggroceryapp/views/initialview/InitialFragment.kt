@@ -93,10 +93,6 @@ class InitialFragment : Fragment() {
             this
         )
         permissionHandler.initMicResults()
-        if(savedInstanceState!=null){
-        }
-        else {
-        }
     }
 
 

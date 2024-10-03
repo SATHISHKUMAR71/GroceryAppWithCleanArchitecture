@@ -44,6 +44,7 @@ import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.views.userviews.cartview.FindNumberOfCartItems
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
+import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.category.CategoryFragment
 import com.example.shoppinggroceryapp.views.retailerviews.addeditproduct.AddOrEditProductFragment
@@ -137,10 +138,10 @@ class ProductDetailFragment : Fragment() {
         val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
 
         productDetailViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppSharedVMFactory(userRepository, authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
         )[ProductDetailViewModel::class.java]
         var productListViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppSharedVMFactory(userRepository, authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
         )[ProductListViewModel::class.java]
         productDetailViewModel.getImagesForProducts(ProductListFragment.selectedProductEntity.value?.productId?:0)
         addProductButton = view.findViewById(R.id.addProductButtonProductDetail)

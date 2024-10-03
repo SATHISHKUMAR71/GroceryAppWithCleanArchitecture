@@ -41,6 +41,7 @@ import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransa
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageHandler
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
 import com.example.shoppinggroceryapp.helpers.permissionhandler.interfaces.ImagePermissionHandler
+import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
@@ -126,8 +127,8 @@ class AccountFragment : Fragment() {
         )
         val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
         val editUser = ViewModelProvider(this,
-            GroceryAppViewModelFactory(
-                userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository
+            GroceryAppSharedVMFactory(
+                userRepository, authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository
             )
         )[EditProfileViewModel::class.java]
         val name = MainActivity.userFirstName + " "+ MainActivity.userLastName
@@ -151,7 +152,7 @@ class AccountFragment : Fragment() {
         editUser.getPurchasedProducts(MainActivity.userId.toInt())
         val adapter = ProductListAdapter(this,
             File(requireContext().filesDir,"AppImages"),"P",true,productListViewModel = ViewModelProvider(this,
-                GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+                GroceryAppSharedVMFactory(userRepository, authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
             )[ProductListViewModel::class.java])
         editUser.recentlyBoughtList.observe(viewLifecycleOwner){
             if((it!=null)&&(it.isNotEmpty())){

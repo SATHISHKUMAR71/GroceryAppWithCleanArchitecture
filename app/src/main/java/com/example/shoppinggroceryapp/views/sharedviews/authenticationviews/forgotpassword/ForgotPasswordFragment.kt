@@ -30,6 +30,7 @@ import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.views.sharedviews.profileviews.EditProfileViewModel
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
+import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -110,7 +111,7 @@ class ForgotPasswordFragment : Fragment() {
             SubscriptionDataSourceImpl(userDao)
         )
         val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
-        editProfileViewModel = ViewModelProvider(this,GroceryAppViewModelFactory(userRepository,authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository))[EditProfileViewModel::class.java]
+        editProfileViewModel = ViewModelProvider(this,GroceryAppSharedVMFactory(userRepository,authenticationRepository,cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository))[EditProfileViewModel::class.java]
         val userData  = emailOrPhoneEditText.text
         view.findViewById<MaterialButton>(R.id.materialButtonUpdatePassword).setOnClickListener {
             editProfileViewModel.getUser(userData.toString())

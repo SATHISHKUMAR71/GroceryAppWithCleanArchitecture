@@ -34,6 +34,7 @@ import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDa
 import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
+import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.adapter.AddressAdapter
@@ -86,8 +87,12 @@ class SavedAddressList : Fragment() {
         )
         val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
 
+//        val savedAddressViewModel = ViewModelProvider(this,
+//            GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+//        )[SavedAddressViewModel::class.java]
+
         val savedAddressViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppUserVMFactory(cartRepository, helpRepository, orderRepository, productRepository, subscriptionRepository, addressRepository)
         )[SavedAddressViewModel::class.java]
         addressRV = view.findViewById(R.id.savedAddressList)
         addressCount = view.findViewById(R.id.countAddress)

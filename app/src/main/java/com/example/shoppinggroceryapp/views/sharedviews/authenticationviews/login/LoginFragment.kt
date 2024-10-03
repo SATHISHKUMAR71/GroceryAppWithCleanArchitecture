@@ -36,6 +36,7 @@ import com.example.shoppinggroceryapp.framework.db.entity.user.UserEntity
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
+import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.signup.SignUpFragment
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.forgotpassword.ForgotPasswordFragment
@@ -99,7 +100,7 @@ class LoginFragment : Fragment() {
         )
         val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
         loginViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository,authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppSharedVMFactory(userRepository,authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
         )[LoginViewModel::class.java]
         setLoginViewModelObservers()
         setFocusChangeListeners()

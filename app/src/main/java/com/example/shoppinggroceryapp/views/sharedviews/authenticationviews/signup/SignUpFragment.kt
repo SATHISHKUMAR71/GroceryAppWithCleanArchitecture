@@ -40,6 +40,7 @@ import com.example.shoppinggroceryapp.helpers.permissionhandler.interfaces.Image
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
+import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -113,7 +114,7 @@ class SignUpFragment : Fragment() {
         )
         val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
 
-        signUpViewModel = ViewModelProvider(this, GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository))[SignUpViewModel::class.java]
+        signUpViewModel = ViewModelProvider(this, GroceryAppSharedVMFactory(userRepository, authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository))[SignUpViewModel::class.java]
 
         initViews(view)
         addTextChangeListeners()

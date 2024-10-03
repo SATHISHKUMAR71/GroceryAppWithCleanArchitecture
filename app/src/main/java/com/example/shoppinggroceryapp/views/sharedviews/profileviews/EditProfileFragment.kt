@@ -39,6 +39,7 @@ import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
 import com.example.shoppinggroceryapp.helpers.permissionhandler.interfaces.ImagePermissionHandler
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
+import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.google.android.material.appbar.MaterialToolbar
@@ -155,7 +156,7 @@ class EditProfileFragment : Fragment() {
         val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
 
         editProfileViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppSharedVMFactory(userRepository, authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
         )[EditProfileViewModel::class.java]
         editProfileTopbar = view.findViewById(R.id.editProfileAppBar)
         firstName = view.findViewById(R.id.editFirstName)

@@ -31,6 +31,7 @@ import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDa
 import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
+import com.example.shoppinggroceryapp.views.GroceryAppRetailerVMFactory
 import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
@@ -76,8 +77,6 @@ class CustomerRequestListFragment : Fragment() {
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
-        val userRepository = UserRepository(UserDataSourceImpl(userDao))
-        val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
         val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
         val helpRepository: HelpRepository = HelpRepository(
             HelpDataSourceImpl(retailerDao),
@@ -91,16 +90,8 @@ class CustomerRequestListFragment : Fragment() {
             ProductDataSourceImpl(retailerDao),
             ProductDataSourceImpl(retailerDao)
         )
-        val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
-        val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao)
-        )
-        val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
-
         customerViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository, authenticationRepository,cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppRetailerVMFactory(cartRepository, helpRepository, orderRepository, productRepository)
         )[CustomerRequestViewModel::class.java]
         customerViewModel.getCustomerRequest()
         customerViewModel.customerRequestList.observe(viewLifecycleOwner){

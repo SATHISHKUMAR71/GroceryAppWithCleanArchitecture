@@ -34,6 +34,7 @@ import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
+import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.GroceryAppViewModelFactory
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount
@@ -111,7 +112,7 @@ class OrderListFragment : Fragment() {
         )
         val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
         val orderListViewModel = ViewModelProvider(this,
-            GroceryAppViewModelFactory(userRepository,authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppSharedVMFactory(userRepository,authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
         )[OrderListViewModel::class.java]
         var cartWithProductsList = mutableListOf<MutableList<CartWithProductData>>()
         var orderedItems:MutableList<OrderDetails> = mutableListOf()
