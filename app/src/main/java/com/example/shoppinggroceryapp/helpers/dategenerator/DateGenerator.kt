@@ -83,5 +83,19 @@ class DateGenerator {
             return "${months[month-1]} $day, ${currentDateList[0]}"
         }
 
+        fun getDayAndMonthForDay(deliveryDay:String):String{
+            var date = getCurrentDate().substring(0,8)
+            if(deliveryDay.toInt() < getCurrentDate().substring(8).toInt()){
+                println("**** is delivery visible on IF ${getCurrentDate().substring(8)} $deliveryDay")
+                date = getNextMonth().substring(0,8)
+            }
+            println("**** is delivery visible on Else ${getCurrentDate().substring(8).toInt()} ${deliveryDay.toInt()} $date")
+            date += deliveryDay
+            val currentDateList = date.split("-")
+            val month = currentDateList[1].toInt()
+            val day = currentDateList[2].toInt()
+            return "${months[month-1]} $day, ${currentDateList[0]}"
+        }
+
     }
 }

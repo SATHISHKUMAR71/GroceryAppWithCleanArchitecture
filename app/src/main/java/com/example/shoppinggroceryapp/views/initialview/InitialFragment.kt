@@ -375,9 +375,6 @@ class InitialFragment : Fragment() {
         return view
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
     override fun onDestroy() {
         super.onDestroy()
         searchedQuery = MutableLiveData()

@@ -16,6 +16,8 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -174,6 +176,7 @@ class OrderSummaryFragment : Fragment() {
 
             }
 
+
             @RequiresApi(Build.VERSION_CODES.O)
             override fun afterTextChanged(s: Editable?) {
                 if(s.toString()=="Weekly Once"){
@@ -244,6 +247,7 @@ class OrderSummaryFragment : Fragment() {
         })
 
 
+
         orderSummaryToolBar.setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }
@@ -269,6 +273,44 @@ class OrderSummaryFragment : Fragment() {
                 }
             }
         }
+
+        deliveryFrequencyDay.addTextChangedListener (object :TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if(s?.isNotEmpty()==true) {
+                    deliveryDate.visibility = View.VISIBLE
+                    println("**** is delivery visible ${deliveryDate.isVisible}")
+                    deliveryDate.text = "Expected Delivery this ${s.toString()}"
+                }
+            }
+
+        } )
+        dayOfMonth.addTextChangedListener (object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if(s?.isNotEmpty()==true) {
+                    deliveryDate.visibility = View.VISIBLE
+                    var expectedDate =
+                        "Expected Delivery on  ${DateGenerator.getDayAndMonthForDay(s.toString())}"
+                    deliveryDate.text = expectedDate
+                }
+            }
+
+        } )
         return view
     }
 
