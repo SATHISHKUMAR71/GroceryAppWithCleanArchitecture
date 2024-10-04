@@ -114,10 +114,12 @@ class OfferFragment : Fragment() {
         )[OfferViewModel::class.java]
         if(FilterFragment.list!=null){
             if(FilterFragment.list!!.isEmpty()){
+                offerList.visibility = View.GONE
                 noItemsFoundImageText.visibility = View.VISIBLE
                 noItemsFoundImage.visibility =View.VISIBLE
             }
             else{
+                offerList.visibility = View.VISIBLE
                 noItemsFoundImageText.visibility = View.GONE
                 noItemsFoundImage.visibility =View.GONE
 
@@ -142,10 +144,12 @@ class OfferFragment : Fragment() {
             }
             if(FilterFragment.list==null){
                 if(productEntities.isEmpty()){
+                    offerList.visibility = View.GONE
                     noItemsFoundImageText.visibility = View.VISIBLE
                     noItemsFoundImage.visibility =View.VISIBLE
                 }
                 else{
+                    offerList.visibility = View.VISIBLE
                     noItemsFoundImageText.visibility = View.GONE
                     noItemsFoundImage.visibility =View.GONE
 
