@@ -22,7 +22,6 @@ class CartDataSourceImpl(private val userDao: UserDao):CartDataSource {
     }
 
     override fun getCartItems(cartId: Int): List<Cart>? {
-        println("**** update items in cart called: in db ${userDao.getCartItems(cartId)} $cartId")
         return userDao.getCartItems(cartId)?.let {cartList ->
             cartList.map { Cart(it.cartId,it.productId,it.totalItems,it.unitPrice) }
         }
@@ -37,7 +36,6 @@ class CartDataSourceImpl(private val userDao: UserDao):CartDataSource {
 
     override fun addItemsToCart(cart: Cart) {
         userDao.addItemsToCart(CartEntity(cart.cartId,cart.productId,cart.totalItems,cart.unitPrice))
-        println("**** update items in cart called: Added Items to Cart $cart ${getCartItems(cart.cartId)}")
     }
 
     override fun getProductsWithCartData(cartId: Int): List<CartWithProductData>? {
@@ -66,7 +64,6 @@ class CartDataSourceImpl(private val userDao: UserDao):CartDataSource {
 
     override fun getSpecificCart(cartId: Int, productId: Int): Cart? {
         var cart = userDao.getSpecificCart(cartId,productId)
-        println("CART 0909: $cart $cartId $productId")
         return cart?.let {
             Cart(cart.cartId,cart.productId,cart.totalItems,cart.unitPrice)
         }

@@ -32,8 +32,6 @@ interface RetailerDao: UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addNewBrand(brandDataEntity: BrandDataEntity)
 
-
-
     @Query("SELECT * FROM DailySubscriptionEntity")
     fun getDailySubscription():List<DailySubscriptionEntity>?
 
@@ -46,7 +44,6 @@ interface RetailerDao: UserDao {
     @Query("SELECT * FROM MonthlyOnceEntity")
     fun getMonthlySubscriptionList():List<MonthlyOnceEntity>?
 
-
     @Query("SELECT CategoryEntity.categoryName FROM CategoryEntity")
     fun getChildCategoryName():Array<String>?
 
@@ -56,15 +53,11 @@ interface RetailerDao: UserDao {
     @Query("SELECT ParentCategoryEntity.parentCategoryName FROM ParentCategoryEntity")
     fun getParentCategoryName():Array<String>?
 
-
-
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addProduct(productEntity: ProductEntity)
 
     @Query("SELECT * FROM ProductEntity ORDER BY productId DESC")
     fun getLastProduct():ProductEntity?
-
 
     @Update
     fun updateProduct(productEntity: ProductEntity)
@@ -74,9 +67,6 @@ interface RetailerDao: UserDao {
 
     @Query("SELECT * FROM RecentlyViewedItemsEntity WHERE RecentlyViewedItemsEntity.productId=:productId and RecentlyViewedItemsEntity.userId=:user")
     fun getProductsInRecentList(productId:Long,user:Int): RecentlyViewedItemsEntity?
-
-//    @Query("SELECT * FROM ImagesEntity WHERE productId=:productId")
-//    fun getImagesForProduct(productId: Long):List<ImagesEntity>
 
     @Query("SELECT * FROM ImagesEntity WHERE ImagesEntity.images=:image")
     fun getSpecificImage(image:String):ImagesEntity?
@@ -89,10 +79,6 @@ interface RetailerDao: UserDao {
 
     @Insert
     fun addImagesInDb(imagesEntity: ImagesEntity)
-
-
-
-
 
     @Query("SELECT CustomerRequestEntity.helpId,CustomerRequestEntity.userId,CustomerRequestEntity.requestedDate,CustomerRequestEntity.orderId,CustomerRequestEntity.request,UserEntity.userFirstName,UserEntity.userLastName,UserEntity.userEmail,UserEntity.userPhone FROM CustomerRequestEntity JOIN UserEntity ON UserEntity.userId=CustomerRequestEntity.userId ORDER BY CustomerRequestEntity.helpId DESC")
     fun getDataFromCustomerReqWithName():List<CustomerRequestWithName>?

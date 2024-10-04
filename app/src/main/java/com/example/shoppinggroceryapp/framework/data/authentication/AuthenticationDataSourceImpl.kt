@@ -6,7 +6,7 @@ import com.example.shoppinggroceryapp.framework.data.ConvertorHelper
 import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 
 class AuthenticationDataSourceImpl(private val userDao: UserDao):AuthenticationDataSource{
-        var convertorHelper = ConvertorHelper()
+    private var convertorHelper = ConvertorHelper()
     override fun getUser(emailOrPhone: String, password: String): User? {
         return userDao.getUser(emailOrPhone,password)?.let {
             convertorHelper.convertUserEntityToUser(it)

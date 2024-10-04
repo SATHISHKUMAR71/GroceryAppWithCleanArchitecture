@@ -7,7 +7,7 @@ import com.example.shoppinggroceryapp.framework.db.entity.order.OrderDetailsEnti
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 import com.example.shoppinggroceryapp.framework.db.entity.user.UserEntity
 
-open class ConvertorHelper {
+class ConvertorHelper {
     fun convertUserToUserEntity(user: User): UserEntity {
         return UserEntity(user.userId,user.userImage,user.userFirstName,user.userLastName,user.userEmail,user.userPhone,
             user.userPassword,user.dateOfBirth,user.isRetailer)
