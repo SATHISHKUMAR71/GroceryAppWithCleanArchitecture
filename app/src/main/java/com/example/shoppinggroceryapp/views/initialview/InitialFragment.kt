@@ -108,16 +108,8 @@ class InitialFragment : Fragment() {
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
-        val userRepository = UserRepository(UserDataSourceImpl(userDao))
-        val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
-        val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
-        val orderRepository: OrderRepository = OrderRepository(OrderDataSourceImpl(retailerDao),OrderDataSourceImpl(retailerDao))
-        val productRepository: ProductRepository = ProductRepository(ProductDataSourceImpl(retailerDao),ProductDataSourceImpl(retailerDao))
-        val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
-        val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(SubscriptionDataSourceImpl(userDao),SubscriptionDataSourceImpl(userDao),SubscriptionDataSourceImpl(userDao))
-        val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
         searchViewModel = ViewModelProvider(this,
-            GroceryAppSharedVMFactory(userRepository, authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppSharedVMFactory(retailerDao, userDao)
         )[SearchViewModel::class.java]
         bottomNav = view.findViewById(R.id.bottomNav)
         searchBar = view.findViewById(R.id.searchBar)
@@ -290,7 +282,7 @@ class InitialFragment : Fragment() {
             }
         }
 
-        var cartListViewModel = ViewModelProvider(this,GroceryAppSharedVMFactory(userRepository,authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository))[ProductListViewModel::class.java]
+        var cartListViewModel = ViewModelProvider(this,GroceryAppSharedVMFactory(retailerDao, userDao))[ProductListViewModel::class.java]
         if(!isRetailer){
             cartListViewModel.getCartItems(MainActivity.cartId)
         }

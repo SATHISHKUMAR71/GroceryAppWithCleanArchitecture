@@ -94,31 +94,9 @@ class OrderDetailFragment : Fragment() {
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
-        val userRepository = UserRepository(UserDataSourceImpl(userDao))
-        val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
-        val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
-        val helpRepository: HelpRepository = HelpRepository(
-            HelpDataSourceImpl(retailerDao),
-            HelpDataSourceImpl(retailerDao)
-        )
-        val orderRepository: OrderRepository = OrderRepository(
-            OrderDataSourceImpl(retailerDao),
-            OrderDataSourceImpl(retailerDao)
-        )
-        val productRepository: ProductRepository = ProductRepository(
-            ProductDataSourceImpl(retailerDao),
-            ProductDataSourceImpl(retailerDao)
-        )
-        val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
-        val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao)
-        )
-        val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
         val orderDetailViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(
-                userRepository, authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            retailerDao, userDao)
         )[OrderDetailViewModel::class.java]
         val deliveryFrequency = view.findViewById<TextView>(R.id.productDeliveryFrequency)
         orderDetailViewModel.getSubscriptionDetails()

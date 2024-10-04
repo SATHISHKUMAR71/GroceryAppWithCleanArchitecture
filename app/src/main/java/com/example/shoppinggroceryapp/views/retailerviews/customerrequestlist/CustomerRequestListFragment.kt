@@ -76,21 +76,8 @@ class CustomerRequestListFragment : Fragment() {
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
-        val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
-        val helpRepository: HelpRepository = HelpRepository(
-            HelpDataSourceImpl(retailerDao),
-            HelpDataSourceImpl(retailerDao)
-        )
-        val orderRepository: OrderRepository = OrderRepository(
-            OrderDataSourceImpl(retailerDao),
-            OrderDataSourceImpl(retailerDao)
-        )
-        val productRepository: ProductRepository = ProductRepository(
-            ProductDataSourceImpl(retailerDao),
-            ProductDataSourceImpl(retailerDao)
-        )
         customerViewModel = ViewModelProvider(this,
-            GroceryAppRetailerVMFactory(cartRepository, helpRepository, orderRepository, productRepository)
+            GroceryAppRetailerVMFactory(userDao, retailerDao)
         )[CustomerRequestViewModel::class.java]
         customerViewModel.getCustomerRequest()
         customerViewModel.customerRequestList.observe(viewLifecycleOwner){

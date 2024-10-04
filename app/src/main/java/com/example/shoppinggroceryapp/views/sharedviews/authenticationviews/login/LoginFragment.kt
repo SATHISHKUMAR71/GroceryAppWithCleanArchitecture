@@ -73,38 +73,13 @@ class LoginFragment : Fragment() {
         val view =  inflater.inflate(R.layout.fragment_login, container, false)
         initViews(view)
         setClickListeners()
-        val db1 = AppDatabase.getAppDatabase(requireContext())
-        val userDao = db1.getUserDao()
-        val retailerDao = db1.getRetailerDao()
-        val userRepository = UserRepository(UserDataSourceImpl(userDao))
-        val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
-        val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
-        val helpRepository: HelpRepository = HelpRepository(
-            HelpDataSourceImpl(retailerDao),
-            HelpDataSourceImpl(retailerDao)
-        )
-        val orderRepository: OrderRepository = OrderRepository(
-            OrderDataSourceImpl(retailerDao),
-            OrderDataSourceImpl(retailerDao)
-        )
-        val productRepository: ProductRepository = ProductRepository(
-            ProductDataSourceImpl(retailerDao),
-            ProductDataSourceImpl(retailerDao)
-        )
-        val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
-        val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao)
-        )
-        val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
-        loginViewModel = ViewModelProvider(this,
-            GroceryAppSharedVMFactory(userRepository,authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
-        )[LoginViewModel::class.java]
+        setUpViewModel()
         setLoginViewModelObservers()
         setFocusChangeListeners()
         return view
     }
+
+
 
     private fun setFocusChangeListeners() {
         emailPhoneText.setOnFocusChangeListener { v, hasFocus ->
@@ -122,10 +97,7 @@ class LoginFragment : Fragment() {
     private fun setLoginViewModelObservers() {
         loginViewModel.userName.observe(viewLifecycleOwner){
             if(it == null){
-                Snackbar.make(requireView(),"User Not Found",Snackbar.LENGTH_SHORT).apply {
-                    setBackgroundTint(Color.argb(255,180,30,38))
-                    show()
-                }
+                showSnackBar("User Not Found",requireView())
             }
             else{
                 loginViewModel.validateUser(emailPhoneText.text.toString().trim(),password.text.toString())
@@ -134,10 +106,7 @@ class LoginFragment : Fragment() {
 
         loginViewModel.user.observe(viewLifecycleOwner){
             if(it==null){
-                Snackbar.make(requireView(),"InValid Password",Snackbar.LENGTH_SHORT).apply {
-                    setBackgroundTint(Color.argb(255,180,30,38))
-                    show()
-                }
+                showSnackBar("InValid Password",requireView())
             }
             else{
                 val sharedPreferences = requireActivity().getSharedPreferences("freshCart",Context.MODE_PRIVATE)
@@ -221,10 +190,20 @@ class LoginFragment : Fragment() {
         forgotPassword = view.findViewById(R.id.forgotPassword)
     }
 
-    override fun onDetach() {
-        super.onDetach()
+
+    fun showSnackBar(text:String,view: View) {
+        Snackbar.make(view, text, Snackbar.LENGTH_SHORT).apply {
+            setBackgroundTint(Color.argb(255, 180, 30, 38))
+            show()
+        }
     }
-    override fun onDestroyView() {
-        super.onDestroyView()
+
+    private fun setUpViewModel() {
+        val db1 = AppDatabase.getAppDatabase(requireContext())
+        val userDao = db1.getUserDao()
+        val retailerDao = db1.getRetailerDao()
+        loginViewModel = ViewModelProvider(this,
+            GroceryAppSharedVMFactory(retailerDao, userDao)
+        )[LoginViewModel::class.java]
     }
 }

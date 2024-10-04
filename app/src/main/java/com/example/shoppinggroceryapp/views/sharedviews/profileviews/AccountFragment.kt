@@ -103,32 +103,9 @@ class AccountFragment : Fragment() {
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
-        val userRepository = UserRepository(UserDataSourceImpl(userDao))
-        val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
-        val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
-        val helpRepository: HelpRepository = HelpRepository(
-            HelpDataSourceImpl(retailerDao),
-            HelpDataSourceImpl(retailerDao)
-        )
-        val orderRepository: OrderRepository = OrderRepository(
-            OrderDataSourceImpl(retailerDao),
-            OrderDataSourceImpl(retailerDao)
-        )
-        val productRepository: ProductRepository = ProductRepository(
-            ProductDataSourceImpl(retailerDao),
-            ProductDataSourceImpl(retailerDao)
-        )
-        val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
-        val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao)
-        )
-        val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
         val editUser = ViewModelProvider(this,
             GroceryAppSharedVMFactory(
-                userRepository, authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository
-            )
+            retailerDao, userDao)
         )[EditProfileViewModel::class.java]
         val name = MainActivity.userFirstName + " "+ MainActivity.userLastName
         val profileView = view.findViewById<ImageView>(R.id.accountImage)
@@ -151,7 +128,7 @@ class AccountFragment : Fragment() {
         editUser.getPurchasedProducts(MainActivity.userId.toInt())
         val adapter = ProductListAdapter(this,
             File(requireContext().filesDir,"AppImages"),"P",true,productListViewModel = ViewModelProvider(this,
-                GroceryAppSharedVMFactory(userRepository, authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+                GroceryAppSharedVMFactory(retailerDao, userDao)
             )[ProductListViewModel::class.java])
         editUser.recentlyBoughtList.observe(viewLifecycleOwner){
             if((it!=null)&&(it.isNotEmpty())){

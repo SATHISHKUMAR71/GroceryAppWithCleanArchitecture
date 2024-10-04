@@ -158,6 +158,14 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
         return retailerDao.getChildCategoryName(parentName)
     }
 
+    override fun getParentAndChildNames(): Map<ParentCategory, List<Category>> {
+        val mapData = mutableMapOf<ParentCategory,List<Category>>()
+        for (i in retailerDao.getParentAndChildNames()){
+            mapData[ParentCategory(i.key.parentCategoryName,i.key.parentCategoryImage,i.key.parentCategoryDescription,i.key.isEssential)] = i.value.map { Category(it.categoryName,it.parentCategoryName,it.categoryDescription) }
+        }
+        return mapData
+    }
+
     override fun addProductInRecentlyViewedItems(recentlyViewedItems: RecentlyViewedItems) {
         retailerDao.addProductInRecentlyViewedItems(RecentlyViewedItemsEntity(recentlyViewedItems.recentlyViewedId,recentlyViewedItems.userId,recentlyViewedItems.productId))
     }

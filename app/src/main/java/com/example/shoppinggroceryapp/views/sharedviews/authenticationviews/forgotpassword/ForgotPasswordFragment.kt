@@ -85,33 +85,9 @@ class ForgotPasswordFragment : Fragment() {
             }
         }
 
-        val db1 = AppDatabase.getAppDatabase(requireContext())
-        val userDao = db1.getUserDao()
-        val retailerDao = db1.getRetailerDao()
-        val userRepository = UserRepository(UserDataSourceImpl(userDao))
-        val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
-        val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
-        val helpRepository: HelpRepository = HelpRepository(
-            HelpDataSourceImpl(retailerDao),
-            HelpDataSourceImpl(retailerDao)
-        )
-        val orderRepository: OrderRepository = OrderRepository(
-            OrderDataSourceImpl(retailerDao),
-            OrderDataSourceImpl(retailerDao)
-        )
-        val productRepository: ProductRepository = ProductRepository(
-            ProductDataSourceImpl(retailerDao),
-            ProductDataSourceImpl(retailerDao)
-        )
-        val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
-        val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao)
-        )
-        val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
-        editProfileViewModel = ViewModelProvider(this,GroceryAppSharedVMFactory(userRepository,authenticationRepository,cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository))[EditProfileViewModel::class.java]
+        setUpViewModel()
         val userData  = emailOrPhoneEditText.text
+
         view.findViewById<MaterialButton>(R.id.materialButtonUpdatePassword).setOnClickListener {
             editProfileViewModel.getUser(userData.toString())
         }
@@ -131,29 +107,33 @@ class ForgotPasswordFragment : Fragment() {
                 else if(it != null){
                     if(passwordEditText.text.toString().isNotEmpty()){
                         editProfileViewModel.savePassword(it.copy(userPassword = passwordEditText.text.toString()))
-                        Snackbar.make(view,"Password Updated Successfully",Snackbar.LENGTH_SHORT).apply {
-                            setBackgroundTint(Color.argb(255,20,200,20))
-                                .show()
-                        }
+                        showSnackBar("Password Updated Successfully",view)
                         parentFragmentManager.popBackStack()
                     }
                     else{
-                        Snackbar.make(view,"Password should not be empty",Snackbar.LENGTH_SHORT).apply {
-                            setBackgroundTint(Color.argb(255,230,20,20))
-                                .show()
-                        }
+                        showSnackBar("Password should not be empty",view)
                     }
                 }
                 else{
                     emailOrPhoneLayout.error = "User Not Found !"
-                    Snackbar.make(view,"Email or Mobile Didn't Exist",Snackbar.LENGTH_SHORT).apply {
-                        setBackgroundTint(Color.argb(255,230,20,20))
-                            .show()
-                    }
+                    showSnackBar("Email or Mobile Didn't Exist",view)
                 }
             }
         }
         return view
+    }
 
+    private fun setUpViewModel() {
+        val db1 = AppDatabase.getAppDatabase(requireContext())
+        val userDao = db1.getUserDao()
+        val retailerDao = db1.getRetailerDao()
+        editProfileViewModel = ViewModelProvider(this,GroceryAppSharedVMFactory(retailerDao, userDao))[EditProfileViewModel::class.java]
+    }
+
+    private fun showSnackBar(text:String, view: View){
+        Snackbar.make(view,text,Snackbar.LENGTH_SHORT).apply {
+            setBackgroundTint(Color.argb(255,230,20,20))
+                .show()
+        }
     }
 }

@@ -63,35 +63,8 @@ class SavedAddressList : Fragment() {
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
-        val userRepository = UserRepository(UserDataSourceImpl(userDao))
-        val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
-        val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
-        val helpRepository: HelpRepository = HelpRepository(
-            HelpDataSourceImpl(retailerDao),
-            HelpDataSourceImpl(retailerDao)
-        )
-        val orderRepository: OrderRepository = OrderRepository(
-            OrderDataSourceImpl(retailerDao),
-            OrderDataSourceImpl(retailerDao)
-        )
-        val productRepository: ProductRepository = ProductRepository(
-            ProductDataSourceImpl(retailerDao),
-            ProductDataSourceImpl(retailerDao)
-        )
-        val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
-        val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao)
-        )
-        val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
-
-//        val savedAddressViewModel = ViewModelProvider(this,
-//            GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
-//        )[SavedAddressViewModel::class.java]
-
         val savedAddressViewModel = ViewModelProvider(this,
-            GroceryAppUserVMFactory(cartRepository, helpRepository, orderRepository, productRepository, subscriptionRepository, addressRepository)
+            GroceryAppUserVMFactory(userDao, retailerDao)
         )[SavedAddressViewModel::class.java]
         addressRV = view.findViewById(R.id.savedAddressList)
         addressCount = view.findViewById(R.id.countAddress)

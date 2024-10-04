@@ -72,49 +72,11 @@ class GetNewAddress : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_get_address, container, false)
-        fullNameLayout = view.findViewById(R.id.addressFirstNameLayout)
-        phoneLayout = view.findViewById(R.id.addressPhoneNumberLayout)
-        houseLayout =view.findViewById(R.id.addressHouseLayout)
-        streetLayout = view.findViewById(R.id.addressStreetLayout)
-        cityLayout = view.findViewById(R.id.addressCityLayout)
-        stateLayout = view.findViewById(R.id.addressStateLayout)
-        postalCodeLayout = view.findViewById(R.id.addressPostalCodeLayout)
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
-        val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
-        val helpRepository: HelpRepository = HelpRepository(
-            HelpDataSourceImpl(retailerDao),
-            HelpDataSourceImpl(retailerDao)
-        )
-        val orderRepository: OrderRepository = OrderRepository(
-            OrderDataSourceImpl(retailerDao),
-            OrderDataSourceImpl(retailerDao)
-        )
-        val productRepository: ProductRepository = ProductRepository(
-            ProductDataSourceImpl(retailerDao),
-            ProductDataSourceImpl(retailerDao)
-        )
-        val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao)
-        )
-        val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
-//        getAddressViewModel = ViewModelProvider(this, GroceryAppViewModelFactory(userRepository, authenticationRepository, cartRepository, helpRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository))[GetAddressViewModel::class.java]
-
-        getAddressViewModel = ViewModelProvider(this, GroceryAppUserVMFactory(cartRepository, helpRepository, orderRepository, productRepository, subscriptionRepository, addressRepository))[GetAddressViewModel::class.java]
-        fullName = view.findViewById(R.id.fullName)
-        phone = view.findViewById(R.id.addPhoneNumber)
-        houseNo = view.findViewById(R.id.addAddressHouse)
-        street = view.findViewById(R.id.addAddressStreetName)
-        state = view.findViewById(R.id.addAddressState)
-        city = view.findViewById(R.id.addAddressCity)
-        postalCode = view.findViewById(R.id.addAddressPostalCode)
-        saveAddress = view.findViewById(R.id.addNewAddress)
-        addressTopBar = view.findViewById(R.id.getAddressToolbar)
-        phone.filters = arrayOf(InputFilter.LengthFilter(15))
-        postalCode.filters = arrayOf(InputFilter.LengthFilter(8))
+        getAddressViewModel = ViewModelProvider(this, GroceryAppUserVMFactory(userDao, retailerDao))[GetAddressViewModel::class.java]
+        initViews(view)
         if(SavedAddressList.editAddressEntity !=null){
             SavedAddressList.editAddressEntity?.let {
                 fullName.setText(it.addressContactName)
@@ -131,13 +93,7 @@ class GetNewAddress : Fragment() {
         }
         addFocusChangeListeners()
         saveAddress.setOnClickListener {
-            fullNameLayout.error = addressInputChecker.nameCheck(fullName)
-            phoneLayout.error = addressInputChecker.lengthAndEmptyCheck("Phone Number",phone,10)
-            houseLayout.error = addressInputChecker.emptyCheck(houseNo)
-            streetLayout.error = addressInputChecker.emptyCheck(street)
-            cityLayout.error = addressInputChecker.emptyCheck(city)
-            stateLayout.error = addressInputChecker.emptyCheck(state)
-            postalCodeLayout.error = addressInputChecker.lengthAndEmptyCheck("Zip Code",postalCode,6)
+            validateInput()
             if(fullNameLayout.error==null && houseLayout.error==null && phoneLayout.error==null &&streetLayout.error==null &&
                 cityLayout.error ==null && stateLayout.error==null && postalCodeLayout.error == null){
                 if(SavedAddressList.editAddressEntity !=null){
@@ -155,12 +111,10 @@ class GetNewAddress : Fragment() {
                         postalCode = postalCode.text.toString()
                     )
                     )
-
-                    Toast.makeText(context,"Address Updated Successfully",Toast.LENGTH_SHORT).show()
+                    showToast("Address Updated Successfully")
                 }
                 else {
                     getAddressViewModel.addAddress(
-
                         Address(
                             addressId = 0,
                             userId = MainActivity.userId.toInt(),
@@ -174,17 +128,49 @@ class GetNewAddress : Fragment() {
                             postalCode = postalCode.text.toString()
                         )
                     )
-                    Toast.makeText(context,"Address Added Successfully",Toast.LENGTH_SHORT).show()
+                    showToast("Address Added Successfully")
                 }
 
                 parentFragmentManager.popBackStack()
             }
             else{
-                Toast.makeText(context,"Add all the Required Fields",Toast.LENGTH_SHORT).show()
+                showToast("Add all the Required Fields")
             }
         }
         return view
     }
+
+    private fun validateInput() {
+        fullNameLayout.error = addressInputChecker.nameCheck(fullName)
+        phoneLayout.error = addressInputChecker.lengthAndEmptyCheck("Phone Number",phone,10)
+        houseLayout.error = addressInputChecker.emptyCheck(houseNo)
+        streetLayout.error = addressInputChecker.emptyCheck(street)
+        cityLayout.error = addressInputChecker.emptyCheck(city)
+        stateLayout.error = addressInputChecker.emptyCheck(state)
+        postalCodeLayout.error = addressInputChecker.lengthAndEmptyCheck("Zip Code",postalCode,6)
+    }
+
+    private fun initViews(view: View) {
+        fullNameLayout = view.findViewById(R.id.addressFirstNameLayout)
+        phoneLayout = view.findViewById(R.id.addressPhoneNumberLayout)
+        houseLayout =view.findViewById(R.id.addressHouseLayout)
+        streetLayout = view.findViewById(R.id.addressStreetLayout)
+        cityLayout = view.findViewById(R.id.addressCityLayout)
+        stateLayout = view.findViewById(R.id.addressStateLayout)
+        postalCodeLayout = view.findViewById(R.id.addressPostalCodeLayout)
+        fullName = view.findViewById(R.id.fullName)
+        phone = view.findViewById(R.id.addPhoneNumber)
+        houseNo = view.findViewById(R.id.addAddressHouse)
+        street = view.findViewById(R.id.addAddressStreetName)
+        state = view.findViewById(R.id.addAddressState)
+        city = view.findViewById(R.id.addAddressCity)
+        postalCode = view.findViewById(R.id.addAddressPostalCode)
+        saveAddress = view.findViewById(R.id.addNewAddress)
+        addressTopBar = view.findViewById(R.id.getAddressToolbar)
+        phone.filters = arrayOf(InputFilter.LengthFilter(15))
+        postalCode.filters = arrayOf(InputFilter.LengthFilter(8))
+    }
+
     override fun onResume() {
         super.onResume()
         InitialFragment.hideSearchBar.value = true
@@ -233,6 +219,9 @@ class GetNewAddress : Fragment() {
                 postalCodeLayout.error = null
             }
         }
+    }
 
+    fun showToast(text:String){
+        Toast.makeText(context,text,Toast.LENGTH_SHORT).show()
     }
 }

@@ -96,6 +96,12 @@ import com.core.usecases.userusecase.orders.GetSpecificWeeklyOrderWithOrderId
 import com.core.usecases.userusecase.orders.RemoveOrderFromDailySubscription
 import com.core.usecases.userusecase.orders.RemoveOrderFromMonthlySubscription
 import com.core.usecases.userusecase.orders.RemoveOrderFromWeeklySubscription
+import com.example.shoppinggroceryapp.framework.data.cart.CartDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.help.HelpDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.order.OrderDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.product.ProductDataSourceImpl
+import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
+import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 import com.example.shoppinggroceryapp.views.retailerviews.addeditproduct.AddEditProductViewModel
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.CustomerRequestViewModel
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.login.LoginViewModel
@@ -116,11 +122,22 @@ import com.example.shoppinggroceryapp.views.userviews.offer.OfferViewModel
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersuccess.OrderSuccessViewModel
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersummary.OrderSummaryViewModel
 
-class GroceryAppRetailerVMFactory(private val cartRepository: CartRepository,
-                                  private val helpRepository: HelpRepository,
-                                  private val orderRepository: OrderRepository,
-                                  private val productRepository: ProductRepository): ViewModelProvider.Factory {
+class GroceryAppRetailerVMFactory(private val userDao:UserDao,
+                                  private val retailerDao: RetailerDao): ViewModelProvider.Factory {
 
+    val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
+    val helpRepository: HelpRepository = HelpRepository(
+        HelpDataSourceImpl(retailerDao),
+        HelpDataSourceImpl(retailerDao)
+    )
+    val orderRepository: OrderRepository = OrderRepository(
+        OrderDataSourceImpl(retailerDao),
+        OrderDataSourceImpl(retailerDao)
+    )
+    val productRepository: ProductRepository = ProductRepository(
+        ProductDataSourceImpl(retailerDao),
+        ProductDataSourceImpl(retailerDao)
+    )
     private val mGetBrandName: GetBrandName by lazy { GetBrandName(productRepository) }
     private val mGetAllParentCategoryNames: GetAllParentCategoryNames by lazy { GetAllParentCategoryNames(productRepository) }
     private val mGetParentCategoryNameForChild: GetParentCategoryNameForChild by lazy { GetParentCategoryNameForChild(productRepository) }

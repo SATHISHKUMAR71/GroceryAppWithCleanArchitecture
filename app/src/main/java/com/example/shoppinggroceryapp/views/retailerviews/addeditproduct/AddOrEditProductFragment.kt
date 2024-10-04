@@ -136,21 +136,8 @@ class AddOrEditProductFragment : Fragment() {
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
-        val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
-        val helpRepository: HelpRepository = HelpRepository(
-            HelpDataSourceImpl(retailerDao),
-            HelpDataSourceImpl(retailerDao)
-        )
-        val orderRepository: OrderRepository = OrderRepository(
-            OrderDataSourceImpl(retailerDao),
-            OrderDataSourceImpl(retailerDao)
-        )
-        val productRepository: ProductRepository = ProductRepository(
-            ProductDataSourceImpl(retailerDao),
-            ProductDataSourceImpl(retailerDao)
-        )
         addEditProductViewModel = ViewModelProvider(this,
-            GroceryAppRetailerVMFactory(cartRepository, helpRepository, orderRepository, productRepository))[AddEditProductViewModel::class.java]
+            GroceryAppRetailerVMFactory(userDao, retailerDao))[AddEditProductViewModel::class.java]
 
         view =  inflater.inflate(R.layout.fragment_add_edit, container, false)
         initViews(view)

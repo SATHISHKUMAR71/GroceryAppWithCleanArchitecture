@@ -82,6 +82,7 @@ import com.core.usecases.userusecase.AddNewUser
 import com.core.usecases.userusecase.AddProductInRecentList
 import com.core.usecases.userusecase.AddSearchQueryInDb
 import com.core.usecases.userusecase.GetChildNames
+import com.core.usecases.userusecase.GetParentAndChildCategories
 import com.core.usecases.userusecase.GetParentCategories
 import com.core.usecases.userusecase.GetSearchList
 import com.core.usecases.userusecase.GetUser
@@ -96,6 +97,15 @@ import com.core.usecases.userusecase.orders.GetSpecificWeeklyOrderWithOrderId
 import com.core.usecases.userusecase.orders.RemoveOrderFromDailySubscription
 import com.core.usecases.userusecase.orders.RemoveOrderFromMonthlySubscription
 import com.core.usecases.userusecase.orders.RemoveOrderFromWeeklySubscription
+import com.example.shoppinggroceryapp.framework.data.address.AddressDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.cart.CartDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.help.HelpDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.order.OrderDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.product.ProductDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
+import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
+import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 import com.example.shoppinggroceryapp.views.retailerviews.addeditproduct.AddEditProductViewModel
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.CustomerRequestViewModel
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.login.LoginViewModel
@@ -116,13 +126,37 @@ import com.example.shoppinggroceryapp.views.userviews.offer.OfferViewModel
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersuccess.OrderSuccessViewModel
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersummary.OrderSummaryViewModel
 
-class GroceryAppUserVMFactory (private val cartRepository: CartRepository,
-                               private val helpRepository: HelpRepository,
-                               private val orderRepository: OrderRepository,
-                               private val productRepository: ProductRepository,
-                               private val subscriptionRepository: SubscriptionRepository,
-                               private val addressRepository: AddressRepository
-): ViewModelProvider.Factory {
+class GroceryAppUserVMFactory (private val userDao: UserDao,
+    private val retailerDao: RetailerDao): ViewModelProvider.Factory {
+
+    private val cartRepository: CartRepository by lazy { CartRepository(CartDataSourceImpl(userDao))}
+    private val helpRepository: HelpRepository by lazy {
+        HelpRepository(
+            HelpDataSourceImpl(retailerDao),
+            HelpDataSourceImpl(retailerDao)
+        )
+    }
+    private val orderRepository: OrderRepository by lazy {
+        OrderRepository(
+            OrderDataSourceImpl(retailerDao),
+            OrderDataSourceImpl(retailerDao)
+        )
+    }
+    private val productRepository: ProductRepository by lazy {
+        ProductRepository(
+            ProductDataSourceImpl(retailerDao),
+            ProductDataSourceImpl(retailerDao)
+        )
+    }
+    private val searchRepository: SearchRepository by lazy {  SearchRepository(SearchDataSourceImpl(userDao))}
+    private val subscriptionRepository: SubscriptionRepository by lazy {
+        SubscriptionRepository(
+            SubscriptionDataSourceImpl(userDao),
+            SubscriptionDataSourceImpl(userDao),
+            SubscriptionDataSourceImpl(userDao)
+        )
+    }
+    private val addressRepository: AddressRepository by lazy { AddressRepository(AddressDataSourceImpl(userDao))}
 
     private val mGetProductsByCartId: GetProductsByCartId by lazy { GetProductsByCartId(cartRepository) }
     private val mGetProductsWithCartData: GetProductsWithCartData by lazy { GetProductsWithCartData(cartRepository) }
@@ -138,8 +172,6 @@ class GroceryAppUserVMFactory (private val cartRepository: CartRepository,
     private val mAddNewAddress: AddNewAddress by lazy { AddNewAddress(addressRepository) }
     private val mUpdateAddress: UpdateAddress by lazy { UpdateAddress(addressRepository) }
     private val mGetAddressList: GetAllAddress by lazy { GetAllAddress(addressRepository) }
-    private val mGetParentCategories: GetParentCategories by lazy { GetParentCategories(productRepository) }
-    private val mGetChildNames: GetChildNames by lazy { GetChildNames(productRepository) }
     private val mAddCustomerRequest: AddCustomerRequest by lazy { AddCustomerRequest(helpRepository) }
     private val mGetRecentlyViewedProducts: GetRecentlyViewedProducts by lazy { GetRecentlyViewedProducts(productRepository) }
     private val mGetProductsById: GetProductsById by lazy { GetProductsById(productRepository) }
@@ -153,7 +185,7 @@ class GroceryAppUserVMFactory (private val cartRepository: CartRepository,
     private val mUpdateCart: UpdateCart by lazy { UpdateCart(cartRepository) }
     private val mAddCartForUser: AddCartForUser by lazy { AddCartForUser(cartRepository) }
     private val mUpdateTimeSlot: UpdateTimeSlot by lazy { UpdateTimeSlot(subscriptionRepository) }
-
+    private val mGetParentAndChild:GetParentAndChildCategories by lazy { GetParentAndChildCategories(productRepository) }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T = with(modelClass){
         when{
@@ -167,7 +199,7 @@ class GroceryAppUserVMFactory (private val cartRepository: CartRepository,
                 CartViewModel(mGetProductsByCartId,mGetCartItems,mGetAddressList)
             }
             isAssignableFrom(CategoryViewModel::class.java)->{
-                CategoryViewModel(mGetParentCategories, mGetChildNames)
+                CategoryViewModel(mGetParentAndChild)
             }
             isAssignableFrom(HelpViewModel::class.java)->{
                 HelpViewModel(mGetProductsWithCartData, mAddCustomerRequest)

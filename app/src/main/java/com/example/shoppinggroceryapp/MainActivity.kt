@@ -52,8 +52,8 @@ class MainActivity : AppCompatActivity() {
         }.start()
         val pref = getSharedPreferences("freshCart", Context.MODE_PRIVATE)
         SetInitialDataForUser().invoke(pref)
-        val boo = pref.getBoolean("isSigned",false)
-        if(boo){
+        val isSigned = pref.getBoolean("isSigned",false)
+        if(isSigned){
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragmentBody, InitialFragment())
                 .commit()
@@ -69,11 +69,13 @@ class MainActivity : AppCompatActivity() {
                 100)
         }
         val db2 = AppDatabase.getAppDatabase(baseContext).getUserDao()
-        if(boo) {
+        if(isSigned) {
             assignCart(db2)
         }
+        Thread{
+            println(db2.getParentAndChildNames())
+        }.start()
     }
-
     private fun assignCart(db2: UserDao){
         Thread {
             val cart: CartMappingEntity? = db2.getCartForUser(userId.toInt())

@@ -96,6 +96,17 @@ import com.core.usecases.userusecase.orders.GetSpecificWeeklyOrderWithOrderId
 import com.core.usecases.userusecase.orders.RemoveOrderFromDailySubscription
 import com.core.usecases.userusecase.orders.RemoveOrderFromMonthlySubscription
 import com.core.usecases.userusecase.orders.RemoveOrderFromWeeklySubscription
+import com.example.shoppinggroceryapp.framework.data.address.AddressDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.authentication.AuthenticationDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.cart.CartDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.help.HelpDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.order.OrderDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.product.ProductDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
+import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
+import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 import com.example.shoppinggroceryapp.views.retailerviews.addeditproduct.AddEditProductViewModel
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.CustomerRequestViewModel
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.login.LoginViewModel
@@ -116,15 +127,32 @@ import com.example.shoppinggroceryapp.views.userviews.offer.OfferViewModel
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersuccess.OrderSuccessViewModel
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersummary.OrderSummaryViewModel
 
-class GroceryAppSharedVMFactory (private val userRepository: UserRepository,
-                                 private val authenticationRepository: AuthenticationRepository,
-                                 private val cartRepository: CartRepository,
-                                 private val orderRepository: OrderRepository,
-                                 private val productRepository: ProductRepository,
-                                 private val searchRepository: SearchRepository,
-                                 private val subscriptionRepository: SubscriptionRepository,
-                                 private val addressRepository: AddressRepository
-): ViewModelProvider.Factory {
+class GroceryAppSharedVMFactory (private val retailerDao:RetailerDao,
+                                 private val userDao:UserDao)
+    : ViewModelProvider.Factory {
+
+    private val userRepository = UserRepository(UserDataSourceImpl(userDao))
+    val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
+    val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
+    val helpRepository: HelpRepository = HelpRepository(
+        HelpDataSourceImpl(retailerDao),
+        HelpDataSourceImpl(retailerDao)
+    )
+    val orderRepository: OrderRepository = OrderRepository(
+        OrderDataSourceImpl(retailerDao),
+        OrderDataSourceImpl(retailerDao)
+    )
+    val productRepository: ProductRepository = ProductRepository(
+        ProductDataSourceImpl(retailerDao),
+        ProductDataSourceImpl(retailerDao)
+    )
+    val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
+    val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(
+        SubscriptionDataSourceImpl(userDao),
+        SubscriptionDataSourceImpl(userDao),
+        SubscriptionDataSourceImpl(userDao)
+    )
+    val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
 
     private val mGetSearchList: GetSearchList by lazy { GetSearchList(searchRepository) }
     private val mPerformProductSearch: PerformProductSearch by lazy { PerformProductSearch(searchRepository) }

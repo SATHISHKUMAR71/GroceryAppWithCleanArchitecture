@@ -24,6 +24,11 @@ class ProductRepository(private val productDataSource: ProductDataSource,private
         productRetailerDataSource.addSubCategory(category)
     }
 
+    fun getParentAndChildCategory():Map<ParentCategory,List<Category>>{
+        return productDataSource.getParentAndChildNames()
+    }
+
+
     fun addNewBrand(brandData: BrandData){
         productRetailerDataSource.addNewBrand(brandData)
     }

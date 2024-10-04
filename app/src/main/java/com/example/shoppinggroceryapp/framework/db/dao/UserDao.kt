@@ -7,8 +7,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.core.domain.products.ParentCategory
 import com.example.shoppinggroceryapp.framework.db.dataclass.ChildCategoryName
 import com.example.shoppinggroceryapp.framework.db.dataclass.CustomerRequestWithName
+import com.example.shoppinggroceryapp.framework.db.dataclass.ParentWithChildName
 import com.example.shoppinggroceryapp.framework.db.entity.help.CustomerRequestEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartMappingEntity
@@ -78,6 +80,9 @@ interface UserDao {
 
     @Query("SELECT * FROM ParentCategoryEntity")
     fun getParentCategoryList():List<ParentCategoryEntity>?
+
+    @Query("SELECT * From PARENTCATEGORYENTITY Join CategoryEntity on CategoryEntity.parentCategoryName=ParentCategoryEntity.parentCategoryName")
+    fun getParentAndChildNames():Map<ParentCategoryEntity,List<CategoryEntity>>
 
 
     @Query("SELECT * FROM ProductEntity Order By productId DESC")

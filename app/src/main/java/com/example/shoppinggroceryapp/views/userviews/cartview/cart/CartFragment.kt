@@ -92,45 +92,20 @@ class CartFragment : Fragment() {
         val emptyCart = view.findViewById<ImageView>(R.id.emptyCartImage)
         val totalAmount =view.findViewById<TextView>(R.id.priceDetailsMrpPrice)
         val continueButton = view.findViewById<MaterialButton>(R.id.continueButton)
-//        val discountedAmount = view.findViewById<TextView>(R.id.priceDetailsDiscountedAmount)
         val grandTotalAmount = view.findViewById<TextView>(R.id.priceDetailsTotalAmount)
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
-        val userRepository = UserRepository(UserDataSourceImpl(userDao))
-        val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
-        val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
-        val helpRepository: HelpRepository = HelpRepository(
-            HelpDataSourceImpl(retailerDao),
-            HelpDataSourceImpl(retailerDao)
-        )
-        val orderRepository: OrderRepository = OrderRepository(
-            OrderDataSourceImpl(retailerDao),
-            OrderDataSourceImpl(retailerDao)
-        )
-        val productRepository: ProductRepository = ProductRepository(
-            ProductDataSourceImpl(retailerDao),
-            ProductDataSourceImpl(retailerDao)
-        )
-        val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
-        val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao)
-        )
-        val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
-
-
 
         cartViewModel = ViewModelProvider(this,
-            GroceryAppUserVMFactory(cartRepository, helpRepository, orderRepository, productRepository, subscriptionRepository, addressRepository)
+            GroceryAppUserVMFactory(userDao, retailerDao)
         )[CartViewModel::class.java]
         addMoreGrocery.setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Added More Groceries")
         }
 
         adapter = ProductListAdapter(this,fileDir,"C",false,productListViewModel = ViewModelProvider(this,
-            GroceryAppSharedVMFactory(userRepository, authenticationRepository, cartRepository, orderRepository, productRepository, searchRepository, subscriptionRepository, addressRepository)
+            GroceryAppSharedVMFactory(retailerDao, userDao)
         )[ProductListViewModel::class.java])
         adapter.setProducts(listOf())
         recyclerView.adapter = adapter
@@ -155,18 +130,10 @@ class CartFragment : Fragment() {
                 priceDetails.visibility =View.VISIBLE
                 bottomLayout.visibility =View.VISIBLE
                 emptyCart.visibility = View.GONE
-//                cartItemsSize = ProductListAdapter.productList.size
                 noOfItemsInt = ProductListAdapter.productsSize
                 val str = "MRP ($noOfItemsInt) Products"
                 noOfItems.text =str
             }
-//            if(noOfItemsInt<=1){
-//                bottomLayout.setBackgroundColor(Color.TRANSPARENT)
-//                price.visibility = View.GONE
-//            }
-//            else{
-//                price.visibility = View.VISIBLE
-//            }
             val str = "₹$it\nView Price Details"
             val grandTot = "₹$it"
             val totalAmt = "₹${it-49}"
@@ -216,18 +183,9 @@ class CartFragment : Fragment() {
             val str = "MRP ($noOfItemsInt) Products"
             price.visibility =View.VISIBLE
             noOfItems.text =str
-//            if(noOfItemsInt<=1){
-//                bottomLayout.setBackgroundColor(Color.TRANSPARENT)
-//                price.visibility =View.GONE
-//            }
-//            else{
-//                bottomLayout.setBackgroundColor(Color.WHITE)
-//                price.visibility =View.VISIBLE
-//            }
         }
         addNewAddress.setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager, GetNewAddress(),"Add New Address")
-//            FragmentTransaction.navigateWithBackstack(parentFragmentManager,SavedAddress(),"Add New Address")
         }
 
         changeAddress.setOnClickListener {

@@ -67,68 +67,23 @@ class CategoryFragment: Fragment() {
         ProductListFragment.dis50Val = false
         FilterFragment.list = null
         val view =  inflater.inflate(R.layout.fragment_category, container, false)
-        var childList:List<List<String>>? = null
-        var parentList:List<ParentCategory>? = null
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
-        val userRepository = UserRepository(UserDataSourceImpl(userDao))
-        val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
-        val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
-        val helpRepository: HelpRepository = HelpRepository(
-            HelpDataSourceImpl(retailerDao),
-            HelpDataSourceImpl(retailerDao)
-        )
-        val orderRepository: OrderRepository = OrderRepository(
-            OrderDataSourceImpl(retailerDao),
-            OrderDataSourceImpl(retailerDao)
-        )
-        val productRepository: ProductRepository = ProductRepository(
-            ProductDataSourceImpl(retailerDao),
-            ProductDataSourceImpl(retailerDao)
-        )
-        val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
-        val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao),
-            SubscriptionDataSourceImpl(userDao)
-        )
-        val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
-
         val categoryViewModel = ViewModelProvider(this,
-           GroceryAppUserVMFactory(cartRepository, helpRepository, orderRepository, productRepository, subscriptionRepository, addressRepository)
+           GroceryAppUserVMFactory(userDao, retailerDao)
         )[CategoryViewModel::class.java]
         mainCategoryRV = view.findViewById(R.id.categoryRecyclerView)
+        categoryViewModel.getParentAndChildNames()
 
-        categoryViewModel.getParentCategory()
-        categoryViewModel.parentList.observe(viewLifecycleOwner){
-            categoryViewModel.getChildWithParentName()
+        categoryViewModel.mappedList.observe(viewLifecycleOwner){
+            val childList1 = categoryViewModel.getChildList(it)
+            val parentList1 = categoryViewModel.getParentList(it)
+            mainCategoryRV.adapter =
+                MainCategoryAdapter(this, parentList1, childList1, imageLoader)
+            mainCategoryRV.layoutManager = LinearLayoutManager(requireContext())
         }
-        categoryViewModel.childList.observe(viewLifecycleOwner){
 
-        }
-        categoryViewModel.childList.observe(viewLifecycleOwner){
-            childList = it
-            if(parentList!=null){
-                var mainAdapter = MainCategoryAdapter(this, parentList!!, childList!!, imageLoader)
-                if(mainCategoryRV.adapter==null) {
-                    mainCategoryRV.adapter =mainAdapter
-                    mainCategoryRV.layoutManager = LinearLayoutManager(requireContext())
-                }
-            }
-        }
-        categoryViewModel.getParentCategory()
-
-        categoryViewModel.parentList.observe(viewLifecycleOwner){
-            parentList = it
-            if(childList!=null){
-                if(mainCategoryRV.adapter==null) {
-                    mainCategoryRV.adapter =
-                        MainCategoryAdapter(this, parentList!!, childList!!, imageLoader)
-                    mainCategoryRV.layoutManager = LinearLayoutManager(requireContext())
-                }
-            }
-        }
         return view
     }
 
