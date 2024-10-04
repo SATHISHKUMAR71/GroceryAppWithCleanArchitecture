@@ -26,8 +26,8 @@ import com.example.shoppinggroceryapp.views.initialview.SetInitialDataForUser
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var fragmentTopBarView:FrameLayout
-    private lateinit var fragmentBottomBarView:FrameLayout
+
+
     companion object{
         val handler = Handler(Looper.getMainLooper())
         private const val REQUEST_CAMERA_PERMISSION = 200

@@ -82,28 +82,36 @@ class GroceryAppSharedVMFactory (private val retailerDao:RetailerDao,
                                  private val userDao:UserDao)
     : ViewModelProvider.Factory {
 
-    private val userRepository = UserRepository(UserDataSourceImpl(userDao))
-    val authenticationRepository = AuthenticationRepository(AuthenticationDataSourceImpl(userDao))
-    val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
-    val helpRepository: HelpRepository = HelpRepository(
-        HelpDataSourceImpl(retailerDao),
-        HelpDataSourceImpl(retailerDao)
-    )
-    val orderRepository: OrderRepository = OrderRepository(
-        OrderDataSourceImpl(retailerDao),
-        OrderDataSourceImpl(retailerDao)
-    )
-    val productRepository: ProductRepository = ProductRepository(
-        ProductDataSourceImpl(retailerDao),
-        ProductDataSourceImpl(retailerDao)
-    )
-    val searchRepository: SearchRepository = SearchRepository(SearchDataSourceImpl(userDao))
-    val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(
-        SubscriptionDataSourceImpl(userDao),
-        SubscriptionDataSourceImpl(userDao),
-        SubscriptionDataSourceImpl(userDao)
-    )
-    val addressRepository: AddressRepository = AddressRepository(AddressDataSourceImpl(userDao))
+    private val userRepository:UserRepository by lazy {UserRepository(UserDataSourceImpl(userDao))}
+    private val authenticationRepository :AuthenticationRepository by lazy { AuthenticationRepository(AuthenticationDataSourceImpl(userDao))}
+    private val cartRepository: CartRepository by lazy {CartRepository(CartDataSourceImpl(userDao))}
+    private val helpRepository: HelpRepository by lazy {
+        HelpRepository(
+            HelpDataSourceImpl(retailerDao),
+            HelpDataSourceImpl(retailerDao)
+        )
+    }
+    private val orderRepository: OrderRepository by lazy {
+        OrderRepository(
+            OrderDataSourceImpl(retailerDao),
+            OrderDataSourceImpl(retailerDao)
+        )
+    }
+    private val productRepository: ProductRepository by lazy {
+        ProductRepository(
+            ProductDataSourceImpl(retailerDao),
+            ProductDataSourceImpl(retailerDao)
+        )
+    }
+    private val searchRepository: SearchRepository by lazy {SearchRepository(SearchDataSourceImpl(userDao))}
+    private val subscriptionRepository: SubscriptionRepository by lazy {
+        SubscriptionRepository(
+            SubscriptionDataSourceImpl(userDao),
+            SubscriptionDataSourceImpl(userDao),
+            SubscriptionDataSourceImpl(userDao)
+        )
+    }
+    private val addressRepository: AddressRepository by lazy {AddressRepository(AddressDataSourceImpl(userDao))}
 
     private val mGetSearchList: GetSearchList by lazy { GetSearchList(searchRepository) }
     private val mPerformProductSearch: PerformProductSearch by lazy { PerformProductSearch(searchRepository) }

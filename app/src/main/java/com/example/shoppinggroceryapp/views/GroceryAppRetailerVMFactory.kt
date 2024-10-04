@@ -43,19 +43,25 @@ import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.Cu
 class GroceryAppRetailerVMFactory(private val userDao:UserDao,
                                   private val retailerDao: RetailerDao): ViewModelProvider.Factory {
 
-    val cartRepository: CartRepository = CartRepository(CartDataSourceImpl(userDao))
-    val helpRepository: HelpRepository = HelpRepository(
-        HelpDataSourceImpl(retailerDao),
-        HelpDataSourceImpl(retailerDao)
-    )
-    val orderRepository: OrderRepository = OrderRepository(
-        OrderDataSourceImpl(retailerDao),
-        OrderDataSourceImpl(retailerDao)
-    )
-    val productRepository: ProductRepository = ProductRepository(
-        ProductDataSourceImpl(retailerDao),
-        ProductDataSourceImpl(retailerDao)
-    )
+    private val cartRepository: CartRepository by lazy { CartRepository(CartDataSourceImpl(userDao))}
+    private val helpRepository: HelpRepository by lazy {
+        HelpRepository(
+            HelpDataSourceImpl(retailerDao),
+            HelpDataSourceImpl(retailerDao)
+        )
+    }
+    private val orderRepository: OrderRepository by lazy {
+        OrderRepository(
+            OrderDataSourceImpl(retailerDao),
+            OrderDataSourceImpl(retailerDao)
+        )
+    }
+    private val productRepository: ProductRepository by lazy {
+        ProductRepository(
+            ProductDataSourceImpl(retailerDao),
+            ProductDataSourceImpl(retailerDao)
+        )
+    }
     private val mGetBrandName: GetBrandName by lazy { GetBrandName(productRepository) }
     private val mGetAllParentCategoryNames: GetAllParentCategoryNames by lazy { GetAllParentCategoryNames(productRepository) }
     private val mGetParentCategoryNameForChild: GetParentCategoryNameForChild by lazy { GetParentCategoryNameForChild(productRepository) }
