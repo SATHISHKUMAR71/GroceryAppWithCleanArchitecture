@@ -83,6 +83,23 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
             imageList.postValue(productGetters.mGetImagesForProduct.invoke(productId))
         }.start()
     }
+    fun subCategoryChecker(childCategory: String,childArray: Array<String>):Boolean{
+        for(i in childArray){
+            if(childCategory==i){
+                return true
+            }
+        }
+        return false
+    }
+
+    fun parentCategoryChecker(parentCategory: String,parentArray: Array<String>):Boolean{
+        for(i in parentArray){
+            if(parentCategory==i){
+                return true
+            }
+        }
+        return false
+    }
 
     fun updateInventory(brandName:String, isNewProduct:Boolean, product: Product, productId:Long?, imageList: List<String>, deletedImageList:MutableList<String>){
         var brand: BrandData?

@@ -50,6 +50,7 @@ import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
+import com.example.shoppinggroceryapp.helpers.snackbar.ShowShortSnackBar
 import com.example.shoppinggroceryapp.views.GroceryAppRetailerVMFactory
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -458,16 +459,10 @@ class AddOrEditProductFragment : Fragment() {
                     }
                 }
                 if(checkedCount>1){
-                    Snackbar.make(view,"Product Should Contain Only One Main Image",Snackbar.LENGTH_SHORT).apply {
-                        setBackgroundTint(Color.argb(255,230,20,20))
-                        show()
-                    }
+                    ShowShortSnackBar.showRedColor(view,"Product Should Contain Only One Main Image")
                 }
                 else if(checkedCount <= 0){
-                    Snackbar.make(view,"Product Should Contain atLeast One Main Image",Snackbar.LENGTH_SHORT).apply {
-                        setBackgroundTint(Color.argb(255,230,20,20))
-                        show()
-                    }
+                    ShowShortSnackBar.showRedColor(view,"Product Should Contain atLeast One Main Image")
                 }
                 else if(checkedCount==1) {
                     mainImage = "${System.currentTimeMillis()}"
@@ -564,7 +559,7 @@ class AddOrEditProductFragment : Fragment() {
                 else{
                     addParentCategoryLayout.visibility = View.GONE
                 }
-                if(!parentCategoryChecker(s.toString())){
+                if(!addEditProductViewModel.parentCategoryChecker(s.toString(),parentArray)){
                     isNewParentCategory = true
                     addParentImage.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.add_photo_alternate_24px))
                     addParentCategoryButton.text = "Add Category Image"
@@ -583,7 +578,7 @@ class AddOrEditProductFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
             override fun afterTextChanged(s: Editable?) {
-                if(!subCategoryChecker(s.toString())){
+                if(!addEditProductViewModel.subCategoryChecker(s.toString(),childArray)){
                     isNewSubCategory = true
                 }
                 else{
@@ -593,10 +588,7 @@ class AddOrEditProductFragment : Fragment() {
         })
     }
 
-    private fun setUpDatePickerListeners(
-        dateManufacturePicker: MaterialDatePicker<Long>,
-        dateExpiryPicker: MaterialDatePicker<Long>
-    ) {
+    private fun setUpDatePickerListeners(dateManufacturePicker: MaterialDatePicker<Long>, dateExpiryPicker: MaterialDatePicker<Long>) {
         productManufactureDate.setOnClickListener {
             dateManufacturePicker.show(parentFragmentManager,"Manufacture Date")
         }
@@ -618,9 +610,6 @@ class AddOrEditProductFragment : Fragment() {
         }
     }
 
-    private fun setUpListeners() {
-
-    }
 
     override fun onResume() {
         super.onResume()
@@ -634,21 +623,4 @@ class AddOrEditProductFragment : Fragment() {
         InitialFragment.hideBottomNav.value = false
     }
 
-    fun parentCategoryChecker(parentCategory: String):Boolean{
-        for(i in parentArray){
-            if(parentCategory==i){
-                return true
-            }
-        }
-        return false
-    }
-
-    fun subCategoryChecker(childCategory: String):Boolean{
-        for(i in childArray){
-            if(childCategory==i){
-                return true
-            }
-        }
-        return false
-    }
 }
