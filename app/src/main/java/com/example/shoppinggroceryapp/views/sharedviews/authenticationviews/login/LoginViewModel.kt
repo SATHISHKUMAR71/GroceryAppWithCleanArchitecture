@@ -4,17 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.order.CartMapping
 import com.core.domain.user.User
-import com.core.usecases.customerusecase.cart.AddCartForUser
-import com.core.usecases.customerusecase.cart.GetCartForUser
+import com.core.usecases.cartusecase.setcartusecase.AddCartForUser
+import com.core.usecases.cartusecase.getcartusecase.GetCartForUser
 import com.core.usecases.userusecase.GetUser
 import com.core.usecases.userusecase.GetUserByInputData
 import com.example.shoppinggroceryapp.MainActivity
-import com.example.shoppinggroceryapp.framework.db.dao.UserDao
-import com.example.shoppinggroceryapp.framework.db.entity.order.CartMappingEntity
-import com.example.shoppinggroceryapp.framework.db.entity.user.UserEntity
 
-class LoginViewModel(private var mGetUser: GetUser,private var mGetUserByInputData: GetUserByInputData,private var mGetCartForUser: GetCartForUser,
-    private var addCartForUser: AddCartForUser) :ViewModel(){
+class LoginViewModel(private var mGetUser: GetUser, private var mGetUserByInputData: GetUserByInputData, private var mGetCartForUser: GetCartForUser,
+                     private var addCartForUser: AddCartForUser
+) :ViewModel(){
     var user:MutableLiveData<User> = MutableLiveData()
     var userName:MutableLiveData<User> = MutableLiveData()
 

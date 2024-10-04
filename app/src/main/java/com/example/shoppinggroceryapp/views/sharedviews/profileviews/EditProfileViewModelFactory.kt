@@ -6,8 +6,8 @@ import com.core.data.repository.AuthenticationRepository
 import com.core.data.repository.CartRepository
 import com.core.data.repository.OrderRepository
 import com.core.data.repository.UserRepository
-import com.core.usecases.customerusecase.cart.GetProductsByCartId
-import com.core.usecases.customerusecase.orders.GetPurchasedProducts
+import com.core.usecases.cartusecase.getcartusecase.GetProductsByCartId
+import com.core.usecases.orderusecase.getordersusecase.GetPurchasedProducts
 import com.core.usecases.userusecase.GetUserByInputData
 import com.core.usecases.userusecase.UpdateExistingUser
 

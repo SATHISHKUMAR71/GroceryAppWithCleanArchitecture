@@ -4,16 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.order.OrderDetails
 import com.core.domain.user.Address
-import com.core.usecases.customerusecase.address.GetSpecificAddress
-import com.core.usecases.customerusecase.orders.UpdateOrderDetails
-import com.core.usecases.userusecase.orders.GetOrderedTimeSlot
-import com.core.usecases.userusecase.orders.GetSpecificDailyOrderWithOrderId
-import com.core.usecases.userusecase.orders.GetSpecificMonthlyOrderWithOrderId
-import com.core.usecases.userusecase.orders.GetSpecificWeeklyOrderWithOrderId
-import com.core.usecases.userusecase.orders.RemoveOrderFromDailySubscription
-import com.core.usecases.userusecase.orders.RemoveOrderFromMonthlySubscription
-import com.core.usecases.userusecase.orders.RemoveOrderFromWeeklySubscription
-import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
+import com.core.usecases.addressusecase.GetSpecificAddress
+import com.core.usecases.orderusecase.updateorderusecase.UpdateOrderDetails
+import com.core.usecases.orderusecase.getordersusecase.GetOrderedTimeSlot
+import com.core.usecases.orderusecase.getordersusecase.GetSpecificDailyOrderWithOrderId
+import com.core.usecases.orderusecase.getordersusecase.GetSpecificMonthlyOrderWithOrderId
+import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWithOrderId
+import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromDailySubscription
+import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromMonthlySubscription
+import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromWeeklySubscription
 
 class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
                            private val mGetSpecificAddress: GetSpecificAddress,
@@ -23,7 +22,8 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
                            private val mRemoveOrderFromMonthlySubscription: RemoveOrderFromMonthlySubscription,
                            private val mRemoveOrderFromDailySubscription: RemoveOrderFromDailySubscription,
                            private val mRemoveOrderFromWeeklySubscription: RemoveOrderFromWeeklySubscription,
-                           private val mGetOrderedTimeSlot: GetOrderedTimeSlot): ViewModel() {
+                           private val mGetOrderedTimeSlot: GetOrderedTimeSlot
+): ViewModel() {
     var selectedAddress:MutableLiveData<Address> = MutableLiveData()
     var date:MutableLiveData<Int> = MutableLiveData()
     var timeSlot:MutableLiveData<Int> = MutableLiveData()

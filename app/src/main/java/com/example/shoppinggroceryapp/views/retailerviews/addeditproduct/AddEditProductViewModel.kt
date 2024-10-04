@@ -7,9 +7,9 @@ import com.core.domain.products.Category
 import com.core.domain.products.Images
 import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
-import com.core.usecases.retailerusecase.products.productmanagement.ProductManagementDeleteUseCases
-import com.core.usecases.retailerusecase.products.productmanagement.ProductManagementGetterUseCases
-import com.core.usecases.retailerusecase.products.productmanagement.ProductManagementSetterUseCases
+import com.core.usecases.productusecase.productmanagement.ProductManagementDeleteUseCases
+import com.core.usecases.productusecase.productmanagement.ProductManagementGetterUseCases
+import com.core.usecases.productusecase.productmanagement.ProductManagementSetterUseCases
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailViewModel
 

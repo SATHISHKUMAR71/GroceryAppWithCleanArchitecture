@@ -1,7 +1,7 @@
 package com.example.shoppinggroceryapp.framework.data.product
 
 import com.core.data.datasource.productdatasource.ProductDataSource
-import com.core.data.datasource.productdatasource.ProductRetailerDataSource
+import com.core.data.datasource.productdatasource.RetailerProductDataSource
 import com.core.domain.products.BrandData
 import com.core.domain.products.CartWithProductData
 import com.core.domain.products.Category
@@ -19,7 +19,7 @@ import com.example.shoppinggroceryapp.framework.db.entity.products.ImagesEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
 import com.example.shoppinggroceryapp.framework.db.entity.recentlyvieweditems.RecentlyViewedItemsEntity
 
-class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSource,ProductRetailerDataSource,ConvertorHelper() {
+class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSource,RetailerProductDataSource,ConvertorHelper() {
     override fun getProductById(productId: Long): Product? {
         return retailerDao.getProductById(productId)?.let {
             convertProductEntityToProduct(it)

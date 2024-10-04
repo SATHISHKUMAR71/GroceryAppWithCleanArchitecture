@@ -4,17 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.products.Product
 import com.core.domain.user.User
-import com.core.usecases.customerusecase.cart.GetProductsByCartId
-import com.core.usecases.customerusecase.cart.GetProductsWithCartData
-import com.core.usecases.customerusecase.orders.GetPurchasedProducts
-import com.core.usecases.userusecase.GetUser
+import com.core.usecases.cartusecase.getcartusecase.GetProductsByCartId
+import com.core.usecases.orderusecase.getordersusecase.GetPurchasedProducts
 import com.core.usecases.userusecase.GetUserByInputData
 import com.core.usecases.userusecase.UpdateExistingUser
-import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 
 
-class EditProfileViewModel(private var mUpdateExistingUser:UpdateExistingUser,private val mGetUserByInputData: GetUserByInputData,
-    private var mGetPurchasedProducts: GetPurchasedProducts, private var mGetProductsByCartId: GetProductsByCartId
+class EditProfileViewModel(private var mUpdateExistingUser:UpdateExistingUser, private val mGetUserByInputData: GetUserByInputData,
+                           private var mGetPurchasedProducts: GetPurchasedProducts, private var mGetProductsByCartId: GetProductsByCartId
 ):ViewModel() {
 
     var recentlyBoughtList:MutableLiveData<MutableList<Product>> = MutableLiveData()

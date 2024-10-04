@@ -4,21 +4,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.order.OrderDetails
 import com.core.domain.products.CartWithProductData
-import com.core.usecases.customerusecase.cart.GetDeletedProductsWithCarId
-import com.core.usecases.customerusecase.cart.GetProductsWithCartData
-import com.core.usecases.customerusecase.orders.GetOrderForUser
-import com.core.usecases.customerusecase.orders.GetOrderForUserDailySubscription
-import com.core.usecases.customerusecase.orders.GetOrderForUserMonthlySubscription
-import com.core.usecases.customerusecase.orders.GetOrderForUserWeeklySubscription
-import com.core.usecases.customerusecase.orders.GetOrdersForUserNoSubscription
-import com.core.usecases.retailerusecase.orders.GetAllOrders
-import com.core.usecases.retailerusecase.orders.GetDailyOrders
-import com.core.usecases.retailerusecase.orders.GetMonthlyOrders
-import com.core.usecases.retailerusecase.orders.GetNormalOrder
-import com.core.usecases.retailerusecase.orders.GetWeeklyOrders
-import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
-import com.example.shoppinggroceryapp.framework.db.entity.order.OrderDetailsEntity
-import com.example.shoppinggroceryapp.framework.db.entity.products.CartWithProductDataEntity
+import com.core.usecases.cartusecase.getcartusecase.GetDeletedProductsWithCarId
+import com.core.usecases.cartusecase.getcartusecase.GetProductsWithCartData
+import com.core.usecases.orderusecase.getordersusecase.GetOrderForUser
+import com.core.usecases.subscriptionusecase.getsubscriptionusecase.GetOrderForUserDailySubscription
+import com.core.usecases.subscriptionusecase.getsubscriptionusecase.GetOrderForUserMonthlySubscription
+import com.core.usecases.subscriptionusecase.getsubscriptionusecase.GetOrderForUserWeeklySubscription
+import com.core.usecases.subscriptionusecase.getsubscriptionusecase.GetOrdersForUserNoSubscription
+import com.core.usecases.orderusecase.getordersusecase.GetAllOrders
+import com.core.usecases.orderusecase.getordersusecase.GetDailyOrders
+import com.core.usecases.orderusecase.getordersusecase.GetMonthlyOrders
+import com.core.usecases.orderusecase.getordersusecase.GetNormalOrder
+import com.core.usecases.orderusecase.getordersusecase.GetWeeklyOrders
 
 class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
                          private var mGetOrderForUserMonthlySubscription: GetOrderForUserMonthlySubscription,
@@ -31,7 +28,8 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
                          private val mGetMonthlyOrders: GetMonthlyOrders,
                          private val mGetNormalOrder: GetNormalOrder,
                          private val mGetDailyOrders: GetDailyOrders,
-                         private val mGetAllOrders: GetAllOrders):ViewModel() {
+                         private val mGetAllOrders: GetAllOrders
+):ViewModel() {
 
     var orderedItems:MutableLiveData<List<OrderDetails>> = MutableLiveData()
     var dataReady:MutableLiveData<Boolean> = MutableLiveData()

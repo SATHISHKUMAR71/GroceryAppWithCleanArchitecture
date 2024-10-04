@@ -4,17 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.order.Cart
 import com.core.domain.products.Product
-import com.core.usecases.customerusecase.cart.AddProductInCart
-import com.core.usecases.customerusecase.cart.GetCartItems
-import com.core.usecases.customerusecase.cart.GetSpecificProductInCart
-import com.core.usecases.customerusecase.cart.RemoveProductInCart
-import com.core.usecases.customerusecase.cart.UpdateCartItems
-import com.core.usecases.customerusecase.products.GetAllProducts
-import com.core.usecases.customerusecase.products.GetBrandName
-import com.core.usecases.customerusecase.products.GetProductByName
-import com.core.usecases.customerusecase.products.GetProductsByCategory
-import com.core.usecases.customerusecase.products.GetProductsQueryForName
-import com.example.shoppinggroceryapp.framework.db.dao.UserDao
+import com.core.usecases.cartusecase.setcartusecase.AddProductInCart
+import com.core.usecases.cartusecase.getcartusecase.GetCartItems
+import com.core.usecases.cartusecase.getcartusecase.GetSpecificProductInCart
+import com.core.usecases.cartusecase.setcartusecase.RemoveProductInCart
+import com.core.usecases.cartusecase.setcartusecase.UpdateCartItems
+import com.core.usecases.productusecase.getproductusecase.GetAllProducts
+import com.core.usecases.productusecase.getproductusecase.GetBrandName
+import com.core.usecases.productusecase.getproductusecase.GetProductByName
+import com.core.usecases.productusecase.getproductusecase.GetProductsByCategory
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 
@@ -26,7 +24,8 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
                            private val mGetBrandName: GetBrandName,
                            private val mRemoveProductInCart: RemoveProductInCart,
                            private val mUpdateCartItems: UpdateCartItems,
-                           private val mGetCartItems: GetCartItems):ViewModel() {
+                           private val mGetCartItems: GetCartItems
+):ViewModel() {
 
     var cartEntityList: MutableLiveData<List<Cart>> = MutableLiveData()
     var productEntityList: MutableLiveData<List<Product>> = MutableLiveData()

@@ -8,23 +8,22 @@ import com.core.domain.order.OrderDetails
 import com.core.domain.order.TimeSlot
 import com.core.domain.order.WeeklyOnce
 import com.core.domain.products.CartWithProductData
-import com.core.usecases.customerusecase.cart.GetProductsWithCartData
-import com.core.usecases.customerusecase.orders.AddDailySubscription
-import com.core.usecases.customerusecase.orders.AddMonthlySubscription
-import com.core.usecases.customerusecase.orders.AddWeeklySubscription
-import com.core.usecases.customerusecase.orders.UpdateOrderDetails
-import com.core.usecases.customerusecase.orders.UpdateTimeSlot
-import com.core.usecases.userusecase.orders.GetSpecificDailyOrderWithOrderId
-import com.core.usecases.userusecase.orders.GetSpecificMonthlyOrderWithOrderId
-import com.core.usecases.userusecase.orders.GetSpecificWeeklyOrderWithOrderId
-import com.core.usecases.userusecase.orders.RemoveOrderFromDailySubscription
-import com.core.usecases.userusecase.orders.RemoveOrderFromMonthlySubscription
-import com.core.usecases.userusecase.orders.RemoveOrderFromWeeklySubscription
-import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
+import com.core.usecases.cartusecase.getcartusecase.GetProductsWithCartData
+import com.core.usecases.subscriptionusecase.setsubscriptionusecase.AddDailySubscription
+import com.core.usecases.subscriptionusecase.setsubscriptionusecase.AddMonthlySubscription
+import com.core.usecases.subscriptionusecase.setsubscriptionusecase.AddWeeklySubscription
+import com.core.usecases.orderusecase.updateorderusecase.UpdateOrderDetails
+import com.core.usecases.subscriptionusecase.setsubscriptionusecase.UpdateTimeSlot
+import com.core.usecases.orderusecase.getordersusecase.GetSpecificDailyOrderWithOrderId
+import com.core.usecases.orderusecase.getordersusecase.GetSpecificMonthlyOrderWithOrderId
+import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWithOrderId
+import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromDailySubscription
+import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromMonthlySubscription
+import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromWeeklySubscription
 
 class OrderSummaryViewModel(private val mGetProductsWithCartData: GetProductsWithCartData,
-                            private val mUpdateOrderDetails:UpdateOrderDetails,
-                            private val mUpdateTimeSlot:UpdateTimeSlot,
+                            private val mUpdateOrderDetails: UpdateOrderDetails,
+                            private val mUpdateTimeSlot: UpdateTimeSlot,
                             private val mAddMonthlySubscription: AddMonthlySubscription,
                             private val mAddWeeklySubscription: AddWeeklySubscription,
                             private val mAddDailySubscription: AddDailySubscription,
@@ -33,7 +32,8 @@ class OrderSummaryViewModel(private val mGetProductsWithCartData: GetProductsWit
                             private val mGetSpecificDailyOrderWithOrderId: GetSpecificDailyOrderWithOrderId,
                             private val mRemoveOrderFromDailySubscription: RemoveOrderFromDailySubscription,
                             private val mRemoveOrderFromWeeklySubscription: RemoveOrderFromWeeklySubscription,
-                            private val mRemoveOrderFromMonthlySubscription: RemoveOrderFromMonthlySubscription):ViewModel() {
+                            private val mRemoveOrderFromMonthlySubscription: RemoveOrderFromMonthlySubscription
+):ViewModel() {
 
     var cartItems:MutableLiveData<List<CartWithProductData>> = MutableLiveData()
     fun getProductsWithCartId(cartId:Int){

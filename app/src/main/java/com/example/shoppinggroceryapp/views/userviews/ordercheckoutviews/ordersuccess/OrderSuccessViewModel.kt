@@ -9,34 +9,28 @@ import com.core.domain.order.OrderDetails
 import com.core.domain.order.TimeSlot
 import com.core.domain.order.WeeklyOnce
 import com.core.domain.products.CartWithProductData
-import com.core.usecases.customerusecase.cart.AddCartForUser
-import com.core.usecases.customerusecase.cart.GetCartForUser
-import com.core.usecases.customerusecase.cart.UpdateCart
-import com.core.usecases.customerusecase.orders.AddDailySubscription
-import com.core.usecases.customerusecase.orders.AddMonthlySubscription
-import com.core.usecases.customerusecase.orders.AddOrder
-import com.core.usecases.customerusecase.orders.AddTimeSlot
-import com.core.usecases.customerusecase.orders.AddWeeklySubscription
-import com.core.usecases.customerusecase.orders.GetOrderDetailsWithCartId
-import com.core.usecases.customerusecase.orders.GetOrderWithProductsByOrderId
+import com.core.usecases.cartusecase.setcartusecase.AddCartForUser
+import com.core.usecases.cartusecase.getcartusecase.GetCartForUser
+import com.core.usecases.cartusecase.setcartusecase.UpdateCart
+import com.core.usecases.subscriptionusecase.setsubscriptionusecase.AddDailySubscription
+import com.core.usecases.subscriptionusecase.setsubscriptionusecase.AddMonthlySubscription
+import com.core.usecases.orderusecase.updateorderusecase.AddOrder
+import com.core.usecases.subscriptionusecase.setsubscriptionusecase.AddTimeSlot
+import com.core.usecases.subscriptionusecase.setsubscriptionusecase.AddWeeklySubscription
+import com.core.usecases.orderusecase.getordersusecase.GetOrderWithProductsByOrderId
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
-import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
-import com.example.shoppinggroceryapp.framework.db.entity.order.CartMappingEntity
-import com.example.shoppinggroceryapp.framework.db.entity.order.DailySubscriptionEntity
-import com.example.shoppinggroceryapp.framework.db.entity.order.MonthlyOnceEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.OrderDetailsEntity
-import com.example.shoppinggroceryapp.framework.db.entity.order.TimeSlotEntity
-import com.example.shoppinggroceryapp.framework.db.entity.order.WeeklyOnceEntity
-import com.example.shoppinggroceryapp.framework.db.entity.products.CartWithProductDataEntity
+
 class OrderSuccessViewModel(private val mAddOrder: AddOrder,
                             private val mGetOrderWithProductsByOrderId: GetOrderWithProductsByOrderId,
                             private val mAddMonthlySubscription: AddMonthlySubscription,
                             private val mAddWeeklySubscription: AddWeeklySubscription,
                             private val mAddDailySubscription: AddDailySubscription,
                             private val mAddTimeSlot: AddTimeSlot,
-                            private val mUpdateCart:UpdateCart,
-                            private val mAddCartForUser:AddCartForUser,
-                            private val mGetCartForUser:GetCartForUser):ViewModel() {
+                            private val mUpdateCart: UpdateCart,
+                            private val mAddCartForUser: AddCartForUser,
+                            private val mGetCartForUser: GetCartForUser
+):ViewModel() {
     val lock = Any()
     var gotOrder: OrderDetailsEntity? = null
     var orderedId:MutableLiveData<Long> = MutableLiveData()

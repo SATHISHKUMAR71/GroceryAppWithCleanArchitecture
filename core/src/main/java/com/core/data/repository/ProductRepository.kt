@@ -1,7 +1,7 @@
 package com.core.data.repository
 
 import com.core.data.datasource.productdatasource.ProductDataSource
-import com.core.data.datasource.productdatasource.ProductRetailerDataSource
+import com.core.data.datasource.productdatasource.RetailerProductDataSource
 import com.core.domain.products.BrandData
 import com.core.domain.products.CartWithProductData
 import com.core.domain.products.Category
@@ -11,17 +11,17 @@ import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
 
-class ProductRepository(private val productDataSource: ProductDataSource,private val productRetailerDataSource: ProductRetailerDataSource) {
+class ProductRepository(private val productDataSource: ProductDataSource,private val retailerProductDataSource: RetailerProductDataSource) {
     fun addProduct(product: Product){
-        productRetailerDataSource.addProduct(product)
+        retailerProductDataSource.addProduct(product)
     }
 
     fun addParentCategory(parentCategory: ParentCategory){
-        productRetailerDataSource.addParentCategory(parentCategory)
+        retailerProductDataSource.addParentCategory(parentCategory)
     }
 
     fun addSubCategory(category: Category){
-        productRetailerDataSource.addSubCategory(category)
+        retailerProductDataSource.addSubCategory(category)
     }
 
     fun getParentAndChildCategory():Map<ParentCategory,List<Category>>{
@@ -30,61 +30,61 @@ class ProductRepository(private val productDataSource: ProductDataSource,private
 
 
     fun addNewBrand(brandData: BrandData){
-        productRetailerDataSource.addNewBrand(brandData)
+        retailerProductDataSource.addNewBrand(brandData)
     }
 
     fun getLastProduct(): Product?{
-        return productRetailerDataSource.getLastProduct()
+        return retailerProductDataSource.getLastProduct()
     }
     fun updateProduct(product: Product){
-        productRetailerDataSource.updateProduct(product)
+        retailerProductDataSource.updateProduct(product)
     }
 
     fun getProductsInRecentList(productId:Long,user:Int): RecentlyViewedItems?{
-        return productRetailerDataSource.getProductsInRecentList(productId,user)
+        return retailerProductDataSource.getProductsInRecentList(productId,user)
     }
     fun getImagesForProduct(productId: Long):List<Images>?{
-        return productRetailerDataSource.getImagesForProduct(productId)
+        return retailerProductDataSource.getImagesForProduct(productId)
     }
     fun getSpecificImage(image:String): Images?{
-        return productRetailerDataSource.getSpecificImage(image)
+        return retailerProductDataSource.getSpecificImage(image)
     }
     fun addDeletedProduct(deletedProductList: DeletedProductList){
-        return productRetailerDataSource.addDeletedProduct(deletedProductList)
+        return retailerProductDataSource.addDeletedProduct(deletedProductList)
     }
     fun deleteProduct(product: Product){
-        productRetailerDataSource.deleteProduct(product)
+        retailerProductDataSource.deleteProduct(product)
     }
 
     fun getBrandWithName(brandName:String): BrandData?{
-        return productRetailerDataSource.getBrandWithName(brandName)
+        return retailerProductDataSource.getBrandWithName(brandName)
     }
 
     fun getParentCategoryImageForParent(childCategoryName: String):String?{
-        return productRetailerDataSource.getParentCategoryImageForParent(childCategoryName)
+        return retailerProductDataSource.getParentCategoryImageForParent(childCategoryName)
     }
     fun getParentCategoryImage(parentCategoryName: String):String?{
-        return productRetailerDataSource.getParentCategoryImage(parentCategoryName)
+        return retailerProductDataSource.getParentCategoryImage(parentCategoryName)
     }
     fun addProductImagesInDb(image: Images){
-        productRetailerDataSource.addProductImagesInDb(image)
+        retailerProductDataSource.addProductImagesInDb(image)
     }
 
     fun deleteProductImage(image: Images){
-        productRetailerDataSource.deleteProductImage(image)
+        retailerProductDataSource.deleteProductImage(image)
     }
 
     fun getParentCategoryName():Array<String>?{
-        return productRetailerDataSource.getParentCategoryName()
+        return retailerProductDataSource.getParentCategoryName()
     }
     fun getParentCategoryNameForChild(childName: String): String? {
-        return productRetailerDataSource.getParentCategoryNameForChild(childName)
+        return retailerProductDataSource.getParentCategoryNameForChild(childName)
     }
     fun getChildCategoryName():Array<String>?{
-        return productRetailerDataSource.getChildCategoryName()
+        return retailerProductDataSource.getChildCategoryName()
     }
     fun getChildCategoryName(parentName:String):Array<String>?{
-        return productRetailerDataSource.getChildCategoryName(parentName)
+        return retailerProductDataSource.getChildCategoryName(parentName)
     }
 
     fun getOnlyProducts():List<Product>?{

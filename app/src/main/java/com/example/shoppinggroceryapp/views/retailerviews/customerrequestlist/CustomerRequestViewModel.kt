@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModel
 import com.core.domain.help.CustomerRequestWithName
 import com.core.domain.order.OrderDetails
 import com.core.domain.products.CartWithProductData
-import com.core.usecases.customerusecase.cart.GetProductsWithCartData
-import com.core.usecases.customerusecase.orders.GetOrderDetailsWithOrderId
-import com.core.usecases.retailerusecase.customer.GetCustomerRequestWithName
+import com.core.usecases.cartusecase.getcartusecase.GetProductsWithCartData
+import com.core.usecases.orderusecase.getordersusecase.GetOrderDetailsWithOrderId
+import com.core.usecases.helpusecase.GetCustomerRequestWithName
 
-class CustomerRequestViewModel(private var mGetCustomerRequestWithName: GetCustomerRequestWithName,private var mGetOrderDetailsWithOrderId: GetOrderDetailsWithOrderId,private val mGetProductsWithCartData: GetProductsWithCartData):ViewModel() {
+class CustomerRequestViewModel(private var mGetCustomerRequestWithName: GetCustomerRequestWithName, private var mGetOrderDetailsWithOrderId: GetOrderDetailsWithOrderId, private val mGetProductsWithCartData: GetProductsWithCartData):ViewModel() {
 
     var customerRequestList:MutableLiveData<List<CustomerRequestWithName>> = MutableLiveData()
     var selectedOrderLiveData:MutableLiveData<OrderDetails> = MutableLiveData()

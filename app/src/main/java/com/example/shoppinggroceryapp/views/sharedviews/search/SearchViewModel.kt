@@ -3,14 +3,13 @@ package com.example.shoppinggroceryapp.views.sharedviews.search
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.search.SearchHistory
-import com.core.usecases.userusecase.AddSearchQueryInDb
-import com.core.usecases.userusecase.GetSearchList
-import com.core.usecases.userusecase.PerformCategorySearch
-import com.core.usecases.userusecase.PerformProductSearch
+import com.core.usecases.searchusecase.AddSearchQueryInDb
+import com.core.usecases.searchusecase.GetSearchList
+import com.core.usecases.searchusecase.PerformCategorySearch
+import com.core.usecases.searchusecase.PerformProductSearch
 import com.example.shoppinggroceryapp.MainActivity
-import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 
-class SearchViewModel(var mGetSearchList:GetSearchList, var mPerformProductSearch: PerformProductSearch, var mPerformCategorySearch: PerformCategorySearch, var mAddSearchQueryInDb: AddSearchQueryInDb):ViewModel() {
+class SearchViewModel(var mGetSearchList: GetSearchList, var mPerformProductSearch: PerformProductSearch, var mPerformCategorySearch: PerformCategorySearch, var mAddSearchQueryInDb: AddSearchQueryInDb):ViewModel() {
 
     var searchedList:MutableLiveData<MutableList<String>> = MutableLiveData()
     fun performSearch(query:String){

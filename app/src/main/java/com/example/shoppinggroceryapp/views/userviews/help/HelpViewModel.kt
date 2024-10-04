@@ -3,12 +3,12 @@ package com.example.shoppinggroceryapp.views.userviews.help
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.help.CustomerRequest
-import com.core.usecases.customerusecase.cart.GetProductsWithCartData
-import com.core.usecases.customerusecase.help.AddCustomerRequest
-import com.example.shoppinggroceryapp.framework.db.dao.UserDao
+import com.core.usecases.cartusecase.getcartusecase.GetProductsWithCartData
+import com.core.usecases.helpusecase.AddCustomerRequest
 
 class HelpViewModel(private val mGetProductsWithCartData: GetProductsWithCartData,
-                    private val mAddCustomerRequest: AddCustomerRequest):ViewModel() {
+                    private val mAddCustomerRequest: AddCustomerRequest
+):ViewModel() {
     var productList:MutableLiveData<String> = MutableLiveData()
 
     fun assignProductList(selectedCartId:Int){

@@ -4,16 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.products.Product
 import com.core.domain.user.Address
-import com.core.usecases.customerusecase.address.GetAllAddress
-import com.core.usecases.customerusecase.cart.GetCartItems
-import com.core.usecases.customerusecase.cart.GetProductsByCartId
-import com.example.shoppinggroceryapp.framework.db.dao.UserDao
-import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
-import com.example.shoppinggroceryapp.framework.db.entity.user.AddressEntity
+import com.core.usecases.addressusecase.GetAllAddress
+import com.core.usecases.cartusecase.getcartusecase.GetCartItems
+import com.core.usecases.cartusecase.getcartusecase.GetProductsByCartId
 
 class CartViewModel(private val mGetProductsByCartId: GetProductsByCartId,
                     private val mGetCartItems: GetCartItems,
-                    private val mGetAllAddress: GetAllAddress):ViewModel() {
+                    private val mGetAllAddress: GetAllAddress
+):ViewModel() {
 
     var cartProducts:MutableLiveData<List<Product>> = MutableLiveData()
     var totalPrice:MutableLiveData<Float> = MutableLiveData()

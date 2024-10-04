@@ -3,9 +3,7 @@ package com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.user.Address
-import com.core.usecases.customerusecase.address.GetAllAddress
-import com.example.shoppinggroceryapp.framework.db.dao.UserDao
-import com.example.shoppinggroceryapp.framework.db.entity.user.AddressEntity
+import com.core.usecases.addressusecase.GetAllAddress
 
 class SavedAddressViewModel(private val mGetAddressList: GetAllAddress):ViewModel() {
 

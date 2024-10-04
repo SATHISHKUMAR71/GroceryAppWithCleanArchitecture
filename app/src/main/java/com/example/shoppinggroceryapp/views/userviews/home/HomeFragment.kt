@@ -57,6 +57,7 @@ class HomeFragment : Fragment() {
     var imagesList = listOf(R.drawable.butter,R.drawable.fresh_fruits,R.drawable.fresh_veg,
         R.drawable.milk_cream,R.drawable.mixed_nuts,R.drawable.rice,R.drawable.spices,R.drawable.soft_drinks,
         R.drawable.energy_drinks,R.drawable.tea_coffee,R.drawable.wheat_flour)
+
     var essentialSize = essentialItems.size -1
     private lateinit var homeFragNestedScroll:NestedScrollView
     private lateinit var recentItems:RecyclerView
@@ -96,23 +97,23 @@ class HomeFragment : Fragment() {
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
-
         homeViewModel = ViewModelProvider(this,
             GroceryAppUserVMFactory(userDao, retailerDao)
         )[HomeViewModel::class.java]
+
         recentItems = view.findViewById(R.id.recentlyViewedItemsHomeFrag)
         homeFragNestedScroll =  view.findViewById(R.id.nestedScrollViewHomeFrag)
 
-        var adapter = ProductListAdapter(this,File(requireContext().filesDir,"AppImages"),"P",true,productListViewModel = ViewModelProvider(this,
+        val adapter = ProductListAdapter(this,File(requireContext().filesDir,"AppImages"),"P",true,productListViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(retailerDao, userDao)
         )[ProductListViewModel::class.java])
+
         homeViewModel.getRecentlyViewedItems()
+
         recentItems.adapter = null
         adapter.setProducts(mutableListOf())
-//        if(recentItems.adapter==null){
-            recentItems.adapter = adapter
-            recentItems.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
-//        }
+        recentItems.adapter = adapter
+        recentItems.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
 
         homeViewModel.recentlyViewedList.observe(viewLifecycleOwner){
             if((it!=null) &&( it.isNotEmpty())){
@@ -124,6 +125,7 @@ class HomeFragment : Fragment() {
                 view.findViewById<TextView>(R.id.recentlyViewedItemsText).visibility = View.GONE
             }
         }
+
         view.findViewById<MaterialButton>(R.id.viewAllCategoriesBtn).setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Opened Category Fragment")
         }
@@ -137,7 +139,7 @@ class HomeFragment : Fragment() {
         return view
     }
 
-    fun addViewToLayout(container: ViewGroup,index:Int){
+    private fun addViewToLayout(container: ViewGroup, index:Int){
         val newView = LayoutInflater.from(requireContext()).inflate(R.layout.category_layout,container,false)
         val imageView0 = newView.findViewById<ImageView>(R.id.categoryImage0)
         val imageView1 = newView.findViewById<ImageView>(R.id.categoryImage1)
@@ -200,15 +202,5 @@ class HomeFragment : Fragment() {
         homeViewModel.recentlyViewedList.value = null
         homeViewModel.recentlyViewedList.removeObservers(viewLifecycleOwner)
     }
-    override fun onPause() {
-        super.onPause()
-    }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 }

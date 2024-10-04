@@ -4,13 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.products.Category
 import com.core.domain.products.ParentCategory
-import com.core.usecases.userusecase.GetChildNames
-import com.core.usecases.userusecase.GetParentAndChildCategories
-import com.core.usecases.userusecase.GetParentCategories
-import com.example.shoppinggroceryapp.framework.db.dataclass.ChildCategoryName
+import com.core.usecases.productusecase.getproductusecase.GetParentAndChildCategories
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
 
-class CategoryViewModel(private val mGetParentAndChildNames:GetParentAndChildCategories):ViewModel() {
+class CategoryViewModel(private val mGetParentAndChildNames: GetParentAndChildCategories):ViewModel() {
     var mappedList:MutableLiveData<Map<ParentCategory,List<Category>>> = MutableLiveData()
     var parentCategoryEntity:ParentCategoryEntity? = null
 

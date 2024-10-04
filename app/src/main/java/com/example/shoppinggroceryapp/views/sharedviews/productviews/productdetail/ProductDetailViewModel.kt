@@ -7,26 +7,19 @@ import com.core.domain.products.DeletedProductList
 import com.core.domain.products.Images
 import com.core.domain.products.Product
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
-import com.core.usecases.customerusecase.cart.AddProductInCart
-import com.core.usecases.customerusecase.cart.GetProductsByCartId
-import com.core.usecases.customerusecase.cart.GetSpecificProductInCart
-import com.core.usecases.customerusecase.cart.RemoveProductInCart
-import com.core.usecases.customerusecase.cart.UpdateCartItems
-import com.core.usecases.customerusecase.products.GetBrandName
-import com.core.usecases.customerusecase.products.GetImagesForProduct
-import com.core.usecases.customerusecase.products.GetProductsByCategory
-import com.core.usecases.customerusecase.products.GetRecentlyViewedProducts
-import com.core.usecases.retailerusecase.products.AddDeletedProductInDb
-import com.core.usecases.retailerusecase.products.DeleteProduct
-import com.core.usecases.retailerusecase.products.GetProductInRecentList
-import com.core.usecases.userusecase.AddProductInRecentList
+import com.core.usecases.cartusecase.setcartusecase.AddProductInCart
+import com.core.usecases.cartusecase.getcartusecase.GetProductsByCartId
+import com.core.usecases.cartusecase.getcartusecase.GetSpecificProductInCart
+import com.core.usecases.cartusecase.setcartusecase.RemoveProductInCart
+import com.core.usecases.cartusecase.setcartusecase.UpdateCartItems
+import com.core.usecases.productusecase.getproductusecase.GetBrandName
+import com.core.usecases.productusecase.getproductusecase.GetImagesForProduct
+import com.core.usecases.productusecase.getproductusecase.GetProductsByCategory
+import com.core.usecases.productusecase.retailerproductusecase.setretailerproduct.AddDeletedProductInDb
+import com.core.usecases.productusecase.retailerproductusecase.setretailerproduct.DeleteProduct
+import com.core.usecases.productusecase.retailerproductusecase.getretailerproduct.GetProductInRecentList
+import com.core.usecases.productusecase.setproductusecase.AddProductInRecentList
 import com.example.shoppinggroceryapp.MainActivity
-import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
-import com.example.shoppinggroceryapp.framework.db.entity.order.CartEntity
-import com.example.shoppinggroceryapp.framework.db.entity.products.DeletedProductListEntity
-import com.example.shoppinggroceryapp.framework.db.entity.products.ImagesEntity
-import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
-import com.example.shoppinggroceryapp.framework.db.entity.recentlyvieweditems.RecentlyViewedItemsEntity
 
 class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
                              private val mGetBrandName: GetBrandName,
@@ -39,7 +32,8 @@ class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
                              private val mUpdateCartItems: UpdateCartItems,
                              private val mRemoveProductInCart: RemoveProductInCart,
                              private val mGetImagesForProduct: GetImagesForProduct,
-                             private val mAddDeletedProductInDb: AddDeletedProductInDb):ViewModel() {
+                             private val mAddDeletedProductInDb: AddDeletedProductInDb
+):ViewModel() {
 
 
     var cartProducts:MutableLiveData<List<Product>> = MutableLiveData()

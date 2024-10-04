@@ -1,0 +1,6 @@
+package com.core.usecases.productusecase.productmanagement
+
+import com.core.usecases.productusecase.retailerproductusecase.setretailerproduct.DeleteProduct
+import com.core.usecases.productusecase.retailerproductusecase.setretailerproduct.DeleteProductImage
+
+data class ProductManagementDeleteUseCases(var mDeleteProductImage: DeleteProductImage, var mDeleteProduct: DeleteProduct)

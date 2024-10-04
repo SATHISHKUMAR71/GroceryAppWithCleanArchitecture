@@ -37,7 +37,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:textStyle="bold"
+
                     android:id="@+id/customerName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                     android:textSize="16sp" />
                 <TextView
                     android:id="@+id/customerEmail"
-                    android:textStyle="bold"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
@@ -56,7 +56,7 @@
                     android:textSize="16sp" />
                 <TextView
                     android:id="@+id/customerPhone"
-                    android:textStyle="bold"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
@@ -78,6 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:textColor="@color/offerColor"
                     android:maxLines="6"
                     android:padding="5dp"
                     android:text="Customer Request"
