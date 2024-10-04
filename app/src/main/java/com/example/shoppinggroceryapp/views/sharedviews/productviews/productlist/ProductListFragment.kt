@@ -249,11 +249,7 @@ class ProductListFragment : Fragment() {
                 productEntityList  = it.toMutableList()
                 BottomSheetDialogFragment.selectedOption.value = data
             }
-//            else{
-//
-//            }
 
-//            productEntityList  = it.toMutableList()
 
             realProductEntityList = it.toMutableList()
             for (i in productEntityList){
@@ -263,7 +259,6 @@ class ProductListFragment : Fragment() {
                 println("AAAAAB ${i.productName}")
             }
             if(FilterFragment.list==null) {
-//                adapter.setProducts(it)
                 if(BottomSheetDialogFragment.selectedOption.value==null) {
                     println("AAAAA  adapter if called")
                     adapter.setProducts(it)
@@ -300,7 +295,6 @@ class ProductListFragment : Fragment() {
                     productRV.adapter = adapter
                     productRV.layoutManager = LinearLayoutManager(requireContext())
                 }
-//                adapter.setProducts(productList)
                 if (productEntityList.size == 0) {
                     hideProductRV()
                 }
@@ -438,9 +432,7 @@ class ProductListFragment : Fragment() {
                 showProductRV()
             }
         }
-        else{
-//            adapter.setProducts(productList)
-        }
+
         if(FilterFragment.list?.isNotEmpty()==true){
             adapter.setProducts(FilterFragment.list!!)
         }
@@ -464,7 +456,6 @@ class ProductListFragment : Fragment() {
         InitialFragment.hideSearchBar.value = false
         InitialFragment.hideBottomNav.value = false
         productRV.stopScroll()
-//        productListFirstVisiblePos = (productRV.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
         productListViewModel.cartEntityList.value = mutableListOf()
         if(InitialFragment.searchQueryList.size <2){
             InitialFragment.searchHint.value = ""
@@ -511,7 +502,7 @@ class ProductListFragment : Fragment() {
         }
     }
 
-    fun showProductRV(){
+    private fun showProductRV(){
         productRV.animate()
             .alpha(1f)
             .setDuration(50)
@@ -530,7 +521,7 @@ class ProductListFragment : Fragment() {
             .start()
     }
 
-    fun hideProductRV(){
+    private fun hideProductRV(){
         productRV.animate()
             .alpha(0f)
             .setDuration(50)

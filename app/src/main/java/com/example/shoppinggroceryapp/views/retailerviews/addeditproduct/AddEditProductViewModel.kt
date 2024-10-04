@@ -48,6 +48,24 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
         }.start()
     }
 
+    fun parentCategoryChecker(parentCategory: String,parentArray: Array<String>):Boolean{
+        for(i in parentArray){
+            if(parentCategory==i){
+                return true
+            }
+        }
+        return false
+    }
+
+    fun subCategoryChecker(childCategory: String,childArray: Array<String>):Boolean{
+        for(i in childArray){
+            if(childCategory==i){
+                return true
+            }
+        }
+        return false
+    }
+
     fun getParentCategoryImage(childCategoryName:String){
         Thread{
             categoryImage.postValue(productGetters.mGetParentCategoryImageUsingChild.invoke(childCategoryName))

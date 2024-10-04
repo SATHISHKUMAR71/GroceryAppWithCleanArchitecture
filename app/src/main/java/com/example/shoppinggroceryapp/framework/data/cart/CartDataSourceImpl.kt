@@ -51,7 +51,6 @@ class CartDataSourceImpl(private val userDao: UserDao):CartDataSource {
             cartProductList.map { CartWithProductData(it.mainImage,it.productName,it.productDescription,it.totalItems,it.unitPrice
                 ,it.manufactureDate,it.expiryDate,it.productQuantity,it.brandName) }
         }
-
     }
 
     override fun removeProductInCart(cart: Cart) {
@@ -63,7 +62,7 @@ class CartDataSourceImpl(private val userDao: UserDao):CartDataSource {
     }
 
     override fun getSpecificCart(cartId: Int, productId: Int): Cart? {
-        var cart = userDao.getSpecificCart(cartId,productId)
+        val cart = userDao.getSpecificCart(cartId,productId)
         return cart?.let {
             Cart(cart.cartId,cart.productId,cart.totalItems,cart.unitPrice)
         }
