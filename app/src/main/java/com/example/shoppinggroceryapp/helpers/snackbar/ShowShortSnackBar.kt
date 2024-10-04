@@ -12,4 +12,11 @@ object ShowShortSnackBar {
             show()
         }
     }
+
+    fun showGreenColor(view:View,text:String) {
+        Snackbar.make(view, text, Snackbar.LENGTH_SHORT).apply {
+            setBackgroundTint(Color.argb(255, 20, 230, 20))
+                .show()
+        }
+    }
 }
