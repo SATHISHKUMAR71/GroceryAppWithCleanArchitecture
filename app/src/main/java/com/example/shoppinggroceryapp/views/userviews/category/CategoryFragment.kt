@@ -79,9 +79,11 @@ class CategoryFragment: Fragment() {
         categoryViewModel.mappedList.observe(viewLifecycleOwner){
             val childList1 = categoryViewModel.getChildList(it)
             val parentList1 = categoryViewModel.getParentList(it)
-            mainCategoryRV.adapter =
-                MainCategoryAdapter(this, parentList1, childList1, imageLoader)
-            mainCategoryRV.layoutManager = LinearLayoutManager(requireContext())
+            if(mainCategoryRV.adapter==null) {
+                mainCategoryRV.adapter =
+                    MainCategoryAdapter(this, parentList1, childList1, imageLoader)
+                mainCategoryRV.layoutManager = LinearLayoutManager(requireContext())
+            }
         }
 
         return view

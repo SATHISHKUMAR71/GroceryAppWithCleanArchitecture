@@ -19,10 +19,11 @@ import com.example.shoppinggroceryapp.framework.db.entity.products.ImagesEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
 import com.example.shoppinggroceryapp.framework.db.entity.recentlyvieweditems.RecentlyViewedItemsEntity
 
-class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSource,RetailerProductDataSource,ConvertorHelper() {
+class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSource,RetailerProductDataSource {
+    var convertorHelper = ConvertorHelper()
     override fun getProductById(productId: Long): Product? {
         return retailerDao.getProductById(productId)?.let {
-            convertProductEntityToProduct(it)
+            convertorHelper.convertProductEntityToProduct(it)
         }
     }
 
@@ -31,19 +32,19 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
     }
 
     override fun getOnlyProducts(): List<Product>? {
-        return retailerDao.getOnlyProducts()?.map { convertProductEntityToProduct(it) }
+        return retailerDao.getOnlyProducts()?.map { convertorHelper.convertProductEntityToProduct(it) }
     }
 
     override fun getOfferedProducts(): List<Product>? {
-        return retailerDao.getOfferedProducts()?.map { convertProductEntityToProduct(it) }
+        return retailerDao.getOfferedProducts()?.map { convertorHelper.convertProductEntityToProduct(it) }
     }
 
     override fun getProductByCategory(query: String): List<Product>? {
-        return retailerDao.getProductByCategory(query)?.map { convertProductEntityToProduct(it) }
+        return retailerDao.getProductByCategory(query)?.map { convertorHelper.convertProductEntityToProduct(it) }
     }
 
     override fun getProductsByName(query: String): List<Product>? {
-        return retailerDao.getProductsByName(query)?.map { convertProductEntityToProduct(it) }
+        return retailerDao.getProductsByName(query)?.map { convertorHelper.convertProductEntityToProduct(it) }
     }
 
     override fun getProductForQuery(query: String): List<String>? {
@@ -73,7 +74,7 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
     }
 
     override fun addProduct(product: Product) {
-        retailerDao.addProduct(convertProductToProductEntity(product))
+        retailerDao.addProduct(convertorHelper.convertProductToProductEntity(product))
     }
 
     override fun addParentCategory(parentCategory: ParentCategory) {
@@ -89,11 +90,11 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
     }
 
     override fun getLastProduct(): Product? {
-        return retailerDao.getLastProduct()?.let { convertProductEntityToProduct(it) }
+        return retailerDao.getLastProduct()?.let { convertorHelper.convertProductEntityToProduct(it) }
     }
 
     override fun updateProduct(product: Product) {
-        retailerDao.updateProduct(convertProductToProductEntity(product))
+        retailerDao.updateProduct(convertorHelper.convertProductToProductEntity(product))
     }
 
     override fun getProductsInRecentList(productId: Long, userId: Int): RecentlyViewedItems? {
@@ -113,7 +114,7 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
     }
 
     override fun deleteProduct(product: Product) {
-        retailerDao.deleteProduct(convertProductToProductEntity(product))
+        retailerDao.deleteProduct(convertorHelper.convertProductToProductEntity(product))
     }
 
     override fun getBrandWithName(brandName: String): BrandData? {
