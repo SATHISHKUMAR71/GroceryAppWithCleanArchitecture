@@ -9,35 +9,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.core.data.repository.AddressRepository
-import com.core.data.repository.AuthenticationRepository
-import com.core.data.repository.CartRepository
-import com.core.data.repository.HelpRepository
-import com.core.data.repository.OrderRepository
-import com.core.data.repository.ProductRepository
-import com.core.data.repository.SearchRepository
-import com.core.data.repository.SubscriptionRepository
-import com.core.data.repository.UserRepository
 import com.core.domain.user.Address
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
-import com.example.shoppinggroceryapp.framework.data.authentication.AuthenticationDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.address.AddressDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.cart.CartDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.help.HelpDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.order.OrderDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.product.ProductDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
+import com.example.shoppinggroceryapp.helpers.snackbar.ShowShortSnackBar
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
@@ -48,7 +30,7 @@ import com.example.shoppinggroceryapp.views.userviews.addressview.getaddress.Get
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersummary.OrderSummaryFragment
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressList
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
+
 import java.io.File
 
 class CartFragment : Fragment() {
@@ -97,9 +79,8 @@ class CartFragment : Fragment() {
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
 
-        cartViewModel = ViewModelProvider(this,
-            GroceryAppUserVMFactory(userDao, retailerDao)
-        )[CartViewModel::class.java]
+        cartViewModel = ViewModelProvider(this, GroceryAppUserVMFactory(userDao, retailerDao))[CartViewModel::class.java]
+
         addMoreGrocery.setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Added More Groceries")
         }
@@ -166,7 +147,7 @@ class CartFragment : Fragment() {
         }
         continueButton.setOnClickListener {
             if(selectedAddressEntity ==null){
-                Snackbar.make(view,"Please Add the Delivery Address to order Items",Toast.LENGTH_SHORT).setBackgroundTint(Color.RED).show()
+                ShowShortSnackBar.showRedColor(view,"Please Add the Delivery Address to order Items")
             }
             else{
                 val orderSummaryFragment = OrderSummaryFragment()

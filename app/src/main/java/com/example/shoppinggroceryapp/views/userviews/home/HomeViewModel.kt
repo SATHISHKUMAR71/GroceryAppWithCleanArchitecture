@@ -14,12 +14,10 @@ class HomeViewModel(private val mGetRecentlyViewedProducts: GetRecentlyViewedPro
     var recentlyViewedList:MutableLiveData<MutableList<Product>> = MutableLiveData()
     fun getRecentlyViewedItems(){
         Thread{
-
             val list = mutableListOf<Product>()
             val recentlyViewedProduct =mGetRecentlyViewedProducts.invoke(MainActivity.userId.toInt())
             if (recentlyViewedProduct != null) {
                 for(i in recentlyViewedProduct){
-
                     var product: Product? = mGetProductsById.invoke(i.toLong())
                     product?.let {
                         list.add(it)

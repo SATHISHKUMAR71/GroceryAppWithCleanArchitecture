@@ -85,12 +85,7 @@ class CategoryFragment: Fragment() {
                 mainCategoryRV.layoutManager = LinearLayoutManager(requireContext())
             }
         }
-
         return view
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
 
