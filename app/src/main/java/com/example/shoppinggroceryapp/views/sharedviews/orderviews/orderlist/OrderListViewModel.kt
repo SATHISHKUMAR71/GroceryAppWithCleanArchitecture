@@ -16,6 +16,7 @@ import com.core.usecases.orderusecase.getordersusecase.GetDailyOrders
 import com.core.usecases.orderusecase.getordersusecase.GetMonthlyOrders
 import com.core.usecases.orderusecase.getordersusecase.GetNormalOrder
 import com.core.usecases.orderusecase.getordersusecase.GetWeeklyOrders
+import com.example.shoppinggroceryapp.MainActivity
 
 class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
                          private var mGetOrderForUserMonthlySubscription: GetOrderForUserMonthlySubscription,
@@ -119,5 +120,57 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
             }
             dataReady.postValue(true)
         }.start()
+    }
+
+
+    fun getOrdersBasedOnSubscription(orderItems:List<OrderDetails>,subscriptionType:String?,isRetailer:Boolean):String{
+        if(orderItems.isEmpty()){
+            when (subscriptionType) {
+                "Weekly Once" -> {
+                    if(isRetailer){
+                        getOrdersForRetailerWeeklySubscription(MainActivity.userId.toInt())
+                    }
+                    else {
+                        getOrdersForSelectedUserWeeklySubscription(MainActivity.userId.toInt())
+                    }
+                    return "Weekly Orders"
+                }
+
+                "Monthly Once" -> {
+                    if(isRetailer){
+                        getOrdersForRetailerMonthlySubscription(MainActivity.userId.toInt())
+                    }
+                    else {
+                        getOrdersForSelectedUserMonthlySubscription(MainActivity.userId.toInt())
+                    }
+                    return "Monthly Orders"
+                }
+
+                "Daily" -> {
+                    if(isRetailer){
+                        getOrdersForRetailerDailySubscription(MainActivity.userId.toInt())
+                    }
+                    else {
+                        getOrdersForSelectedUserDailySubscription(MainActivity.userId.toInt())
+                    }
+                    return "Daily Orders"
+                }
+
+                "Once" -> {
+                    if(isRetailer){
+                        getOrdersForRetailerWithNoSubscription(MainActivity.userId.toInt())
+                    }
+                    else {
+                        getOrdersForSelectedUserWithNoSubscription(MainActivity.userId.toInt())
+                    }
+                    return "One Time Orders"
+                }
+
+                else ->{
+                    getOrdersForSelectedUser(MainActivity.userId.toInt())
+                }
+            }
+        }
+        return "My Orders"
     }
 }
