@@ -9,31 +9,14 @@ import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.core.data.repository.AddressRepository
-import com.core.data.repository.AuthenticationRepository
-import com.core.data.repository.CartRepository
-import com.core.data.repository.HelpRepository
-import com.core.data.repository.OrderRepository
-import com.core.data.repository.ProductRepository
-import com.core.data.repository.SearchRepository
-import com.core.data.repository.SubscriptionRepository
-import com.core.data.repository.UserRepository
 import com.core.domain.user.Address
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
-import com.example.shoppinggroceryapp.framework.data.authentication.AuthenticationDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.address.AddressDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.cart.CartDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.help.HelpDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.order.OrderDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.product.ProductDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
+import com.example.shoppinggroceryapp.helpers.toast.ShowShortToast
 import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressList
 import com.google.android.material.appbar.MaterialToolbar
@@ -43,6 +26,7 @@ import com.google.android.material.textfield.TextInputLayout
 
 
 class GetNewAddress : Fragment() {
+
     private lateinit var fullName: TextInputEditText
     private lateinit var fullNameLayout:TextInputLayout
     private lateinit var phoneLayout:TextInputLayout
@@ -98,20 +82,20 @@ class GetNewAddress : Fragment() {
                 cityLayout.error ==null && stateLayout.error==null && postalCodeLayout.error == null){
                 if(SavedAddressList.editAddressEntity !=null){
                     getAddressViewModel.updateAddress(
-                    Address(
-                        addressId = SavedAddressList.editAddressEntity!!.addressId,
-                        userId = MainActivity.userId.toInt(),
-                        addressContactName = fullName.text.toString(),
-                        addressContactNumber = phone.text.toString(),
-                        buildingName = houseNo.text.toString(),
-                        streetName = street.text.toString(),
-                        city = city.text.toString(),
-                        state = state.text.toString(),
-                        country = "India",
-                        postalCode = postalCode.text.toString()
+                        Address(
+                            addressId = SavedAddressList.editAddressEntity!!.addressId,
+                            userId = MainActivity.userId.toInt(),
+                            addressContactName = fullName.text.toString(),
+                            addressContactNumber = phone.text.toString(),
+                            buildingName = houseNo.text.toString(),
+                            streetName = street.text.toString(),
+                            city = city.text.toString(),
+                            state = state.text.toString(),
+                            country = "India",
+                            postalCode = postalCode.text.toString()
+                        )
                     )
-                    )
-                    showToast("Address Updated Successfully")
+                    ShowShortToast.show("Address Updated Successfully",requireContext())
                 }
                 else {
                     getAddressViewModel.addAddress(
@@ -128,13 +112,12 @@ class GetNewAddress : Fragment() {
                             postalCode = postalCode.text.toString()
                         )
                     )
-                    showToast("Address Added Successfully")
+                    ShowShortToast.show("Address Added Successfully",requireContext())
                 }
-
                 parentFragmentManager.popBackStack()
             }
             else{
-                showToast("Add all the Required Fields")
+                ShowShortToast.show("Add all the Required Fields",requireContext())
             }
         }
         return view
@@ -183,30 +166,19 @@ class GetNewAddress : Fragment() {
         SavedAddressList.editAddressEntity = null
     }
 
-    fun addFocusChangeListeners(){
-        fullName.setOnFocusChangeListener { v, hasFocus ->
-            if(hasFocus){
-                fullNameLayout.error = null
-            }
-        }
-        phone.setOnFocusChangeListener { v, hasFocus ->
-            if(hasFocus){
-                phoneLayout.error = null
-            }
-        }
-        houseNo.setOnFocusChangeListener { v, hasFocus ->
-            if(hasFocus){
-                houseLayout.error = null
-            }
-        }
-        street.setOnFocusChangeListener { v, hasFocus ->
-            if(hasFocus){
-                streetLayout.error = null
-            }
-        }
-        city.setOnFocusChangeListener { v, hasFocus ->
-            if(hasFocus){
-                cityLayout.error = null
+    private fun addFocusChangeListeners(){
+        val layoutWithEditText = mutableMapOf<TextInputEditText,TextInputLayout>()
+        layoutWithEditText[fullName] = fullNameLayout
+        layoutWithEditText[phone] = phoneLayout
+        layoutWithEditText[houseNo] = houseLayout
+        layoutWithEditText[street] = streetLayout
+        layoutWithEditText[city] = cityLayout
+        layoutWithEditText[postalCode] = postalCodeLayout
+        for((editText,layout) in layoutWithEditText){
+            editText.setOnFocusChangeListener { v, hasFocus ->
+                if(hasFocus){
+                    layout.error = null
+                }
             }
         }
         state.setOnFocusChangeListener { v, hasFocus ->
@@ -214,14 +186,5 @@ class GetNewAddress : Fragment() {
                 stateLayout.error = null
             }
         }
-        postalCode.setOnFocusChangeListener { v, hasFocus ->
-            if(hasFocus){
-                postalCodeLayout.error = null
-            }
-        }
-    }
-
-    fun showToast(text:String){
-        Toast.makeText(context,text,Toast.LENGTH_SHORT).show()
     }
 }
