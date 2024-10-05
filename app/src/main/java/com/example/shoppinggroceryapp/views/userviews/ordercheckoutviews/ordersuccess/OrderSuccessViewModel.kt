@@ -31,6 +31,7 @@ class OrderSuccessViewModel(private val mAddOrder: AddOrder,
                             private val mAddCartForUser: AddCartForUser,
                             private val mGetCartForUser: GetCartForUser
 ):ViewModel() {
+
     val lock = Any()
     var gotOrder: OrderDetailsEntity? = null
     var orderedId:MutableLiveData<Long> = MutableLiveData()

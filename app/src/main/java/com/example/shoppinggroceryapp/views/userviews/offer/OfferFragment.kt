@@ -203,20 +203,11 @@ class OfferFragment : Fragment() {
         filterButton.setOnClickListener {
             offerFilterCount = 0
             productEntities = realList
-            if(FilterFragment.list!=null) {
-                FragmentTransaction.navigateWithBackstack(
-                    parentFragmentManager,
-                    FilterFragment(realList),
-                    "Filter"
-                )
-            }
-            else{
-                FragmentTransaction.navigateWithBackstack(
-                    parentFragmentManager,
-                    FilterFragment(realList),
-                    "Filter"
-                )
-            }
+            FragmentTransaction.navigateWithBackstack(
+                parentFragmentManager,
+                FilterFragment(realList),
+                "Filter"
+            )
         }
     }
 

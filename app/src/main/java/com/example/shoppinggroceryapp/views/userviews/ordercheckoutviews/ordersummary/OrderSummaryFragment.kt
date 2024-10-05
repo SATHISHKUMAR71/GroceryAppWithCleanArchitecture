@@ -47,6 +47,8 @@ import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
+import com.example.shoppinggroceryapp.helpers.snackbar.ShowShortSnackBar
+import com.example.shoppinggroceryapp.helpers.toast.ShowShortToast
 import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
@@ -72,12 +74,16 @@ class OrderSummaryFragment : Fragment() {
     var tmpCart:Int? = null
     var tmpAddress:Int? = null
     private lateinit var orderSummaryViewModel:OrderSummaryViewModel
+    private lateinit var continueToPayment:MaterialButton
     var tmpOrderId:Int? = null
+    private lateinit var viewProductDetails:MaterialButton
     private lateinit var deliveryFrequency:MaterialAutoCompleteTextView
     private lateinit var radioGroupTimeSlot:RadioGroup
     private lateinit var deliveryFrequencyDay:MaterialAutoCompleteTextView
     private lateinit var noteForUserLayout: LinearLayout
     private lateinit var dayOfMonth:MaterialAutoCompleteTextView
+    private lateinit var deliveryDate:TextView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -89,30 +95,29 @@ class OrderSummaryFragment : Fragment() {
         val view =  inflater.inflate(R.layout.fragment_order_summary, container, false)
         val dayOfMonthLayout = view.findViewById<LinearLayout>(R.id.deliveryFrequencyDayMonthLayout)
         val noteForUser = view.findViewById<TextView>(R.id.noteForUser)
-        dayOfMonth = view.findViewById<MaterialAutoCompleteTextView>(R.id.deliveryFrequencyDayMonth)
+        dayOfMonth = view.findViewById(R.id.deliveryFrequencyDayMonth)
         val addressOwnerName = view.findViewById<TextView>(R.id.addressOwnerNameOrderSummary)
-        radioGroupTimeSlot = view.findViewById<RadioGroup>(R.id.radioGroupTimeSlot)
+        radioGroupTimeSlot = view.findViewById(R.id.radioGroupTimeSlot)
         val addressValue = view.findViewById<TextView>(R.id.addressOrderSummary)
         val addressNumber = view.findViewById<TextView>(R.id.addressPhoneOrderSummary)
         val changeAddressButton = view.findViewById<MaterialButton>(R.id.changeAddressButtonOrderSummary)
         val noOfItems = view.findViewById<TextView>(R.id.priceDetailsMrpTotalItemsOrderSummary)
         val mrpPrice = view.findViewById<TextView>(R.id.priceDetailsMrpPriceOrderSummary)
         val totalAmount = view.findViewById<TextView>(R.id.priceDetailsTotalAmountOrderSummary)
-        val continueToPayment = view.findViewById<MaterialButton>(R.id.continueButtonOrderSummary)
-        val viewProductDetails = view.findViewById<MaterialButton>(R.id.viewPriceDetailsButtonOrderSummary)
+        continueToPayment = view.findViewById(R.id.continueButtonOrderSummary)
+        viewProductDetails = view.findViewById(R.id.viewPriceDetailsButtonOrderSummary)
         val orderSummaryToolBar = view.findViewById<MaterialToolbar>(R.id.orderSummaryToolbar)
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
-
         orderSummaryViewModel = ViewModelProvider(this,
             GroceryAppUserVMFactory(userDao, retailerDao)
         )[OrderSummaryViewModel::class.java]
         val recyclerViewProducts = view.findViewById<RecyclerView>(R.id.orderListRecyclerView)
-        deliveryFrequency = view.findViewById<MaterialAutoCompleteTextView>(R.id.deliveryFrequency)
-        deliveryFrequencyDay = view.findViewById<MaterialAutoCompleteTextView>(R.id.deliveryFrequencyDay)
+        deliveryFrequency = view.findViewById(R.id.deliveryFrequency)
+        deliveryFrequencyDay = view.findViewById(R.id.deliveryFrequencyDay)
         val scrollView = view.findViewById<ScrollView>(R.id.orderSummaryScrollView)
-        val deliveryDate = view.findViewById<TextView>(R.id.textView)
+        deliveryDate = view.findViewById<TextView>(R.id.textView)
         noteForUserLayout = view.findViewById(R.id.noteForUserLayout)
         val deliveryFrequencyDayLayout = view.findViewById<LinearLayout>(R.id.deliveryFrequencyDayLayout)
         val timeSlotLayout = view.findViewById<LinearLayout>(R.id.timeSlotLayout)
@@ -125,8 +130,8 @@ class OrderSummaryFragment : Fragment() {
                 orderSummaryViewModel.getProductsWithCartId(cartId = it)
             }
         }
-        var expectedDeliveryDate = "Expected Delivery Date: ${DateGenerator.getDayAndMonth(DateGenerator.getDeliveryDate())}"
-        deliveryDate.text = expectedDeliveryDate
+//        val expectedDeliveryDate = "Expected Delivery Date: ${DateGenerator.getDayAndMonth(DateGenerator.getDeliveryDate())}"
+        deliveryDate.text = orderSummaryViewModel.getExpectedDeliveryDate("once","1")
 
         tmpAddress?.let {
             if(it!=0) {
@@ -173,6 +178,7 @@ class OrderSummaryFragment : Fragment() {
             }
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,savedAddressList,"Get the address from saved address")
         }
+
         deliveryFrequency.addTextChangedListener(object :TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -182,73 +188,60 @@ class OrderSummaryFragment : Fragment() {
 
             }
 
-
             @RequiresApi(Build.VERSION_CODES.O)
             override fun afterTextChanged(s: Editable?) {
-                if(s.toString()=="Weekly Once"){
-
-                    deliveryDate.visibility = View.GONE
-                    var day = DateGenerator.getCurrentDay()
-                    noteForUserLayout.visibility = View.VISIBLE
-                    noteForUser.text = "Weekly deliveries kick off tomorrow! You can easily cancel your orders through your order history."
-                    var newDays = days.filter { it!=day }.toTypedArray()
-                    deliveryFrequencyDay.setSimpleItems(newDays)
-                    dayOfMonth.setText("")
-                    for(i in newDays){
+                noteForUserLayout.visibility = View.VISIBLE
+                timeSlotLayout.visibility = View.VISIBLE
+                weeklyOnce = false
+                once = false
+                daily = false
+                var noteForUserText = ""
+                monthlyOnce = false
+                val changedText = s.toString()
+                when(changedText){
+                    "Weekly Once" ->{
+                        deliveryDate.visibility = View.GONE
+                        noteForUserText = "Weekly deliveries kick off tomorrow! You can easily cancel your orders through your order history."
+                        val newDays = days.filter { it!=DateGenerator.getCurrentDay() }.toTypedArray()
+                        deliveryFrequencyDay.setSimpleItems(newDays)
+                        dayOfMonth.setText("")
+                        weeklyOnce = true
+                        deliveryFrequencyDayLayout.visibility = View.VISIBLE
+                        dayOfMonthLayout.visibility = View.GONE
                     }
-                    weeklyOnce = true
-                    once = false
-                    monthlyOnce = false
-                    daily = false
-                    deliveryFrequencyDayLayout.visibility = View.VISIBLE
-                    dayOfMonthLayout.visibility = View.GONE
-                    timeSlotLayout.visibility = View.VISIBLE
-                }
-                else if(s.toString()=="Monthly Once"){
-                    deliveryDate.visibility = View.GONE
-                    var day = DateGenerator.getCurrentDayOfMonth()
-                    deliveryFrequencyDay.setText("")
-                    var newDays = daysOfMonth.filter { it!=day }.toTypedArray()
-                    dayOfMonth.setSimpleItems(newDays)
-                    for(i in newDays){
+                    "Monthly Once" -> {
+                        deliveryDate.visibility = View.GONE
+                        deliveryFrequencyDay.setText("")
+                        val newDays = daysOfMonth.filter { it!=DateGenerator.getCurrentDayOfMonth() }.toTypedArray()
+                        dayOfMonth.setSimpleItems(newDays)
+                        noteForUserText = "Start your monthly delivery service tomorrow! You can easily cancel your orders in your order history"
+                        monthlyOnce = true
+                        dayOfMonthLayout.visibility = View.VISIBLE
+                        deliveryFrequencyDayLayout.visibility = View.GONE
                     }
-                    noteForUserLayout.visibility = View.VISIBLE
-                    noteForUser.text = "Start your monthly delivery service tomorrow! You can easily cancel your orders in your order history"
-                    weeklyOnce = false
-                    once = false
-                    monthlyOnce = true
-                    daily = false
-                    dayOfMonthLayout.visibility = View.VISIBLE
-                    deliveryFrequencyDayLayout.visibility = View.GONE
-                    timeSlotLayout.visibility = View.VISIBLE
+                    "Daily" ->{
+                        deliveryDate.text = orderSummaryViewModel.getExpectedDeliveryDate("once","1")
+                        deliveryDate.visibility = View.VISIBLE
+                        deliveryFrequencyDay.setText("")
+                        dayOfMonth.setText("")
+                        noteForUserText = "Get ready for daily deliveries starting tomorrow! Cancel your orders anytime in the order history."
+                        daily = true
+                        dayOfMonthLayout.visibility = View.GONE
+                        deliveryFrequencyDayLayout.visibility = View.GONE
+                    }
+                    else ->{
+                        deliveryDate.text = orderSummaryViewModel.getExpectedDeliveryDate("once","1")
+                        deliveryDate.visibility = View.VISIBLE
+                        once = true
+                        noteForUserLayout.visibility = View.GONE
+                        deliveryFrequencyDay.setText("")
+                        dayOfMonth.setText("")
+                        dayOfMonthLayout.visibility = View.GONE
+                        deliveryFrequencyDayLayout.visibility = View.GONE
+                        timeSlotLayout.visibility = View.GONE
+                    }
                 }
-                else if(s.toString() == "Daily"){
-                    deliveryDate.visibility = View.VISIBLE
-                    deliveryFrequencyDay.setText("")
-                    dayOfMonth.setText("")
-                    noteForUserLayout.visibility = View.VISIBLE
-                    noteForUser.text = "Get ready for daily deliveries starting tomorrow! Cancel your orders anytime in the order history."
-                    weeklyOnce = false
-                    once = false
-                    monthlyOnce = false
-                    daily = true
-                    timeSlotLayout.visibility = View.VISIBLE
-                    dayOfMonthLayout.visibility = View.GONE
-                    deliveryFrequencyDayLayout.visibility = View.GONE
-                }
-                else{
-                    deliveryDate.visibility = View.VISIBLE
-                    weeklyOnce = false
-                    once = true
-                    monthlyOnce = false
-                    daily = false
-                    noteForUserLayout.visibility = View.GONE
-                    deliveryFrequencyDay.setText("")
-                    dayOfMonth.setText("")
-                    dayOfMonthLayout.visibility = View.GONE
-                    deliveryFrequencyDayLayout.visibility = View.GONE
-                    timeSlotLayout.visibility = View.GONE
-                }
+                noteForUser.text = noteForUserText
             }
         })
 
@@ -260,9 +253,7 @@ class OrderSummaryFragment : Fragment() {
 
         continueToPayment.setOnClickListener {
             if(deliveryFrequency.text.isEmpty()){
-                Snackbar.make(view,"Please Select the Delivery Frequency",Snackbar.LENGTH_SHORT).apply {
-                    setBackgroundTint(Color.RED)
-                }.show()
+                ShowShortSnackBar.showRedColor(requireView(),"Please Select the Delivery Frequency")
             }
             else {
                 if(once){
@@ -279,51 +270,15 @@ class OrderSummaryFragment : Fragment() {
                 }
             }
         }
-
-        deliveryFrequencyDay.addTextChangedListener (object :TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                if(s?.isNotEmpty()==true) {
-                    deliveryDate.visibility = View.VISIBLE
-                    println("**** is delivery visible ${deliveryDate.isVisible}")
-                    deliveryDate.text = "Expected Delivery this ${s.toString()}"
-                }
-            }
-
-        } )
-        dayOfMonth.addTextChangedListener (object : TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                if(s?.isNotEmpty()==true) {
-                    deliveryDate.visibility = View.VISIBLE
-                    var expectedDate =
-                        "Expected Delivery on  ${DateGenerator.getDayAndMonthForDay(s.toString())}"
-                    deliveryDate.text = expectedDate
-                }
-            }
-
-        } )
+        addTextChangedListeners(deliveryFrequencyDay,"dayOfWeek")
+        addTextChangedListeners(dayOfMonth,"dayOfMonth")
         return view
     }
 
     private fun checkSlotChosen(choice:Int?) {
         if(radioGroupTimeSlot.checkedRadioButtonId==-1){
             view?.let {
-                showSnackBar("Please choose the Slot")
+                ShowShortSnackBar.showRedColor(requireView(),"Please choose the Slot")
             }
         }
         else{
@@ -331,7 +286,7 @@ class OrderSummaryFragment : Fragment() {
                 1 -> doPaymentTransaction(radioGroupTimeSlot.findViewById<RadioButton>(radioGroupTimeSlot.checkedRadioButtonId).text.toString(),null,null)
                 2 -> {
                     if(deliveryFrequencyDay.text.isEmpty()){
-                        showSnackBar("Please choose the Day")
+                        ShowShortSnackBar.showRedColor(requireView(),"Please choose the Day")
                     }
                     else {
                         var weekDay: Int = -1
@@ -353,7 +308,7 @@ class OrderSummaryFragment : Fragment() {
                 }
                 3 ->{
                     if(dayOfMonth.text.isEmpty()){
-                        showSnackBar("Please Choose the Day of Month")
+                        ShowShortSnackBar.showRedColor(requireView(),"Please Choose the Day of Month")
                     }
                     else{
                         try{
@@ -364,6 +319,7 @@ class OrderSummaryFragment : Fragment() {
                             )
                         }
                         catch (e:Exception){
+                            println("EXCEPTION IN ORDER SUMMARY : $e")
                         }
                     }
                 }
@@ -371,65 +327,18 @@ class OrderSummaryFragment : Fragment() {
         }
     }
 
-    fun showSnackBar(text:String){
-        view?.let {
-            Snackbar.make(it,text,Snackbar.LENGTH_SHORT).apply {
-                setBackgroundTint(Color.RED)
-            }.show()
-        }
-    }
-    fun doPaymentTransaction(timeSlot:String?,dayOfMonth:Int?,dayOfWeek:Int?){
-        var paymentFragment = PaymentFragment()
-        var timeId:Int = -1
-        paymentFragment.arguments = Bundle().apply {
-            putString("deliveryFrequency",deliveryFrequency.text.toString())
-            timeSlot?.let {
-                when(it){
-                    TimeSlots.EARLY_MORNING.timeDetails -> {
-                        timeId = 0
-                        putString("timeSlot", TimeSlots.EARLY_MORNING.timeDetails)
-                        putInt("timeSlotInt",0)
-                    }
-                    TimeSlots.MID_MORNING.timeDetails -> {
-                        timeId = 1
-                        putString("timeSlot", TimeSlots.MID_MORNING.timeDetails)
-                        putInt("timeSlotInt",1)
-                    }
-                    TimeSlots.AFTERNOON.timeDetails -> {
-                        timeId = 2
-                        putString("timeSlot", TimeSlots.AFTERNOON.timeDetails)
-                        putInt("timeSlotInt",2)
-                    }
-                    TimeSlots.EVENING.timeDetails -> {
-                        timeId = 3
-                        putString("timeSlot", TimeSlots.EVENING.timeDetails)
-                        putInt("timeSlotInt",3)
-                    }
-                }
-            }
-            dayOfMonth?.let {
-                putInt("dayOfMonth",it)
-            }
-            dayOfWeek?.let {
-                putInt("dayOfWeek",it)
-            }
-        }
+
+    private fun doPaymentTransaction(timeSlot:String?, dayOfMonth:Int?, dayOfWeek:Int?){
+        val paymentFragment = PaymentFragment()
+        paymentFragment.arguments =orderSummaryViewModel.putBundleValuesForOrder(timeSlot,deliveryFrequency.text.toString(),dayOfMonth, dayOfWeek)
+        val timeId = orderSummaryViewModel.timeIdForOrder
         if(tmpAddress!=0 && tmpCart != 0 && tmpOrderId!=0){
             OrderListFragment.selectedOrder?.let {
                 orderSummaryViewModel.updateOrderDetails(it.copy(deliveryFrequency = deliveryFrequency.text.toString()))
                 orderSummaryViewModel.updateTimeSlot(TimeSlot(tmpOrderId!!,timeId))
-                when(deliveryFrequency.text.toString()){
-                    "Monthly Once" -> {orderSummaryViewModel.updateMonthly(MonthlyOnce(tmpOrderId!!,dayOfMonth!!))}
-                    "Weekly Once" -> {orderSummaryViewModel.updateWeekly(WeeklyOnce(tmpOrderId!!,dayOfWeek!!))}
-                    "Daily" -> {orderSummaryViewModel.updateDaily(DailySubscription(tmpOrderId!!))}
-                    "Once" -> {
-                        orderSummaryViewModel.deleteDaily(tmpOrderId!!)
-                        orderSummaryViewModel.deleteWeekly(tmpOrderId!!)
-                        orderSummaryViewModel.deleteMonthly(tmpOrderId!!)
-                    }
-                }
+                orderSummaryViewModel.updateSubscription(deliveryFrequency.text.toString(),tmpOrderId,dayOfMonth, dayOfWeek)
             }
-            Toast.makeText(context,"Delivery Subscription Updated Successfully",Toast.LENGTH_SHORT).show()
+            ShowShortToast.show("Delivery Subscription Updated Successfully",requireContext())
             parentFragmentManager.popBackStack()
             parentFragmentManager.popBackStack()
         }
@@ -458,5 +367,34 @@ class OrderSummaryFragment : Fragment() {
         tmpCart = null
         tmpOrderId = null
         tmpAddress = null
+    }
+
+    private fun addTextChangedListeners(materialAutoCompleteView:MaterialAutoCompleteTextView, tag:String){
+
+        materialAutoCompleteView.addTextChangedListener (object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+            override fun afterTextChanged(s: Editable?) {
+                when(tag){
+                    "dayOfMonth" -> {
+                        if(s?.isNotEmpty()==true) {
+                            deliveryDate.visibility = View.VISIBLE
+                            deliveryDate.text = orderSummaryViewModel.getExpectedDeliveryDate(tag,s.toString())
+                        }
+                    }
+                    "dayOfWeek" -> {
+                        if(s?.isNotEmpty()==true) {
+                            deliveryDate.visibility = View.VISIBLE
+                            deliveryDate.text = orderSummaryViewModel.getExpectedDeliveryDate(tag,s.toString())
+                        }
+                    }
+                }
+            }
+        } )
     }
 }
