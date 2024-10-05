@@ -60,13 +60,7 @@ class ForgotPasswordFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_forgot_password, container, false)
-        emailOrPhoneLayout = view.findViewById(R.id.textInputLayoutMailOrPhone)
-        newPasswordLayout = view.findViewById(R.id.textInputLayoutNewPassword)
-        emailOrPhoneEditText = view.findViewById(R.id.forgotEmailInput)
-        passwordEditText = view.findViewById(R.id.inputNewPassword)
-        confirmPasswordLayout = view.findViewById(R.id.textInputLayoutNewConfirmPassword)
-        confirmPasswordEditText = view.findViewById(R.id.inputNewConfirmPassword)
-
+        initViews(view)
         view.findViewById<MaterialToolbar>(R.id.appbarLayoutForgotPass).setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }
@@ -131,6 +125,15 @@ class ForgotPasswordFragment : Fragment() {
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
         editProfileViewModel = ViewModelProvider(this,GroceryAppSharedVMFactory(retailerDao, userDao))[EditProfileViewModel::class.java]
+    }
+
+    private fun initViews(view: View){
+        emailOrPhoneLayout = view.findViewById(R.id.textInputLayoutMailOrPhone)
+        newPasswordLayout = view.findViewById(R.id.textInputLayoutNewPassword)
+        emailOrPhoneEditText = view.findViewById(R.id.forgotEmailInput)
+        passwordEditText = view.findViewById(R.id.inputNewPassword)
+        confirmPasswordLayout = view.findViewById(R.id.textInputLayoutNewConfirmPassword)
+        confirmPasswordEditText = view.findViewById(R.id.inputNewConfirmPassword)
     }
 
 }
