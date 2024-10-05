@@ -1,5 +1,6 @@
 package com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail
 
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.order.OrderDetails
@@ -13,6 +14,8 @@ import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWit
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromDailySubscription
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromMonthlySubscription
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromWeeklySubscription
+import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
+import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
 
 class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
                            private val mGetSpecificAddress: GetSpecificAddress,
@@ -24,6 +27,7 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
                            private val mRemoveOrderFromWeeklySubscription: RemoveOrderFromWeeklySubscription,
                            private val mGetOrderedTimeSlot: GetOrderedTimeSlot
 ): ViewModel() {
+    var groceriesArrivingToday = "Groceries Arriving Today"
     var selectedAddress:MutableLiveData<Address> = MutableLiveData()
     var date:MutableLiveData<Int> = MutableLiveData()
     var timeSlot:MutableLiveData<Int> = MutableLiveData()
@@ -65,26 +69,6 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
     }
 
 
-
-    fun getSubscriptionDetails(){
-        Thread {
-//            for (i in retailerDao.getOrderTimeSlot()) {
-//                println("FOR PRODUCTS ORDER ID ${i.orderId} TIME SLOTS: ${i.timeId}")
-//            }
-//            println("==========")
-//            for (i in retailerDao.getDailySubscription()) {
-//                println("FOR PRODUCTS ORDER ID ${i.orderId} Daily Subscription ")
-//            }
-//            println("==========")
-//            for (i in retailerDao.getWeeklySubscriptionList()) {
-//                println("FOR PRODUCTS ORDER ID ${i.orderId} week id ${i.weekId} Weekly Subscription ")
-//            }
-//            println("==========")
-//            for (i in retailerDao.getMonthlySubscriptionList()) {
-//                println("FOR PRODUCTS ORDER ID ${i.orderId} month id ${i.dayOfMonth} Monthly Subscription ")
-//            }
-        }.start()
-    }
     fun getMonthlySubscriptionDate(orderId:Int){
         Thread{
             mGetSpecificMonthlyOrderWithOrderId.invoke(orderId)?.let {
@@ -107,5 +91,48 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
                 timeSlot.postValue(it.timeId)
             }
         }.start()
+    }
+
+    fun assignText(timeSlot:Int,currentTime:Int):String{
+        var text =""
+        when(timeSlot){
+            0 -> {
+                if (currentTime in 6..8) {
+                    text = groceriesArrivingToday
+                }
+            }
+            1 -> {
+                if(currentTime in 8..14){
+                    text = groceriesArrivingToday
+                }
+            }
+            2 -> {
+                if (currentTime in 14..18) {
+                    text = groceriesArrivingToday
+                }
+            }
+            3 -> {
+                if (currentTime in 18..20) {
+                    text = groceriesArrivingToday
+                }
+            }
+        }
+        return text
+    }
+
+
+    fun assignDeliveryStatus(deliveryDate:String?):String?{
+
+        return if(OrderListFragment.selectedOrder!!.deliveryStatus=="Delivered"){
+            "Delivered on ${DateGenerator.getDayAndMonth(deliveryDate?: DateGenerator.getDeliveryDate())}"
+        } else if((OrderListFragment.selectedOrder!!.deliveryStatus=="Pending")){
+            "Delivery Expected on:  ${DateGenerator.getDayAndMonth(deliveryDate?: DateGenerator.getDeliveryDate())}"
+        } else if(OrderListFragment.selectedOrder!!.deliveryStatus == "Delayed"){
+            "Delivery Expected on:  ${DateGenerator.getDayAndMonth(DateGenerator.getDeliveryDate())}"
+        } else if(OrderListFragment.selectedOrder!!.deliveryStatus== "Cancelled"){
+            null
+        } else{
+            "Delivery Expected on:  ${DateGenerator.getDayAndMonth(DateGenerator.getDeliveryDate())}"
+        }
     }
 }
