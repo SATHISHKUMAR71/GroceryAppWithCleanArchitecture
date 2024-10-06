@@ -1,5 +1,7 @@
 package com.example.shoppinggroceryapp.views.retailerviews.addeditproduct
 
+import android.graphics.Bitmap
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.products.BrandData
@@ -10,6 +12,7 @@ import com.core.domain.products.Product
 import com.core.usecases.productusecase.productmanagement.ProductManagementDeleteUseCases
 import com.core.usecases.productusecase.productmanagement.ProductManagementGetterUseCases
 import com.core.usecases.productusecase.productmanagement.ProductManagementSetterUseCases
+import com.example.shoppinggroceryapp.framework.db.dataclass.IntWithCheckedData
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailViewModel
 
@@ -145,6 +148,47 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
         }.start()
     }
 
+
+//    fun tmp( imageList:MutableMap<Int, IntWithCheckedData>,mainImageBitmap:Bitmap?,imageStringList:List<String>,isNewParentCategory:Boolean,isNewSubCategory:Boolean){
+//        val imageListNames = mutableListOf<String>()
+//        for (i in imageList) {
+//            if ((i.value.bitmap != mainImageBitmap) && (i.value.fileName !in imageStringList)) {
+//                val tmpName = System.currentTimeMillis().toString()
+//                imageLoader.storeImageInApp(requireContext(), i.value.bitmap, tmpName)
+//                imageListNames.add(tmpName)
+//            }
+//        }
+//        val brandNameStr = brandName.text.toString()
+//        val subCategoryName = productSubCat.text.toString()
+//        if (isNewParentCategory) {
+//            val filName = "${System.currentTimeMillis()}"
+//            if (parentCategoryImage != null) {
+//                imageLoader.storeImageInApp(
+//                    requireContext(),
+//                    parentCategoryImage!!,
+//                    filName
+//                )
+//            }
+//            if (imageLoader.getImageInApp(requireContext(), filName) == null) {
+//                isCategoryImageAdded = false
+//            }
+//            addEditProductViewModel.addParentCategory(ParentCategory(productParentCategory.text.toString(), filName,                             "", false))
+//        }
+//        if (isNewSubCategory) {
+//            addEditProductViewModel.addSubCategory(
+//                Category(productSubCat.text.toString(), productParentCategory.text.toString(), "")
+//            )
+//        }
+//        if (isCategoryImageAdded) {
+//            addEditProductViewModel.updateInventory(brandNameStr, (ProductListFragment.selectedProductEntity.value == null), Product(0, 0, subCategoryName, productName.text.toString(), productDescription.text.toString(), productPrice.text.toString().toFloat(), productOffer.text.toString().toFloat(), productQuantity.text.toString(), mainImage, isVeg.isChecked, rawManufactureDate, rawExpiryDate, productAvailableItems.text.toString().toInt()), ProductListFragment.selectedProductEntity.value?.productId, imageListNames, deletedImageList)
+//            parentFragmentManager.popBackStack()
+//            Toast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT).show()
+//        }
+//        else{
+//            Toast.makeText(context, "Please add the Category Image", Toast.LENGTH_SHORT).show()
+//        }
+//    }
+//    }
 
 
 }
