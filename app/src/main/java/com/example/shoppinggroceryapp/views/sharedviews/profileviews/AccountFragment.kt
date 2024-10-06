@@ -69,6 +69,7 @@ class AccountFragment : Fragment() {
     private lateinit var imageHandler: ImageHandler
     private lateinit var imageLoader: ImageLoaderAndGetter
     private lateinit var recentlyPurchasedItems:RecyclerView
+    private lateinit var editUser:EditProfileViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,7 +104,7 @@ class AccountFragment : Fragment() {
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
-        val editUser = ViewModelProvider(this,
+        editUser = ViewModelProvider(this,
             GroceryAppSharedVMFactory(
             retailerDao, userDao)
         )[EditProfileViewModel::class.java]
@@ -122,7 +123,6 @@ class AccountFragment : Fragment() {
         }
         profileView.setOnClickListener {
             imagePermissionHandler.checkPermission(false)
-//            imageHandler.showAlertDialog()
         }
         recentlyPurchasedItems = view.findViewById(R.id.recentlyPurchasedItemsList)
         editUser.getPurchasedProducts(MainActivity.userId.toInt())
@@ -213,16 +213,7 @@ class AccountFragment : Fragment() {
         CartFragment.selectedAddressEntity = null
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         val sharedPreferences = requireActivity().getSharedPreferences("freshCart",Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("isSigned",false)
-        editor.putBoolean("isRetailer",false)
-        editor.putString("userFirstName",null)
-        editor.putString("userLastName",null)
-        editor.putString("userEmail",null)
-        editor.putString("userPhone",null)
-        editor.putString("userId",null)
-        editor.putString("userProfile",null)
-        editor.apply()
+        editUser.resetDetails(sharedPreferences)
         startActivity(intent)
         requireActivity().finish()
     }
@@ -232,20 +223,13 @@ class AccountFragment : Fragment() {
         InitialFragment.hideSearchBar.value = true
     }
 
-    override fun onPause() {
-        super.onPause()
-//        InitialFragment.hideSearchBar.value = false
-    }
 
     override fun onStop() {
         super.onStop()
         InitialFragment.hideSearchBar.value = false
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
 
-    }
     override fun onDestroyView() {
         imageHandler.gotImage.value = null
         super.onDestroyView()

@@ -1,5 +1,6 @@
 package com.example.shoppinggroceryapp.views.sharedviews.profileviews
 
+import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.products.Product
@@ -80,5 +81,18 @@ class EditProfileViewModel(private var mUpdateExistingUser:UpdateExistingUser, p
         Thread {
             mUpdateExistingUser.invoke(user)
         }.start()
+    }
+
+    fun resetDetails(sharedPreferences: SharedPreferences){
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("isSigned",false)
+        editor.putBoolean("isRetailer",false)
+        editor.putString("userFirstName",null)
+        editor.putString("userLastName",null)
+        editor.putString("userEmail",null)
+        editor.putString("userPhone",null)
+        editor.putString("userId",null)
+        editor.putString("userProfile",null)
+        editor.apply()
     }
 }
