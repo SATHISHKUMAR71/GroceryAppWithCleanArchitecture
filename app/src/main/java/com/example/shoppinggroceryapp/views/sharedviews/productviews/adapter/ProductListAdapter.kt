@@ -83,10 +83,11 @@ class ProductListAdapter(var fragment: Fragment,
     }
 
     override fun onBindViewHolder(holder: ProductLargeImageHolder, position: Int) {
-
         if(size==0){
+            println("9898 VIEW IS RECREATING ON IF: $position ${productEntityList[position].productName}")
         }
         else{
+            println("9898 VIEW IS RECREATING: $position ${productEntityList[position].productName}")
             if(MainActivity.isRetailer){
                 holder.buttonLayout.visibility = View.GONE
             }
@@ -149,7 +150,6 @@ class ProductListAdapter(var fragment: Fragment,
         holder.itemView.setOnClickListener {
             try {
                 ProductListFragment.selectedPos = holder.absoluteAdapterPosition
-
                 ProductListFragment.selectedProductEntity.value =
                     productEntityList[holder.absoluteAdapterPosition]
                 fragment.parentFragmentManager.beginTransaction()
@@ -231,7 +231,7 @@ class ProductListAdapter(var fragment: Fragment,
         }
 
         holder.addSymbolButton.setOnClickListener {
-            if (holder.adapterPosition == position) {
+            if (holder.absoluteAdapterPosition == position) {
                 val count = ++countList[position]
                 ProductListFragment.totalCost.value =
                     ProductListFragment.totalCost.value!! + calculateDiscountPrice(productEntityList[position].price, productEntityList[position].offer)
@@ -295,7 +295,9 @@ class ProductListAdapter(var fragment: Fragment,
     }
 
     fun setProducts(newList:List<Product>){
+        println("4040 is Adapter is called $newList $productEntityList")
         productsSize = newList.size
+//        notifyDataSetChanged()
         val diffUtil = CartItemsDiffUtil(productEntityList,newList)
         for(i in newList.indices){
             countList.add(i,0)

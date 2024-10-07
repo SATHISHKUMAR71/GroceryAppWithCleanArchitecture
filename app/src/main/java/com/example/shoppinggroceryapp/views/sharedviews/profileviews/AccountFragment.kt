@@ -58,7 +58,6 @@ import java.io.File
 
 class AccountFragment : Fragment() {
 
-
     private lateinit var editProfile:MaterialButton
     private lateinit var orderHistory:MaterialButton
     private lateinit var help:MaterialButton

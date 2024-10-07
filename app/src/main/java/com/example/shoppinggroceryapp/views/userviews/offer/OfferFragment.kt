@@ -244,7 +244,7 @@ class OfferFragment : Fragment() {
         FilterFragment.list = null
         offerFilterCount = 0
         offerListFirstVisiblePos = null
-        ProductListFragment.productListFilterCount = 0
+        productListFilterCount = 0
         dis10Val = false
         dis20Val = false
         dis30Val = false
