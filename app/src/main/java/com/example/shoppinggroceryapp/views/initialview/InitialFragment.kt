@@ -18,27 +18,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.core.data.repository.AddressRepository
-import com.core.data.repository.AuthenticationRepository
-import com.core.data.repository.CartRepository
-import com.core.data.repository.HelpRepository
-import com.core.data.repository.OrderRepository
-import com.core.data.repository.ProductRepository
-import com.core.data.repository.SearchRepository
-import com.core.data.repository.SubscriptionRepository
-import com.core.data.repository.UserRepository
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.MainActivity.Companion.isRetailer
 import com.example.shoppinggroceryapp.R
-import com.example.shoppinggroceryapp.framework.data.authentication.AuthenticationDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.address.AddressDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.cart.CartDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.help.HelpDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.order.OrderDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.product.ProductDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.views.userviews.cartview.FindNumberOfCartItems
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
@@ -249,7 +231,7 @@ class InitialFragment : Fragment() {
                     }
                 }
             },true)
-//            searchViewModel.
+
             bottomNav.setOnItemSelectedListener {
                 when(it.itemId){
                     R.id.account -> {
@@ -282,7 +264,7 @@ class InitialFragment : Fragment() {
             }
         }
 
-        var cartListViewModel = ViewModelProvider(this,GroceryAppSharedVMFactory(retailerDao, userDao))[ProductListViewModel::class.java]
+        val cartListViewModel = ViewModelProvider(this,GroceryAppSharedVMFactory(retailerDao, userDao))[ProductListViewModel::class.java]
         if(!isRetailer){
             cartListViewModel.getCartItems(MainActivity.cartId)
         }
@@ -302,8 +284,7 @@ class InitialFragment : Fragment() {
                 }
             }
         }
-        var searchRecyclerView = view.findViewById<RecyclerView>(R.id.searchRecyclerView)
-//        if(!isRetailer) {
+        val searchRecyclerView = view.findViewById<RecyclerView>(R.id.searchRecyclerView)
         searchView.editText.addTextChangedListener {
             searchString = it.toString()
             if (it?.isNotEmpty() == true) {
@@ -316,7 +297,7 @@ class InitialFragment : Fragment() {
                 searchViewModel.performSearch("-1")
             }
         }
-//        }
+
 
         searchViewModel.searchedList.observe(viewLifecycleOwner){ searchList ->
             if(searchString.isEmpty() && searchList.isEmpty()){

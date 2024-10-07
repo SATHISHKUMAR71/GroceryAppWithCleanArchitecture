@@ -28,14 +28,12 @@ class CustomerRequestDetailFragment : Fragment() {
         view.findViewById<MaterialToolbar>(R.id.customerRequestToolbar).setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }
-        view.findViewById<TextView>(R.id.customerName).text =
-            CustomerRequestListFragment.customerName
+        view.findViewById<TextView>(R.id.customerName).text = CustomerRequestListFragment.customerName
         val email = "Email: ${CustomerRequestListFragment.customerEmail}"
         val phone = "Phone: ${CustomerRequestListFragment.customerPhone}"
         view.findViewById<TextView>(R.id.customerEmail).text = email
         view.findViewById<TextView>(R.id.customerPhone).text = phone
-        view.findViewById<TextView>(R.id.customerRequestText).text =
-            CustomerRequestListFragment.customerRequest
+        view.findViewById<TextView>(R.id.customerRequestText).text = CustomerRequestListFragment.customerRequest
         val requestedOn ="Requested On: ${CustomerRequestListFragment.requestedDate}"
         view.findViewById<TextView>(R.id.requestedDate).text = requestedOn
         parentFragmentManager.beginTransaction()
@@ -46,7 +44,6 @@ class CustomerRequestDetailFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-
         InitialFragment.hideSearchBar.value = false
         InitialFragment.hideBottomNav.value = false
     }
