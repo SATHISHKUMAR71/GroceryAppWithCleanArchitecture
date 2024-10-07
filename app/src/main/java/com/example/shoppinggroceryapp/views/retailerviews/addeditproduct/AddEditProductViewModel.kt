@@ -1,3 +1,4 @@
+
 package com.example.shoppinggroceryapp.views.retailerviews.addeditproduct
 
 import android.graphics.Bitmap
@@ -124,7 +125,7 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
 //        return false
 //    }
 
-    fun updateInventory(brandName:String, isNewProduct:Boolean, product: Product, productId:Long?, imageList: List<String>, deletedImageList:MutableList<String>){
+    fun updateInventory(brandName:String, isNewProduct:Boolean, product: Product, productId:Long?, imageList: List<String>, deletedImageList:MutableList<String>,oldMainImage:String){
         var brand: BrandData?
         Thread{
             synchronized(ProductDetailViewModel.brandLock) {
@@ -153,15 +154,11 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
                 }
 
                 for(j in deletedImageList){
-                    println("DELETE REQUESTED IMAGES: $j ${productGetters.mGetImage.invoke(j)} ")
-                    productGetters.mGetImage.invoke(j)
-                        ?.let {
-                            println("DELETE REQUESTED IMAGES in non null: $j ${productGetters.mGetImage.invoke(j)}")
-                            productDeleteUseCases.mDeleteProductImage.invoke(it)
-                        }
+                    deleteImage(j)
                 }
 
                 for(i in imageList){
+                    println("IMAGES LIST IN ADD EDIT FRAGMENT: $i old main image: $oldMainImage product main image: ${product.mainImage}")
                     lastProduct?.let {
                         productSetters.mAddProductImage.invoke(Images(0,it.productId,i))
                     }
@@ -169,6 +166,22 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
                 ProductListFragment.selectedProductEntity.postValue(prod)
             }
 
+        }.start()
+    }
+
+    fun deleteImage(imageValue:String){
+        Thread {
+            productGetters.mGetImage.invoke(imageValue)
+                ?.let {
+                    println(
+                        "4545 DELETE REQUESTED IMAGES in non null: $imageValue ${
+                            productGetters.mGetImage.invoke(
+                                imageValue
+                            )
+                        }"
+                    )
+                    productDeleteUseCases.mDeleteProductImage.invoke(it)
+                }
         }.start()
     }
 

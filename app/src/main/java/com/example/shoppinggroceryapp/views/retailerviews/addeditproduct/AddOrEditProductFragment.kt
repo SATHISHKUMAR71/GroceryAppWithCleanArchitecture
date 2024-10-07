@@ -17,10 +17,28 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.core.data.repository.AddressRepository
+import com.core.data.repository.AuthenticationRepository
+import com.core.data.repository.CartRepository
+import com.core.data.repository.HelpRepository
+import com.core.data.repository.OrderRepository
+import com.core.data.repository.ProductRepository
+import com.core.data.repository.SearchRepository
+import com.core.data.repository.SubscriptionRepository
+import com.core.data.repository.UserRepository
 import com.core.domain.products.Category
 import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
 import com.example.shoppinggroceryapp.R
+import com.example.shoppinggroceryapp.framework.data.authentication.AuthenticationDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.address.AddressDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.cart.CartDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.help.HelpDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.order.OrderDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.product.ProductDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
+import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.framework.db.dataclass.IntWithCheckedData
 import com.example.shoppinggroceryapp.helpers.permissionhandler.CameraPermissionHandler
@@ -37,6 +55,7 @@ import com.example.shoppinggroceryapp.views.GroceryAppRetailerVMFactory
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -50,6 +69,7 @@ class AddOrEditProductFragment : Fragment() {
     private lateinit var imageLoader: ImageLoaderAndGetter
     private var isNewParentCategory = false
     private var isNewSubCategory = false
+    var oldMainImage = ""
     private lateinit var imagePermissionHandler: ImagePermissionHandler
     private var mainImage:String = ""
     private var mainImageBitmap:Bitmap?= null
@@ -228,6 +248,7 @@ class AddOrEditProductFragment : Fragment() {
     private fun setInitialValues(it:Product) {
         editingProduct = true
         addEditProductViewModel.getBrandName(it.brandId)
+        oldMainImage = it.mainImage
         imageHandler.gotImage.value = imageLoader.getImageInApp(requireContext(),it.mainImage)
         mainImage = it.mainImage
         updateBtn.text = "Update Product"
@@ -373,6 +394,7 @@ class AddOrEditProductFragment : Fragment() {
                                 imageList[currentCount]!!.isChecked = isChecked
                             }
                         }
+
                     newView.findViewById<ImageButton>(R.id.deleteImage).setOnClickListener {
                         if (imageLoader.deleteImageInApp(
                                 requireContext(),
@@ -409,6 +431,8 @@ class AddOrEditProductFragment : Fragment() {
                 for(i in imageList){
                     if(i.value.isChecked){
                         checkedCount++
+                        println("4545 value: ${i.value.fileName}")
+                        addEditProductViewModel.deleteImage(i.value.fileName)
                         bitmap = i.value.bitmap
                         mainImageBitmap = bitmap
                     }
@@ -452,7 +476,7 @@ class AddOrEditProductFragment : Fragment() {
                         addEditProductViewModel.addSubCategory(Category(productSubCat.text.toString(), productParentCategory.text.toString(), ""))
                     }
                     if (isCategoryImageAdded) {
-                        addEditProductViewModel.updateInventory(brandNameStr, (ProductListFragment.selectedProductEntity.value == null), Product(0, 0, subCategoryName, productName.text.toString(), productDescription.text.toString(), productPrice.text.toString().toFloat(), productOffer.text.toString().toFloat(), productQuantity.text.toString(), mainImage, isVeg.isChecked, rawManufactureDate, rawExpiryDate, productAvailableItems.text.toString().toInt()), ProductListFragment.selectedProductEntity.value?.productId, imageListNames, deletedImageList)
+                        addEditProductViewModel.updateInventory(brandNameStr, (ProductListFragment.selectedProductEntity.value == null), Product(0, 0, subCategoryName, productName.text.toString(), productDescription.text.toString(), productPrice.text.toString().toFloat(), productOffer.text.toString().toFloat(), productQuantity.text.toString(), mainImage, isVeg.isChecked, rawManufactureDate, rawExpiryDate, productAvailableItems.text.toString().toInt()), ProductListFragment.selectedProductEntity.value?.productId, imageListNames, deletedImageList,oldMainImage)
                         parentFragmentManager.popBackStack()
                         Toast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT).show()
                     }

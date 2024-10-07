@@ -21,7 +21,7 @@ class CartItemsDiffUtil(
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldItemPosition == newItemPosition
+        return (oldItemPosition == newItemPosition && oldList[oldItemPosition]==newList[newItemPosition])
     }
 }
 
