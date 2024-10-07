@@ -93,6 +93,7 @@ class ProductDetailFragment : Fragment() {
     private lateinit var productDetailViewModel: ProductDetailViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        println("SELECTED LIST: $selectedProductEntityList")
         imageLoader = ImageLoaderAndGetter()
         oneTimeFragmentIn = 0
     }
@@ -168,6 +169,7 @@ class ProductDetailFragment : Fragment() {
                                 }
                                 deletePosition = ProductListFragment.selectedPos
                                 dialog.dismiss()
+                                setProductValue()
                                 parentFragmentManager.popBackStack()
                             }
                             .create()
@@ -438,5 +440,9 @@ class ProductDetailFragment : Fragment() {
         }
         catch (e:Exception){
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

@@ -116,7 +116,7 @@ class ProductListFragment : Fragment() {
     ): View? {
 
         val view =  inflater.inflate(R.layout.fragment_product_list, container, false)
-
+        ProductDetailFragment.selectedProductEntityList = mutableListOf()
         fileDir = File(requireContext().filesDir,"AppImages")
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
