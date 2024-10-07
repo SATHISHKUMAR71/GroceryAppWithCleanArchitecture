@@ -5,6 +5,7 @@ import com.core.domain.products.Images
 
 class DeleteProductImage(private val productRepository: ProductRepository) {
     fun invoke(images: Images){
+        println("IMAGES VALUE: $images")
         productRepository.deleteProductImage(images)
     }
 }

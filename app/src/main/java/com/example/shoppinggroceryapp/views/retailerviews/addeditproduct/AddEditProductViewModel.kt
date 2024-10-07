@@ -53,6 +53,7 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
 
     fun getParentCategoryImage(childCategoryName:String){
         Thread{
+            println("#@#@ parent image: image got in view model ${productGetters.mGetParentCategoryImageUsingChild.invoke(childCategoryName)}")
             categoryImage.postValue(productGetters.mGetParentCategoryImageUsingChild.invoke(childCategoryName))
         }.start()
     }
@@ -83,6 +84,7 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
 
     fun getImagesForProduct(productId: Long){
         Thread{
+            println("IMAGES VALUE IN VM: ${productGetters.mGetImagesForProduct.invoke(productId)}")
             imageList.postValue(productGetters.mGetImagesForProduct.invoke(productId))
         }.start()
     }
@@ -133,8 +135,12 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
                 }
 
                 for(j in deletedImageList){
+                    println("DELETE REQUESTED IMAGES: $j ${productGetters.mGetImage.invoke(j)} ")
                     productGetters.mGetImage.invoke(j)
-                        ?.let { productDeleteUseCases.mDeleteProductImage.invoke(it) }
+                        ?.let {
+                            println("DELETE REQUESTED IMAGES in non null: $j ${productGetters.mGetImage.invoke(j)}")
+                            productDeleteUseCases.mDeleteProductImage.invoke(it)
+                        }
                 }
 
                 for(i in imageList){
@@ -148,47 +154,6 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
         }.start()
     }
 
-
-//    fun tmp( imageList:MutableMap<Int, IntWithCheckedData>,mainImageBitmap:Bitmap?,imageStringList:List<String>,isNewParentCategory:Boolean,isNewSubCategory:Boolean){
-//        val imageListNames = mutableListOf<String>()
-//        for (i in imageList) {
-//            if ((i.value.bitmap != mainImageBitmap) && (i.value.fileName !in imageStringList)) {
-//                val tmpName = System.currentTimeMillis().toString()
-//                imageLoader.storeImageInApp(requireContext(), i.value.bitmap, tmpName)
-//                imageListNames.add(tmpName)
-//            }
-//        }
-//        val brandNameStr = brandName.text.toString()
-//        val subCategoryName = productSubCat.text.toString()
-//        if (isNewParentCategory) {
-//            val filName = "${System.currentTimeMillis()}"
-//            if (parentCategoryImage != null) {
-//                imageLoader.storeImageInApp(
-//                    requireContext(),
-//                    parentCategoryImage!!,
-//                    filName
-//                )
-//            }
-//            if (imageLoader.getImageInApp(requireContext(), filName) == null) {
-//                isCategoryImageAdded = false
-//            }
-//            addEditProductViewModel.addParentCategory(ParentCategory(productParentCategory.text.toString(), filName,                             "", false))
-//        }
-//        if (isNewSubCategory) {
-//            addEditProductViewModel.addSubCategory(
-//                Category(productSubCat.text.toString(), productParentCategory.text.toString(), "")
-//            )
-//        }
-//        if (isCategoryImageAdded) {
-//            addEditProductViewModel.updateInventory(brandNameStr, (ProductListFragment.selectedProductEntity.value == null), Product(0, 0, subCategoryName, productName.text.toString(), productDescription.text.toString(), productPrice.text.toString().toFloat(), productOffer.text.toString().toFloat(), productQuantity.text.toString(), mainImage, isVeg.isChecked, rawManufactureDate, rawExpiryDate, productAvailableItems.text.toString().toInt()), ProductListFragment.selectedProductEntity.value?.productId, imageListNames, deletedImageList)
-//            parentFragmentManager.popBackStack()
-//            Toast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT).show()
-//        }
-//        else{
-//            Toast.makeText(context, "Please add the Category Image", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-//    }
 
 
 }
