@@ -13,15 +13,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent">
-
-<!--        <ImageView-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:scaleType="centerCrop"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:src="@drawable/cart_image_2" />-->
-
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbarLayout"
             android:layout_width="match_parent"
@@ -64,7 +55,4 @@
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/home_fragment_bottom_nav" />
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.LruCache
@@ -17,10 +16,8 @@ import androidx.core.content.ContextCompat
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.login.LoginFragment
 import com.example.shoppinggroceryapp.framework.db.dao.UserDao
-import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase.Companion.getAppDatabase
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartMappingEntity
-
 import com.example.shoppinggroceryapp.views.initialview.SetInitialDataForUser
 
 
@@ -68,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE),
                 100)
         }
-        val db2 = AppDatabase.getAppDatabase(baseContext).getUserDao()
+        val db2 = getAppDatabase(baseContext).getUserDao()
         if(isSigned) {
             assignCart(db2)
         }
