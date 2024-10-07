@@ -19,6 +19,8 @@ import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase.Companion.getAppDatabase
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartMappingEntity
 import com.example.shoppinggroceryapp.views.initialview.SetInitialDataForUser
+import com.example.shoppinggroceryapp.views.sharedviews.profileviews.AccountFragment
+import com.example.shoppinggroceryapp.views.sharedviews.profileviews.EditProfileViewModel
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,8 +29,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object{
         val handler = Handler(Looper.getMainLooper())
-        private const val REQUEST_CAMERA_PERMISSION = 200
-        private val permissions = arrayOf(Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO)
         var userFirstName = ""
         var userLastName = ""
         var userId = "-1"
@@ -84,5 +84,10 @@ class MainActivity : AppCompatActivity() {
                 cartId = cart.cartId
             }
         }.start()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        AccountFragment().restartApp()
     }
 }

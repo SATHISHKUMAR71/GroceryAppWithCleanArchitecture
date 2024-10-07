@@ -406,7 +406,6 @@ abstract class AppDatabase:RoomDatabase(){
                                     println("Products Added $productNo $fileName")
                                     productNo++
                                 }
-//                                   val imageLoader = ImageLoaderAndGetter()
                                 var drawableNo = 0
                                 for (j in categoryList) {
                                     val fileName = System.currentTimeMillis().toString()
@@ -419,7 +418,6 @@ abstract class AppDatabase:RoomDatabase(){
                                     )
                                     dbRetailer
                                         .addParentCategory(j.copy(parentCategoryImage = fileName))
-//                                        dbRetailer.addParentCategory(j)
                                     println("Images are Adding $drawableNo $fileName")
                                     drawableNo++
                                 }
@@ -429,7 +427,6 @@ abstract class AppDatabase:RoomDatabase(){
                                     getAppDatabase(context).getRetailerDao().addSubCategory(k)
                                 }
                             }.start()
-//                            }.start()
                         }
                     })
                     .build()

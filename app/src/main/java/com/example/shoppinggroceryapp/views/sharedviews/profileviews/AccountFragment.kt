@@ -208,7 +208,7 @@ class AccountFragment : Fragment() {
 
 
 
-    private fun restartApp() {
+    fun restartApp() {
         val intent = Intent(context,MainActivity::class.java)
         CartFragment.selectedAddressEntity = null
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

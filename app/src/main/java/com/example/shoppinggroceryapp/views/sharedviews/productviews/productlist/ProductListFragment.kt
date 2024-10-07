@@ -391,7 +391,8 @@ class ProductListFragment : Fragment() {
         super.onPause()
         InitialFragment.hideSearchBar.value = false
         InitialFragment.hideBottomNav.value = false
-        productListFirstVisiblePos = (productRV.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+//        productListFirstVisiblePos = (productRV.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        productListFirstVisiblePos = (productRV.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
     }
 
     override fun onStop() {

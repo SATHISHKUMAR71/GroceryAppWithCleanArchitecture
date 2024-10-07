@@ -234,7 +234,7 @@ class OfferFragment : Fragment() {
     }
     override fun onStop() {
         super.onStop()
-        offerListFirstVisiblePos = (offerList.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        offerListFirstVisiblePos = (offerList.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
         offerList.stopScroll()
     }
 

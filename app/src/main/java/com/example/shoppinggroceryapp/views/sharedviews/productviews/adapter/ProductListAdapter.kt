@@ -35,11 +35,7 @@ class ProductListAdapter(var fragment: Fragment,
                          private var file: File,
                          private var tag:String,private var isShort:Boolean,var productListViewModel: ProductListViewModel):RecyclerView.Adapter<ProductListAdapter.ProductLargeImageHolder>() {
 
-    private var userDb: UserDao = AppDatabase.getAppDatabase(fragment.requireContext()).getUserDao()
-    private var retailerDb: RetailerDao = AppDatabase.getAppDatabase(fragment.requireContext()).getRetailerDao()
-
     companion object{
-//        var productList:MutableList<Product> = mutableListOf()
         var productsSize = 0
     }
     var size = 0
@@ -87,7 +83,7 @@ class ProductListAdapter(var fragment: Fragment,
     }
 
     override fun onBindViewHolder(holder: ProductLargeImageHolder, position: Int) {
-        println("ON PRODUCT BIND VIEW HOLDER ${productEntityList[position]}")
+
         if(size==0){
         }
         else{
@@ -206,8 +202,6 @@ class ProductListAdapter(var fragment: Fragment,
 
                 }
                 else {
-//                    val product = productList[position].copy(availableItems = productList[position].availableItems+1)
-//                        retailerDb.updateProduct(product)
                     productListViewModel.updateItemsInCart(
                         if(productEntityList[position].offer==-1f) {
                             Cart(
@@ -243,7 +237,7 @@ class ProductListAdapter(var fragment: Fragment,
                     ProductListFragment.totalCost.value!! + calculateDiscountPrice(productEntityList[position].price, productEntityList[position].offer)
                 CartFragment.viewPriceDetailData.value =
                     CartFragment.viewPriceDetailData.value!! + calculateDiscountPrice(productEntityList[position].price, productEntityList[position].offer)
-                var cartEntity = if(productEntityList[position].offer==-1f) {
+                val cartEntity = if(productEntityList[position].offer==-1f) {
                     Cart(
                         MainActivity.cartId,
                         productEntityList[position].productId.toInt(),
@@ -302,11 +296,6 @@ class ProductListAdapter(var fragment: Fragment,
 
     fun setProducts(newList:List<Product>){
         productsSize = newList.size
-        println("@@@@@ value of each product: set products called")
-        for(i in newList){
-            println("@@@@ value of each product: ${i.productName}")
-        }
-        println("@@@@ value of each product:==============")
         val diffUtil = CartItemsDiffUtil(productEntityList,newList)
         for(i in newList.indices){
             countList.add(i,0)
@@ -321,11 +310,10 @@ class ProductListAdapter(var fragment: Fragment,
 
 
     private fun calculateDiscountPrice(price:Float, offer:Float):Float{
-        if(offer>0f) {
-            return price - (price * (offer / 100))
-        }
-        else{
-            return price
+        return if(offer>0f) {
+            price - (price * (offer / 100))
+        } else{
+            price
         }
     }
 }

@@ -19,7 +19,6 @@ class EditProfileViewModel(private var mUpdateExistingUser:UpdateExistingUser, p
     var userEntity:MutableLiveData<User> = MutableLiveData()
     fun saveDetails(oldEmail:String,firstName:String,lastName:String,email:String,phone: String,image:String){
         Thread {
-
             val user1 = mGetUserByInputData.invoke(oldEmail)
             user1?.let {user ->
                 val userEntityTmp = User(
