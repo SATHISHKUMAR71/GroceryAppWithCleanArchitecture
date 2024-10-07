@@ -36,6 +36,7 @@ import com.example.shoppinggroceryapp.framework.db.entity.user.UserEntity
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
+import com.example.shoppinggroceryapp.helpers.snackbar.ShowShortSnackBar
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.signup.SignUpFragment
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.forgotpassword.ForgotPasswordFragment
@@ -97,7 +98,7 @@ class LoginFragment : Fragment() {
     private fun setLoginViewModelObservers() {
         loginViewModel.userName.observe(viewLifecycleOwner){
             if(it == null){
-                showSnackBar("User Not Found",requireView())
+                ShowShortSnackBar.showRedColor(requireView(),"User Not Found")
             }
             else{
                 loginViewModel.validateUser(emailPhoneText.text.toString().trim(),password.text.toString())
@@ -106,7 +107,7 @@ class LoginFragment : Fragment() {
 
         loginViewModel.user.observe(viewLifecycleOwner){
             if(it==null){
-                showSnackBar("InValid Password",requireView())
+                ShowShortSnackBar.showRedColor(requireView(),"InValid Password")
             }
             else{
                 val sharedPreferences = requireActivity().getSharedPreferences("freshCart",Context.MODE_PRIVATE)
@@ -190,13 +191,6 @@ class LoginFragment : Fragment() {
         forgotPassword = view.findViewById(R.id.forgotPassword)
     }
 
-
-    fun showSnackBar(text:String,view: View) {
-        Snackbar.make(view, text, Snackbar.LENGTH_SHORT).apply {
-            setBackgroundTint(Color.argb(255, 180, 30, 38))
-            show()
-        }
-    }
 
     private fun setUpViewModel() {
         val db1 = AppDatabase.getAppDatabase(requireContext())

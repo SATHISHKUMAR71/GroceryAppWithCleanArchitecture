@@ -1,5 +1,7 @@
 package com.example.shoppinggroceryapp.views.retailerviews.addeditproduct
 
+import android.graphics.Bitmap
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.products.BrandData
@@ -10,6 +12,7 @@ import com.core.domain.products.Product
 import com.core.usecases.productusecase.productmanagement.ProductManagementDeleteUseCases
 import com.core.usecases.productusecase.productmanagement.ProductManagementGetterUseCases
 import com.core.usecases.productusecase.productmanagement.ProductManagementSetterUseCases
+import com.example.shoppinggroceryapp.framework.db.dataclass.IntWithCheckedData
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailViewModel
 
@@ -68,6 +71,7 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
 
     fun getParentCategoryImage(childCategoryName:String){
         Thread{
+            println("#@#@ parent image: image got in view model ${productGetters.mGetParentCategoryImageUsingChild.invoke(childCategoryName)}")
             categoryImage.postValue(productGetters.mGetParentCategoryImageUsingChild.invoke(childCategoryName))
         }.start()
     }
@@ -98,8 +102,26 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
 
     fun getImagesForProduct(productId: Long){
         Thread{
+            println("IMAGES VALUE IN VM: ${productGetters.mGetImagesForProduct.invoke(productId)}")
             imageList.postValue(productGetters.mGetImagesForProduct.invoke(productId))
         }.start()
+    }
+    fun subCategoryChecker(childCategory: String,childArray: Array<String>):Boolean{
+        for(i in childArray){
+            if(childCategory==i){
+                return true
+            }
+        }
+        return false
+    }
+
+    fun parentCategoryChecker(parentCategory: String,parentArray: Array<String>):Boolean{
+        for(i in parentArray){
+            if(parentCategory==i){
+                return true
+            }
+        }
+        return false
     }
 
     fun updateInventory(brandName:String, isNewProduct:Boolean, product: Product, productId:Long?, imageList: List<String>, deletedImageList:MutableList<String>){
@@ -131,8 +153,12 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
                 }
 
                 for(j in deletedImageList){
+                    println("DELETE REQUESTED IMAGES: $j ${productGetters.mGetImage.invoke(j)} ")
                     productGetters.mGetImage.invoke(j)
-                        ?.let { productDeleteUseCases.mDeleteProductImage.invoke(it) }
+                        ?.let {
+                            println("DELETE REQUESTED IMAGES in non null: $j ${productGetters.mGetImage.invoke(j)}")
+                            productDeleteUseCases.mDeleteProductImage.invoke(it)
+                        }
                 }
 
                 for(i in imageList){

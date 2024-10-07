@@ -22,6 +22,7 @@ import com.core.data.repository.ProductRepository
 import com.core.data.repository.SearchRepository
 import com.core.data.repository.SubscriptionRepository
 import com.core.data.repository.UserRepository
+import com.core.domain.products.Images
 import com.core.domain.products.Product
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.data.authentication.AuthenticationDataSourceImpl
@@ -33,6 +34,8 @@ import com.example.shoppinggroceryapp.framework.data.product.ProductDataSourceIm
 import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
+import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
+import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
@@ -69,8 +72,21 @@ class OfferFragment : Fragment() {
     private lateinit var offerList:RecyclerView
     private lateinit var adapter: ProductListAdapter
     private lateinit var offerViewModel: OfferViewModel
+    private lateinit var noItemsFoundImage:ImageView
+    private lateinit var noItemsFoundImageText:TextView
+    private lateinit var sortButton:MaterialButton
+    private lateinit var filterButton: MaterialButton
+    private lateinit var userDao:UserDao
+    private lateinit var retailerDao:RetailerDao
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initStaticVariable()
+        val db1 = AppDatabase.getAppDatabase(requireContext())
+        userDao = db1.getUserDao()
+        retailerDao = db1.getRetailerDao()
+    }
+
+    private fun initStaticVariable() {
         productListFilterCount = 0
         BottomSheetDialogFragment.selectedOption.value = null
         offerFilterCount = 0
@@ -87,43 +103,31 @@ class OfferFragment : Fragment() {
         FilterFragment.list = null
     }
 
-    @OptIn(ExperimentalBadgeUtils::class)
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_offer, container, false)
-        val noItemsFoundImage = view.findViewById<ImageView>(R.id.noItemFoundImageOfferFragment)
-        val noItemsFoundImageText = view.findViewById<TextView>(R.id.noItemsFoundText)
+        noItemsFoundImage = view.findViewById(R.id.noItemFoundImageOfferFragment)
+        noItemsFoundImageText = view.findViewById(R.id.noItemsFoundText)
         offerList = view.findViewById(R.id.offerList)
-        filterCount = view.findViewById<TextView>(R.id.filterCountTextViewOffer)
+        filterCount = view.findViewById(R.id.filterCountTextViewOffer)
         filterAndSortLayout = view.findViewById(R.id.linearLayout15)
-        val sortButton = view.findViewById<MaterialButton>(R.id.sortButton)
-        val db1 = AppDatabase.getAppDatabase(requireContext())
-        val userDao = db1.getUserDao()
-        val retailerDao = db1.getRetailerDao()
-        val filterButton = view.findViewById<MaterialButton>(R.id.filterButton)
-        val fileDir = File(requireContext().filesDir,"AppImages")
-        adapter = ProductListAdapter(this,fileDir,"O",false,productListViewModel = ViewModelProvider(this,
+        sortButton = view.findViewById(R.id.sortButton)
+        filterButton = view.findViewById(R.id.filterButton)
+        adapter = ProductListAdapter(this,File(requireContext().filesDir,"AppImages"),"O",false,productListViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(retailerDao, userDao)
         )[ProductListViewModel::class.java])
+
         adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
         offerViewModel = ViewModelProvider(this,
             GroceryAppUserVMFactory(userDao, retailerDao)
         )[OfferViewModel::class.java]
-        if(FilterFragment.list!=null){
-            if(FilterFragment.list!!.isEmpty()){
-                offerList.visibility = View.GONE
-                noItemsFoundImageText.visibility = View.VISIBLE
-                noItemsFoundImage.visibility =View.VISIBLE
-            }
-            else{
-                offerList.visibility = View.VISIBLE
-                noItemsFoundImageText.visibility = View.GONE
-                noItemsFoundImage.visibility =View.GONE
 
-            }
+        if(FilterFragment.list!=null){
+            updateVisibility(FilterFragment.list!!)
             adapter.setProducts(FilterFragment.list!!)
             if(offerList.adapter==null) {
                 offerList.adapter = adapter
@@ -132,28 +136,38 @@ class OfferFragment : Fragment() {
         }
         offerViewModel.getOfferedProducts()
 
+        setUpOnCLickListeners()
+        setUpObservers()
+        attachBadge()
 
+        if(offerFilterCount !=0){
+            filterCount.text = offerFilterCount.toString()
+            filterCount.visibility = View.VISIBLE
+        }
+        else{
+            filterCount.visibility = View.INVISIBLE
+        }
+
+        return view
+    }
+
+    @OptIn(ExperimentalBadgeUtils::class)
+    private fun attachBadge() {
+        val filterBadge = BadgeDrawable.create(requireContext())
+        filterBadge.number = 10
+        filterBadge.badgeTextColor = Color.WHITE
+        filterBadge.backgroundColor = Color.RED
+        BadgeUtils.attachBadgeDrawable(filterBadge,filterButton)
+    }
+
+    private fun setUpObservers() {
         offerViewModel.offeredProductEntityList.observe(viewLifecycleOwner){ offeredProductList ->
-
             realList = offeredProductList.toMutableList()
-//            products = realList
-            if(productEntities.isNotEmpty()){
-            }
             if(productEntities.isEmpty()) {
                 productEntities = offeredProductList
             }
             if(FilterFragment.list==null){
-                if(productEntities.isEmpty()){
-                    offerList.visibility = View.GONE
-                    noItemsFoundImageText.visibility = View.VISIBLE
-                    noItemsFoundImage.visibility =View.VISIBLE
-                }
-                else{
-                    offerList.visibility = View.VISIBLE
-                    noItemsFoundImageText.visibility = View.GONE
-                    noItemsFoundImage.visibility =View.GONE
-
-                }
+                updateVisibility(productEntities)
                 if(BottomSheetDialogFragment.selectedOption.value==null) {
                     adapter.setProducts(offeredProductList)
                 }
@@ -166,97 +180,11 @@ class OfferFragment : Fragment() {
                 }
             }
         }
-        if(offerFilterCount !=0){
-            filterCount.text = offerFilterCount.toString()
-            filterCount.visibility = View.VISIBLE
-        }
-        else{
-            filterCount.visibility = View.INVISIBLE
-        }
-        val filterBadge = BadgeDrawable.create(requireContext())
-        filterBadge.number = 10
-        filterBadge.badgeTextColor = Color.WHITE
-        filterBadge.backgroundColor = Color.RED
-        BadgeUtils.attachBadgeDrawable(filterBadge,filterButton)
 
-        filterButton.setOnClickListener {
-            offerFilterCount = 0
-//            FilterFragment.list = realList.toMutableList()
-            productEntities = realList
-            if(FilterFragment.list!=null) {
-                FragmentTransaction.navigateWithBackstack(
-                    parentFragmentManager,
-                    FilterFragment(realList),
-                    "Filter"
-                )
-            }
-            else{
-                FragmentTransaction.navigateWithBackstack(
-                    parentFragmentManager,
-                    FilterFragment(realList),
-                    "Filter"
-                )
-            }
-        }
-
-        sortButton.setOnClickListener {
-            val bottomSheet = BottomSheetDialogFragment()
-            bottomSheet.show(parentFragmentManager,"Bottom Sort Sheet")
-        }
-        val sorter  = ProductSorter()
         BottomSheetDialogFragment.selectedOption.observe(viewLifecycleOwner){
-            var newList: List<Product> = mutableListOf()
-            if(it==0){
-                if(FilterFragment.list==null) {
-                    newList = sorter.sortByDate(productEntities)
-                }
-                else{
-                    newList = sorter.sortByDate(FilterFragment.list!!)
-                }
-                adapter.setProducts(newList)
-            }
-            else if(it == 1){
-                if(FilterFragment.list==null) {
-                    newList = sorter.sortByExpiryDate(productEntities)
-                }
-                else{
-                    newList = sorter.sortByExpiryDate(FilterFragment.list!!)
-                }
-                adapter.setProducts(newList)
-            }
-            else if(it == 2){
-                if(FilterFragment.list==null) {
-                    newList = sorter.sortByDiscount(productEntities)
-                }
-                else{
-                    newList = sorter.sortByDiscount(FilterFragment.list!!)
-                }
-                adapter.setProducts(newList)
-            }
-            else if(it == 3){
-                if(FilterFragment.list==null) {
-                    newList = sorter.sortByPriceLowToHigh(productEntities)
-                }
-                else{
-                    newList = sorter.sortByPriceLowToHigh(FilterFragment.list!!)
-                }
-                adapter.setProducts(newList)
-            }
-            else if(it == 4){
-                if(FilterFragment.list==null) {
-                    newList = sorter.sortByPriceHighToLow(productEntities)
-                }
-                else{
-                    newList = sorter.sortByPriceHighToLow(FilterFragment.list!!)
-                }
-                adapter.setProducts(newList)
-            }
-            if(newList.isNotEmpty()){
-                productEntities = newList
-                if(FilterFragment.list!=null){
-                    if(FilterFragment.list!!.size==newList.size){
-                        FilterFragment.list = newList.toMutableList()
-                    }
+            it?.let {
+                offerViewModel.doSorting(adapter, it, productEntities, ProductSorter())?.let { list ->
+                    productEntities = list
                 }
             }
             offerList.layoutManager?.let {layoutManager ->
@@ -264,7 +192,23 @@ class OfferFragment : Fragment() {
             }
         }
 
-        return view
+    }
+
+    private fun setUpOnCLickListeners() {
+        sortButton.setOnClickListener {
+            val bottomSheet = BottomSheetDialogFragment()
+            bottomSheet.show(parentFragmentManager,"Bottom Sort Sheet")
+        }
+
+        filterButton.setOnClickListener {
+            offerFilterCount = 0
+            productEntities = realList
+            FragmentTransaction.navigateWithBackstack(
+                parentFragmentManager,
+                FilterFragment(realList),
+                "Filter"
+            )
+        }
     }
 
     override fun onResume() {
@@ -274,9 +218,7 @@ class OfferFragment : Fragment() {
             offerList.adapter = adapter
             offerList.layoutManager = LinearLayoutManager(context)
         }
-        else{
-//            adapter.setProducts(products)
-        }
+
         if(FilterFragment.list?.isNotEmpty()==true){
             adapter.setProducts(FilterFragment.list!!)
         }
@@ -296,11 +238,6 @@ class OfferFragment : Fragment() {
         offerList.stopScroll()
     }
 
-    override fun onPause() {
-        super.onPause()
-    }
-
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -319,5 +256,20 @@ class OfferFragment : Fragment() {
         ProductListFragment.dis40Val = false
         ProductListFragment.dis50Val = false
     }
+
+
+    private fun updateVisibility(products:List<Product>){
+        if(products.isEmpty()){
+            offerList.visibility = View.GONE
+            noItemsFoundImageText.visibility = View.VISIBLE
+            noItemsFoundImage.visibility =View.VISIBLE
+        }
+        else{
+            offerList.visibility = View.VISIBLE
+            noItemsFoundImageText.visibility = View.GONE
+            noItemsFoundImage.visibility =View.GONE
+        }
+    }
+
 }
 

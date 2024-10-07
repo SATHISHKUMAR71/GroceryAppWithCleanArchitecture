@@ -40,6 +40,7 @@ import com.example.shoppinggroceryapp.helpers.permissionhandler.interfaces.Image
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
+import com.example.shoppinggroceryapp.helpers.toast.ShowShortToast
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -87,11 +88,7 @@ class SignUpFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_sign_up, container, false)
-        val db1 = AppDatabase.getAppDatabase(requireContext())
-        val userDao = db1.getUserDao()
-        val retailerDao = db1.getRetailerDao()
-        signUpViewModel = ViewModelProvider(this, GroceryAppSharedVMFactory(retailerDao,userDao))[SignUpViewModel::class.java]
-
+        setUpViewModel()
         initViews(view)
         addTextChangeListeners()
         initClickListeners()
@@ -103,8 +100,8 @@ class SignUpFragment : Fragment() {
         }
 
         imageHandler.gotImage.observe(viewLifecycleOwner){
-            var image = it
-            var imageName = System.currentTimeMillis().toString()
+            val image = it
+            val imageName = System.currentTimeMillis().toString()
             addProfileImage.setImageBitmap(image)
             addProfileImage.setPadding(0)
             profileUri = imageName
@@ -119,6 +116,14 @@ class SignUpFragment : Fragment() {
 
 
         return view
+    }
+
+    private fun setUpViewModel() {
+        val db1 = AppDatabase.getAppDatabase(requireContext())
+        val userDao = db1.getUserDao()
+        val retailerDao = db1.getRetailerDao()
+        signUpViewModel = ViewModelProvider(this, GroceryAppSharedVMFactory(retailerDao,userDao))[SignUpViewModel::class.java]
+
     }
 
     private fun initClickListeners() {
@@ -136,10 +141,7 @@ class SignUpFragment : Fragment() {
         }
 
         signUp.setOnClickListener {
-            phoneLayout.error = inputChecker.lengthAndEmptyCheckForPhone("Phone Number",phone,10)
-            emailLayout.error = inputChecker.lengthAndEmailCheck(email)
-            passwordLayout.error = inputChecker.lengthAndEmptyCheck("Password",password,6)
-            firstNameLayout.error = inputChecker.lengthAndEmptyCheck("Name",firstName,3)
+            performInputErrorCheck()
             if(passwordLayout.error==null) {
                 if (!((password.text.toString()
                         .isNotEmpty()) && (confirmedPassword.text.toString() == password.text.toString()))
@@ -162,69 +164,48 @@ class SignUpFragment : Fragment() {
                     )
                 )
             }
-            email.clearFocus()
-            phone.clearFocus()
-            password.clearFocus()
-            firstName.clearFocus()
-            lastName.clearFocus()
-            confirmedPassword.clearFocus()
+            clearAllInputFocus()
         }
+    }
+
+    private fun performInputErrorCheck() {
+        phoneLayout.error = inputChecker.lengthAndEmptyCheckForPhone("Phone Number",phone,10)
+        emailLayout.error = inputChecker.lengthAndEmailCheck(email)
+        passwordLayout.error = inputChecker.lengthAndEmptyCheck("Password",password,6)
+        firstNameLayout.error = inputChecker.lengthAndEmptyCheck("Name",firstName,3)
+    }
+
+    private fun clearAllInputFocus() {
+        email.clearFocus()
+        phone.clearFocus()
+        password.clearFocus()
+        firstName.clearFocus()
+        lastName.clearFocus()
+        confirmedPassword.clearFocus()
     }
 
     private fun addTextChangeListeners() {
 //        Text Change Listeners
-        email.addTextChangedListener(object :TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                emailLayout.error = null
-            }
+        val map = mutableMapOf<TextInputEditText,TextInputLayout>()
+        map[email] = emailLayout
+        map[password] = passwordLayout
+        map[phone] = phoneLayout
+        map[firstName] = firstNameLayout
+        for((editText,layout) in map){
+            editText.addTextChangedListener(object :TextWatcher{
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    layout.error = null
+                }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                emailLayout.error = null
-            }
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    layout.error = null
+                }
 
-            override fun afterTextChanged(s: Editable?) {
-                emailLayout.error = null
-            }
-        })
-        password.addTextChangedListener(object :TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                passwordLayout.error = null
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                passwordLayout.error = null
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                passwordLayout.error = null
-            }
-        })
-        phone.addTextChangedListener(object :TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                phoneLayout.error = null
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                phoneLayout.error = null
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                phoneLayout.error = null
-            }
-        })
-        firstName.addTextChangedListener(object :TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                firstNameLayout.error = null
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                firstNameLayout.error = null
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                firstNameLayout.error = null
-            }
-        })
+                override fun afterTextChanged(s: Editable?) {
+                    layout.error = null
+                }
+            })
+        }
 
 //        Focus Change Listeners
         confirmedPassword.setOnFocusChangeListener { v, hasFocus ->
@@ -262,30 +243,22 @@ class SignUpFragment : Fragment() {
                 else{
                     text ="User Added Successfully"
                 }
-                runToast(text)
+                ShowShortToast.show(text,requireContext())
                 parentFragmentManager.popBackStack()
             }
             1 -> {
-                runToast("Phone Number and Email is Already Registered")
+                ShowShortToast.show("Phone Number and Email is Already Registered",requireContext())
             }
             2 -> {
-                runToast("Phone Number is Already Registered")
+                ShowShortToast.show("Phone Number is Already Registered",requireContext())
             }
             3 -> {
-                runToast("Email is Already Registered")
+                ShowShortToast.show("Email is Already Registered",requireContext())
             }
             else -> {
-                runToast("Something Went Wrong")
+                ShowShortToast.show("Something Went Wrong",requireContext())
             }
         }
-    }
-
-    private fun runToast(text:String){
-        Toast.makeText(
-            context,
-            text,
-            Toast.LENGTH_SHORT
-        ).show()
     }
 
 

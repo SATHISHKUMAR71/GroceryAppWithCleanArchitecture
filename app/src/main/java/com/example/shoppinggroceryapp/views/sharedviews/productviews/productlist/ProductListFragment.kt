@@ -114,11 +114,9 @@ class ProductListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
 
-        println("ON CREATE VIEW CALLED")
         val view =  inflater.inflate(R.layout.fragment_product_list, container, false)
-
+        ProductDetailFragment.selectedProductEntityList = mutableListOf()
         fileDir = File(requireContext().filesDir,"AppImages")
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
@@ -137,7 +135,7 @@ class ProductListFragment : Fragment() {
         else{
             filterCountText.visibility = View.INVISIBLE
         }
-        var badgeDrawableListFragment = BadgeDrawable.create(requireContext())
+        val badgeDrawableListFragment = BadgeDrawable.create(requireContext())
         toolbar.setTitle(category)
         toolbar.setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
@@ -253,18 +251,14 @@ class ProductListFragment : Fragment() {
 
             realProductEntityList = it.toMutableList()
             for (i in productEntityList){
-                println("AAAAA ${i.productName}")
             }
             for (i in it){
-                println("AAAAAB ${i.productName}")
             }
             if(FilterFragment.list==null) {
                 if(BottomSheetDialogFragment.selectedOption.value==null) {
-                    println("AAAAA  adapter if called")
                     adapter.setProducts(it)
                 }
                 else{
-                    println("AAAAA  adapter else called")
                     adapter.setProducts(productEntityList)
                 }
                 if (productRV.adapter == null) {
@@ -307,66 +301,16 @@ class ProductListFragment : Fragment() {
             val bottomSheet = BottomSheetDialogFragment()
             bottomSheet.show(parentFragmentManager,"Bottom Sort Sheet")
         }
-        val sorter  = ProductSorter()
+
         BottomSheetDialogFragment.selectedOption.observe(viewLifecycleOwner){
             if(it!=null) {
-                println("AAAAA value of each product: on Bottom Framgnet $it")
-                var newList = listOf<Product>()
-                if (it == 0) {
-                    if (FilterFragment.list == null) {
-                        newList = sorter.sortByDate(productEntityList)
-                    } else {
-                        newList = sorter.sortByDate(FilterFragment.list!!)
-                    }
-                    adapter.setProducts(newList)
-                } else if (it == 1) {
-                    if (FilterFragment.list == null) {
-                        newList = sorter.sortByExpiryDate(productEntityList)
-                    } else {
-                        newList = sorter.sortByExpiryDate(FilterFragment.list!!)
-                    }
-                    adapter.setProducts(newList)
-                } else if (it == 2) {
-                    if (FilterFragment.list == null) {
-                        newList = sorter.sortByDiscount(productEntityList)
-                    } else {
-                        newList = sorter.sortByDiscount(FilterFragment.list!!)
-                    }
-                    adapter.setProducts(newList)
-                } else if (it == 3) {
-                    if (FilterFragment.list == null) {
-                        newList = sorter.sortByPriceLowToHigh(productEntityList)
-                    } else {
-                        newList = sorter.sortByPriceLowToHigh(FilterFragment.list!!)
-                    }
-                    adapter.setProducts(newList)
-                } else if (it == 4) {
-                    if (FilterFragment.list == null) {
-                        newList = sorter.sortByPriceHighToLow(productEntityList)
-                    } else {
-                        newList = sorter.sortByPriceHighToLow(FilterFragment.list!!)
-                    }
-                    adapter.setProducts(newList)
-                }
-                if (newList.isNotEmpty()) {
-                    println("AAAAA List changed")
-                    if (FilterFragment.list != null) {
-                        if (FilterFragment.list!!.size == newList.size) {
-                            FilterFragment.list = newList.toMutableList()
-                        }
-                    }
-                    else{
-                        productEntityList = newList.toMutableList()
-                    }
+                productListViewModel.doSorting(adapter,it,productEntityList,ProductSorter())?.let {list ->
+                    productEntityList = list.toMutableList()
                 }
                 productRV.layoutManager?.let { layoutManager ->
-                    println("Scrolled to on create vie: ### $productListFirstVisiblePos")
                     (layoutManager as LinearLayoutManager).scrollToPosition(productListFirstVisiblePos?:0)
                 }
             }
-        }
-        for(i in productEntityList){
-            println("I VALUES : ${i.productName}")
         }
         return view
     }
@@ -439,7 +383,6 @@ class ProductListFragment : Fragment() {
         else if (productEntityList.isNotEmpty()) {
             adapter.setProducts(productEntityList)
         }
-        println("Scrolled to : ### $productListFirstVisiblePos")
         productRV.scrollToPosition(productListFirstVisiblePos ?: 0)
     }
 

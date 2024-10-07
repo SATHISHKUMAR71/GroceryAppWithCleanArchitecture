@@ -123,4 +123,13 @@ class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
         }.start()
     }
 
+    fun calculateDiscountPrice(price:Float, offer:Float):Float{
+        if(offer>0f) {
+            return price - (price * (offer / 100))
+        }
+        else{
+            return price
+        }
+    }
+
 }

@@ -8,6 +8,8 @@ import com.core.usecases.addressusecase.UpdateAddress
 class GetAddressViewModel(private val mAddNewAddress: AddNewAddress,
                           private val mUpdateAddress: UpdateAddress
 ):ViewModel() {
+
+
     fun addAddress(address: Address){
         Thread{
             mAddNewAddress.invoke(address)

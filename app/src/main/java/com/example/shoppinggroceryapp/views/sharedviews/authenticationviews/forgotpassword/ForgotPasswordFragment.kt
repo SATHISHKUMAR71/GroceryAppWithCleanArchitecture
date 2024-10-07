@@ -30,6 +30,7 @@ import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.views.sharedviews.profileviews.EditProfileViewModel
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
+import com.example.shoppinggroceryapp.helpers.snackbar.ShowShortSnackBar
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -59,35 +60,15 @@ class ForgotPasswordFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_forgot_password, container, false)
-        emailOrPhoneLayout = view.findViewById(R.id.textInputLayoutMailOrPhone)
-        newPasswordLayout = view.findViewById(R.id.textInputLayoutNewPassword)
-        emailOrPhoneEditText = view.findViewById(R.id.forgotEmailInput)
-        passwordEditText = view.findViewById(R.id.inputNewPassword)
-        confirmPasswordLayout = view.findViewById(R.id.textInputLayoutNewConfirmPassword)
-        confirmPasswordEditText = view.findViewById(R.id.inputNewConfirmPassword)
+        initViews(view)
         view.findViewById<MaterialToolbar>(R.id.appbarLayoutForgotPass).setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }
-        emailOrPhoneEditText.setOnFocusChangeListener { v, hasFocus ->
-            if(hasFocus){
-                emailOrPhoneLayout.error = null
-            }
-        }
 
-        passwordEditText.setOnFocusChangeListener { v, hasFocus ->
-            if(hasFocus){
-                newPasswordLayout.error = null
-            }
-        }
-        confirmPasswordEditText.setOnFocusChangeListener { v, hasFocus ->
-            if(hasFocus){
-                confirmPasswordLayout.error = null
-            }
-        }
-
+        setUpFocusChangeListeners()
         setUpViewModel()
-        val userData  = emailOrPhoneEditText.text
 
+        val userData  = emailOrPhoneEditText.text
         view.findViewById<MaterialButton>(R.id.materialButtonUpdatePassword).setOnClickListener {
             editProfileViewModel.getUser(userData.toString())
         }
@@ -107,20 +88,36 @@ class ForgotPasswordFragment : Fragment() {
                 else if(it != null){
                     if(passwordEditText.text.toString().isNotEmpty()){
                         editProfileViewModel.savePassword(it.copy(userPassword = passwordEditText.text.toString()))
-                        showSnackBar("Password Updated Successfully",view)
+                        ShowShortSnackBar.showGreenColor(view,"Password Updated Successfully")
                         parentFragmentManager.popBackStack()
                     }
                     else{
-                        showSnackBar("Password should not be empty",view)
+                        ShowShortSnackBar.showRedColor(view,"Password should not be empty")
                     }
                 }
                 else{
                     emailOrPhoneLayout.error = "User Not Found !"
-                    showSnackBar("Email or Mobile Didn't Exist",view)
+                    ShowShortSnackBar.showRedColor(view,"Email or Mobile Didn't Exist")
                 }
             }
         }
         return view
+    }
+
+    private fun setUpFocusChangeListeners() {
+        val list = mutableMapOf<TextInputLayout,TextInputEditText>()
+        list[emailOrPhoneLayout] = emailOrPhoneEditText
+        list[newPasswordLayout] = passwordEditText
+        list[confirmPasswordLayout] = confirmPasswordEditText
+        for (i in list.keys){
+            list[i]?.let {
+                it.setOnFocusChangeListener { v, hasFocus ->
+                    if(hasFocus){
+                        i.error  = null
+                    }
+                }
+            }
+        }
     }
 
     private fun setUpViewModel() {
@@ -130,10 +127,13 @@ class ForgotPasswordFragment : Fragment() {
         editProfileViewModel = ViewModelProvider(this,GroceryAppSharedVMFactory(retailerDao, userDao))[EditProfileViewModel::class.java]
     }
 
-    private fun showSnackBar(text:String, view: View){
-        Snackbar.make(view,text,Snackbar.LENGTH_SHORT).apply {
-            setBackgroundTint(Color.argb(255,230,20,20))
-                .show()
-        }
+    private fun initViews(view: View){
+        emailOrPhoneLayout = view.findViewById(R.id.textInputLayoutMailOrPhone)
+        newPasswordLayout = view.findViewById(R.id.textInputLayoutNewPassword)
+        emailOrPhoneEditText = view.findViewById(R.id.forgotEmailInput)
+        passwordEditText = view.findViewById(R.id.inputNewPassword)
+        confirmPasswordLayout = view.findViewById(R.id.textInputLayoutNewConfirmPassword)
+        confirmPasswordEditText = view.findViewById(R.id.inputNewConfirmPassword)
     }
+
 }

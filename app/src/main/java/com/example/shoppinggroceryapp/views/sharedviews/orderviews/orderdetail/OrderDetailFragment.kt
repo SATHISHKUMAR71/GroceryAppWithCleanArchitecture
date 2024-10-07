@@ -57,10 +57,10 @@ class OrderDetailFragment : Fragment() {
     var days = listOf("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
     var groceriesArrivingToday = "Groceries Arriving Today"
     var isTimeSlotAvailable:MutableLiveData<Int> = MutableLiveData()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance = true
-    }
+    private lateinit var deleteSubscription:MaterialButton
+    var alertTitle = ""
+    var alertMessage = ""
+    private lateinit var orderDetailViewModel:OrderDetailViewModel
     private var totalPrice = 0f
 
     var status:MutableLiveData<String> = MutableLiveData()
@@ -91,83 +91,34 @@ class OrderDetailFragment : Fragment() {
                 FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderSummary,"Edit Order")
             }
         }
-        val db1 = AppDatabase.getAppDatabase(requireContext())
-        val userDao = db1.getUserDao()
-        val retailerDao = db1.getRetailerDao()
-        val orderDetailViewModel = ViewModelProvider(this,
-            GroceryAppSharedVMFactory(
-            retailerDao, userDao)
-        )[OrderDetailViewModel::class.java]
+        setUpViewModel()
+
         val deliveryFrequency = view.findViewById<TextView>(R.id.productDeliveryFrequency)
-        orderDetailViewModel.getSubscriptionDetails()
+
         view.findViewById<TextView>(R.id.productOrderedDate).text = DateGenerator.getDayAndMonth(
             OrderListFragment.selectedOrder?.orderedDate?: DateGenerator.getCurrentDate())
-        var deliveryDate = OrderListFragment.selectedOrder?.deliveryDate
+        val deliveryDate = OrderListFragment.selectedOrder?.deliveryDate
         val deliveryText = view.findViewById<TextView>(R.id.productDeliveredDate)
-        val deleteSubscription = view.findViewById<MaterialButton>(R.id.deleteSubscriptionOrder)
+        deleteSubscription = view.findViewById<MaterialButton>(R.id.deleteSubscriptionOrder)
         val deliveryTimeSlot = view.findViewById<TextView>(R.id.productNextDeliveryTimeSlot)
         val nextDeliveryDate = view.findViewById<TextView>(R.id.productNextDeliveryDate)
-        var hideCancelOrderButton = arguments?.getBoolean("hideCancelOrderButton")
-        status.observe(viewLifecycleOwner){
-            OrderListFragment.selectedOrder = OrderListFragment.selectedOrder?.copy(deliveryStatus = it)
-            view.findViewById<TextView>(R.id.productDeliveredStatus).text = it
-            if(OrderListFragment.selectedOrder!!.deliveryStatus=="Delivered"){
-                val str = "Delivered on ${DateGenerator.getDayAndMonth(deliveryDate?: DateGenerator.getDeliveryDate())}"
-                deliveryText.text = str
-            }
-            else if((it=="Pending")){
-                val str = "Delivery Expected on:  ${DateGenerator.getDayAndMonth(deliveryDate?: DateGenerator.getDeliveryDate())}"
-                deliveryText.text = str
-            }
-            else if(it == "Delayed"){
-                val str = "Delivery Expected on:  ${DateGenerator.getDayAndMonth(DateGenerator.getDeliveryDate())}"
-                deliveryText.text = str
-            }
-            else{
-                val str = "Delivery Expected on:  ${DateGenerator.getDayAndMonth(DateGenerator.getDeliveryDate())}"
-                deliveryText.text = str
-            }
-            orderDetailViewModel.updateOrderDetails(OrderListFragment.selectedOrder!!)
-        }
+        val hideCancelOrderButton = arguments?.getBoolean("hideCancelOrderButton")
         if(arguments?.getBoolean("hideToolBar")==true){
             view.findViewById<MaterialToolbar>(R.id.materialToolbarOrderDetail).visibility = View.GONE
         }
-//        if ((MainActivity.isRetailer)&&(!RequestDetailFragment.open)){
-//            view.findViewById<MaterialButton>(R.id.updateDeliveryStatus).visibility = View.VISIBLE
-//        }
-//
-//        view.findViewById<MaterialButton>(R.id.updateDeliveryStatus).setOnClickListener {
-//            updateDeliveryStatus()
-//        }
 
         view.findViewById<MaterialToolbar>(R.id.materialToolbarOrderDetail).setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
-//        view.findViewById<TextView>(R.id.productDeliveredStatus).text = status
 
-
-        if(OrderListFragment.selectedOrder!!.deliveryStatus=="Delivered"){
-            val str = "Delivered on ${DateGenerator.getDayAndMonth(deliveryDate?: DateGenerator.getDeliveryDate())}"
-            deliveryText.text = str
+        val deliveryStatusText = orderDetailViewModel.assignDeliveryStatus(deliveryDate)
+        deliveryStatusText?.let {
+            deliveryText.text = it
         }
-        else if((OrderListFragment.selectedOrder!!.deliveryStatus=="Pending")){
-            val str = "Delivery Expected on:  ${DateGenerator.getDayAndMonth(deliveryDate?: DateGenerator.getDeliveryDate())}"
-            deliveryText.text = str
-        }
-        else if(OrderListFragment.selectedOrder!!.deliveryStatus == "Delayed"){
-            val str = "Delivery Expected on:  ${DateGenerator.getDayAndMonth(DateGenerator.getDeliveryDate())}"
-            deliveryText.text = str
-        }
-        else if(OrderListFragment.selectedOrder!!.deliveryStatus== "Cancelled"){
+        if(orderDetailViewModel.assignDeliveryStatus(deliveryDate)==null){
             deliveryText.visibility = View.GONE
         }
-        else{
-            val str = "Delivery Expected on:  ${DateGenerator.getDayAndMonth(DateGenerator.getDeliveryDate())}"
-            deliveryText.text = str
-        }
-
-
 
         orderDetailViewModel.getSelectedAddress(OrderListFragment.selectedOrder!!.addressId)
         orderDetailViewModel.selectedAddress.observe(viewLifecycleOwner){ address ->
@@ -183,8 +134,7 @@ class OrderDetailFragment : Fragment() {
         view.findViewById<TextView>(R.id.productDeliveredStatus).text = OrderListFragment.selectedOrder?.deliveryStatus
         deliveryFrequency.text = OrderListFragment.selectedOrder?.deliveryFrequency
 
-        var alertTitle = ""
-        var alertMessage = ""
+
         if(OrderListFragment.selectedOrder?.deliveryFrequency!="Once"){
             deleteSubscription.text = "Stop Subscription"
             alertTitle = "Stop Subscription!!"
@@ -218,7 +168,6 @@ class OrderDetailFragment : Fragment() {
             deleteSubscription.text = "Cancel Order"
             nextDeliveryDate.visibility = View.GONE
             deliveryTimeSlot.visibility = View.GONE
-//            deliveryText.visibility =View.VISIBLE
             OrderListFragment.selectedOrder?.let {
                 if(it.deliveryFrequency=="Cancelled"){
                     deliveryText.visibility = View.GONE
@@ -268,11 +217,11 @@ class OrderDetailFragment : Fragment() {
         }
         isTimeSlotAvailable.observe(viewLifecycleOwner) { timeSlot ->
             orderDetailViewModel.date.observe(viewLifecycleOwner) {
-                var currentTime = DateGenerator.getCurrentTime()
+                val currentTime = DateGenerator.getCurrentTime()
                 var text = "Next Delivery on "
                 if (OrderListFragment.selectedOrder?.deliveryFrequency == "Weekly Once") {
                     if (DateGenerator.getCurrentDay() == days[it]) {
-                        text = assignText(timeSlot,currentTime)
+                        text = orderDetailViewModel.assignText(timeSlot,currentTime)
                     } else {
                         text = "Next Delivery this "
                         text += days[it]
@@ -288,29 +237,7 @@ class OrderDetailFragment : Fragment() {
                             }"
                         }
                         else if (currentDay.toInt() == it) {
-//                            when(timeSlot){
-//                                0 -> {
-//                                    if (currentTime in 6..8) {
-//                                        text = groceriesArrivingToday
-//                                    }
-//                                }
-//                                1 -> {
-//                                    if(currentTime in 8..14){
-//                                        text = groceriesArrivingToday
-//                                    }
-//                                }
-//                                2 -> {
-//                                    if (currentTime in 14..18) {
-//                                        text = groceriesArrivingToday
-//                                    }
-//                                }
-//                                3 -> {
-//                                    if (currentTime in 18..20) {
-//                                        text = groceriesArrivingToday
-//                                    }
-//                                }
-//                            }
-                            text = assignText(timeSlot,currentTime)
+                            text = orderDetailViewModel.assignText(timeSlot,currentTime)
                         }
                         else {
                             text = "Next Delivery on ${
@@ -321,14 +248,13 @@ class OrderDetailFragment : Fragment() {
                         }
                     } catch (e: Exception) {
                     }
-//                text += "$it"
+
                 }
                 nextDeliveryDate.text = text
             }
         }
 
         var totalItems = 0
-        val productView = (LayoutInflater.from(requireContext()).inflate(R.layout.ordered_product_layout,productsContainer,false))
         for(i in OrderListFragment.correspondingCartList!!){
             addView(productsContainer,i)
             totalItems++
@@ -339,6 +265,33 @@ class OrderDetailFragment : Fragment() {
         val grandTotal = "₹${totalPrice+49}"
         view.findViewById<TextView>(R.id.priceDetailsMrpPrice).text = totalPriceStr
         view.findViewById<TextView>(R.id.priceDetailsTotalAmount).text = grandTotal
+        setUpDeleteSubscriptionListeners()
+
+
+        if((MainActivity.isRetailer) || (OrderListFragment.selectedOrder?.deliveryStatus=="Cancelled") || (hideCancelOrderButton==true)){
+            deleteSubscription.visibility = View.GONE
+            changeSubscription.visibility = View.GONE
+        }
+        if(!(MainActivity.isRetailer) && (OrderListFragment.selectedOrder?.deliveryFrequency!="Once") && (hideCancelOrderButton!=true)) {
+            changeSubscription.visibility = View.VISIBLE
+        }
+        else{
+            changeSubscription.visibility = View.GONE
+        }
+        return view
+    }
+
+    private fun setUpViewModel() {
+        val db1 = AppDatabase.getAppDatabase(requireContext())
+        val userDao = db1.getUserDao()
+        val retailerDao = db1.getRetailerDao()
+        orderDetailViewModel = ViewModelProvider(this,
+            GroceryAppSharedVMFactory(
+                retailerDao, userDao)
+        )[OrderDetailViewModel::class.java]
+    }
+
+    private fun setUpDeleteSubscriptionListeners() {
         deleteSubscription.setOnClickListener {
             AlertDialog.Builder(requireContext())
                 .setTitle(alertTitle)
@@ -360,32 +313,6 @@ class OrderDetailFragment : Fragment() {
                 }
                 .show()
         }
-
-        if((MainActivity.isRetailer) || (OrderListFragment.selectedOrder?.deliveryStatus=="Cancelled") || (hideCancelOrderButton==true)){
-            deleteSubscription.visibility = View.GONE
-            changeSubscription.visibility = View.GONE
-        }
-        if(!(MainActivity.isRetailer) && (OrderListFragment.selectedOrder?.deliveryFrequency!="Once") && (hideCancelOrderButton!=true)) {
-            changeSubscription.visibility = View.VISIBLE
-        }
-        else{
-            changeSubscription.visibility = View.GONE
-        }
-        return view
-    }
-
-    private fun updateDeliveryStatus() {
-        val status = arrayOf("Delayed","Cancelled","Delivered","Pending","Out For Delivery")
-        AlertDialog.Builder(requireContext())
-            .setTitle("Select Delivery Status")
-            .setSingleChoiceItems(status,-1,DialogInterface.OnClickListener { dialog, which ->
-                this.status.value = status[which]
-                dialog.dismiss()
-            })
-            .setNeutralButton("Cancel"){dialog,_ ->
-                dialog.dismiss()
-            }
-            .show()
     }
 
 
@@ -424,51 +351,4 @@ class OrderDetailFragment : Fragment() {
         InitialFragment.hideBottomNav.value = false
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
-
-    fun assignText(timeSlot:Int,currentTime:Int):String{
-        var text =""
-        when(timeSlot){
-            0 -> {
-                if (currentTime in 6..8) {
-                    text = groceriesArrivingToday
-                }
-            }
-            1 -> {
-                if(currentTime in 8..14){
-                    text = groceriesArrivingToday
-                }
-            }
-            2 -> {
-                if (currentTime in 14..18) {
-                    text = groceriesArrivingToday
-                }
-            }
-            3 -> {
-                if (currentTime in 18..20) {
-                    text = groceriesArrivingToday
-                }
-            }
-        }
-        return text
-    }
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun showAlertWeekDaysDialog(){
-        var days = arrayOf("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday").filter { it != DateGenerator.getCurrentDay() }.toTypedArray()
-//        val spinner = Spinner(context).apply {
-//            ArrayAdapter()
-//        }
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Select Day")
-            .setSingleChoiceItems(days,0){dialog,_ ->
-            }
-            .setPositiveButton("Ok"){dialog,_ ->
-            }
-            .setNegativeButton("Back"){dialog,_ ->
-            }
-            .show()
-
-    }
 }

@@ -77,7 +77,7 @@ interface RetailerDao: UserDao {
     @Query("SELECT * FROM OrderDetailsEntity ORDER BY orderId DESC")
     fun getOrderDetails():List<OrderDetailsEntity>?
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addImagesInDb(imagesEntity: ImagesEntity)
 
     @Query("SELECT CustomerRequestEntity.helpId,CustomerRequestEntity.userId,CustomerRequestEntity.requestedDate,CustomerRequestEntity.orderId,CustomerRequestEntity.request,UserEntity.userFirstName,UserEntity.userLastName,UserEntity.userEmail,UserEntity.userPhone FROM CustomerRequestEntity JOIN UserEntity ON UserEntity.userId=CustomerRequestEntity.userId ORDER BY CustomerRequestEntity.helpId DESC")

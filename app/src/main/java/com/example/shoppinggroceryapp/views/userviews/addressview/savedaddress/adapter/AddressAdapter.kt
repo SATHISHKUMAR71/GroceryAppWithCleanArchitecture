@@ -1,5 +1,6 @@
 package com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.adapter
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.core.domain.user.Address
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.framework.db.entity.user.AddressEntity
+import com.example.shoppinggroceryapp.helpers.extensions.putAddress
 import com.example.shoppinggroceryapp.views.userviews.addressview.getaddress.GetNewAddress
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressList
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
@@ -17,6 +19,7 @@ import com.google.android.material.button.MaterialButton
 
 class AddressAdapter(var addressEntityList: List<Address>, var fragment: Fragment):RecyclerView.Adapter<AddressAdapter.AddressHolder>() {
 
+    var getNewAddress = GetNewAddress()
     companion object{
         var clickable = false
     }
@@ -44,14 +47,16 @@ class AddressAdapter(var addressEntityList: List<Address>, var fragment: Fragmen
 
         holder.editAddress.setOnClickListener {
             SavedAddressList.editAddressEntity = addressEntityList[position]
-            FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, GetNewAddress(),"Edit Address")
+            FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, getNewAddress,"Edit Address")
         }
         if(clickable){
             holder.itemView.setOnClickListener {
                 CartFragment.selectedAddressEntity = addressEntityList[position]
+
                 clickable =false
                 fragment.parentFragmentManager.popBackStack()
             }
         }
     }
 }
+

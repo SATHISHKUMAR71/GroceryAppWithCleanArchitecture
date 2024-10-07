@@ -109,7 +109,6 @@ class HomeFragment : Fragment() {
         )[ProductListViewModel::class.java])
 
         homeViewModel.getRecentlyViewedItems()
-
         recentItems.adapter = null
         adapter.setProducts(mutableListOf())
         recentItems.adapter = adapter

@@ -15,6 +15,9 @@ import com.core.usecases.productusecase.getproductusecase.GetProductByName
 import com.core.usecases.productusecase.getproductusecase.GetProductsByCategory
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
+import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
+import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
+import com.example.shoppinggroceryapp.views.sharedviews.sort.ProductSorter
 
 class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCategory,
                            private val mGetProductByName: GetProductByName,
@@ -30,8 +33,6 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
     var cartEntityList: MutableLiveData<List<Cart>> = MutableLiveData()
     var productEntityList: MutableLiveData<List<Product>> = MutableLiveData()
     var productEntityCategoryList: MutableLiveData<List<Product>> = MutableLiveData()
-    var manufacturedSortedList:MutableLiveData<List<ProductEntity>> = MutableLiveData()
-    var cartEntityListForProducts:MutableList<CartEntity?> = mutableListOf()
     fun getCartItems(cartId: Int) {
         Thread {
             cartEntityList.postValue(mGetCartItems.invoke(cartId))
@@ -86,6 +87,65 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
             mAddProductInCart.invoke(cart)
             println("**** update items in cart called: cart items ${mGetCartItems.invoke(1)}")
         }.start()
+    }
+
+
+    fun doSorting(adapter: ProductListAdapter, it:Int, productEntities:List<Product>, sorter: ProductSorter):List<Product>? {
+        var newList: List<Product> = mutableListOf()
+        if(it==0){
+            if(FilterFragment.list==null) {
+                newList = sorter.sortByDate(productEntities)
+            }
+            else{
+                newList = sorter.sortByDate(FilterFragment.list!!)
+            }
+            adapter.setProducts(newList)
+        }
+        else if(it == 1){
+            if(FilterFragment.list==null) {
+                newList = sorter.sortByExpiryDate(productEntities)
+            }
+            else{
+                newList = sorter.sortByExpiryDate(FilterFragment.list!!)
+            }
+            adapter.setProducts(newList)
+        }
+        else if(it == 2){
+            if(FilterFragment.list==null) {
+                newList = sorter.sortByDiscount(productEntities)
+            }
+            else{
+                newList = sorter.sortByDiscount(FilterFragment.list!!)
+            }
+            adapter.setProducts(newList)
+        }
+        else if(it == 3){
+            if(FilterFragment.list==null) {
+                newList = sorter.sortByPriceLowToHigh(productEntities)
+            }
+            else{
+                newList = sorter.sortByPriceLowToHigh(FilterFragment.list!!)
+            }
+            adapter.setProducts(newList)
+        }
+        else if(it == 4){
+            if(FilterFragment.list==null) {
+                newList = sorter.sortByPriceHighToLow(productEntities)
+            }
+            else{
+                newList = sorter.sortByPriceHighToLow(FilterFragment.list!!)
+            }
+            adapter.setProducts(newList)
+        }
+        if(newList.isNotEmpty()){
+            if(FilterFragment.list!=null){
+                if(FilterFragment.list!!.size==newList.size){
+                    FilterFragment.list = newList.toMutableList()
+                }
+            }
+            return newList
+        }
+        return null
     }
 
 }

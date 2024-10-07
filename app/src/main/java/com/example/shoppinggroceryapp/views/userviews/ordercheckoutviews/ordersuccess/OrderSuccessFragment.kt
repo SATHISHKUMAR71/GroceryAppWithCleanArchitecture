@@ -68,21 +68,22 @@ class OrderSuccessFragment : Fragment() {
             override fun handleOnBackPressed() {
                 restartApp()
             }
-
         })
+
         view.findViewById<MaterialToolbar>(R.id.orderSuccessToolbar).setNavigationOnClickListener {
-//            onDestroyView()
             restartApp()
         }
         view.findViewById<MaterialButton>(R.id.materialButtonClose).setOnClickListener {
-//            onDestroyView()
             restartApp()
         }
-        var deliveryFrequency = arguments?.getString("deliveryFrequency")?:"Once"
+
+        val deliveryFrequency = arguments?.getString("deliveryFrequency")?:"Once"
         val address = CartFragment.selectedAddressEntity
         val tmpCartId = cartId
+
         orderSuccessViewModel.placeOrder(tmpCartId,
             PaymentFragment.paymentMode,address!!.addressId,"Pending","Pending",deliveryFrequency)
+        
         orderSuccessViewModel.orderedId.observe(viewLifecycleOwner){
             orderSuccessViewModel.getOrderAndCorrespondingCart(it.toInt())
             val selectedTimeSlot = arguments?.getInt("timeSlotInt")
@@ -161,7 +162,6 @@ class OrderSuccessFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-//        restartApp()
     }
 
     private fun restartApp() {

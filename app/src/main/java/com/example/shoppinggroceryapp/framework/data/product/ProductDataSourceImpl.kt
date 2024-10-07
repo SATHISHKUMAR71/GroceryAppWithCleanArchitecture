@@ -1,5 +1,6 @@
 package com.example.shoppinggroceryapp.framework.data.product
 
+import android.provider.ContactsContract.CommonDataKinds.Im
 import com.core.data.datasource.productdatasource.ProductDataSource
 import com.core.data.datasource.productdatasource.RetailerProductDataSource
 import com.core.domain.products.BrandData
@@ -124,11 +125,14 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
     }
 
     override fun getParentCategoryImageForParent(parentCategoryName: String): String? {
-        return retailerDao.getParentCategoryImageForParent(parentCategoryName)
+        println("#@#@ parent image: $parentCategoryName")
+        println("#@#@ parent image: got ${retailerDao.getParentCategoryImageForParent(parentCategoryName)} ${retailerDao.getParentCategoryImage(parentCategoryName)}")
+        return retailerDao.getParentCategoryImage(parentCategoryName)
     }
 
     override fun getParentCategoryImage(parentCategoryName: String): String? {
-        return retailerDao.getParentCategoryImage(parentCategoryName)
+        println("GET PARENT IMAGE CALLED: in impl ${retailerDao.getParentCategoryImage(parentCategoryName)} ${retailerDao.getParentCategoryImageForParent(parentCategoryName)}")
+        return retailerDao.getParentCategoryImageForParent(parentCategoryName)
     }
 
     override fun addProductImagesInDb(image: Images) {
@@ -139,7 +143,7 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
 
     override fun deleteProductImage(image: Images) {
         image.apply {
-            retailerDao.addImagesInDb(ImagesEntity(imageId,productId, images))
+            retailerDao.deleteImage(ImagesEntity(imageId,productId, images))
         }
     }
 

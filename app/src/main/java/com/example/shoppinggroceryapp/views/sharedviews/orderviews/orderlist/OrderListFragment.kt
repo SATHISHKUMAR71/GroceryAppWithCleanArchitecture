@@ -83,7 +83,7 @@ class OrderListFragment : Fragment() {
         FilterFragment.list = null
         var dataReady:MutableLiveData<Boolean> = MutableLiveData()
         val view =  inflater.inflate(R.layout.fragment_order_list, container, false)
-        orderList = view.findViewById<RecyclerView>(R.id.orderList)
+        orderList = view.findViewById(R.id.orderList)
         val clickable = arguments?.getBoolean("isClickable",false)
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
@@ -93,8 +93,8 @@ class OrderListFragment : Fragment() {
         )[OrderListViewModel::class.java]
         var cartWithProductsList = mutableListOf<MutableList<CartWithProductData>>()
         var orderedItems:MutableList<OrderDetails> = mutableListOf()
-        var orderAdapter = OrderListAdapter(orderedItems.toMutableList(), this, clickable)
-        var subscriptionType = arguments?.getString("subscriptionType")
+        val orderAdapter = OrderListAdapter(orderedItems.toMutableList(), this, clickable)
+        val subscriptionType = arguments?.getString("subscriptionType")
         toolbar = view.findViewById(R.id.materialToolbarOrderList)
         orderListViewModel.orderedItems.observe(viewLifecycleOwner){
             if(it.isEmpty()){
@@ -128,76 +128,10 @@ class OrderListFragment : Fragment() {
         }
 
         if(!MainActivity.isRetailer) {
-            if(orderedItems.isEmpty()) {
-                when (subscriptionType) {
-                    "Weekly Once" -> {
-                        toolbar.setTitle("Weekly Orders")
-                        orderListViewModel.getOrdersForSelectedUserWeeklySubscription(
-                            MainActivity.userId.toInt()
-                        )
-                    }
-
-                    "Monthly Once" -> {
-                        toolbar.setTitle("Monthly Orders")
-                        orderListViewModel.getOrdersForSelectedUserMonthlySubscription(
-                            MainActivity.userId.toInt()
-                        )
-                    }
-
-                    "Daily" -> {
-                        toolbar.setTitle("Daily Orders")
-                        orderListViewModel.getOrdersForSelectedUserDailySubscription(
-                            MainActivity.userId.toInt()
-                        )
-                    }
-
-                    "Once" -> {
-                        toolbar.setTitle("One Time Orders")
-                        orderListViewModel.getOrdersForSelectedUserWithNoSubscription(
-                            MainActivity.userId.toInt()
-                        )
-                    }
-
-                    else ->{
-                        orderListViewModel.getOrdersForSelectedUser(MainActivity.userId.toInt())
-                    }
-                }
-            }
+            toolbar.setTitle(orderListViewModel.getOrdersBasedOnSubscription(orderedItems,subscriptionType,false))
         }
         else{
-            if(orderedItems.isEmpty()) {
-                when (subscriptionType) {
-                    "Weekly Once" -> {
-                        toolbar.setTitle("Weekly Orders")
-                        orderListViewModel.getOrdersForRetailerWeeklySubscription(MainActivity.userId.toInt())
-                    }
-
-                    "Monthly Once" -> {
-                        toolbar.setTitle("Monthly Orders")
-                        orderListViewModel.getOrdersForRetailerMonthlySubscription(
-                            MainActivity.userId.toInt()
-                        )
-                    }
-
-                    "Daily" -> {
-                        toolbar.setTitle("Daily Orders")
-                        orderListViewModel.getOrdersForRetailerDailySubscription(
-                            MainActivity.userId.toInt()
-                        )
-                    }
-
-                    "Once" -> {
-                        toolbar.setTitle("One Time Orders")
-                        orderListViewModel.getOrdersForRetailerWithNoSubscription(
-                            MainActivity.userId.toInt()
-                        )
-                    }
-
-                    else -> {
-                        orderListViewModel.getOrdersForSelectedUser(MainActivity.userId.toInt())
-                    }
-                }
-            }
+            toolbar.setTitle(orderListViewModel.getOrdersBasedOnSubscription(orderedItems,subscriptionType,true))
         }
 
 
@@ -211,9 +145,6 @@ class OrderListFragment : Fragment() {
     }
 
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
     override fun onResume() {
         super.onResume()
         view?.visibility =View.VISIBLE

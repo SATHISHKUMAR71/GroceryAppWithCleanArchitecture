@@ -61,6 +61,7 @@ class ProductRepository(private val productDataSource: ProductDataSource,private
     }
 
     fun getParentCategoryImageForParent(childCategoryName: String):String?{
+        println(" #@#@ parent image: got in repo ${retailerProductDataSource.getParentCategoryImageForParent(childCategoryName)}")
         return retailerProductDataSource.getParentCategoryImageForParent(childCategoryName)
     }
     fun getParentCategoryImage(parentCategoryName: String):String?{

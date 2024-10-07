@@ -1,5 +1,6 @@
 package com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersummary
 
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.order.DailySubscription
@@ -20,6 +21,12 @@ import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWit
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromDailySubscription
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromMonthlySubscription
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromWeeklySubscription
+import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
+import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
+import com.example.shoppinggroceryapp.helpers.toast.ShowShortToast
+import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
+import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.PaymentFragment
+import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.TimeSlots
 
 class OrderSummaryViewModel(private val mGetProductsWithCartData: GetProductsWithCartData,
                             private val mUpdateOrderDetails: UpdateOrderDetails,
@@ -36,6 +43,7 @@ class OrderSummaryViewModel(private val mGetProductsWithCartData: GetProductsWit
 ):ViewModel() {
 
     var cartItems:MutableLiveData<List<CartWithProductData>> = MutableLiveData()
+    var timeIdForOrder:Int = -1
     fun getProductsWithCartId(cartId:Int){
         Thread{
             cartItems.postValue(mGetProductsWithCartData.invoke(cartId))
@@ -97,4 +105,76 @@ class OrderSummaryViewModel(private val mGetProductsWithCartData: GetProductsWit
             }
         }.start()
     }
+
+    fun updateSubscription(subscriptionType:String,orderId:Int?,dayOfMonth:Int?,dayOfWeek:Int?){
+        when(subscriptionType){
+            "Monthly Once" -> {updateMonthly(MonthlyOnce(orderId!!,dayOfMonth!!))}
+            "Weekly Once" -> {updateWeekly(WeeklyOnce(orderId!!,dayOfWeek!!))}
+            "Daily" -> {updateDaily(DailySubscription(orderId!!))}
+            "Once" -> {
+                deleteDaily(orderId!!)
+                deleteWeekly(orderId)
+                deleteMonthly(orderId)
+            }
+        }
+    }
+
+
+
+    fun putBundleValuesForOrder(timeSlot: String?,deliveryFrequency:String,dayOfMonth: Int?,dayOfWeek: Int?):Bundle {
+        return Bundle().apply {
+            putString("deliveryFrequency",deliveryFrequency)
+            timeSlot?.let {
+                var selectedTimeSlot = ""
+                when(it){
+                    TimeSlots.EARLY_MORNING.timeDetails -> {
+                        timeIdForOrder = 0
+                        selectedTimeSlot = TimeSlots.EARLY_MORNING.timeDetails
+                    }
+                    TimeSlots.MID_MORNING.timeDetails -> {
+                        timeIdForOrder = 1
+                        selectedTimeSlot = TimeSlots.MID_MORNING.timeDetails
+                    }
+                    TimeSlots.AFTERNOON.timeDetails -> {
+                        timeIdForOrder = 2
+                        selectedTimeSlot = TimeSlots.AFTERNOON.timeDetails
+                    }
+                    TimeSlots.EVENING.timeDetails -> {
+                        timeIdForOrder = 3
+                        selectedTimeSlot = TimeSlots.EVENING.timeDetails
+                    }
+                }
+                putString("timeSlot", selectedTimeSlot)
+                putInt("timeSlotInt",timeIdForOrder)
+            }
+            dayOfMonth?.let {
+                putInt("dayOfMonth",it)
+            }
+            dayOfWeek?.let {
+                putInt("dayOfWeek",it)
+            }
+        }
+    }
+
+    fun getExpectedDeliveryDate(tag:String,s:String):String{
+        return when(tag){
+            "dayOfWeek" -> {
+                "Expected Delivery this $s"
+            }
+
+            "dayOfMonth" -> {
+                "Expected Delivery on  ${DateGenerator.getDayAndMonthForDay(s)}"
+            }
+            "daily" -> {
+                return "Expected Delivery on ${DateGenerator.getDayAndMonth(DateGenerator.getDeliveryDate())}"
+            }
+            "once" -> {
+                return "Expected Delivery on ${DateGenerator.getDayAndMonth(DateGenerator.getDeliveryDate())}"
+            }
+            else -> {
+                ""
+            }
+        }
+    }
+
 }

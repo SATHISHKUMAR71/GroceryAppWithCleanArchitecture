@@ -44,8 +44,8 @@ class Help : Fragment() {
         view.findViewById<MaterialToolbar>(R.id.helpReqTool).setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }
-        val req = view.findViewById<TextView>(R.id.customerRequestHelpFrag)
-        val orderGroup = view.findViewById<LinearLayout>(R.id.orderViewLayout)
+        val requestTextView = view.findViewById<TextView>(R.id.customerRequestHelpFrag)
+        val orderLayout = view.findViewById<LinearLayout>(R.id.orderViewLayout)
         setUpViewModel()
         if(selectedOrder == null){
             val orderListFragment = OrderListFragment()
@@ -64,16 +64,14 @@ class Help : Fragment() {
             val selectedOrderView = LayoutInflater.from(context).inflate(R.layout.order_layout,
                 container,false)
             setDeliveryStatus(selectedOrderView)
-
             helpViewModel.assignProductList(selectedOrder!!.cartId)
-
             helpViewModel.productList.observe(viewLifecycleOwner){
                 selectedOrderView.findViewById<TextView>(R.id.orderedProductsList).text = it
             }
-            selectedOrderView.findViewById<ImageView>(R.id.imageView).visibility = View.GONE
-            orderGroup.addView(selectedOrderView)
-            setOnClickListeners(view,req)
 
+            selectedOrderView.findViewById<ImageView>(R.id.imageView).visibility = View.GONE
+            orderLayout.addView(selectedOrderView)
+            setOnClickListeners(view,requestTextView)
         }
         return view
     }

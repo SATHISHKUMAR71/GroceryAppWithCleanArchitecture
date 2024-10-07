@@ -8,7 +8,6 @@ import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 class FilterViewModel:ViewModel() {
 
 
-
     fun filterList(productEntityList:List<Product>, offer:Float):List<Product>{
         return productEntityList.filter { it.offer>=offer }
     }

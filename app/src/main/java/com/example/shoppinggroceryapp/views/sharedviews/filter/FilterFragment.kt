@@ -56,72 +56,7 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
             parentFragmentManager.popBackStack()
         }
 
-
-        dis50.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(isChecked){
-                availableProducts.text = filterViewModel.filterList(products,50f).size.toString()
-                ProductListFragment.productListFilterCount++
-                OfferFragment.offerFilterCount++
-            }
-            else{
-                availableProducts.text = filterViewModel.filterListBelow(products,50f).size.toString()
-                ProductListFragment.productListFilterCount--
-                OfferFragment.offerFilterCount--
-            }
-            assignList()
-        }
-        dis40.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(isChecked){
-                availableProducts.text = filterViewModel.filterList(products,40f).size.toString()
-                ProductListFragment.productListFilterCount++
-                OfferFragment.offerFilterCount++
-            }
-            else{
-                availableProducts.text = filterViewModel.filterListBelow(products,40f).size.toString()
-                ProductListFragment.productListFilterCount--
-                OfferFragment.offerFilterCount--
-            }
-            assignList()
-        }
-        dis30.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(isChecked){
-                availableProducts.text = filterViewModel.filterList(products,30f).size.toString()
-                ProductListFragment.productListFilterCount++
-                OfferFragment.offerFilterCount++
-            }
-            else{
-                availableProducts.text = filterViewModel.filterListBelow(products,30f).size.toString()
-                ProductListFragment.productListFilterCount--
-                OfferFragment.offerFilterCount--
-            }
-            assignList()
-        }
-        dis20.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(isChecked){
-                availableProducts.text = filterViewModel.filterList(products,20f).size.toString()
-                ProductListFragment.productListFilterCount++
-                OfferFragment.offerFilterCount++
-            }
-            else{
-                availableProducts.text = filterViewModel.filterListBelow(products,20f).size.toString()
-                ProductListFragment.productListFilterCount--
-                OfferFragment.offerFilterCount--
-            }
-            assignList()
-        }
-        dis10.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(isChecked){
-                availableProducts.text = filterViewModel.filterList(products,10f).size.toString()
-                ProductListFragment.productListFilterCount++
-                OfferFragment.offerFilterCount++
-            }
-            else{
-                availableProducts.text = filterViewModel.filterListBelow(products,10f).size.toString()
-                ProductListFragment.productListFilterCount--
-                OfferFragment.offerFilterCount--
-            }
-            assignList()
-        }
+        setCheckboxOnClickListeners()
 
         clearAllButton.setOnClickListener {
             dis10.isChecked =false
@@ -132,34 +67,19 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
             list = null
             availableProducts.text =products.size.toString()
         }
-        if(OfferFragment.dis10Val==true){
+        if(OfferFragment.dis10Val==true || (ProductListFragment.dis10Val==true)){
             dis10.isChecked = true
         }
-        if(OfferFragment.dis20Val==true){
+        if(OfferFragment.dis20Val==true || ProductListFragment.dis20Val==true){
             dis20.isChecked = true
         }
-        if(OfferFragment.dis30Val==true){
+        if(OfferFragment.dis30Val==true || ProductListFragment.dis30Val==true){
             dis30.isChecked = true
         }
-        if(OfferFragment.dis40Val==true){
+        if(OfferFragment.dis40Val==true || ProductListFragment.dis40Val==true){
             dis40.isChecked = true
         }
-        if(ProductListFragment.dis50Val==true){
-            dis50.isChecked = true
-        }
-        if(ProductListFragment.dis10Val==true){
-            dis10.isChecked = true
-        }
-        if(ProductListFragment.dis20Val==true){
-            dis20.isChecked = true
-        }
-        if(ProductListFragment.dis30Val==true){
-            dis30.isChecked = true
-        }
-        if(ProductListFragment.dis40Val==true){
-            dis40.isChecked = true
-        }
-        if(ProductListFragment.dis50Val==true){
+        if(ProductListFragment.dis50Val==true || ProductListFragment.dis50Val==true){
             dis50.isChecked = true
         }
         applyButton.setOnClickListener {
@@ -168,6 +88,31 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
         return view
     }
 
+    private fun setCheckboxOnClickListeners() {
+
+        val discountMap = mutableMapOf<CheckBox,Float>()
+        discountMap[dis50] = 50f
+        discountMap[dis40] = 40f
+        discountMap[dis30] = 30f
+        discountMap[dis20] = 20f
+        discountMap[dis10] = 10f
+
+        for((dis,value) in discountMap){
+            dis.setOnCheckedChangeListener { _, isChecked ->
+                if(isChecked){
+                    availableProducts.text = filterViewModel.filterList(products,value).size.toString()
+                    ProductListFragment.productListFilterCount++
+                    OfferFragment.offerFilterCount++
+                }
+                else{
+                    availableProducts.text = filterViewModel.filterListBelow(products,value).size.toString()
+                    ProductListFragment.productListFilterCount--
+                    OfferFragment.offerFilterCount--
+                }
+                assignList()
+            }
+        }
+    }
 
 
     override fun onResume() {
@@ -183,21 +128,12 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
     }
 
     override fun onDestroyView() {
-        OfferFragment.dis10Val = dis10.isChecked
-        OfferFragment.dis20Val = dis20.isChecked
-        OfferFragment.dis30Val = dis30.isChecked
-        OfferFragment.dis40Val = dis40.isChecked
-        OfferFragment.dis50Val =dis50.isChecked
-        ProductListFragment.dis10Val = dis10.isChecked
-        ProductListFragment.dis20Val = dis20.isChecked
-        ProductListFragment.dis30Val = dis30.isChecked
-        ProductListFragment.dis40Val = dis40.isChecked
-        ProductListFragment.dis50Val = dis50.isChecked
+        resetStaticValues()
         super.onDestroyView()
     }
 
-    fun assignList(){
-        var tmpList:List<Product>
+    private fun assignList(){
+        val tmpList:List<Product>
         if(dis50.isChecked){
             tmpList = filterViewModel.filterList(products,50f)
             availableProducts.text = tmpList.size.toString()
@@ -228,5 +164,18 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
             availableProducts.text = tmpList.size.toString()
             list = null
         }
+    }
+
+    private fun resetStaticValues() {
+        OfferFragment.dis10Val = dis10.isChecked
+        OfferFragment.dis20Val = dis20.isChecked
+        OfferFragment.dis30Val = dis30.isChecked
+        OfferFragment.dis40Val = dis40.isChecked
+        OfferFragment.dis50Val =dis50.isChecked
+        ProductListFragment.dis10Val = dis10.isChecked
+        ProductListFragment.dis20Val = dis20.isChecked
+        ProductListFragment.dis30Val = dis30.isChecked
+        ProductListFragment.dis40Val = dis40.isChecked
+        ProductListFragment.dis50Val = dis50.isChecked
     }
 }
