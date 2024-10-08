@@ -21,7 +21,6 @@ class CameraPermissionHandler(var fragment:Fragment, var imageHandler: ImageHand
             }
             else{
                 imageHandler!!.showAlertDialog(isMultipleImage)
-//                Toast.makeText(fragment.context,"Please Allow Camera Permission to take picture from device",Toast.LENGTH_SHORT).show()
             }
         }
     }

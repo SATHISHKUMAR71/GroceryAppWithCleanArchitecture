@@ -142,7 +142,7 @@ class AddOrEditProductFragment : Fragment() {
 
         formatter = SimpleDateFormat("yyyy-MM-dd",Locale.getDefault())
         ProductListFragment.selectedProductEntity.value?.let {
-            println("SELECTED PRODUCT CALLED")
+
             setInitialValues(it)
         }
         setUpObservers()
@@ -211,7 +211,6 @@ class AddOrEditProductFragment : Fragment() {
             if(isNewParentCategory){
                 for(i in it){
                     if(i == productParentCategory.text.toString()){
-                        println("GET PARENT IMAGE CALLED: in parentArray $i")
                         addEditProductViewModel.getParentCategoryImageForParent(i)
                         isNewParentCategory = false
                     }
@@ -255,7 +254,7 @@ class AddOrEditProductFragment : Fragment() {
         view.findViewById<MaterialToolbar>(R.id.materialToolbarEditProductFrag).title = "Update Product"
         mainImageClicked = true
         addEditProductViewModel.getImagesForProduct(it.productId)
-        println("GET IMAGES CALLED")
+
         productName.setText(it.productName)
         addEditProductViewModel.getParentCategoryImage(it.categoryName)
         productDescription.setText(it.productDescription)
@@ -359,6 +358,7 @@ class AddOrEditProductFragment : Fragment() {
                     val image =imageLoader.getImageInApp(requireContext(), it)
                     addParentImage.setImageBitmap(image)
                     addParentCategoryButton.text = "Change Category Image"
+                    isCategoryImageAdded = true
                     if(image==null){
                         addParentImage.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.add_photo_alternate_24px))
                     }
@@ -377,8 +377,6 @@ class AddOrEditProductFragment : Fragment() {
                     addParentImage.setImageBitmap(it)
                     parentCategoryImageClicked = false
                 } else {
-
-                    println("IMAGES VALUE: IN observer: $it ")
                     imageList.putIfAbsent(count, IntWithCheckedData(it, false, fileName))
                     val currentCount = count
                     if (mainImageClicked) {
@@ -431,7 +429,6 @@ class AddOrEditProductFragment : Fragment() {
                 for(i in imageList){
                     if(i.value.isChecked){
                         checkedCount++
-                        println("4545 value: ${i.value.fileName}")
                         addEditProductViewModel.deleteImage(i.value.fileName)
                         bitmap = i.value.bitmap
                         mainImageBitmap = bitmap
@@ -538,7 +535,7 @@ class AddOrEditProductFragment : Fragment() {
                     addParentCategoryButton.text = "Add Category Image"
                 }
                 else{
-                    println("GET PARENT IMAGE CALLED: ${s.toString()}")
+
                     addEditProductViewModel.getParentCategoryImageForParent(s.toString())
                     addEditProductViewModel.getChildArray(s.toString())
                     isNewParentCategory = false

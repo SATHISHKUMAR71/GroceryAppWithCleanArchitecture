@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import com.example.shoppinggroceryapp.helpers.toast.ShowShortToast
 
 class ImageHandler(var fragment:Fragment) {
 
@@ -26,6 +27,7 @@ class ImageHandler(var fragment:Fragment) {
     fun initActivityResults() {
         launchImage =
             fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                println("#$#$ RESULT for launch image: ${result.data?.clipData}")
                 if (result.resultCode == Activity.RESULT_OK) {
                     result.data?.let { data ->
                         if(data.clipData != null){
@@ -61,6 +63,7 @@ class ImageHandler(var fragment:Fragment) {
             }
         launchCamera =
             fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                println("#$#$ RESULT for launch camera: ${result.data?.clipData}")
                 if (result.resultCode == Activity.RESULT_OK) {
                     val image = result.data?.extras?.get("data") as Bitmap
                     if(gotImage.value.toString() != previousImage){
@@ -81,7 +84,7 @@ class ImageHandler(var fragment:Fragment) {
                             launchCamera.launch(i)
                         }
                         else{
-                            Toast.makeText(fragment.context,"Please Allow Camera Permission to take picture from device",Toast.LENGTH_SHORT).show()
+                            ShowShortToast.show("Please Allow Camera Permission to take picture from device",fragment.requireContext())
                         }
                     }
                     1 -> {
