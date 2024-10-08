@@ -65,21 +65,44 @@ class ProductListAdapter(var fragment: Fragment,
         val productMrpText:TextView = productLargeView.findViewById(R.id.productMrpText)
     }
 
+    inner class PriceImageHolder(priceView:View):RecyclerView.ViewHolder(priceView)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductLargeImageHolder {
-        if(isShort) {
-            return ProductLargeImageHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.product_layout_short, parent, false)
-            )
+        if(viewType!=-1) {
+            if (isShort) {
+                return ProductLargeImageHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.product_layout_short, parent, false)
+                )
+            } else {
+                return ProductLargeImageHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.product_layout_long, parent, false)
+                )
+            }
         }
         else{
-            return ProductLargeImageHolder(LayoutInflater.from(parent.context).inflate(R.layout.product_layout_long,parent,false))
+            return PriceImageHolder(LayoutInflater.from(parent.context).inflate(R.layout.cart_price_detail_view,parent,false))
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if(tag=="C"){
+            -1
+        }
+        else {
+            super.getItemViewType(position)
         }
     }
 
     override fun getItemCount(): Int {
         size = productEntityList.size
-        return size
+        return if(tag=="C"){
+            size+1
+        }
+        else {
+            size
+        }
     }
 
     override fun onBindViewHolder(holder: ProductLargeImageHolder, position: Int) {
@@ -87,62 +110,71 @@ class ProductListAdapter(var fragment: Fragment,
             println("9898 VIEW IS RECREATING ON IF: $position ${productEntityList[position].productName}")
         }
         else{
-            println("9898 VIEW IS RECREATING: $position ${productEntityList[position].productName}")
-            if(MainActivity.isRetailer){
-                holder.buttonLayout.visibility = View.GONE
+            if(tag=="C" && position==size){
+                println("8787 ON LAST LIST")
             }
-            else{
-                holder.buttonLayout.visibility = View.VISIBLE
-            }
+            else {
+                println("9898 VIEW IS RECREATING: $size $position ${productEntityList[position].productName}")
+                if (MainActivity.isRetailer) {
+                    holder.buttonLayout.visibility = View.GONE
+                } else {
+                    holder.buttonLayout.visibility = View.VISIBLE
+                }
 
-            productListViewModel.getSpecificCart(MainActivity.cartId,productEntityList[position].productId.toInt()){ cart ->
-                if(cart!=null){
-                    MainActivity.handler.post {
-                        holder.productAddOneTime.visibility = View.GONE
-                        holder.productAddRemoveLayout.visibility = View.VISIBLE
-                        countList[position] = cart.totalItems
-                        holder.totalItems.text = cart.totalItems.toString()
+                productListViewModel.getSpecificCart(
+                    MainActivity.cartId,
+                    productEntityList[position].productId.toInt()
+                ) { cart ->
+                    if (cart != null) {
+                        MainActivity.handler.post {
+                            holder.productAddOneTime.visibility = View.GONE
+                            holder.productAddRemoveLayout.visibility = View.VISIBLE
+                            countList[position] = cart.totalItems
+                            holder.totalItems.text = cart.totalItems.toString()
+                        }
+                    } else {
+                        MainActivity.handler.post {
+                            holder.productAddOneTime.visibility = View.VISIBLE
+                            holder.productAddRemoveLayout.visibility = View.GONE
+                            countList[position] = 0
+                            holder.totalItems.text = "0"
+                        }
                     }
                 }
-                else{
+
+                productListViewModel.getBrandName(productEntityList[position].brandId) { brand ->
                     MainActivity.handler.post {
-                        holder.productAddOneTime.visibility = View.VISIBLE
-                        holder.productAddRemoveLayout.visibility = View.GONE
-                        countList[position] = 0
-                        holder.totalItems.text = "0"
+                        holder.brandName.text = brand
                     }
                 }
-            }
-
-            productListViewModel.getBrandName(productEntityList[position].brandId){ brand ->
-                MainActivity.handler.post {
-                    holder.brandName.text = brand
+                if (productEntityList[position].offer > 0f) {
+                    val str = "MRP ₹" + productEntityList[position].price
+                    holder.productMrpText.text = str
+                    holder.productMrpText.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                    holder.productMrpText.visibility = View.VISIBLE
+                    holder.offer.visibility = View.VISIBLE
+                    val offerText = productEntityList[position].offer.toInt().toString() + "% Off"
+                    holder.offer.text = offerText
+                } else {
+                    val str = "MRP"
+                    holder.productMrpText.text = str
+                    holder.productMrpText.paintFlags = 0
+                    holder.offer.text = null
+                    holder.offer.visibility = View.GONE
                 }
+                holder.productName.text = productEntityList[position].productName
+                holder.productExpiryDate.text =
+                    DateGenerator.getDayAndMonth(productEntityList[position].expiryDate)
+                holder.productQuantity.text = productEntityList[position].productQuantity
+                val price = "₹" + calculateDiscountPrice(
+                    productEntityList[position].price,
+                    productEntityList[position].offer
+                )
+                holder.productPrice.text = price
+                val url = (productEntityList[position].mainImage)
+                SetProductImage.setImageView(holder.productImage, url, file)
+                setUpListeners(holder, holder.absoluteAdapterPosition)
             }
-            if(productEntityList[position].offer>0f){
-                val str = "MRP ₹"+ productEntityList[position].price
-                holder.productMrpText.text = str
-                holder.productMrpText.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                holder.productMrpText.visibility = View.VISIBLE
-                holder.offer.visibility = View.VISIBLE
-                val offerText = productEntityList[position].offer.toInt().toString() +"% Off"
-                holder.offer.text = offerText
-            }
-            else{
-                val str = "MRP"
-                holder.productMrpText.text = str
-                holder.productMrpText.paintFlags = 0
-                holder.offer.text = null
-                holder.offer.visibility = View.GONE
-            }
-            holder.productName.text = productEntityList[position].productName
-            holder.productExpiryDate.text = DateGenerator.getDayAndMonth(productEntityList[position].expiryDate)
-            holder.productQuantity.text = productEntityList[position].productQuantity
-            val price = "₹" + calculateDiscountPrice(productEntityList[position].price, productEntityList[position].offer)
-            holder.productPrice.text = price
-            val url = (productEntityList[position].mainImage)
-            SetProductImage.setImageView(holder.productImage,url,file)
-            setUpListeners(holder,holder.absoluteAdapterPosition)
         }
     }
 
