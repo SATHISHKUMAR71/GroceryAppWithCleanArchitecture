@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.core.domain.products.Product
 import com.example.shoppinggroceryapp.R
@@ -21,7 +20,7 @@ import com.google.android.material.button.MaterialButton
 class FilterFragment(var products:MutableList<Product>) : Fragment() {
 
     var category:String?= null
-    var type:String? = null
+    private var type:String? = null
     private lateinit var filterViewModel: FilterViewModel
     private lateinit var dis50:CheckBox
     private lateinit var dis40:CheckBox
@@ -42,7 +41,6 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
         type = arguments?.getString("type")
         val view =  inflater.inflate(R.layout.fragment_filter, container, false)
         dis50 = view.findViewById(R.id.fragmentOptionDiscount50)
-        var clearAll:MutableLiveData<Boolean> = MutableLiveData()
         filterViewModel = ViewModelProvider(this)[FilterViewModel::class.java]
         dis40 = view.findViewById(R.id.fragmentOptionDiscount40)
         dis30 = view.findViewById(R.id.fragmentOptionDiscount30)

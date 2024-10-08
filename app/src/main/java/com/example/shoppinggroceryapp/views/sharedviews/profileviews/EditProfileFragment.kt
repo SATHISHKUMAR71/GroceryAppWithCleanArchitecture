@@ -60,7 +60,6 @@ class EditProfileFragment : Fragment() {
     private lateinit var phoneLayout: TextInputLayout
     private lateinit var editProfileInputChecker: InputChecker
     private lateinit var saveDetails:MaterialButton
-    private lateinit var db: AppDatabase
     private lateinit var editProfileViewModel: EditProfileViewModel
     private lateinit var imageLoaderAndGetter: ImageLoaderAndGetter
     private lateinit var imageHandler: ImageHandler
@@ -73,7 +72,6 @@ class EditProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         editProfileInputChecker = TextLayoutInputChecker()
-        db = AppDatabase.getAppDatabase(requireContext())
         imageLoaderAndGetter = ImageLoaderAndGetter()
         imageHandler = ImageHandler(this)
         imageHandler.initActivityResults()
@@ -86,7 +84,6 @@ class EditProfileFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_edit_profile, container, false)
-
         view.findViewById<ImageView>(R.id.editPictureImg).apply {
             val imageBitMap = imageLoaderAndGetter.getImageInApp(requireContext(),MainActivity.userImage)
             if(imageBitMap!=null){
@@ -108,7 +105,7 @@ class EditProfileFragment : Fragment() {
             }
             view.findViewById<MaterialButton>(R.id.editPictureBtn).text = "Add Profile Picture"
             view.findViewById<MaterialButton>(R.id.deleteProfileButton).visibility = View.GONE
-            Toast.makeText(context,"Profile Picture Deleted Successfully",Toast.LENGTH_SHORT).show()
+            ShowShortToast.show("Profile Picture Deleted Successfully",requireContext())
         }
         view.findViewById<ImageView>(R.id.editPictureImg).setOnClickListener {
             imagePermissionHandler.checkPermission(false)
@@ -192,12 +189,10 @@ class EditProfileFragment : Fragment() {
                     phone = phone.text.toString(), image = MainActivity.userImage
                 )
                 ShowShortToast.show("Profile Updated Successfully",requireContext())
-//                Toast.makeText(context, "Profile Updated Successfully", Toast.LENGTH_SHORT).show()
                 parentFragmentManager.popBackStack()
             }
             else{
                 ShowShortToast.show("Please Provide Valid Details",requireContext())
-//                Toast.makeText(context, "Please Provide Valid Details", Toast.LENGTH_SHORT).show()
             }
         }
         return view
@@ -214,6 +209,4 @@ class EditProfileFragment : Fragment() {
         InitialFragment.hideSearchBar.value = false
         InitialFragment.hideBottomNav.value = false
     }
-
-
 }

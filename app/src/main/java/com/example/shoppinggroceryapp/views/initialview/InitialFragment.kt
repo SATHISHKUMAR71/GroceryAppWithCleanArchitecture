@@ -342,6 +342,7 @@ class InitialFragment : Fragment() {
         }
 
         hideSearchBar.observe(viewLifecycleOwner){
+            println("3232 HIDE SEARCH BAR IS CALLED: $it ${this.hashCode()}")
             if(it){
                 searchBarTop.visibility = View.GONE
             }
@@ -350,6 +351,7 @@ class InitialFragment : Fragment() {
             }
         }
         hideBottomNav.observe(viewLifecycleOwner){
+            println("3232 HIDE BOTTOM NAV IS CALLED: $it ${this.hashCode()}")
             if(it){
                 bottomNav.visibility = View.GONE
             }

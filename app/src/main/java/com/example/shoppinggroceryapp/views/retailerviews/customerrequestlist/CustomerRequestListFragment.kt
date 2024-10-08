@@ -117,12 +117,16 @@ class CustomerRequestListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        println("3232 HIDE search bar called on customer request list true")
         InitialFragment.hideSearchBar.value = true
+        InitialFragment.hideBottomNav.value = false
     }
 
     override fun onStop() {
         super.onStop()
+        println("3232 HIDE search bar called on customer request list false")
         InitialFragment.hideSearchBar.value = false
+        InitialFragment.hideBottomNav.value = false
     }
 
     override fun onDestroyView() {

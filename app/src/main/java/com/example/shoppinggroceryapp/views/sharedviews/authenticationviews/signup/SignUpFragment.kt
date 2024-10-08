@@ -264,6 +264,7 @@ class SignUpFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        println("3232 HIDE CALLED ON SIGNUP RESUME")
         InitialFragment.hideSearchBar.value = true
         InitialFragment.hideBottomNav.value = true
     }
