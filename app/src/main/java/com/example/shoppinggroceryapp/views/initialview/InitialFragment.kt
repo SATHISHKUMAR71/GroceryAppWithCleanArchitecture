@@ -68,6 +68,7 @@ class InitialFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        searchString = ""
         openMicSearch.value = false
         openSearchView.value =false
         searchListAdapter = SearchListAdapter(this)
@@ -304,6 +305,7 @@ class InitialFragment : Fragment() {
                 SearchListAdapter.searchList = mutableListOf("Frozen Pizza","Cake Mixes","Chocolate Cake","Almond Milk","Frozen Veggie Burgers")
             }
             else if(searchList.isEmpty() && searchString.isNotEmpty()){
+                println("Search String in INIT Frag: $searchString")
                 SearchListAdapter.searchList = searchList.toMutableList()
                 Toast.makeText(context,"No Results Found",Toast.LENGTH_SHORT).show()
             }

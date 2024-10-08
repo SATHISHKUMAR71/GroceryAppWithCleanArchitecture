@@ -1,6 +1,7 @@
 package com.example.shoppinggroceryapp.views.sharedviews.profileviews
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.InputFilter
 import androidx.fragment.app.Fragment
@@ -39,6 +40,7 @@ import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
 import com.example.shoppinggroceryapp.helpers.permissionhandler.interfaces.ImagePermissionHandler
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
+import com.example.shoppinggroceryapp.helpers.toast.ShowShortToast
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.google.android.material.appbar.MaterialToolbar
@@ -62,6 +64,8 @@ class EditProfileFragment : Fragment() {
     private lateinit var editProfileViewModel: EditProfileViewModel
     private lateinit var imageLoaderAndGetter: ImageLoaderAndGetter
     private lateinit var imageHandler: ImageHandler
+    private var profileBitmap:Bitmap? = null
+    private var fileName = ""
     private lateinit var imagePermissionHandler: ImagePermissionHandler
     var deleteImage = false
     var deleteImgFile = ""
@@ -113,19 +117,18 @@ class EditProfileFragment : Fragment() {
 
         imageHandler.gotImage.observe(viewLifecycleOwner){
             val imageTmp = System.currentTimeMillis().toString()
-            imageLoaderAndGetter.storeImageInApp(requireContext(),it,imageTmp)
+            fileName = imageTmp
+            profileBitmap = it
             view.findViewById<ImageView>(R.id.editPictureImg).apply {
                 setImageBitmap(it)
                 setPadding(0)
             }
-            MainActivity.userImage = imageTmp
             view.findViewById<MaterialButton>(R.id.editPictureBtn).text = "Change Profile Picture"
             view.findViewById<MaterialButton>(R.id.deleteProfileButton).visibility = View.VISIBLE
         }
 
         view.findViewById<MaterialButton>(R.id.editPictureBtn).setOnClickListener {
             imagePermissionHandler.checkPermission(false)
-//            imageHandler.showAlertDialog()
         }
 
         val db1 = AppDatabase.getAppDatabase(requireContext())
@@ -157,6 +160,10 @@ class EditProfileFragment : Fragment() {
 
         phone.filters = arrayOf(InputFilter.LengthFilter(15))
         saveDetails.setOnClickListener {
+            profileBitmap?.let {
+                imageLoaderAndGetter.storeImageInApp(requireContext(),it,fileName)
+                MainActivity.userImage = fileName
+            }
             firstNameLayout.error = editProfileInputChecker.nameCheck(firstName)
             emailLayout.error = editProfileInputChecker.lengthAndEmailCheck(email)
             phoneLayout.error = editProfileInputChecker.lengthAndEmptyCheck("Phone Number",phone,10)
@@ -184,11 +191,13 @@ class EditProfileFragment : Fragment() {
                     email = email.text.toString(),
                     phone = phone.text.toString(), image = MainActivity.userImage
                 )
-                Toast.makeText(context, "Profile Updated Successfully", Toast.LENGTH_SHORT).show()
+                ShowShortToast.show("Profile Updated Successfully",requireContext())
+//                Toast.makeText(context, "Profile Updated Successfully", Toast.LENGTH_SHORT).show()
                 parentFragmentManager.popBackStack()
             }
             else{
-                Toast.makeText(context, "Please Provide Valid Details", Toast.LENGTH_SHORT).show()
+                ShowShortToast.show("Please Provide Valid Details",requireContext())
+//                Toast.makeText(context, "Please Provide Valid Details", Toast.LENGTH_SHORT).show()
             }
         }
         return view
@@ -206,8 +215,5 @@ class EditProfileFragment : Fragment() {
         InitialFragment.hideBottomNav.value = false
     }
 
-    fun addFocusChangeListeners(){
-
-    }
 
 }
