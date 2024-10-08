@@ -49,20 +49,21 @@ class ProductListAdapter(var fragment: Fragment,
 
 
     inner class ProductLargeImageHolder(productLargeView:View):RecyclerView.ViewHolder(productLargeView){
-        val productImage = productLargeView.findViewById<ImageView>(R.id.productImageLong)
-        val buttonLayout = productLargeView.findViewById<LinearLayout>(R.id.buttonLayout)
-        val brandName = productLargeView.findViewById<TextView>(R.id.brandName)
-        val productName = productLargeView.findViewById<TextView>(R.id.productNameLong)
-        val productQuantity = productLargeView.findViewById<TextView>(R.id.productQuantity)
-        val productExpiryDate = productLargeView.findViewById<TextView>(R.id.productExpiryDate)
-        val productPrice = productLargeView.findViewById<TextView>(R.id.productPriceLong)
-        val offer = productLargeView.findViewById<TextView>(R.id.offerText)
-        val productAddRemoveLayout:LinearLayout = productLargeView.findViewById(R.id.productAddRemoveLayout)
-        val productAddOneTime:MaterialButton = productLargeView.findViewById(R.id.productAddLayoutOneTime)
-        val totalItems:TextView = productLargeView.findViewById(R.id.totalItemsAdded)
-        val addSymbolButton:ImageButton = productLargeView.findViewById(R.id.productAddSymbolButton)
-        val removeSymbolButton:ImageButton = productLargeView.findViewById(R.id.productRemoveSymbolButton)
-        val productMrpText:TextView = productLargeView.findViewById(R.id.productMrpText)
+
+//        val productImage = productLargeView.findViewById<ImageView>(R.id.productImageLong)
+//        val buttonLayout = productLargeView.findViewById<LinearLayout>(R.id.buttonLayout)
+//        val brandName = productLargeView.findViewById<TextView>(R.id.brandName)
+//        val productName = productLargeView.findViewById<TextView>(R.id.productNameLong)
+//        val productQuantity = productLargeView.findViewById<TextView>(R.id.productQuantity)
+//        val productExpiryDate = productLargeView.findViewById<TextView>(R.id.productExpiryDate)
+//        val productPrice = productLargeView.findViewById<TextView>(R.id.productPriceLong)
+//        val offer = productLargeView.findViewById<TextView>(R.id.offerText)
+//        val productAddRemoveLayout:LinearLayout = productLargeView.findViewById(R.id.productAddRemoveLayout)
+//        val productAddOneTime:MaterialButton = productLargeView.findViewById(R.id.productAddLayoutOneTime)
+//        val totalItems:TextView = productLargeView.findViewById(R.id.totalItemsAdded)
+//        val addSymbolButton:ImageButton = productLargeView.findViewById(R.id.productAddSymbolButton)
+//        val removeSymbolButton:ImageButton = productLargeView.findViewById(R.id.productRemoveSymbolButton)
+//        val productMrpText:TextView = productLargeView.findViewById(R.id.productMrpText)
     }
 
     inner class PriceImageHolder(priceView:View):RecyclerView.ViewHolder(priceView)
@@ -82,12 +83,12 @@ class ProductListAdapter(var fragment: Fragment,
             }
         }
         else{
-            return PriceImageHolder(LayoutInflater.from(parent.context).inflate(R.layout.cart_price_detail_view,parent,false))
+            return ProductLargeImageHolder(LayoutInflater.from(parent.context).inflate(R.layout.cart_price_detail_view,parent,false))
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(tag=="C"){
+        return if(tag=="C" && position==productEntityList.size){
             -1
         }
         else {
@@ -110,15 +111,15 @@ class ProductListAdapter(var fragment: Fragment,
             println("9898 VIEW IS RECREATING ON IF: $position ${productEntityList[position].productName}")
         }
         else{
-            if(tag=="C" && position==size){
+            if(tag=="C" && position==productEntityList.size){
                 println("8787 ON LAST LIST")
             }
             else {
                 println("9898 VIEW IS RECREATING: $size $position ${productEntityList[position].productName}")
                 if (MainActivity.isRetailer) {
-                    holder.buttonLayout.visibility = View.GONE
+                    holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
                 } else {
-                    holder.buttonLayout.visibility = View.VISIBLE
+                    holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.VISIBLE
                 }
 
                 productListViewModel.getSpecificCart(
@@ -127,52 +128,52 @@ class ProductListAdapter(var fragment: Fragment,
                 ) { cart ->
                     if (cart != null) {
                         MainActivity.handler.post {
-                            holder.productAddOneTime.visibility = View.GONE
-                            holder.productAddRemoveLayout.visibility = View.VISIBLE
+                            holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).visibility = View.GONE
+                            holder.itemView.findViewById<LinearLayout>(R.id.productAddRemoveLayout).visibility = View.VISIBLE
                             countList[position] = cart.totalItems
-                            holder.totalItems.text = cart.totalItems.toString()
+                            holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = cart.totalItems.toString()
                         }
                     } else {
                         MainActivity.handler.post {
-                            holder.productAddOneTime.visibility = View.VISIBLE
-                            holder.productAddRemoveLayout.visibility = View.GONE
+                            holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).visibility = View.VISIBLE
+                            holder.itemView.findViewById<LinearLayout>(R.id.productAddRemoveLayout).visibility = View.GONE
                             countList[position] = 0
-                            holder.totalItems.text = "0"
+                            holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = "0"
                         }
                     }
                 }
 
                 productListViewModel.getBrandName(productEntityList[position].brandId) { brand ->
                     MainActivity.handler.post {
-                        holder.brandName.text = brand
+                        holder.itemView.findViewById<TextView>(R.id.brandName).text = brand
                     }
                 }
                 if (productEntityList[position].offer > 0f) {
                     val str = "MRP ₹" + productEntityList[position].price
-                    holder.productMrpText.text = str
-                    holder.productMrpText.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                    holder.productMrpText.visibility = View.VISIBLE
-                    holder.offer.visibility = View.VISIBLE
+                    holder.itemView.findViewById<TextView>(R.id.productMrpText).text = str
+                    holder.itemView.findViewById<TextView>(R.id.productMrpText).paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                    holder.itemView.findViewById<TextView>(R.id.productMrpText).visibility = View.VISIBLE
+                    holder.itemView.findViewById<TextView>(R.id.offerText).visibility = View.VISIBLE
                     val offerText = productEntityList[position].offer.toInt().toString() + "% Off"
-                    holder.offer.text = offerText
+                    holder.itemView.findViewById<TextView>(R.id.offerText).text = offerText
                 } else {
                     val str = "MRP"
-                    holder.productMrpText.text = str
-                    holder.productMrpText.paintFlags = 0
-                    holder.offer.text = null
-                    holder.offer.visibility = View.GONE
+                    holder.itemView.findViewById<TextView>(R.id.productMrpText).text = str
+                    holder.itemView.findViewById<TextView>(R.id.productMrpText).paintFlags = 0
+                    holder.itemView.findViewById<TextView>(R.id.offerText).text = null
+                    holder.itemView.findViewById<TextView>(R.id.offerText).visibility = View.GONE
                 }
-                holder.productName.text = productEntityList[position].productName
-                holder.productExpiryDate.text =
+                holder.itemView.findViewById<TextView>(R.id.productNameLong).text = productEntityList[position].productName
+                holder.itemView.findViewById<TextView>(R.id.productExpiryDate).text =
                     DateGenerator.getDayAndMonth(productEntityList[position].expiryDate)
-                holder.productQuantity.text = productEntityList[position].productQuantity
+                holder.itemView.findViewById<TextView>(R.id.productQuantity).text = productEntityList[position].productQuantity
                 val price = "₹" + calculateDiscountPrice(
                     productEntityList[position].price,
                     productEntityList[position].offer
                 )
-                holder.productPrice.text = price
+                holder.itemView.findViewById<TextView>(R.id.productPriceLong).text = price
                 val url = (productEntityList[position].mainImage)
-                SetProductImage.setImageView(holder.productImage, url, file)
+                SetProductImage.setImageView(holder.itemView.findViewById(R.id.productImageLong), url, file)
                 setUpListeners(holder, holder.absoluteAdapterPosition)
             }
         }
@@ -200,7 +201,7 @@ class ProductListAdapter(var fragment: Fragment,
             }
         }
 
-        holder.removeSymbolButton.setOnClickListener {
+        holder.itemView.findViewById<ImageButton>(R.id.productRemoveSymbolButton).setOnClickListener {
             if(holder.absoluteAdapterPosition==position) {
                 val count = --countList[position]
                 val positionVal = calculateDiscountPrice(productEntityList[position].price, productEntityList[position].offer)
@@ -215,8 +216,8 @@ class ProductListAdapter(var fragment: Fragment,
                             CartFragment.viewPriceDetailData.postValue(CartFragment.viewPriceDetailData.value!! - positionVal)
                         }
                         FindNumberOfCartItems.productCount.value = FindNumberOfCartItems.productCount.value!!-1
-                        holder.productAddRemoveLayout.visibility = View.GONE
-                        holder.productAddOneTime.visibility = View.VISIBLE
+                        holder.itemView.findViewById<LinearLayout>(R.id.productAddRemoveLayout).visibility = View.GONE
+                        holder.itemView.findViewById<LinearLayout>(R.id.productAddLayoutOneTime).visibility = View.VISIBLE
                     } else if (tag == "C") {
                         productListViewModel.getSpecificCart(MainActivity.cartId,productEntityList[position].productId.toInt()){ cart ->
                             if (cart != null) {
@@ -230,7 +231,7 @@ class ProductListAdapter(var fragment: Fragment,
                         notifyItemRangeChanged(position, productEntityList.size)
                         FindNumberOfCartItems.productCount.value = FindNumberOfCartItems.productCount.value!!-1
                     }
-                    holder.totalItems.text = "0"
+                    holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = "0"
 
                 }
                 else {
@@ -253,7 +254,7 @@ class ProductListAdapter(var fragment: Fragment,
                                     productEntityList[position].offer)
                             )
                         })
-                    holder.totalItems.text = count.toString()
+                    holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = count.toString()
                     ProductListFragment.totalCost.value =
                         ProductListFragment.totalCost.value!! - positionVal
                     CartFragment.viewPriceDetailData.value =
@@ -262,7 +263,7 @@ class ProductListAdapter(var fragment: Fragment,
             }
         }
 
-        holder.addSymbolButton.setOnClickListener {
+        holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).setOnClickListener {
             if (holder.absoluteAdapterPosition == position) {
                 val count = ++countList[position]
                 ProductListFragment.totalCost.value =
@@ -287,15 +288,15 @@ class ProductListAdapter(var fragment: Fragment,
                 )
                 }
                 productListViewModel.updateItemsInCart(cartEntity)
-                holder.totalItems.text = count.toString()
+                holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = count.toString()
             }
         }
 
-            holder.productAddOneTime.setOnClickListener {
+            holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).setOnClickListener {
                 if (holder.absoluteAdapterPosition == position) {
                     val count = ++countList[position]
                     productsSize++
-                    holder.totalItems.text = count.toString()
+                    holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = count.toString()
                     ProductListFragment.totalCost.value =
                         ProductListFragment.totalCost.value!! + calculateDiscountPrice(productEntityList[position].price, productEntityList[position].offer)
                     CartFragment.viewPriceDetailData.value =
@@ -320,8 +321,8 @@ class ProductListAdapter(var fragment: Fragment,
                     }
                     productListViewModel.updateItemsInCart(cart)
                     FindNumberOfCartItems.productCount.value = FindNumberOfCartItems.productCount.value!!+1
-                    holder.productAddRemoveLayout.visibility = View.VISIBLE
-                    holder.productAddOneTime.visibility = View.GONE
+                    holder.itemView.findViewById<LinearLayout>(R.id.productAddRemoveLayout).visibility = View.VISIBLE
+                    holder.itemView.findViewById<LinearLayout>(R.id.productAddLayoutOneTime).visibility = View.GONE
                 }
             }
     }
