@@ -41,6 +41,7 @@ class CartFragment : Fragment() {
         var selectedAddressEntity: Address? = null
     }
     var noOfItemsInt = 0
+    private var size = 0
     private var continuePressed = 0
 
     private lateinit var noOfItems:TextView
@@ -96,8 +97,11 @@ class CartFragment : Fragment() {
 //        recyclerView.isNestedScrollingEnabled = false
 
         price.setOnClickListener {
-            view.findViewById<NestedScrollView>(R.id.nestedScrollView).fullScroll(View.FOCUS_DOWN)
-            view.findViewById<NestedScrollView>(R.id.nestedScrollView).fullScroll(View.FOCUS_DOWN)
+            priceDetails.requestFocus()
+//            println("NO OF ITEMS: $noOfItemsInt")
+//            (recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(noOfItemsInt-1)
+//            view.findViewById<NestedScrollView>(R.id.nestedScrollView).fullScroll(View.FOCUS_DOWN)
+//            view.findViewById<NestedScrollView>(R.id.nestedScrollView).fullScroll(View.FOCUS_DOWN)
         }
 
         viewPriceDetailData.observe(viewLifecycleOwner){
@@ -162,6 +166,7 @@ class CartFragment : Fragment() {
         cartViewModel.cartProducts.observe(viewLifecycleOwner){
             adapter.setProducts(it)
             noOfItemsInt = it.size
+
             val str = "MRP ($noOfItemsInt) Products"
             price.visibility =View.VISIBLE
             noOfItems.text =str
