@@ -66,7 +66,13 @@ class ProductListAdapter(var fragment: Fragment,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductLargeImageHolder {
-        if(isShort) {
+        if(tag=="C"){
+            return ProductLargeImageHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.product_layout_card_view, parent, false)
+            )
+        }
+        else if(isShort) {
             return ProductLargeImageHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.product_layout_short, parent, false)
@@ -164,7 +170,7 @@ class ProductListAdapter(var fragment: Fragment,
                     .commit()
             }
             catch (e:Exception){
-
+                println("Ex EXCEPTION $e")
             }
         }
 

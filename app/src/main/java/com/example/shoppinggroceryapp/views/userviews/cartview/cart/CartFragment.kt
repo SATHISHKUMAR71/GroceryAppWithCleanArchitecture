@@ -85,13 +85,13 @@ class CartFragment : Fragment() {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Added More Groceries")
         }
 
-        adapter = ProductListAdapter(this,fileDir,"C",false,productListViewModel = ViewModelProvider(this,
+        adapter = ProductListAdapter(this,fileDir,"C",true,productListViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(retailerDao, userDao)
         )[ProductListViewModel::class.java])
         adapter.setProducts(listOf())
         recyclerView.adapter = adapter
-//        recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+//        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 //        (recyclerView.layoutManager as LinearLayoutManager).isAutoMeasureEnabled = true
 //        recyclerView.isNestedScrollingEnabled = false
 
