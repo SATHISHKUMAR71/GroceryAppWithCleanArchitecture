@@ -112,7 +112,7 @@ class ProductListAdapter(var fragment: Fragment,
         }
         else{
             if(tag=="C" && position==productEntityList.size){
-                println("8787 ON LAST LIST")
+                val grandTotalAmount = holder.itemView.findViewById<TextView>(R.id.priceDetailsTotalAmount)
             }
             else {
                 println("9898 VIEW IS RECREATING: $size $position ${productEntityList[position].productName}")

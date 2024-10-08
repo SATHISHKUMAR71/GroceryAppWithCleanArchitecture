@@ -97,9 +97,9 @@ class CartFragment : Fragment() {
 //        recyclerView.isNestedScrollingEnabled = false
 
         price.setOnClickListener {
-            priceDetails.requestFocus()
+//            priceDetails.requestFocus()
 //            println("NO OF ITEMS: $noOfItemsInt")
-//            (recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(noOfItemsInt-1)
+//            (recyclerView.layoutManager as LinearLayoutManager).smoothScrollToPosition(recyclerView,RecyclerView.State(),noOfItemsInt-1)
 //            view.findViewById<NestedScrollView>(R.id.nestedScrollView).fullScroll(View.FOCUS_DOWN)
 //            view.findViewById<NestedScrollView>(R.id.nestedScrollView).fullScroll(View.FOCUS_DOWN)
         }
