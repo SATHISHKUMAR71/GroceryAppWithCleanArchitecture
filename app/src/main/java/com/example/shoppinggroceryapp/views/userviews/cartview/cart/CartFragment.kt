@@ -85,7 +85,7 @@ class CartFragment : Fragment() {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Added More Groceries")
         }
 
-        adapter = ProductListAdapter(this,fileDir,"C",true,productListViewModel = ViewModelProvider(this,
+        adapter = ProductListAdapter(this,fileDir,"C",false,productListViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(retailerDao, userDao)
         )[ProductListViewModel::class.java])
         adapter.setProducts(listOf())
@@ -160,8 +160,8 @@ class CartFragment : Fragment() {
         }
         cartViewModel.getProductsByCartId(MainActivity.cartId)
         cartViewModel.cartProducts.observe(viewLifecycleOwner){
-            adapter.setProducts(it)
             noOfItemsInt = it.size
+            adapter.setProducts(it)
             val str = "MRP ($noOfItemsInt) Products"
             price.visibility =View.VISIBLE
             noOfItems.text =str
