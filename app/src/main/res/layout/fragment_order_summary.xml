@@ -234,18 +234,20 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/noteForUserLayout">
                     <ImageView
+                        android:layout_marginStart="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/info_24px"
-                        app:tint="#D51D2D" />
+                        app:tint="?attr/colorPrimaryDark" />
                 <TextView
                     android:layout_gravity="center"
                     android:id="@+id/noteForUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#D51D2D"
+                    android:textColor="?attr/colorPrimaryDark"
                     android:text="Product will be Delivered on "
                     android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -277,6 +279,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:textColor="@color/offerColor"
                 android:text="Expected Delivery Date: 12/09/2024"
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@+id/itemsViewPager" />

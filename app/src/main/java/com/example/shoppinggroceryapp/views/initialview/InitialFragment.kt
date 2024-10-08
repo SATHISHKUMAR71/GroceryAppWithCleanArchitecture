@@ -305,7 +305,6 @@ class InitialFragment : Fragment() {
                 SearchListAdapter.searchList = mutableListOf("Frozen Pizza","Cake Mixes","Chocolate Cake","Almond Milk","Frozen Veggie Burgers")
             }
             else if(searchList.isEmpty() && searchString.isNotEmpty()){
-                println("Search String in INIT Frag: $searchString")
                 SearchListAdapter.searchList = searchList.toMutableList()
                 Toast.makeText(context,"No Results Found",Toast.LENGTH_SHORT).show()
             }
@@ -342,7 +341,6 @@ class InitialFragment : Fragment() {
         }
 
         hideSearchBar.observe(viewLifecycleOwner){
-            println("3232 HIDE SEARCH BAR IS CALLED: $it ${this.hashCode()}")
             if(it){
                 searchBarTop.visibility = View.GONE
             }
@@ -351,7 +349,6 @@ class InitialFragment : Fragment() {
             }
         }
         hideBottomNav.observe(viewLifecycleOwner){
-            println("3232 HIDE BOTTOM NAV IS CALLED: $it ${this.hashCode()}")
             if(it){
                 bottomNav.visibility = View.GONE
             }
