@@ -23,6 +23,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
+        android:id="@+id/productDetailScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="112dp"
@@ -35,8 +36,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/productImageViewer"
                     android:layout_width="match_parent"
@@ -202,7 +201,6 @@
                         android:text="You May Also Like"/>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/productListInProductDetailFragment"
-                        android:paddingBottom="20dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"

@@ -9,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.OptIn
+import androidx.core.view.setPadding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -130,6 +132,7 @@ class ProductDetailFragment : Fragment() {
             productDetailToolBar.menu.findItem(R.id.edit).setVisible(true)
             productDetailToolBar.menu.findItem(R.id.delete).setVisible(true)
             productDetailToolBar.menu.findItem(R.id.cart).setVisible(false)
+            view.findViewById<ScrollView>(R.id.productDetailScrollView).setPadding(0)
             view.findViewById<LinearLayout>(R.id.exploreBottomLayout).visibility = View.GONE
         }
 
