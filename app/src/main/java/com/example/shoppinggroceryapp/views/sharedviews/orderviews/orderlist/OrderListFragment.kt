@@ -34,6 +34,7 @@ import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
+import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount
@@ -97,6 +98,16 @@ class OrderListFragment : Fragment() {
         val subscriptionType = arguments?.getString("subscriptionType")
         toolbar = view.findViewById(R.id.materialToolbarOrderList)
         orderListViewModel.orderedItems.observe(viewLifecycleOwner){
+            val list = mutableListOf<OrderDetails>()
+            for(i in it){
+                if(DateGenerator.compareDeliveryStatus(DateGenerator.getCurrentDate(),i.deliveryDate)=="Delivered" && i.deliveryFrequency=="Once"){
+                    orderListViewModel.updateOrderDelivered(i.copy(deliveryStatus = "Delivered"))
+                    list.add(i.copy(deliveryStatus = "Delivered"))
+                }
+                else{
+                    list.add(i)
+                }
+            }
             if(it.isEmpty()){
                 view.findViewById<TextView>(R.id.noOrderFoundText).visibility =View.VISIBLE
                 view.findViewById<ImageView>(R.id.noOrderFoundImage).visibility =View.VISIBLE
@@ -107,8 +118,8 @@ class OrderListFragment : Fragment() {
                 view.findViewById<ImageView>(R.id.noOrderFoundImage).visibility =View.GONE
                 orderList.visibility = View.VISIBLE
             }
-            orderedItems = it.toMutableList()
-            orderAdapter.setOrders(it.toMutableList())
+            orderedItems = list.toMutableList()
+            orderAdapter.setOrders(list.toMutableList())
             orderListViewModel.getCartWithProducts()
         }
 
@@ -119,7 +130,6 @@ class OrderListFragment : Fragment() {
         }
         orderListViewModel.dataReady.observe(viewLifecycleOwner){
             cartWithProductsList = orderListViewModel.cartWithProductList.value!!
-
             if(orderList.adapter==null) {
                 orderList.adapter = orderAdapter
                 orderList.layoutManager = LinearLayoutManager(context)

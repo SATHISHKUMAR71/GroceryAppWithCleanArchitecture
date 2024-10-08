@@ -41,19 +41,26 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
     override fun onBindViewHolder(holder: OrderLayoutViewHolder, position: Int) {
         holder.itemView.findViewById<TextView>(R.id.deliveryDate).setTextColor(Color.BLACK)
         holder.itemView.findViewById<TextView>(R.id.deliveryDate).setBackgroundColor(Color.TRANSPARENT)
-        if(orderedItems[position].deliveryStatus=="Pending"){
-            val screen = "Expected On: ${DateGenerator.getDayAndMonth(orderedItems[position].deliveryDate)}"
-            holder.itemView.findViewById<TextView>(R.id.deliveryDate).text = screen
-        }
-        else if(orderedItems[position].deliveryStatus=="Cancelled"){
-            val screen = "Order Cancelled"
-            holder.itemView.findViewById<TextView>(R.id.deliveryDate).setTextColor(Color.WHITE)
-            holder.itemView.findViewById<TextView>(R.id.deliveryDate).setBackgroundColor(Color.RED)
-            holder.itemView.findViewById<TextView>(R.id.deliveryDate).text = screen
-        }
-        else if(orderedItems[position].deliveryStatus=="Delivered"){
-            val screen = "Delivered On: ${DateGenerator.getDayAndMonth(orderedItems[position].deliveryDate)}"
-            holder.itemView.findViewById<TextView>(R.id.deliveryDate).text = screen
+
+        when(orderedItems[position].deliveryStatus){
+            "Pending" -> {
+                val screen = "Expected On: ${DateGenerator.getDayAndMonth(orderedItems[position].deliveryDate)}"
+                holder.itemView.findViewById<TextView>(R.id.deliveryDate).text = screen
+            }
+            "Order Cancelled" -> {
+                val screen = "Order Cancelled"
+                holder.itemView.findViewById<TextView>(R.id.deliveryDate).setTextColor(Color.WHITE)
+                holder.itemView.findViewById<TextView>(R.id.deliveryDate).setBackgroundColor(Color.RED)
+                holder.itemView.findViewById<TextView>(R.id.deliveryDate).text = screen
+            }
+            "Delivered" -> {
+                val screen = "Delivered On: ${DateGenerator.getDayAndMonth(orderedItems[position].deliveryDate)}"
+                holder.itemView.findViewById<TextView>(R.id.deliveryDate).text = screen
+            }
+            else -> {
+                val screen = "Expected On: ${DateGenerator.getDayAndMonth(orderedItems[position].deliveryDate)}"
+                holder.itemView.findViewById<TextView>(R.id.deliveryDate).text = screen
+            }
         }
         val date = "Ordered On: ${DateGenerator.getDayAndMonth(orderedItems[position].orderedDate)}"
         holder.itemView.findViewById<TextView>(R.id.orderedDate).text = date
@@ -73,8 +80,6 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
             if(clickable==true){
                 Help.selectedOrder = orderedItems[position]
                 FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, Help(),"Help")
-//                fragment.parentFragmentManager.popBackStack()
-//                FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager,fragment,"Help")
             }
             else {
                 OrderListFragment.selectedOrder = orderedItems[position]

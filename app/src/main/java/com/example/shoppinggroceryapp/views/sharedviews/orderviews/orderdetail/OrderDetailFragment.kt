@@ -268,7 +268,7 @@ class OrderDetailFragment : Fragment() {
         setUpDeleteSubscriptionListeners()
 
 
-        if((MainActivity.isRetailer) || (OrderListFragment.selectedOrder?.deliveryStatus=="Cancelled") || (hideCancelOrderButton==true)){
+        if((MainActivity.isRetailer) || (OrderListFragment.selectedOrder?.deliveryStatus=="Cancelled") || (OrderListFragment.selectedOrder?.deliveryStatus=="Delivered") || (hideCancelOrderButton==true)){
             deleteSubscription.visibility = View.GONE
             changeSubscription.visibility = View.GONE
         }

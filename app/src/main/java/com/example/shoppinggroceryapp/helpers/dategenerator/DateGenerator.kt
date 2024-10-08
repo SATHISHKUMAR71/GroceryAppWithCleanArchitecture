@@ -69,7 +69,7 @@ class DateGenerator {
                 return "Pending"
             }
             else if(current.isAfter(delivery)){
-                return "Delayed"
+                return "Delivered"
             }
             else{
                 return "Out For Delivery"

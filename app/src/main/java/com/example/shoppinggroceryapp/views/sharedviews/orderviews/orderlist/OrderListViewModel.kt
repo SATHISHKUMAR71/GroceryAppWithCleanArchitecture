@@ -16,9 +16,12 @@ import com.core.usecases.orderusecase.getordersusecase.GetDailyOrders
 import com.core.usecases.orderusecase.getordersusecase.GetMonthlyOrders
 import com.core.usecases.orderusecase.getordersusecase.GetNormalOrder
 import com.core.usecases.orderusecase.getordersusecase.GetWeeklyOrders
+import com.core.usecases.orderusecase.updateorderusecase.UpdateOrderDetails
 import com.example.shoppinggroceryapp.MainActivity
+import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 
 class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
+                         private var mUpdateOrderDetails: UpdateOrderDetails,
                          private var mGetOrderForUserMonthlySubscription: GetOrderForUserMonthlySubscription,
                          private var mGetOrderForUserDailySubscription: GetOrderForUserDailySubscription,
                          private var mGetOrderForUserWeeklySubscription: GetOrderForUserWeeklySubscription,
@@ -42,7 +45,6 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
 
     fun getOrdersForSelectedUser(userId:Int){
         Thread {
-
             orderedItems.postValue(mGetOrderForUser.invoke(userId))
         }.start()
     }
@@ -73,14 +75,12 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
 
     fun getOrdersForSelectedUserWeeklySubscription(userId:Int){
         Thread {
-
             orderedItems.postValue(mGetOrderForUserWeeklySubscription.invoke(userId))
         }.start()
     }
 
     fun getOrdersForRetailerWeeklySubscription(userId:Int){
         Thread {
-
             orderedItems.postValue(mGetWeeklyOrders.invoke())
         }.start()
     }
@@ -92,7 +92,6 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
     }
     fun getOrdersForRetailerMonthlySubscription(userId:Int){
         Thread {
-
             orderedItems.postValue(mGetMonthlyOrders.invoke())
         }.start()
     }
@@ -103,8 +102,14 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
         }.start()
     }
 
-    fun getCartWithProducts(){
 
+    fun updateOrderDelivered(orderDetails:OrderDetails){
+        Thread{
+            mUpdateOrderDetails.invoke(orderDetails)
+        }.start()
+    }
+
+    fun getCartWithProducts(){
         Thread {
             for(i in orderedItems.value!!) {
                 synchronized(lock) {
