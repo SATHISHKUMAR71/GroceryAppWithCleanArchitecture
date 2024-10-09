@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.core.domain.order.Cart
@@ -39,6 +40,12 @@ class ProductListAdapter(var fragment: Fragment,
         var productsSize = 0
     }
     var size = 0
+    var grandTolAmt = ""
+    var totAmtWithFee = ""
+    var noOfItem = ""
+    var grandTolAmtLiveData:MutableLiveData<String> = MutableLiveData()
+    var totAmtWithFeeLiveData:MutableLiveData<String> = MutableLiveData()
+    var noOfItemLiveData:MutableLiveData<String> = MutableLiveData()
     var productEntityList:MutableList<Product> = mutableListOf()
     private var countList = mutableListOf<Int>()
     init {
@@ -66,7 +73,7 @@ class ProductListAdapter(var fragment: Fragment,
 //        val productMrpText:TextView = productLargeView.findViewById(R.id.productMrpText)
     }
 
-    inner class PriceImageHolder(priceView:View):RecyclerView.ViewHolder(priceView)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductLargeImageHolder {
         if(viewType!=-1) {
@@ -108,11 +115,25 @@ class ProductListAdapter(var fragment: Fragment,
 
     override fun onBindViewHolder(holder: ProductLargeImageHolder, position: Int) {
         if(size==0){
-            println("9898 VIEW IS RECREATING ON IF: $position ${productEntityList[position].productName}")
+
         }
         else{
             if(tag=="C" && position==productEntityList.size){
-                val grandTotalAmount = holder.itemView.findViewById<TextView>(R.id.priceDetailsTotalAmount)
+                val grandTotalAmountMrp = holder.itemView.findViewById<TextView>(R.id.priceDetailsMrpPrice)
+                val totalAmtWithDeliveryFee = holder.itemView.findViewById<TextView>(R.id.priceDetailsTotalAmount)
+                val noOfItems = holder.itemView.findViewById<TextView>(R.id.priceDetailsMrpTotalItems)
+                noOfItemLiveData.observe(fragment.viewLifecycleOwner){
+                    noOfItems.text = it
+                }
+                totAmtWithFeeLiveData.observe(fragment.viewLifecycleOwner){
+                    totalAmtWithDeliveryFee.text = it
+                }
+                grandTolAmtLiveData.observe(fragment.viewLifecycleOwner){
+                    grandTotalAmountMrp.text = it
+                }
+//                noOfItems.text = noOfItem
+//                totalAmtWithDeliveryFee.text = totAmtWithFee
+//                grandTotalAmountMrp.text = grandTolAmt
             }
             else {
                 println("9898 VIEW IS RECREATING: $size $position ${productEntityList[position].productName}")
@@ -217,7 +238,7 @@ class ProductListAdapter(var fragment: Fragment,
                         }
                         FindNumberOfCartItems.productCount.value = FindNumberOfCartItems.productCount.value!!-1
                         holder.itemView.findViewById<LinearLayout>(R.id.productAddRemoveLayout).visibility = View.GONE
-                        holder.itemView.findViewById<LinearLayout>(R.id.productAddLayoutOneTime).visibility = View.VISIBLE
+                        holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).visibility = View.VISIBLE
                     } else if (tag == "C") {
                         productListViewModel.getSpecificCart(MainActivity.cartId,productEntityList[position].productId.toInt()){ cart ->
                             if (cart != null) {
@@ -322,7 +343,7 @@ class ProductListAdapter(var fragment: Fragment,
                     productListViewModel.updateItemsInCart(cart)
                     FindNumberOfCartItems.productCount.value = FindNumberOfCartItems.productCount.value!!+1
                     holder.itemView.findViewById<LinearLayout>(R.id.productAddRemoveLayout).visibility = View.VISIBLE
-                    holder.itemView.findViewById<LinearLayout>(R.id.productAddLayoutOneTime).visibility = View.GONE
+                    holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).visibility = View.GONE
                 }
             }
     }
@@ -350,5 +371,15 @@ class ProductListAdapter(var fragment: Fragment,
         } else{
             price
         }
+    }
+
+    fun updatePriceDetails(grandTotal:String,totalAmt:String,noOfItems:String){
+        grandTolAmtLiveData.value = grandTotal
+        totAmtWithFeeLiveData.value = totalAmt
+        noOfItemLiveData.value = noOfItems
+//        grandTolAmt = grandTotal
+//        totAmtWithFee = totalAmt
+//        noOfItem = noOfItems
+//        notifyItemChanged(productEntityList.size)
     }
 }
