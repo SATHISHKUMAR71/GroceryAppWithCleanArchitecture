@@ -95,7 +95,11 @@ class CartFragment : Fragment() {
             adapter.noOfItemLiveData.value = str
             savedPosition?.let {value ->
                 println("POSITION rvrv $value")
+
                 (recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(value)
+                if(value+2>noOfItemsInt){
+                    (recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(value-1)
+                }
             }
         }
 

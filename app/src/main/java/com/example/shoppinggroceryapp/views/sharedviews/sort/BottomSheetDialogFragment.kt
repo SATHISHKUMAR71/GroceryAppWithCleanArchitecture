@@ -71,6 +71,7 @@ class BottomSheetDialogFragment:BottomSheetDialogFragment() {
             else if(it == 4){
                 priceHighToLow.isChecked =true
             }
+
         }
 
         priceHighToLow.setOnClickListener {
