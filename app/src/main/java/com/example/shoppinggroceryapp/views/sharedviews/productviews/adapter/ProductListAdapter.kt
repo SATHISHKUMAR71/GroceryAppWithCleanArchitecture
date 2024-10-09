@@ -1,6 +1,7 @@
 package com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter
 
 import android.graphics.Paint
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +9,10 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.core.domain.order.Cart
@@ -26,9 +29,16 @@ import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
+import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
+import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListViewModel
+import com.example.shoppinggroceryapp.views.userviews.addressview.getaddress.GetNewAddress
+import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressList
+import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment.Companion.selectedAddressEntity
+import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartViewModel
+import com.example.shoppinggroceryapp.views.userviews.category.CategoryFragment
 import com.google.android.material.button.MaterialButton
 import java.io.File
 
@@ -43,10 +53,12 @@ class ProductListAdapter(var fragment: Fragment,
     var grandTolAmt = ""
     var totAmtWithFee = ""
     var noOfItem = ""
+    var isVisible:MutableLiveData<Boolean> = MutableLiveData()
     var grandTolAmtLiveData:MutableLiveData<String> = MutableLiveData()
     var totAmtWithFeeLiveData:MutableLiveData<String> = MutableLiveData()
     var noOfItemLiveData:MutableLiveData<String> = MutableLiveData()
     var productEntityList:MutableList<Product> = mutableListOf()
+
     private var countList = mutableListOf<Int>()
     init {
         for(i in 0..<productEntityList.size){
@@ -125,18 +137,74 @@ class ProductListAdapter(var fragment: Fragment,
     override fun onBindViewHolder(holder: ProductLargeImageHolder, position: Int) {
         var position = position
         println("position  ### VIEW IS CREATING FOR $position")
-        if(size==0){
+        if((size==0) && (tag!="C")){
 
         }
         else{
             if(tag == "C" && position==0){
-                println("ON POSITION ZERO $position")
+                val deliveryAddressNotFound = holder.itemView.findViewById<LinearLayout>(R.id.deliveryAddressLayoutNotFound)
+                val deliveryAddressFound = holder.itemView.findViewById<LinearLayout>(R.id.deliveryAddressLayout)
+                val addressOwnerName = holder.itemView.findViewById<TextView>(R.id.addressOwnerName)
+                val address = holder.itemView.findViewById<TextView>(R.id.address)
+                val addNewAddress = holder.itemView.findViewById<MaterialButton>(R.id.addNewAddressButton)
+                val changeAddress = holder.itemView.findViewById<MaterialButton>(R.id.changeAddressButton)
+                val addMoreGrocery = holder.itemView.findViewById<MaterialButton>(R.id.addMoreGroceryButton)
+                val addressContactNumber = holder.itemView.findViewById<TextView>(R.id.addressPhone)
+                val db1 = AppDatabase.getAppDatabase(fragment.requireContext())
+                val userDao = db1.getUserDao()
+                val retailerDao = db1.getRetailerDao()
+                val cartViewModel = ViewModelProvider(fragment, GroceryAppUserVMFactory(userDao, retailerDao))[CartViewModel::class.java]
+                cartViewModel.getAddressListForUser(MainActivity.userId.toInt())
+                cartViewModel.addressEntityList.observe(fragment.viewLifecycleOwner){ addressList ->
+                    if (addressList.isEmpty()) {
+                        deliveryAddressNotFound.visibility = View.VISIBLE
+                        deliveryAddressFound.visibility = View.GONE
+                    } else {
+                        deliveryAddressFound.visibility = View.VISIBLE
+                        deliveryAddressNotFound.visibility = View.GONE
+                        if(selectedAddressEntity ==null){
+                            selectedAddressEntity = addressList[0]
+                        }
+                        addressOwnerName.text = selectedAddressEntity?.addressContactName
+                        val addressVal = "${selectedAddressEntity?.buildingName}, ${selectedAddressEntity?.streetName}, ${selectedAddressEntity?.city}, ${selectedAddressEntity?.state}\n${selectedAddressEntity?.postalCode}"
+                        address.text =addressVal
+                        addressContactNumber.text = selectedAddressEntity?.addressContactNumber
+                    }
+                }
+                addNewAddress.setOnClickListener {
+                    FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, GetNewAddress(),"Add New Address")
+                }
+
+                changeAddress.setOnClickListener {
+                    val savedAddressListFragment = SavedAddressList()
+                    savedAddressListFragment.arguments = Bundle().apply {
+                        putBoolean("clickable",true)
+                    }
+                    FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager,savedAddressListFragment,"Add New Address")
+                }
+                addMoreGrocery.setOnClickListener {
+                    FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, CategoryFragment(),"Added More Groceries")
+                }
             }
             else if(tag=="C" && position==productEntityList.size+1){
 
                 val grandTotalAmountMrp = holder.itemView.findViewById<TextView>(R.id.priceDetailsMrpPrice)
                 val totalAmtWithDeliveryFee = holder.itemView.findViewById<TextView>(R.id.priceDetailsTotalAmount)
                 val noOfItems = holder.itemView.findViewById<TextView>(R.id.priceDetailsMrpTotalItems)
+                holder.itemView.findViewById<LinearLayout>(R.id.cartPriceDetailsLayout).visibility = View.GONE
+                isVisible.observe(fragment.viewLifecycleOwner){
+                    if(it) {
+                        holder.itemView.findViewById<LinearLayout>(R.id.cartPriceDetailsLayout).visibility =
+                            View.VISIBLE
+                        holder.itemView.findViewById<ImageView>(R.id.emptyCartImage).visibility = View.GONE
+                    }
+                    else{
+                        holder.itemView.findViewById<LinearLayout>(R.id.cartPriceDetailsLayout).visibility =
+                            View.GONE
+                        holder.itemView.findViewById<ImageView>(R.id.emptyCartImage).visibility = View.VISIBLE
+                    }
+                }
+                println("0303 VISIBILITY: ${holder.itemView.findViewById<LinearLayout>(R.id.cartPriceDetailsLayout).visibility} ")
                 noOfItemLiveData.observe(fragment.viewLifecycleOwner){
                     noOfItems.text = it
                 }
@@ -268,8 +336,9 @@ class ProductListAdapter(var fragment: Fragment,
                         }
                         productEntityList.removeAt(position)
                         countList.removeAt(position)
-                        notifyItemRemoved(position)
-                        notifyItemRangeChanged(position, productEntityList.size)
+                        println("343434 POSITION: $position size: ${productEntityList.size}")
+                        notifyItemRemoved(position+1)
+                        notifyItemRangeChanged(position+1, productEntityList.size)
                         FindNumberOfCartItems.productCount.value = FindNumberOfCartItems.productCount.value!!-1
                     }
                     holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = "0"
@@ -333,39 +402,39 @@ class ProductListAdapter(var fragment: Fragment,
             }
         }
 
-            holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).setOnClickListener {
-                if((holder.absoluteAdapterPosition==position) || ((tag=="C") && (holder.absoluteAdapterPosition==position+1))) {
-                    val count = ++countList[position]
-                    productsSize++
-                    holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = count.toString()
-                    ProductListFragment.totalCost.value =
-                        ProductListFragment.totalCost.value!! + calculateDiscountPrice(productEntityList[position].price, productEntityList[position].offer)
-                    CartFragment.viewPriceDetailData.value =
-                        CartFragment.viewPriceDetailData.value!! + calculateDiscountPrice(
-                            productEntityList[position].price, productEntityList[position].offer)
-                    var cart = if(productEntityList[position].offer==-1f) {
-                        Cart(
-                            MainActivity.cartId,
-                            productEntityList[position].productId.toInt(),
-                            count,
-                            productEntityList[position].price
-                        )
-                    }
-                    else
-                    { Cart(
+        holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).setOnClickListener {
+            if((holder.absoluteAdapterPosition==position) || ((tag=="C") && (holder.absoluteAdapterPosition==position+1))) {
+                val count = ++countList[position]
+                productsSize++
+                holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = count.toString()
+                ProductListFragment.totalCost.value =
+                    ProductListFragment.totalCost.value!! + calculateDiscountPrice(productEntityList[position].price, productEntityList[position].offer)
+                CartFragment.viewPriceDetailData.value =
+                    CartFragment.viewPriceDetailData.value!! + calculateDiscountPrice(
+                        productEntityList[position].price, productEntityList[position].offer)
+                var cart = if(productEntityList[position].offer==-1f) {
+                    Cart(
                         MainActivity.cartId,
                         productEntityList[position].productId.toInt(),
-                        count,calculateDiscountPrice(
-                            productEntityList[position].price,
-                            productEntityList[position].offer)
+                        count,
+                        productEntityList[position].price
                     )
-                    }
-                    productListViewModel.updateItemsInCart(cart)
-                    FindNumberOfCartItems.productCount.value = FindNumberOfCartItems.productCount.value!!+1
-                    holder.itemView.findViewById<LinearLayout>(R.id.productAddRemoveLayout).visibility = View.VISIBLE
-                    holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).visibility = View.GONE
                 }
+                else
+                { Cart(
+                    MainActivity.cartId,
+                    productEntityList[position].productId.toInt(),
+                    count,calculateDiscountPrice(
+                        productEntityList[position].price,
+                        productEntityList[position].offer)
+                )
+                }
+                productListViewModel.updateItemsInCart(cart)
+                FindNumberOfCartItems.productCount.value = FindNumberOfCartItems.productCount.value!!+1
+                holder.itemView.findViewById<LinearLayout>(R.id.productAddRemoveLayout).visibility = View.VISIBLE
+                holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).visibility = View.GONE
             }
+        }
     }
 
     fun setProducts(newList:List<Product>){
@@ -398,9 +467,7 @@ class ProductListAdapter(var fragment: Fragment,
         grandTolAmtLiveData.value = grandTotal
         totAmtWithFeeLiveData.value = totalAmt
         noOfItemLiveData.value = noOfItems
-//        grandTolAmt = grandTotal
-//        totAmtWithFee = totalAmt
-//        noOfItem = noOfItems
-//        notifyItemChanged(productEntityList.size)
     }
+
+
 }

@@ -83,7 +83,7 @@ class CartFragment : Fragment() {
         price = view.findViewById<MaterialButton>(R.id.viewPriceDetailsButton)
 
 //        noOfItems = view.findViewById<TextView>(R.id.priceDetailsMrpTotalItems)
-        val emptyCart = view.findViewById<ImageView>(R.id.emptyCartImage)
+//        val emptyCart = view.findViewById<ImageView>(R.id.emptyCartImage)
 //        val totalAmount =view.findViewById<TextView>(R.id.priceDetailsMrpPrice)
         val continueButton = view.findViewById<MaterialButton>(R.id.continueButton)
 
@@ -135,15 +135,16 @@ class CartFragment : Fragment() {
             var mrpProductsText = ""
             if(it==49f){
                 recyclerView.scrollToPosition(0)
-                recyclerView.visibility = View.GONE
+                adapter.isVisible.value = false
+//                recyclerView.visibility = View.GONE
                 bottomLayout.visibility =View.GONE
-                emptyCart.visibility = View.VISIBLE
+//                emptyCart.visibility = View.VISIBLE
             }
             else{
-                recyclerView.visibility = View.VISIBLE
-
+//                recyclerView.visibility = View.VISIBLE
+                adapter.isVisible.value = true
                 bottomLayout.visibility =View.VISIBLE
-                emptyCart.visibility = View.GONE
+//                emptyCart.visibility = View.GONE
                 noOfItemsInt = ProductListAdapter.productsSize
                 mrpProductsText = "MRP ($noOfItemsInt) Products"
 //                noOfItems.text =
