@@ -1,5 +1,6 @@
 package com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.signup
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.setPadding
 import androidx.lifecycle.ViewModelProvider
 import com.core.data.repository.AddressRepository
@@ -33,6 +35,7 @@ import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
+import com.example.shoppinggroceryapp.helpers.alertdialog.DataLossAlertDialog
 import com.example.shoppinggroceryapp.helpers.permissionhandler.CameraPermissionHandler
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageHandler
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
@@ -68,6 +71,7 @@ class SignUpFragment : Fragment() {
     private lateinit var imageHandler: ImageHandler
     private lateinit var imageLoader: ImageLoaderAndGetter
     private var profileUri:String =""
+    private var image: Bitmap? = null
     private var isRetailer= false
     private lateinit var permissionHandler: ImagePermissionHandler
     private lateinit var inputChecker: InputChecker
@@ -100,12 +104,12 @@ class SignUpFragment : Fragment() {
         }
 
         imageHandler.gotImage.observe(viewLifecycleOwner){
-            val image = it
+            image = it
             val imageName = System.currentTimeMillis().toString()
             addProfileImage.setImageBitmap(image)
             addProfileImage.setPadding(0)
             profileUri = imageName
-            imageLoader.storeImageInApp(requireContext(),image,imageName)
+
         }
 
 
@@ -114,7 +118,12 @@ class SignUpFragment : Fragment() {
             doRegistrationProcess(it,isRetailer)
         }
 
-
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object :
+            OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                inputChecker()
+            }
+        })
         return view
     }
 
@@ -244,6 +253,9 @@ class SignUpFragment : Fragment() {
                     text ="User Added Successfully"
                 }
                 ShowShortToast.show(text,requireContext())
+                image?.let {
+                    imageLoader.storeImageInApp(requireContext(),it,profileUri)
+                }
                 parentFragmentManager.popBackStack()
             }
             1 -> {
@@ -275,5 +287,13 @@ class SignUpFragment : Fragment() {
         InitialFragment.hideBottomNav.value = false
     }
 
-
+    fun inputChecker(){
+        if(firstName.text.toString().isEmpty() && lastName.text.toString().isEmpty() && email.text.toString().isEmpty()
+            && password.text.toString().isEmpty() && confirmedPassword.text.toString().isEmpty() && phone.text.toString().isEmpty() && profileUri.isEmpty()){
+            parentFragmentManager.popBackStack()
+        }
+        else{
+            DataLossAlertDialog().showDataLossAlertDialog(requireContext(),parentFragmentManager)
+        }
+    }
 }

@@ -37,6 +37,7 @@ import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
+import com.example.shoppinggroceryapp.helpers.alertdialog.DataLossAlertDialog
 import com.example.shoppinggroceryapp.helpers.permissionhandler.CameraPermissionHandler
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageHandler
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
@@ -109,7 +110,7 @@ class EditProfileFragment : Fragment() {
             }
             view.findViewById<MaterialButton>(R.id.editPictureBtn).text = "Add Profile Picture"
             view.findViewById<MaterialButton>(R.id.deleteProfileButton).visibility = View.GONE
-            ShowShortToast.show("Profile Picture Deleted Successfully",requireContext())
+//            ShowShortToast.show("Profile Picture Deleted Successfully",requireContext())
         }
         view.findViewById<ImageView>(R.id.editPictureImg).setOnClickListener {
             imagePermissionHandler.checkPermission(false)
@@ -117,13 +118,14 @@ class EditProfileFragment : Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object :OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                if(!(MainActivity.userEmail==email.text.toString() && (MainActivity.userImage==fileName)
+                if((MainActivity.userEmail==email.text.toString() && (MainActivity.userImage==fileName)
                     && MainActivity.userPhone==phone.text.toString() && MainActivity.userFirstName == firstName.text.toString()
                     && MainActivity.userLastName==lastName.text.toString())){
-                    showAlertDialog()
+//                    showDataLossAlertDialog()
+                    parentFragmentManager.popBackStack()
                 }
                 else{
-                    parentFragmentManager.popBackStack()
+                    DataLossAlertDialog().showDataLossAlertDialog(requireContext(),parentFragmentManager)
                 }
             }
 
@@ -231,7 +233,7 @@ class EditProfileFragment : Fragment() {
     }
 
 
-    fun showAlertDialog(){
+    fun showDataLossAlertDialog(){
         AlertDialog.Builder(context)
             .setTitle("Confirm Exit")
             .setMessage("Your changes will not be saved. Do you want to exit?")

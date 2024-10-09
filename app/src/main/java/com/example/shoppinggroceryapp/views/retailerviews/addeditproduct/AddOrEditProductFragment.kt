@@ -15,6 +15,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.core.data.repository.AddressRepository
@@ -41,6 +42,7 @@ import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDa
 import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.framework.db.dataclass.IntWithCheckedData
+import com.example.shoppinggroceryapp.helpers.alertdialog.DataLossAlertDialog
 import com.example.shoppinggroceryapp.helpers.permissionhandler.CameraPermissionHandler
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageHandler
@@ -158,6 +160,12 @@ class AddOrEditProductFragment : Fragment() {
             .setTextInputFormat(SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()))
             .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
             .build()
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object :OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                DataLossAlertDialog().showDataLossAlertDialog(requireContext(),parentFragmentManager)
+            }
+        })
 
         dateManufacturePicker.addOnPositiveButtonClickListener {
             rawManufactureDate = formatter.format(it)
@@ -592,6 +600,10 @@ class AddOrEditProductFragment : Fragment() {
         super.onStop()
         InitialFragment.hideSearchBar.value = false
         InitialFragment.hideBottomNav.value = false
+    }
+
+    fun inputChecker(){
+
     }
 
 }

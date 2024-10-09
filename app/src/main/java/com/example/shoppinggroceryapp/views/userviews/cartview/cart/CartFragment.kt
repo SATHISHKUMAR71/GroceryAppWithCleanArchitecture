@@ -45,7 +45,7 @@ class CartFragment : Fragment() {
     }
 
     var noOfItemsInt = 0
-
+    var savedPosition:Int? = null
     private lateinit var recyclerView:RecyclerView
     private lateinit var bottomLayout:LinearLayout
     private lateinit var price:MaterialButton
@@ -93,6 +93,10 @@ class CartFragment : Fragment() {
             val str = "MRP ($noOfItemsInt) Products"
             price.visibility =View.VISIBLE
             adapter.noOfItemLiveData.value = str
+            savedPosition?.let {value ->
+                println("POSITION rvrv $value")
+                (recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(value)
+            }
         }
 
         viewPriceDetailData.observe(viewLifecycleOwner){
@@ -152,10 +156,16 @@ class CartFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         InitialFragment.hideSearchBar.value = false
+        savedPosition = (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
     }
 
     override fun onResume() {
         super.onResume()
         recyclerView.scrollToPosition(0)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        savedPosition = null
     }
 }

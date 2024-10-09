@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import com.core.domain.user.Address
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
+import com.example.shoppinggroceryapp.helpers.alertdialog.DataLossAlertDialog
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
@@ -73,7 +75,9 @@ class GetNewAddress : Fragment() {
             }
         }
         addressTopBar.setNavigationOnClickListener {
-            parentFragmentManager.popBackStack()
+            inputChangeChecker()
+//            DataLossAlertDialog().showDataLossAlertDialog(requireContext(),parentFragmentManager)
+//            parentFragmentManager.popBackStack()
         }
         addFocusChangeListeners()
         saveAddress.setOnClickListener {
@@ -120,6 +124,12 @@ class GetNewAddress : Fragment() {
                 ShowShortToast.show("Add all the Required Fields",requireContext())
             }
         }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object :OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                inputChangeChecker()
+//                DataLossAlertDialog().showDataLossAlertDialog(requireContext(), parentFragmentManager = parentFragmentManager)
+            }
+        })
         return view
     }
 
@@ -187,4 +197,30 @@ class GetNewAddress : Fragment() {
             }
         }
     }
+
+    fun inputChangeChecker(){
+        SavedAddressList.editAddressEntity?.let {
+            if(it.city==city.text.toString() && it.state == state.text.toString() && it.addressContactNumber==phone.text.toString()
+                && it.buildingName==houseNo.text.toString() && it.addressContactName==fullName.text.toString() && it.streetName==street.text.toString()
+                && it.postalCode == postalCode.text.toString()){
+                parentFragmentManager.popBackStack()
+                return
+            }
+            else{
+                DataLossAlertDialog().showDataLossAlertDialog(requireContext(),parentFragmentManager)
+                return
+            }
+        }
+        if(city.text.toString().isEmpty() && state.text.toString().isEmpty() && phone.text.toString().isEmpty()
+            && houseNo.text.toString().isEmpty() && fullName.text.toString().isEmpty() && street.text.toString().isEmpty()
+            && postalCode.text.toString().isEmpty()){
+            parentFragmentManager.popBackStack()
+        }
+        else{
+            DataLossAlertDialog().showDataLossAlertDialog(requireContext(),parentFragmentManager)
+            return
+        }
+
+    }
+
 }
