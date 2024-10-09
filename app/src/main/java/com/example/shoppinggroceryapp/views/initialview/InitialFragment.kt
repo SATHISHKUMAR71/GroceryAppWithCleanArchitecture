@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.FragmentManager
@@ -301,6 +302,7 @@ class InitialFragment : Fragment() {
 
 
         searchViewModel.searchedList.observe(viewLifecycleOwner){ searchList ->
+
             if(searchString.isEmpty() && searchList.isEmpty()){
                 SearchListAdapter.searchList = mutableListOf("Frozen Pizza","Cake Mixes","Chocolate Cake","Almond Milk","Frozen Veggie Burgers")
             }

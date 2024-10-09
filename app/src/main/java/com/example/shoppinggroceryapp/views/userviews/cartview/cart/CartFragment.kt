@@ -76,7 +76,6 @@ class CartFragment : Fragment() {
             GroceryAppSharedVMFactory(retailerDao, userDao)
         )[ProductListViewModel::class.java])
 //        adapter.setProducts(listOf())
-//        recyclerView.scrollToPosition(0)
         if(recyclerView.adapter == null){
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -160,13 +159,9 @@ class CartFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         InitialFragment.hideSearchBar.value = false
-        savedPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+        savedPosition = (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
     }
 
-    override fun onResume() {
-        super.onResume()
-        recyclerView.scrollToPosition(0)
-    }
 
     override fun onDestroy() {
         super.onDestroy()
