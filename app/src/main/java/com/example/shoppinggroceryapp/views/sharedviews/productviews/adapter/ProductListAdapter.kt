@@ -136,7 +136,7 @@ class ProductListAdapter(var fragment: Fragment,
 
     override fun onBindViewHolder(holder: ProductLargeImageHolder, position: Int) {
         var position = position
-        println("position  ###123 VIEW IS CREATING FOR $position ${productEntityList.size}")
+        println("position  ###123 VIEW IS CREATING FOR $position ${productEntityList.size} $tag")
         if((size==0) && (tag!="C")){
 
         }
@@ -440,17 +440,28 @@ class ProductListAdapter(var fragment: Fragment,
 
     fun setProducts(newList:List<Product>){
 
-        println("4040 is Adapter is called $newList $productEntityList")
-        productsSize = newList.size
-//        notifyDataSetChanged()
-        val diffUtil = CartItemsDiffUtil(productEntityList,newList)
-        for(i in newList.indices){
-            countList.add(i,0)
+        if(tag=="C"){
+            productsSize = newList.size
+            for(i in newList.indices){
+                countList.add(i,0)
+            }
+            productEntityList.clear()
+            productEntityList.addAll(newList)
+            notifyDataSetChanged()
         }
-        val diffResults = DiffUtil.calculateDiff(diffUtil)
-        productEntityList.clear()
-        productEntityList.addAll(newList)
-        diffResults.dispatchUpdatesTo(this)
+        else{
+            println("4040 is Adapter is called $newList $productEntityList")
+            productsSize = newList.size
+//        notifyDataSetChanged()
+            val diffUtil = CartItemsDiffUtil(productEntityList,newList)
+            for(i in newList.indices){
+                countList.add(i,0)
+            }
+            val diffResults = DiffUtil.calculateDiff(diffUtil)
+            productEntityList.clear()
+            productEntityList.addAll(newList)
+            diffResults.dispatchUpdatesTo(this)
+        }
     }
 
 

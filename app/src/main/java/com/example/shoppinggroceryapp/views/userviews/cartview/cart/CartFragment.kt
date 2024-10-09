@@ -75,14 +75,15 @@ class CartFragment : Fragment() {
         adapter = ProductListAdapter(this,fileDir,"C",false,productListViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(retailerDao, userDao)
         )[ProductListViewModel::class.java])
-        adapter.setProducts(listOf())
+//        adapter.setProducts(listOf())
+//        recyclerView.scrollToPosition(0)
         if(recyclerView.adapter == null){
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
         }
 
         price.setOnClickListener {
-            view.findViewById<AppBarLayout>(R.id.carttoolbar).setExpanded(false,false)
+//            view.findViewById<AppBarLayout>(R.id.carttoolbar).setExpanded(false,false)
             (recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(noOfItemsInt,-50)
         }
         cartViewModel.getProductsByCartId(MainActivity.cartId)
@@ -151,5 +152,10 @@ class CartFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         InitialFragment.hideSearchBar.value = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        recyclerView.scrollToPosition(0)
     }
 }
