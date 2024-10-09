@@ -259,18 +259,36 @@ class ProductListAdapter(var fragment: Fragment,
                 }
                 if (productEntityList[position].offer > 0f) {
                     val str = "MRP ₹" + productEntityList[position].price
-                    holder.itemView.findViewById<TextView>(R.id.productMrpText).text = str
-                    holder.itemView.findViewById<TextView>(R.id.productMrpText).paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                    holder.itemView.findViewById<TextView>(R.id.productMrpText).visibility = View.VISIBLE
-                    holder.itemView.findViewById<TextView>(R.id.offerText).visibility = View.VISIBLE
+                    holder.itemView.findViewById<TextView>(R.id.productMrpText).apply {
+                        text = str
+                        paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                        visibility = View.VISIBLE
+                    }
+//                    holder.itemView.findViewById<TextView>(R.id.productMrpText).text = str
+//                    holder.itemView.findViewById<TextView>(R.id.productMrpText).paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+//                    holder.itemView.findViewById<TextView>(R.id.productMrpText).visibility = View.VISIBLE
+
                     val offerText = productEntityList[position].offer.toInt().toString() + "% Off"
-                    holder.itemView.findViewById<TextView>(R.id.offerText).text = offerText
+                    holder.itemView.findViewById<TextView>(R.id.offerText).apply {
+                        visibility = View.VISIBLE
+                        text = offerText
+                    }
+//                    holder.itemView.findViewById<TextView>(R.id.offerText).visibility = View.VISIBLE
+//                    holder.itemView.findViewById<TextView>(R.id.offerText).text = offerText
                 } else {
                     val str = "MRP"
-                    holder.itemView.findViewById<TextView>(R.id.productMrpText).text = str
-                    holder.itemView.findViewById<TextView>(R.id.productMrpText).paintFlags = 0
-                    holder.itemView.findViewById<TextView>(R.id.offerText).text = null
-                    holder.itemView.findViewById<TextView>(R.id.offerText).visibility = View.GONE
+                    holder.itemView.findViewById<TextView>(R.id.productMrpText).apply {
+                        text = str
+                        paintFlags = 0
+                    }
+//                    holder.itemView.findViewById<TextView>(R.id.productMrpText).text = str
+//                    holder.itemView.findViewById<TextView>(R.id.productMrpText).paintFlags = 0
+                    holder.itemView.findViewById<TextView>(R.id.offerText).apply {
+                        text = null
+                        visibility = View.GONE
+                    }
+//                    holder.itemView.findViewById<TextView>(R.id.offerText).text = null
+//                    holder.itemView.findViewById<TextView>(R.id.offerText).visibility = View.GONE
                 }
                 holder.itemView.findViewById<TextView>(R.id.productNameLong).text = productEntityList[position].productName
                 holder.itemView.findViewById<TextView>(R.id.productExpiryDate).text =

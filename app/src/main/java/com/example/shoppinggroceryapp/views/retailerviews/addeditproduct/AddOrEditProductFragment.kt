@@ -163,7 +163,7 @@ class AddOrEditProductFragment : Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object :OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                DataLossAlertDialog().showDataLossAlertDialog(requireContext(),parentFragmentManager)
+                inputChecker()
             }
         })
 
@@ -183,7 +183,7 @@ class AddOrEditProductFragment : Fragment() {
         setUpImageHandlerObserver(container)
 
         view.findViewById<MaterialToolbar>(R.id.materialToolbarEditProductFrag).setNavigationOnClickListener {
-            parentFragmentManager.popBackStack()
+            inputChecker()
         }
         return view
     }
@@ -262,7 +262,6 @@ class AddOrEditProductFragment : Fragment() {
         view.findViewById<MaterialToolbar>(R.id.materialToolbarEditProductFrag).title = "Update Product"
         mainImageClicked = true
         addEditProductViewModel.getImagesForProduct(it.productId)
-
         productName.setText(it.productName)
         addEditProductViewModel.getParentCategoryImage(it.categoryName)
         productDescription.setText(it.productDescription)
@@ -603,7 +602,15 @@ class AddOrEditProductFragment : Fragment() {
     }
 
     fun inputChecker(){
-
+        if(imageList.isEmpty() && productName.text.toString().isEmpty() && brandName.text.toString().isEmpty()
+            && productParentCategory.text.toString().isEmpty() && productSubCat.text.toString().isEmpty() && productDescription.text.toString().isEmpty()
+            && productPrice.text.toString().isEmpty() && productQuantity.text.toString().isEmpty() && productAvailableItems.text.toString().isEmpty()
+            && productManufactureDate.text.toString().isEmpty() && productExpiryDate.text.toString().isEmpty()){
+            parentFragmentManager.popBackStack()
+        }
+        else{
+            DataLossAlertDialog().showDataLossAlertDialog(requireContext(),parentFragmentManager)
+        }
     }
 
 }
