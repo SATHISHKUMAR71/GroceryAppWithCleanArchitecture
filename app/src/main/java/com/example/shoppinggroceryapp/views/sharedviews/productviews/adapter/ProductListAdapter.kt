@@ -136,12 +136,14 @@ class ProductListAdapter(var fragment: Fragment,
 
     override fun onBindViewHolder(holder: ProductLargeImageHolder, position: Int) {
         var position = position
-        println("position  ### VIEW IS CREATING FOR $position")
+        println("position  ###123 VIEW IS CREATING FOR $position ${productEntityList.size}")
         if((size==0) && (tag!="C")){
 
         }
         else{
+            println("0101 VIEW is creating for how many items")
             if(tag == "C" && position==0){
+                println("0101 VIEW ${this.hashCode()} IS CREATING FOR ADDRESS TOP VIEW: $position product size ${productEntityList.size}")
                 val deliveryAddressNotFound = holder.itemView.findViewById<LinearLayout>(R.id.deliveryAddressLayoutNotFound)
                 val deliveryAddressFound = holder.itemView.findViewById<LinearLayout>(R.id.deliveryAddressLayout)
                 val addressOwnerName = holder.itemView.findViewById<TextView>(R.id.addressOwnerName)
@@ -187,7 +189,7 @@ class ProductListAdapter(var fragment: Fragment,
                 }
             }
             else if(tag=="C" && position==productEntityList.size+1){
-
+                println("0101 VIEW ${this.hashCode()} IS CREATING FOR BOTTOM PRICE VIEWS: $position product size ${productEntityList.size}")
                 val grandTotalAmountMrp = holder.itemView.findViewById<TextView>(R.id.priceDetailsMrpPrice)
                 val totalAmtWithDeliveryFee = holder.itemView.findViewById<TextView>(R.id.priceDetailsTotalAmount)
                 val noOfItems = holder.itemView.findViewById<TextView>(R.id.priceDetailsMrpTotalItems)
@@ -228,7 +230,7 @@ class ProductListAdapter(var fragment: Fragment,
                 } else {
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.VISIBLE
                 }
-
+                println("0101 VIEW ${this.hashCode()} IS CREATING FOR PRODUCT VIEWS: position $position product name: ${productEntityList[position].productName} product size ${productEntityList.size}")
                 productListViewModel.getSpecificCart(
                     MainActivity.cartId,
                     productEntityList[position].productId.toInt()

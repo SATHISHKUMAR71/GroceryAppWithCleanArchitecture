@@ -1,6 +1,8 @@
 package com.example.shoppinggroceryapp.views.sharedviews.profileviews
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.InputFilter
@@ -10,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.lifecycle.ViewModelProvider
@@ -99,6 +102,7 @@ class EditProfileFragment : Fragment() {
         view.findViewById<MaterialButton>(R.id.deleteProfileButton).setOnClickListener {
             deleteImage = true
             deleteImgFile = MainActivity.userImage
+            fileName = ""
             view.findViewById<ImageView>(R.id.editPictureImg).apply {
                 setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.add_photo_alternate_24px))
                 setPadding(30)
@@ -111,11 +115,25 @@ class EditProfileFragment : Fragment() {
             imagePermissionHandler.checkPermission(false)
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object :OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                if(!(MainActivity.userEmail==email.text.toString() && (MainActivity.userImage==fileName)
+                    && MainActivity.userPhone==phone.text.toString() && MainActivity.userFirstName == firstName.text.toString()
+                    && MainActivity.userLastName==lastName.text.toString())){
+                    showAlertDialog()
+                }
+                else{
+                    parentFragmentManager.popBackStack()
+                }
+            }
 
+        })
         imageHandler.gotImage.observe(viewLifecycleOwner){
             val imageTmp = System.currentTimeMillis().toString()
             fileName = imageTmp
             profileBitmap = it
+            deleteImage = false
+            println("IMAGE BITMAP CALLED: $it file Name: $fileName bitmap value: $profileBitmap")
             view.findViewById<ImageView>(R.id.editPictureImg).apply {
                 setImageBitmap(it)
                 setPadding(0)
@@ -139,6 +157,7 @@ class EditProfileFragment : Fragment() {
         lastName = view.findViewById(R.id.editLastName)
         email = view.findViewById(R.id.editEmail)
         phone = view.findViewById(R.id.editPhoneNumber)
+        fileName = MainActivity.userImage
         saveDetails = view.findViewById(R.id.saveDetailsButton)
         phoneLayout = view.findViewById(R.id.editPhoneNumberLayout)
         emailLayout = view.findViewById(R.id.editEmailLayout)
@@ -158,6 +177,7 @@ class EditProfileFragment : Fragment() {
         phone.filters = arrayOf(InputFilter.LengthFilter(15))
         saveDetails.setOnClickListener {
             profileBitmap?.let {
+                println("IMAGE BITMAP CALLED: on save $it file Name: $fileName bitmap value: $profileBitmap")
                 imageLoaderAndGetter.storeImageInApp(requireContext(),it,fileName)
                 MainActivity.userImage = fileName
             }
@@ -208,5 +228,20 @@ class EditProfileFragment : Fragment() {
         super.onStop()
         InitialFragment.hideSearchBar.value = false
         InitialFragment.hideBottomNav.value = false
+    }
+
+
+    fun showAlertDialog(){
+        AlertDialog.Builder(context)
+            .setTitle("Confirm Exit")
+            .setMessage("Your changes will not be saved. Do you want to exit?")
+            .setPositiveButton("Yes",DialogInterface.OnClickListener { dialog, which ->
+                dialog.dismiss()
+                parentFragmentManager.popBackStack()
+            })
+            .setNegativeButton("No",DialogInterface.OnClickListener { dialog, which ->
+                dialog.dismiss()
+            })
+            .show()
     }
 }

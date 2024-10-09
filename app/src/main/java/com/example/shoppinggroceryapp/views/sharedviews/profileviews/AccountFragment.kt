@@ -120,9 +120,7 @@ class AccountFragment : Fragment() {
             profileView.setImageBitmap(imageLoader.getImageInApp(requireContext(),MainActivity.userImage))
             profileView.setPadding(0)
         }
-        profileView.setOnClickListener {
-            imagePermissionHandler.checkPermission(false)
-        }
+
         recentlyPurchasedItems = view.findViewById(R.id.recentlyPurchasedItemsList)
         editUser.getPurchasedProducts(MainActivity.userId.toInt())
         val adapter = ProductListAdapter(this,
