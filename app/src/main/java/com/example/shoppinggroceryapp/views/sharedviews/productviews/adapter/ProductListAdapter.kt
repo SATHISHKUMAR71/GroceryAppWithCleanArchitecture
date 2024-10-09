@@ -76,8 +76,9 @@ class ProductListAdapter(var fragment: Fragment,
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductLargeImageHolder {
-        if(viewType!=-1) {
+        if(viewType!=-1 && viewType!=-2) {
             if (isShort) {
+
                 return ProductLargeImageHolder(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.product_layout_short, parent, false)
@@ -89,14 +90,22 @@ class ProductListAdapter(var fragment: Fragment,
                 )
             }
         }
+        else if(viewType==-2){
+            return ProductLargeImageHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.cart_address_view, parent, false))
+        }
         else{
             return ProductLargeImageHolder(LayoutInflater.from(parent.context).inflate(R.layout.cart_price_detail_view,parent,false))
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(tag=="C" && position==productEntityList.size){
+        return if(tag=="C" && position==productEntityList.size+1){
             -1
+        }
+        else if(tag=="C" && position==0){
+            -2
         }
         else {
             super.getItemViewType(position)
@@ -106,7 +115,7 @@ class ProductListAdapter(var fragment: Fragment,
     override fun getItemCount(): Int {
         size = productEntityList.size
         return if(tag=="C"){
-            size+1
+            size+2
         }
         else {
             size
@@ -114,11 +123,17 @@ class ProductListAdapter(var fragment: Fragment,
     }
 
     override fun onBindViewHolder(holder: ProductLargeImageHolder, position: Int) {
+        var position = position
+        println("position  ### VIEW IS CREATING FOR $position")
         if(size==0){
 
         }
         else{
-            if(tag=="C" && position==productEntityList.size){
+            if(tag == "C" && position==0){
+                println("ON POSITION ZERO $position")
+            }
+            else if(tag=="C" && position==productEntityList.size+1){
+
                 val grandTotalAmountMrp = holder.itemView.findViewById<TextView>(R.id.priceDetailsMrpPrice)
                 val totalAmtWithDeliveryFee = holder.itemView.findViewById<TextView>(R.id.priceDetailsTotalAmount)
                 val noOfItems = holder.itemView.findViewById<TextView>(R.id.priceDetailsMrpTotalItems)
@@ -136,6 +151,11 @@ class ProductListAdapter(var fragment: Fragment,
 //                grandTotalAmountMrp.text = grandTolAmt
             }
             else {
+                if(tag=="C"){
+                    println("position  ### before $position")
+                    position-=1
+                    println("position  ### after $position")
+                }
                 println("9898 VIEW IS RECREATING: $size $position ${productEntityList[position].productName}")
                 if (MainActivity.isRetailer) {
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
@@ -195,7 +215,7 @@ class ProductListAdapter(var fragment: Fragment,
                 holder.itemView.findViewById<TextView>(R.id.productPriceLong).text = price
                 val url = (productEntityList[position].mainImage)
                 SetProductImage.setImageView(holder.itemView.findViewById(R.id.productImageLong), url, file)
-                setUpListeners(holder, holder.absoluteAdapterPosition)
+                setUpListeners(holder, position)
             }
         }
     }
@@ -203,9 +223,9 @@ class ProductListAdapter(var fragment: Fragment,
     private fun setUpListeners(holder: ProductLargeImageHolder, position: Int) {
         holder.itemView.setOnClickListener {
             try {
-                ProductListFragment.selectedPos = holder.absoluteAdapterPosition
+                ProductListFragment.selectedPos = position
                 ProductListFragment.selectedProductEntity.value =
-                    productEntityList[holder.absoluteAdapterPosition]
+                    productEntityList[position]
                 fragment.parentFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.anim.fade_in,
@@ -223,7 +243,7 @@ class ProductListAdapter(var fragment: Fragment,
         }
 
         holder.itemView.findViewById<ImageButton>(R.id.productRemoveSymbolButton).setOnClickListener {
-            if(holder.absoluteAdapterPosition==position) {
+            if((holder.absoluteAdapterPosition==position) || ((tag=="C") && (holder.absoluteAdapterPosition==position+1))) {
                 val count = --countList[position]
                 val positionVal = calculateDiscountPrice(productEntityList[position].price, productEntityList[position].offer)
                 if (count == 0) {
@@ -285,7 +305,7 @@ class ProductListAdapter(var fragment: Fragment,
         }
 
         holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).setOnClickListener {
-            if (holder.absoluteAdapterPosition == position) {
+            if((holder.absoluteAdapterPosition==position) || ((tag=="C") && (holder.absoluteAdapterPosition==position+1))) {
                 val count = ++countList[position]
                 ProductListFragment.totalCost.value =
                     ProductListFragment.totalCost.value!! + calculateDiscountPrice(productEntityList[position].price, productEntityList[position].offer)
@@ -314,7 +334,7 @@ class ProductListAdapter(var fragment: Fragment,
         }
 
             holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).setOnClickListener {
-                if (holder.absoluteAdapterPosition == position) {
+                if((holder.absoluteAdapterPosition==position) || ((tag=="C") && (holder.absoluteAdapterPosition==position+1))) {
                     val count = ++countList[position]
                     productsSize++
                     holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = count.toString()
@@ -349,6 +369,7 @@ class ProductListAdapter(var fragment: Fragment,
     }
 
     fun setProducts(newList:List<Product>){
+
         println("4040 is Adapter is called $newList $productEntityList")
         productsSize = newList.size
 //        notifyDataSetChanged()

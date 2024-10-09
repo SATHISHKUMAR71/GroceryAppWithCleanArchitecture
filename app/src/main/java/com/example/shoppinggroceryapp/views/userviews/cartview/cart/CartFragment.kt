@@ -57,7 +57,7 @@ class CartFragment : Fragment() {
     private lateinit var price:MaterialButton
     private lateinit var adapter: ProductListAdapter
     private lateinit var cartViewModel: CartViewModel
-    private lateinit var addMoreGrocery:MaterialButton
+//    private lateinit var addMoreGrocery:MaterialButton
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -68,14 +68,17 @@ class CartFragment : Fragment() {
         recyclerView = view.findViewById<RecyclerView>(R.id.cartList)
         var fileDir = File(requireContext().filesDir,"AppImages")
         val db = AppDatabase.getAppDatabase(requireContext()).getUserDao()
-        val deliveryAddressNotFound = view.findViewById<LinearLayout>(R.id.deliveryAddressLayoutNotFound)
-        val deliveryAddressFound = view.findViewById<LinearLayout>(R.id.deliveryAddressLayout)
-        val addressOwnerName = view.findViewById<TextView>(R.id.addressOwnerName)
-        val address = view.findViewById<TextView>(R.id.address)
-        val addNewAddress = view.findViewById<MaterialButton>(R.id.addNewAddressButton)
-        val changeAddress = view.findViewById<MaterialButton>(R.id.changeAddressButton)
-        addMoreGrocery = view.findViewById<MaterialButton>(R.id.addMoreGroceryButton)
-        val addressContactNumber = view.findViewById<TextView>(R.id.addressPhone)
+
+
+//        ADDRESSS LAYOUT
+//        val deliveryAddressNotFound = view.findViewById<LinearLayout>(R.id.deliveryAddressLayoutNotFound)
+//        val deliveryAddressFound = view.findViewById<LinearLayout>(R.id.deliveryAddressLayout)
+//        val addressOwnerName = view.findViewById<TextView>(R.id.addressOwnerName)
+//        val address = view.findViewById<TextView>(R.id.address)
+//        val addNewAddress = view.findViewById<MaterialButton>(R.id.addNewAddressButton)
+//        val changeAddress = view.findViewById<MaterialButton>(R.id.changeAddressButton)
+//        addMoreGrocery = view.findViewById<MaterialButton>(R.id.addMoreGroceryButton)
+//        val addressContactNumber = view.findViewById<TextView>(R.id.addressPhone)
         bottomLayout = view.findViewById<LinearLayout>(R.id.linearLayout11)
         price = view.findViewById<MaterialButton>(R.id.viewPriceDetailsButton)
 
@@ -90,27 +93,30 @@ class CartFragment : Fragment() {
 
         cartViewModel = ViewModelProvider(this, GroceryAppUserVMFactory(userDao, retailerDao))[CartViewModel::class.java]
 
-        addMoreGrocery.setOnClickListener {
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Added More Groceries")
-        }
+//    ADDRESS LAYOUT
+//        addMoreGrocery.setOnClickListener {
+//            FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Added More Groceries")
+//        }
 
         adapter = ProductListAdapter(this,fileDir,"C",false,productListViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(retailerDao, userDao)
         )[ProductListViewModel::class.java])
         adapter.setProducts(listOf())
+    if(recyclerView.adapter == null){
         recyclerView.adapter = adapter
 //        recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 //        (recyclerView.layoutManager as LinearLayoutManager).isAutoMeasureEnabled = true
 //        recyclerView.isNestedScrollingEnabled = false
 
+        }
 
         (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
         (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
         price.setOnClickListener {
             view.findViewById<AppBarLayout>(R.id.carttoolbar).setExpanded(false,false)
-//            (recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(noOfItemsInt,-50)
-            (recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(noOfItemsInt)
+            (recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(noOfItemsInt,-50)
+//            (recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(noOfItemsInt)
 //            priceDetails.requestFocus()
 //            println("NO OF ITEMS: $noOfItemsInt")
 //            (recyclerView.layoutManager as LinearLayoutManager).smoothScrollToPosition(recyclerView,RecyclerView.State(),noOfItemsInt-1)
@@ -156,22 +162,24 @@ class CartFragment : Fragment() {
             viewPriceDetailData.value = it
         }
         cartViewModel.getAddressListForUser(MainActivity.userId.toInt())
-        cartViewModel.addressEntityList.observe(viewLifecycleOwner){ addressList ->
-            if (addressList.isEmpty()) {
-                deliveryAddressNotFound.visibility = View.VISIBLE
-                deliveryAddressFound.visibility = View.GONE
-            } else {
-                deliveryAddressFound.visibility = View.VISIBLE
-                deliveryAddressNotFound.visibility = View.GONE
-                if(selectedAddressEntity ==null){
-                    selectedAddressEntity = addressList[0]
-                }
-                addressOwnerName.text = selectedAddressEntity?.addressContactName
-                val addressVal = "${selectedAddressEntity?.buildingName}, ${selectedAddressEntity?.streetName}, ${selectedAddressEntity?.city}, ${selectedAddressEntity?.state}\n${selectedAddressEntity?.postalCode}"
-                address.text =addressVal
-                addressContactNumber.text = selectedAddressEntity?.addressContactNumber
-            }
-        }
+
+//        ADDRESS LAYOUT
+//        cartViewModel.addressEntityList.observe(viewLifecycleOwner){ addressList ->
+//            if (addressList.isEmpty()) {
+//                deliveryAddressNotFound.visibility = View.VISIBLE
+//                deliveryAddressFound.visibility = View.GONE
+//            } else {
+//                deliveryAddressFound.visibility = View.VISIBLE
+//                deliveryAddressNotFound.visibility = View.GONE
+//                if(selectedAddressEntity ==null){
+//                    selectedAddressEntity = addressList[0]
+//                }
+//                addressOwnerName.text = selectedAddressEntity?.addressContactName
+//                val addressVal = "${selectedAddressEntity?.buildingName}, ${selectedAddressEntity?.streetName}, ${selectedAddressEntity?.city}, ${selectedAddressEntity?.state}\n${selectedAddressEntity?.postalCode}"
+//                address.text =addressVal
+//                addressContactNumber.text = selectedAddressEntity?.addressContactNumber
+//            }
+//        }
         continueButton.setOnClickListener {
             if(selectedAddressEntity ==null){
                 ShowShortSnackBar.showRedColor(view,"Please Add the Delivery Address to order Items")
@@ -186,17 +194,18 @@ class CartFragment : Fragment() {
         }
 
 
-        addNewAddress.setOnClickListener {
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager, GetNewAddress(),"Add New Address")
-        }
-
-        changeAddress.setOnClickListener {
-            val savedAddressListFragment = SavedAddressList()
-            savedAddressListFragment.arguments = Bundle().apply {
-                putBoolean("clickable",true)
-            }
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager,savedAddressListFragment,"Add New Address")
-        }
+//        ADDRESS LAYOUT
+//        addNewAddress.setOnClickListener {
+//            FragmentTransaction.navigateWithBackstack(parentFragmentManager, GetNewAddress(),"Add New Address")
+//        }
+//
+//        changeAddress.setOnClickListener {
+//            val savedAddressListFragment = SavedAddressList()
+//            savedAddressListFragment.arguments = Bundle().apply {
+//                putBoolean("clickable",true)
+//            }
+//            FragmentTransaction.navigateWithBackstack(parentFragmentManager,savedAddressListFragment,"Add New Address")
+//        }
 
         return view
     }
