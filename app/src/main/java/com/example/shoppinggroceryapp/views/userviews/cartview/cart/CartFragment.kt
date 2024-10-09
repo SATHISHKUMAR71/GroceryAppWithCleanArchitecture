@@ -156,7 +156,7 @@ class CartFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         InitialFragment.hideSearchBar.value = false
-        savedPosition = (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+        savedPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
     }
 
     override fun onResume() {
