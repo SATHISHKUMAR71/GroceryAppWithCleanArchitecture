@@ -102,4 +102,9 @@ class SavedAddressList : Fragment() {
         InitialFragment.hideSearchBar.value = false
         InitialFragment.hideBottomNav.value = false
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        AddressAdapter.clickable = false
+    }
 }

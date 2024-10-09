@@ -337,9 +337,13 @@ class ProductListAdapter(var fragment: Fragment,
                         productEntityList.removeAt(position)
                         countList.removeAt(position)
                         println("343434 POSITION: $position size: ${productEntityList.size}")
-//                        notifyDataSetChanged()
                         notifyItemRemoved(position+1)
-                        notifyItemRangeChanged(position+1, productEntityList.size+1)
+                        if(productEntityList.size==0){
+                            notifyDataSetChanged()
+                        }
+                        else {
+                            notifyItemRangeChanged(position + 1, productEntityList.size + 1)
+                        }
                         FindNumberOfCartItems.productCount.value = FindNumberOfCartItems.productCount.value!!-1
                     }
                     holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = "0"
@@ -452,7 +456,6 @@ class ProductListAdapter(var fragment: Fragment,
         else{
             println("4040 is Adapter is called $newList $productEntityList")
             productsSize = newList.size
-//        notifyDataSetChanged()
             val diffUtil = CartItemsDiffUtil(productEntityList,newList)
             for(i in newList.indices){
                 countList.add(i,0)

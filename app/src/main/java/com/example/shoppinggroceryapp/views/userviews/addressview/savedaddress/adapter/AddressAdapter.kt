@@ -52,7 +52,6 @@ class AddressAdapter(var addressEntityList: List<Address>, var fragment: Fragmen
         if(clickable){
             holder.itemView.setOnClickListener {
                 CartFragment.selectedAddressEntity = addressEntityList[position]
-
                 clickable =false
                 fragment.parentFragmentManager.popBackStack()
             }
