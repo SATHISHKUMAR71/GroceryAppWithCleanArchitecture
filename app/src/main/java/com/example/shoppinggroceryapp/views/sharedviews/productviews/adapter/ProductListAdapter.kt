@@ -214,9 +214,7 @@ class ProductListAdapter(var fragment: Fragment,
                 grandTolAmtLiveData.observe(fragment.viewLifecycleOwner){
                     grandTotalAmountMrp.text = it
                 }
-//                noOfItems.text = noOfItem
-//                totalAmtWithDeliveryFee.text = totAmtWithFee
-//                grandTotalAmountMrp.text = grandTolAmt
+
             }
             else {
                 if(tag=="C"){
@@ -337,8 +335,9 @@ class ProductListAdapter(var fragment: Fragment,
                         productEntityList.removeAt(position)
                         countList.removeAt(position)
                         println("343434 POSITION: $position size: ${productEntityList.size}")
+//                        notifyDataSetChanged()
                         notifyItemRemoved(position+1)
-                        notifyItemRangeChanged(position+1, productEntityList.size)
+                        notifyItemRangeChanged(position+1, productEntityList.size+1)
                         FindNumberOfCartItems.productCount.value = FindNumberOfCartItems.productCount.value!!-1
                     }
                     holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = "0"
