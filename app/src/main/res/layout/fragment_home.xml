@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".views.userviews.home.HomeFragment">
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:id="@+id/nestedScrollViewHomeFrag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,9 +63,10 @@
                     android:textStyle="bold"/>
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="0dp"
                     android:id="@+id/recentlyViewedItemsHomeFrag"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
@@ -59,10 +60,11 @@ class HomeFragment : Fragment() {
         R.drawable.energy_drinks,R.drawable.tea_coffee,R.drawable.wheat_flour)
 
     var essentialSize = essentialItems.size -1
-    private lateinit var homeFragNestedScroll:NestedScrollView
+    private lateinit var homeFragNestedScroll: ScrollView
     private lateinit var recentItems:RecyclerView
     var recentlyViewedList = mutableListOf<ProductEntity>()
     private lateinit var homeViewModel : HomeViewModel
+    var lastSelectedPosition =0
     companion object{
         var position = 0
     }
@@ -109,10 +111,13 @@ class HomeFragment : Fragment() {
         )[ProductListViewModel::class.java])
 
         homeViewModel.getRecentlyViewedItems()
-        recentItems.adapter = null
-        adapter.setProducts(mutableListOf())
-        recentItems.adapter = adapter
-        recentItems.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+
+//        adapter.setProducts(mutableListOf())
+        if(recentItems.adapter==null) {
+            recentItems.adapter = adapter
+            recentItems.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
 
         homeViewModel.recentlyViewedList.observe(viewLifecycleOwner){
             if((it!=null) &&( it.isNotEmpty())){
@@ -120,7 +125,7 @@ class HomeFragment : Fragment() {
                 adapter.setProducts(it)
             }
             else{
-                adapter.setProducts(listOf())
+//                adapter.setProducts(listOf())
                 view.findViewById<TextView>(R.id.recentlyViewedItemsText).visibility = View.GONE
             }
         }
@@ -135,6 +140,8 @@ class HomeFragment : Fragment() {
             addViewToLayout(categoryContainer,i)
             i+=3
         }
+        println("SCROLL POSITION: $lastSelectedPosition")
+
         return view
     }
 
@@ -195,10 +202,21 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        lastSelectedPosition = homeFragNestedScroll.scrollY
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+//        homeFragNestedScroll.scrollTo(100,lastSelectedPosition)
+    }
+
     override fun onStop() {
         super.onStop()
         recentItems.stopScroll()
-        homeViewModel.recentlyViewedList.value = null
+//        homeViewModel.recentlyViewedList.value = null
         homeViewModel.recentlyViewedList.removeObservers(viewLifecycleOwner)
     }
 
