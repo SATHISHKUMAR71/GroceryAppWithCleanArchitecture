@@ -85,6 +85,22 @@ class Help : Fragment() {
             val screen = "Delivered On: ${DateGenerator.getDayAndMonth(selectedOrder!!.deliveryDate)}"
             selectedOrderView.findViewById<TextView>(R.id.deliveryDate).text = screen
         }
+        if(selectedOrder?.deliveryFrequency!="Once"){
+            when(selectedOrder?.deliveryFrequency){
+                "Weekly Once" -> {
+                    selectedOrderView.findViewById<TextView>(R.id.deliveryDate).text =
+                        "Orders will be delivered on a weekly basis"
+                }
+                "Monthly Once" -> {
+                    selectedOrderView.findViewById<TextView>(R.id.deliveryDate).text =
+                        "Orders will be delivered on a monthly basis"
+                }
+                "Daily" -> {
+                    selectedOrderView.findViewById<TextView>(R.id.deliveryDate).text =
+                        "Orders will be delivered on a daily basis"
+                }
+            }
+        }
         val orderDate = "Ordered On: ${DateGenerator.getDayAndMonth(selectedOrder!!.orderedDate)}"
         selectedOrderView.findViewById<TextView>(R.id.orderedDate).text = orderDate
     }
