@@ -116,7 +116,7 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
                     orderListViewModel.getDailySubscriptionDateWithTime(orderedItems[position].orderId){
                         var data = ""
                         for(i in it){
-                            data = orderListViewModel.getDailyPreparedData(i.key,i.value)
+                            data = orderListViewModel.getDailyPreparedData(i.key,i.value,orderedItems[position].orderedDate)
                         }
                         MainActivity.handler.post{
                             holder.deliveryDate.text = data

@@ -114,7 +114,7 @@ class OrderDetailFragment : Fragment() {
         view.findViewById<TextView>(R.id.orderIdValue).text = OrderListFragment.selectedOrder?.orderId.toString()
         view.findViewById<TextView>(R.id.productDeliveredStatus).text = OrderListFragment.selectedOrder?.deliveryStatus
         deliveryFrequency.text = OrderListFragment.selectedOrder?.deliveryFrequency
-
+        println("98981 ${OrderListFragment.selectedOrder?.deliveryDate}")
 
         if(OrderListFragment.selectedOrder?.deliveryFrequency!="Once"){
             deleteSubscription.text = "Stop Subscription"
@@ -161,8 +161,8 @@ class OrderDetailFragment : Fragment() {
             when(it){
                 0 -> {
                     text = TimeSlots.EARLY_MORNING.timeDetails
-                    if(currentTime in 6..8) {
-                        if (OrderListFragment.selectedOrder?.deliveryFrequency == "Daily") {
+                    if((currentTime in 6..8)) {
+                        if (OrderListFragment.selectedOrder?.deliveryFrequency == "Daily" && OrderListFragment.selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
                             nextDeliveryDate.text = groceriesArrivingToday
                         }
                     }
@@ -170,15 +170,17 @@ class OrderDetailFragment : Fragment() {
                 1 -> {
                     text = TimeSlots.MID_MORNING.timeDetails
                     if(currentTime in 8..14) {
-                        if (OrderListFragment.selectedOrder?.deliveryFrequency == "Daily") {
+                        println("78781 on timezoe if")
+                        if (OrderListFragment.selectedOrder?.deliveryFrequency == "Daily" && OrderListFragment.selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
                             nextDeliveryDate.text = groceriesArrivingToday
+                            println("78781 on timezoe if nested if")
                         }
                     }
                 }
                 2 -> {
                     text = TimeSlots.AFTERNOON.timeDetails
                     if(currentTime in 14..18) {
-                        if (OrderListFragment.selectedOrder?.deliveryFrequency == "Daily") {
+                        if (OrderListFragment.selectedOrder?.deliveryFrequency == "Daily"&& OrderListFragment.selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
                             nextDeliveryDate.text = groceriesArrivingToday
                         }
                     }
@@ -186,7 +188,7 @@ class OrderDetailFragment : Fragment() {
                 3 -> {
                     text = TimeSlots.EVENING.timeDetails
                     if(currentTime in 18..20) {
-                        if (OrderListFragment.selectedOrder?.deliveryFrequency == "Daily") {
+                        if (OrderListFragment.selectedOrder?.deliveryFrequency == "Daily"&& OrderListFragment.selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
                             nextDeliveryDate.text = groceriesArrivingToday
                         }
                     }
@@ -198,6 +200,13 @@ class OrderDetailFragment : Fragment() {
         }
         isTimeSlotAvailable.observe(viewLifecycleOwner) { timeSlot ->
             orderDetailViewModel.date.observe(viewLifecycleOwner) {
+                if(OrderListFragment.selectedOrder?.deliveryDate?.let { it1 ->
+                        DateGenerator.compareDeliveryStatus(DateGenerator.getCurrentDate(),
+                            it1
+                        )
+                    } =="Pending"){
+
+                }
                 val currentTime = DateGenerator.getCurrentTime()
                 var text = "Next Delivery on "
                 if (OrderListFragment.selectedOrder?.deliveryFrequency == "Weekly Once") {

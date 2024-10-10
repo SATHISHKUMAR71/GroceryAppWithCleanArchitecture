@@ -241,31 +241,31 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getDailyPreparedData(dailySubscription: DailySubscription, timeSlot: TimeSlot):String{
-        return checkTimeSlot(timeSlot)
+    fun getDailyPreparedData(dailySubscription: DailySubscription, timeSlot: TimeSlot,deliveryDate:String):String{
+        return checkTimeSlot(timeSlot,deliveryDate)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun checkTimeSlot(timeSlot: TimeSlot):String {
+    private fun checkTimeSlot(timeSlot: TimeSlot, deliveryDate: String):String {
         var currentTime = DateGenerator.getCurrentTime()
         when(timeSlot.timeId){
             0 -> {
-                if(currentTime in 6..8){
+                if(currentTime in 6..8 && deliveryDate!=DateGenerator.getCurrentDate()) {
                     return "Next Delivery Today"
                 }
             }
             1 -> {
-                if(currentTime in 8..14){
+                if(currentTime in 8..14&& deliveryDate!=DateGenerator.getCurrentDate()) {
                     return "Next Delivery Today"
                 }
             }
             2 -> {
-                if(currentTime in 14..18){
+                if(currentTime in 14..18&& deliveryDate!=DateGenerator.getCurrentDate()) {
                     return "Next Delivery Today"
                 }
             }
             3 -> {
-                if(currentTime in 18..20){
+                if(currentTime in 18..20&& deliveryDate!=DateGenerator.getCurrentDate()) {
                     return "Next Delivery Today"
                 }
             }
