@@ -268,6 +268,12 @@ class OrderDetailFragment : Fragment() {
         else{
             changeSubscription.visibility = View.GONE
         }
+        if(OrderListFragment.selectedOrder?.deliveryStatus=="Cancelled"){
+            view.findViewById<LinearLayout>(R.id.deliveryStatus).visibility = View.VISIBLE
+        }
+        else{
+            view.findViewById<LinearLayout>(R.id.deliveryStatus).visibility = View.GONE
+        }
         return view
     }
 

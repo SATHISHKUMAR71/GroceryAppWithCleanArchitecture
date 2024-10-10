@@ -191,6 +191,9 @@ class OrderSummaryFragment : Fragment() {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun afterTextChanged(s: Editable?) {
                 noteForUserLayout.visibility = View.VISIBLE
+                tmpAddress?.let {
+                    noteForUserLayout.visibility = View.GONE
+                }
                 timeSlotLayout.visibility = View.VISIBLE
                 weeklyOnce = false
                 once = false
