@@ -41,7 +41,7 @@ class SearchListAdapter(var fragment: Fragment) : RecyclerView.Adapter<SearchLis
             holder.itemView.findViewById<ImageView>(R.id.imageIconForSearch).setImageDrawable(ContextCompat.getDrawable(fragment.requireContext(),R.drawable.search_24px))
 //            holder.itemView.findViewById<ImageView>(R.id.imageIconForSearch).visibility = View.VISIBLE
         }
-        if(searchList[position]=="No Data Found"){
+        if(searchList[position]=="No Products Found"){
             holder.itemView.findViewById<ImageView>(R.id.imageIconForSearch).visibility =View.GONE
         }
         else {

@@ -15,6 +15,7 @@ import android.widget.RadioGroup
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -45,6 +46,7 @@ import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
+import com.example.shoppinggroceryapp.helpers.alertdialog.DataLossAlertDialog
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.helpers.snackbar.ShowShortSnackBar
@@ -76,6 +78,7 @@ class OrderSummaryFragment : Fragment() {
     private lateinit var orderSummaryViewModel:OrderSummaryViewModel
     private lateinit var continueToPayment:MaterialButton
     var tmpOrderId:Int? = null
+    var isEditing = false
     private lateinit var viewProductDetails:MaterialButton
     private lateinit var deliveryFrequency:MaterialAutoCompleteTextView
     private lateinit var radioGroupTimeSlot:RadioGroup
@@ -130,13 +133,15 @@ class OrderSummaryFragment : Fragment() {
                 orderSummaryViewModel.getProductsWithCartId(cartId = it)
             }
         }
-//        val expectedDeliveryDate = "Expected Delivery Date: ${DateGenerator.getDayAndMonth(DateGenerator.getDeliveryDate())}"
+
         deliveryDate.text = orderSummaryViewModel.getExpectedDeliveryDate("once","1")
 
         tmpAddress?.let {
             if(it!=0) {
                 view.findViewById<LinearLayout>(R.id.deliveryAddressLayoutOrderSummary).visibility =
                     View.GONE
+
+                isEditing = true
                 continueToPayment.text = "Update Order"
                 deliveryDate.visibility = View.GONE
                 view.findViewById<LinearLayout>(R.id.priceDetailsOrderSummary).visibility =
@@ -191,9 +196,6 @@ class OrderSummaryFragment : Fragment() {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun afterTextChanged(s: Editable?) {
                 noteForUserLayout.visibility = View.VISIBLE
-                tmpAddress?.let {
-                    noteForUserLayout.visibility = View.GONE
-                }
                 timeSlotLayout.visibility = View.VISIBLE
                 weeklyOnce = false
                 once = false
@@ -245,9 +247,19 @@ class OrderSummaryFragment : Fragment() {
                     }
                 }
                 noteForUser.text = noteForUserText
+                if(isEditing){
+                    noteForUser.text = "The delivery set for today will stay the same; changes will start from the next day."
+                }
             }
         })
 
+        if(isEditing){
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object :OnBackPressedCallback(true){
+                override fun handleOnBackPressed() {
+                    DataLossAlertDialog().showDataLossAlertDialog(requireContext(),parentFragmentManager)
+                }
+            })
+        }
 
 
         orderSummaryToolBar.setNavigationOnClickListener {
