@@ -322,8 +322,9 @@ class InitialFragment : Fragment() {
                 SearchListAdapter.searchList = mutableListOf("Frozen Pizza","Cake Mixes","Chocolate Cake","Almond Milk","Frozen Veggie Burgers")
             }
             else if(searchList.isEmpty() && searchString.isNotEmpty()){
-                SearchListAdapter.searchList = searchList.toMutableList()
-                Toast.makeText(context,"No Results Found",Toast.LENGTH_SHORT).show()
+                SearchListAdapter.searchList = mutableListOf("No Data Found")
+//                SearchListAdapter.searchList = searchList.toMutableList()
+//                Toast.makeText(context,"No Results Found",Toast.LENGTH_SHORT).show()
             }
             else {
                 SearchListAdapter.searchList = searchList.toMutableList()

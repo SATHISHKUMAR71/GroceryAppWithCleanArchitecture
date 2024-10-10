@@ -41,17 +41,23 @@ class SearchListAdapter(var fragment: Fragment) : RecyclerView.Adapter<SearchLis
             holder.itemView.findViewById<ImageView>(R.id.imageIconForSearch).setImageDrawable(ContextCompat.getDrawable(fragment.requireContext(),R.drawable.search_24px))
 //            holder.itemView.findViewById<ImageView>(R.id.imageIconForSearch).visibility = View.VISIBLE
         }
-        holder.itemView.setOnClickListener {
-            InitialFragment.closeSearchView.value = true
-            InitialFragment.searchQueryList.add(0, searchList[position])
-            InitialFragment.searchHint.value = searchList[position]
-            InitialFragment.searchedQuery.value = searchList[position]
-            val productListFragment = ProductListFragment()
-            productListFragment.arguments = Bundle().apply {
-                putBoolean("searchViewOpened",true)
-                putString("category", searchList[position])
+        if(searchList[position]=="No Data Found"){
+            holder.itemView.findViewById<ImageView>(R.id.imageIconForSearch).visibility =View.GONE
+        }
+        else {
+            holder.itemView.findViewById<ImageView>(R.id.imageIconForSearch).visibility =View.VISIBLE
+            holder.itemView.setOnClickListener {
+                InitialFragment.closeSearchView.value = true
+                InitialFragment.searchQueryList.add(0, searchList[position])
+                InitialFragment.searchHint.value = searchList[position]
+                InitialFragment.searchedQuery.value = searchList[position]
+                val productListFragment = ProductListFragment()
+                productListFragment.arguments = Bundle().apply {
+                    putBoolean("searchViewOpened", true)
+                    putString("category", searchList[position])
+                }
+                InitialFragment.category = searchList[position]
             }
-            InitialFragment.category = searchList[position]
         }
     }
 
