@@ -8,6 +8,7 @@ import com.core.usecases.searchusecase.GetSearchList
 import com.core.usecases.searchusecase.PerformCategorySearch
 import com.core.usecases.searchusecase.PerformProductSearch
 import com.example.shoppinggroceryapp.MainActivity
+import com.example.shoppinggroceryapp.views.sharedviews.search.adapter.SearchListAdapter
 
 class SearchViewModel(var mGetSearchList: GetSearchList, var mPerformProductSearch: PerformProductSearch, var mPerformCategorySearch: PerformCategorySearch, var mAddSearchQueryInDb: AddSearchQueryInDb):ViewModel() {
 
@@ -23,6 +24,7 @@ class SearchViewModel(var mGetSearchList: GetSearchList, var mPerformProductSear
 
     private fun performSearchProduct(query:String):MutableList<String>{
         val list = (mPerformCategorySearch(query)?: mutableListOf<String>()).toMutableList()
+        SearchListAdapter.hideIcon = false
         return list
     }
 
@@ -38,11 +40,18 @@ class SearchViewModel(var mGetSearchList: GetSearchList, var mPerformProductSear
             val list = mutableListOf<String>()
             var i = 0
             for(j in (mGetSearchList(MainActivity.userId.toInt())?: listOf()).reversed()){
+                println("SearchHistory: ${j.searchText} user id ${j.userId} main user id ${MainActivity.userId.toInt()}")
                 list.add(j.searchText)
                 i++
                 if(i==10){
                     break
                 }
+            }
+            if(list.isNotEmpty()){
+                SearchListAdapter.hideIcon = true
+            }
+            else{
+                SearchListAdapter.hideIcon = false
             }
             searchedList.postValue(list)
         }.start()

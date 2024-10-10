@@ -99,7 +99,7 @@ class OrderDetailFragment : Fragment() {
             OrderListFragment.selectedOrder?.orderedDate?: DateGenerator.getCurrentDate())
         val deliveryDate = OrderListFragment.selectedOrder?.deliveryDate
         val deliveryText = view.findViewById<TextView>(R.id.productDeliveredDate)
-        deleteSubscription = view.findViewById<MaterialButton>(R.id.deleteSubscriptionOrder)
+        deleteSubscription = view.findViewById(R.id.deleteSubscriptionOrder)
         val deliveryTimeSlot = view.findViewById<TextView>(R.id.productNextDeliveryTimeSlot)
         val nextDeliveryDate = view.findViewById<TextView>(R.id.productNextDeliveryDate)
         val hideCancelOrderButton = arguments?.getBoolean("hideCancelOrderButton")

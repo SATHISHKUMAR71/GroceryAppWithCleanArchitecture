@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +18,9 @@ import com.example.shoppinggroceryapp.views.sharedviews.search.diffutil.SearchLi
 class SearchListAdapter(var fragment: Fragment) : RecyclerView.Adapter<SearchListAdapter.SearchViewHolder>(){
     companion object{
         var searchList = mutableListOf<String>()
+        var hideIcon = false
     }
+
     inner class SearchViewHolder(searchView:View):RecyclerView.ViewHolder(searchView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -29,6 +33,14 @@ class SearchListAdapter(var fragment: Fragment) : RecyclerView.Adapter<SearchLis
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.itemView.findViewById<TextView>(R.id.text).text = searchList[position]
+        println("HIDE ICON: @#@# changed values on adapter: $hideIcon")
+        if(hideIcon){
+            holder.itemView.findViewById<ImageView>(R.id.imageIconForSearch).setImageDrawable(ContextCompat.getDrawable(fragment.requireContext(),R.drawable.history_24px))
+        }
+        else{
+            holder.itemView.findViewById<ImageView>(R.id.imageIconForSearch).setImageDrawable(ContextCompat.getDrawable(fragment.requireContext(),R.drawable.search_24px))
+//            holder.itemView.findViewById<ImageView>(R.id.imageIconForSearch).visibility = View.VISIBLE
+        }
         holder.itemView.setOnClickListener {
             InitialFragment.closeSearchView.value = true
             InitialFragment.searchQueryList.add(0, searchList[position])

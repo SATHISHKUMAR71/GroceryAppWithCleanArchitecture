@@ -28,6 +28,7 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
 
     inner class OrderLayoutViewHolder(orderView:View):RecyclerView.ViewHolder(orderView){
         val productNames = orderView.findViewById<TextView>(R.id.orderedProductsList)
+        val deliveryDate = orderView.findViewById<TextView>(R.id.deliveryDate)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderLayoutViewHolder {
@@ -39,28 +40,57 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
     }
 
     override fun onBindViewHolder(holder: OrderLayoutViewHolder, position: Int) {
-        holder.itemView.findViewById<TextView>(R.id.deliveryDate).setTextColor(Color.BLACK)
-        holder.itemView.findViewById<TextView>(R.id.deliveryDate).setBackgroundColor(Color.TRANSPARENT)
+        holder.deliveryDate.setTextColor(Color.BLACK)
+        holder.deliveryDate.setBackgroundColor(Color.TRANSPARENT)
 
-        when(orderedItems[position].deliveryStatus){
-            "Pending" -> {
-                val screen = "Expected On: ${DateGenerator.getDayAndMonth(orderedItems[position].deliveryDate)}"
-                holder.itemView.findViewById<TextView>(R.id.deliveryDate).text = screen
+        if(orderedItems[position].deliveryFrequency=="Once") {
+            holder.deliveryDate.visibility = View.VISIBLE
+            println("DELIVEry STATUS: ${orderedItems[position].deliveryStatus}")
+            when (orderedItems[position].deliveryStatus) {
+                "Pending" -> {
+                    val screen =
+                        "Expected On: ${DateGenerator.getDayAndMonth(orderedItems[position].deliveryDate)}"
+                    holder.deliveryDate.text = screen
+                }
+
+                "Cancelled" -> {
+                    val screen = "Order Cancelled"
+                    holder.deliveryDate.apply {
+                        setTextColor(Color.WHITE)
+                        setBackgroundColor(Color.RED)
+                        text = screen
+                    }
+
+                }
+
+                "Delivered" -> {
+                    val screen =
+                        "Delivered On: ${DateGenerator.getDayAndMonth(orderedItems[position].deliveryDate)}"
+                    holder.deliveryDate.text = screen
+                }
+
+                else -> {
+                    val screen =
+                        "Expected On: ${DateGenerator.getDayAndMonth(orderedItems[position].deliveryDate)}"
+                    holder.deliveryDate.text = screen
+                }
             }
-            "Order Cancelled" -> {
-                val screen = "Order Cancelled"
-                holder.itemView.findViewById<TextView>(R.id.deliveryDate).setTextColor(Color.WHITE)
-                holder.itemView.findViewById<TextView>(R.id.deliveryDate).setBackgroundColor(Color.RED)
-                holder.itemView.findViewById<TextView>(R.id.deliveryDate).text = screen
+
+        }
+
+        else{
+            when(orderedItems[position].deliveryFrequency){
+                "Weekly Once" -> {
+                    holder.deliveryDate.text = "Orders will be delivered on a weekly basis"
+                }
+                "Monthly Once" -> {
+                    holder.deliveryDate.text = "Orders will be delivered on a monthly basis"
+                }
+                "Daily"->{
+                    holder.deliveryDate.text = "Orders will be delivered on a daily basis"
+                }
             }
-            "Delivered" -> {
-                val screen = "Delivered On: ${DateGenerator.getDayAndMonth(orderedItems[position].deliveryDate)}"
-                holder.itemView.findViewById<TextView>(R.id.deliveryDate).text = screen
-            }
-            else -> {
-                val screen = "Expected On: ${DateGenerator.getDayAndMonth(orderedItems[position].deliveryDate)}"
-                holder.itemView.findViewById<TextView>(R.id.deliveryDate).text = screen
-            }
+
         }
         val date = "Ordered On: ${DateGenerator.getDayAndMonth(orderedItems[position].orderedDate)}"
         holder.itemView.findViewById<TextView>(R.id.orderedDate).text = date

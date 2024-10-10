@@ -9,3 +9,10 @@ data class SearchHistoryEntity (
     var searchText:String,
     var userId:Int
 )
+
+
+//@Entity(primaryKeys = ["searchText", "userId"])
+//data class SearchHistoryEntity (
+//    var searchText:String,
+//    var userId:Int
+//)

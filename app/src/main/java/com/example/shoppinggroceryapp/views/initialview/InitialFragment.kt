@@ -109,6 +109,7 @@ class InitialFragment : Fragment() {
             }
         }
 
+
         val launchMicResults = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val micResult = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
@@ -259,6 +260,8 @@ class InitialFragment : Fragment() {
                 true
             }
         }
+
+
         searchViewModel.getSearchedList()
         searchedQuery.observe(viewLifecycleOwner){
             if(it.isNotEmpty()){
@@ -266,6 +269,18 @@ class InitialFragment : Fragment() {
             }
         }
 
+        var backPressedCallback = object :OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                if(searchView.isShowing){
+                    searchView.hide()
+                }
+                else{
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,backPressedCallback)
         val cartListViewModel = ViewModelProvider(this,GroceryAppSharedVMFactory(retailerDao, userDao))[ProductListViewModel::class.java]
         if(!isRetailer){
             cartListViewModel.getCartItems(MainActivity.cartId)
@@ -322,9 +337,13 @@ class InitialFragment : Fragment() {
         closeSearchView.observe(viewLifecycleOwner){
             if(it){
                 searchView.hide()
+
             }
         }
         searchView.addTransitionListener { searchView, previousState, newState ->
+            if(newState==SearchView.TransitionState.SHOWING){
+                backPressedCallback.isEnabled = true
+            }
             if(newState==SearchView.TransitionState.HIDDEN){
                 if(category.isNotEmpty()) {
                     var productListFragment = ProductListFragment()
