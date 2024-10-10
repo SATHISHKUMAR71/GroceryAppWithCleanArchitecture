@@ -474,7 +474,7 @@ class AddOrEditProductFragment : Fragment() {
                         if (imageLoader.getImageInApp(requireContext(), filName) == null) {
                             isCategoryImageAdded = false
                         }
-                        addEditProductViewModel.addParentCategory(ParentCategory(productParentCategory.text.toString(), filName,                             "", false))
+                        addEditProductViewModel.addParentCategory(ParentCategory(productParentCategory.text.toString(), filName,view.findViewById<TextInputEditText>(R.id.newParentCategoryDescriptionText).text.toString(), false))
                     }
                     if (isNewSubCategory) {
                         addEditProductViewModel.addSubCategory(Category(productSubCat.text.toString(), productParentCategory.text.toString(), ""))
@@ -532,17 +532,20 @@ class AddOrEditProductFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 if(s.toString().isNotEmpty()) {
                     addParentCategoryLayout.visibility = View.VISIBLE
+//                    view.findViewById<TextInputLayout>(R.id.newParentCategoryDescription).visibility = View.VISIBLE
                 }
                 else{
+//                    view.findViewById<TextInputLayout>(R.id.newParentCategoryDescription).visibility = View.GONE
                     addParentCategoryLayout.visibility = View.GONE
                 }
                 if(!addEditProductViewModel.parentCategoryChecker(s.toString(),parentArray)){
                     isNewParentCategory = true
+                    view.findViewById<TextInputLayout>(R.id.newParentCategoryDescription).visibility = View.VISIBLE
                     addParentImage.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.add_photo_alternate_24px))
                     addParentCategoryButton.text = "Add Category Image"
                 }
                 else{
-
+                    view.findViewById<TextInputLayout>(R.id.newParentCategoryDescription).visibility = View.GONE
                     addEditProductViewModel.getParentCategoryImageForParent(s.toString())
                     addEditProductViewModel.getChildArray(s.toString())
                     isNewParentCategory = false
