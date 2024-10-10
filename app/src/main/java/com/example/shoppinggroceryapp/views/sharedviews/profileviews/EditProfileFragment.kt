@@ -110,7 +110,6 @@ class EditProfileFragment : Fragment() {
             }
             view.findViewById<MaterialButton>(R.id.editPictureBtn).text = "Add Profile Picture"
             view.findViewById<MaterialButton>(R.id.deleteProfileButton).visibility = View.GONE
-//            ShowShortToast.show("Profile Picture Deleted Successfully",requireContext())
         }
         view.findViewById<ImageView>(R.id.editPictureImg).setOnClickListener {
             imagePermissionHandler.checkPermission(false)
