@@ -118,15 +118,7 @@ class EditProfileFragment : Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object :OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                if((MainActivity.userEmail==email.text.toString() && (MainActivity.userImage==fileName)
-                    && MainActivity.userPhone==phone.text.toString() && MainActivity.userFirstName == firstName.text.toString()
-                    && MainActivity.userLastName==lastName.text.toString())){
-//                    showDataLossAlertDialog()
-                    parentFragmentManager.popBackStack()
-                }
-                else{
-                    DataLossAlertDialog().showDataLossAlertDialog(requireContext(),parentFragmentManager)
-                }
+                backPropagate()
             }
 
         })
@@ -173,7 +165,7 @@ class EditProfileFragment : Fragment() {
         val editor =pref.edit()
 
         editProfileTopbar.setNavigationOnClickListener {
-            parentFragmentManager.popBackStack()
+            backPropagate()
         }
 
         phone.filters = arrayOf(InputFilter.LengthFilter(15))
@@ -220,6 +212,17 @@ class EditProfileFragment : Fragment() {
         return view
     }
 
+    private fun backPropagate() {
+        if((MainActivity.userEmail==email.text.toString() && (MainActivity.userImage==fileName)
+                    && MainActivity.userPhone==phone.text.toString() && MainActivity.userFirstName == firstName.text.toString()
+                    && MainActivity.userLastName==lastName.text.toString())){
+            parentFragmentManager.popBackStack()
+        }
+        else{
+            DataLossAlertDialog().showDataLossAlertDialog(requireContext(),parentFragmentManager)
+        }
+    }
+
 
     override fun onResume() {
         super.onResume()
@@ -232,18 +235,4 @@ class EditProfileFragment : Fragment() {
         InitialFragment.hideBottomNav.value = false
     }
 
-
-    fun showDataLossAlertDialog(){
-        AlertDialog.Builder(context)
-            .setTitle("Confirm Exit")
-            .setMessage("Your changes will not be saved. Do you want to exit?")
-            .setPositiveButton("Yes",DialogInterface.OnClickListener { dialog, which ->
-                dialog.dismiss()
-                parentFragmentManager.popBackStack()
-            })
-            .setNegativeButton("No",DialogInterface.OnClickListener { dialog, which ->
-                dialog.dismiss()
-            })
-            .show()
-    }
 }
