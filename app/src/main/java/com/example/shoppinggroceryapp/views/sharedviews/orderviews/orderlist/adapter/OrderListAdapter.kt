@@ -1,15 +1,20 @@
 package com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.adapter
 
+import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.core.domain.order.OrderDetails
 import com.core.domain.products.CartWithProductData
+import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.entity.order.OrderDetailsEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.CartWithProductDataEntity
@@ -19,8 +24,9 @@ import com.example.shoppinggroceryapp.views.userviews.help.Help
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.diffutil.OrderListDiffUtil
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail.OrderDetailFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
+import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListViewModel
 
-class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:Fragment, var clickable:Boolean?):RecyclerView.Adapter<OrderListAdapter.OrderLayoutViewHolder>() {
+class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:Fragment, var clickable:Boolean?,var orderListViewModel: OrderListViewModel):RecyclerView.Adapter<OrderListAdapter.OrderLayoutViewHolder>() {
 
     companion object{
         var cartWithProductList = mutableListOf<MutableList<CartWithProductData>>()
@@ -39,11 +45,13 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
         return orderedItems.size
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: OrderLayoutViewHolder, position: Int) {
         holder.deliveryDate.setTextColor(Color.BLACK)
         holder.deliveryDate.setBackgroundColor(Color.TRANSPARENT)
 
         if(orderedItems[position].deliveryFrequency=="Once") {
+            holder.deliveryDate.setTextColor(Color.BLACK)
             holder.deliveryDate.visibility = View.VISIBLE
             println("DELIVEry STATUS: ${orderedItems[position].deliveryStatus}")
             when (orderedItems[position].deliveryStatus) {
@@ -79,15 +87,41 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
         }
 
         else{
+            holder.deliveryDate.setTextColor(ContextCompat.getColor(fragment.requireContext(),R.color.offerColor))
+//            holder.deliveryDate.setTextColor(androidx.appcompat.R.attr.colorControlHighlight)
             when(orderedItems[position].deliveryFrequency){
                 "Weekly Once" -> {
-                    holder.deliveryDate.text = "Orders will be delivered on a weekly basis"
+                    orderListViewModel.getWeeklySubscriptionDateWithTimeSlot(orderedItems[position].orderId){
+                        var data = ""
+                        for(i in it){
+                            data = orderListViewModel.getWeeklyPreparedData(i.key,i.value)
+                        }
+                        MainActivity.handler.post{
+                            holder.deliveryDate.text = data
+                        }
+                    }
                 }
                 "Monthly Once" -> {
-                    holder.deliveryDate.text = "Orders will be delivered on a monthly basis"
+                    orderListViewModel.getMonthlySubscriptionDateWithTime(orderedItems[position].orderId){
+                        var data = ""
+                        for(i in it){
+                            data = orderListViewModel.getMonthlyPreparedDate(i.key,i.value)
+                        }
+                        MainActivity.handler.post{
+                            holder.deliveryDate.text = data
+                        }
+                    }
                 }
                 "Daily"->{
-                    holder.deliveryDate.text = "Orders will be delivered on a daily basis"
+                    orderListViewModel.getDailySubscriptionDateWithTime(orderedItems[position].orderId){
+                        var data = ""
+                        for(i in it){
+                            data = orderListViewModel.getDailyPreparedData(i.key,i.value)
+                        }
+                        MainActivity.handler.post{
+                            holder.deliveryDate.text = data
+                        }
+                    }
                 }
             }
 

@@ -1,8 +1,14 @@
 package com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.core.domain.order.DailySubscription
+import com.core.domain.order.MonthlyOnce
 import com.core.domain.order.OrderDetails
+import com.core.domain.order.TimeSlot
+import com.core.domain.order.WeeklyOnce
 import com.core.domain.products.CartWithProductData
 import com.core.usecases.cartusecase.getcartusecase.GetDeletedProductsWithCarId
 import com.core.usecases.cartusecase.getcartusecase.GetProductsWithCartData
@@ -13,8 +19,12 @@ import com.core.usecases.subscriptionusecase.getsubscriptionusecase.GetOrderForU
 import com.core.usecases.subscriptionusecase.getsubscriptionusecase.GetOrdersForUserNoSubscription
 import com.core.usecases.orderusecase.getordersusecase.GetAllOrders
 import com.core.usecases.orderusecase.getordersusecase.GetDailyOrders
+import com.core.usecases.orderusecase.getordersusecase.GetDailySubscriptionOrderWithTimeSlot
 import com.core.usecases.orderusecase.getordersusecase.GetMonthlyOrders
+import com.core.usecases.orderusecase.getordersusecase.GetMonthlySubscriptionWithTimeSlot
 import com.core.usecases.orderusecase.getordersusecase.GetNormalOrder
+import com.core.usecases.orderusecase.getordersusecase.GetOrderedTimeSlot
+import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWithTimeSlot
 import com.core.usecases.orderusecase.getordersusecase.GetWeeklyOrders
 import com.core.usecases.orderusecase.updateorderusecase.UpdateOrderDetails
 import com.example.shoppinggroceryapp.MainActivity
@@ -32,10 +42,14 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
                          private val mGetMonthlyOrders: GetMonthlyOrders,
                          private val mGetNormalOrder: GetNormalOrder,
                          private val mGetDailyOrders: GetDailyOrders,
-                         private val mGetAllOrders: GetAllOrders
-):ViewModel() {
+                         private val mGetAllOrders: GetAllOrders,
+                         private val mGetDailyOrderWithTimeSlot:GetDailySubscriptionOrderWithTimeSlot,
+                         private val mGetSpecificMonthlyOrderWithTimeSlot: GetMonthlySubscriptionWithTimeSlot,
+                         private val mGetSpecificWeeklyOrderWithTimeSlot: GetSpecificWeeklyOrderWithTimeSlot,
+                         private val mGetOrderedTimeSlot: GetOrderedTimeSlot):ViewModel() {
 
     var orderedItems:MutableLiveData<List<OrderDetails>> = MutableLiveData()
+    var days = listOf("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
     var dataReady:MutableLiveData<Boolean> = MutableLiveData()
     private var lock =Any()
     var cartWithProductList:MutableLiveData<MutableList<MutableList<CartWithProductData>>> =
@@ -99,6 +113,38 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
     fun getOrderedItemsForRetailer(){
         Thread{
             orderedItems.postValue(mGetAllOrders.invoke())
+        }.start()
+    }
+
+    fun getDailySubscriptionDateWithTime(orderId:Int,callback: (Map<DailySubscription,TimeSlot>) -> Unit){
+        Thread{
+            mGetDailyOrderWithTimeSlot.invoke(orderId)?.let {
+                callback(it)
+            }
+        }.start()
+    }
+
+    fun getMonthlySubscriptionDateWithTime(orderId:Int,callback: (Map<MonthlyOnce,TimeSlot>) -> Unit){
+        Thread{
+            mGetSpecificMonthlyOrderWithTimeSlot.invoke(orderId)?.let {
+                callback(it)
+            }
+        }.start()
+    }
+
+    fun getWeeklySubscriptionDateWithTimeSlot(orderId:Int,callback:(Map<WeeklyOnce,TimeSlot>) -> Unit){
+        Thread{
+            mGetSpecificWeeklyOrderWithTimeSlot.invoke(orderId)?.let {
+                callback(it)
+            }
+        }.start()
+    }
+
+    fun getTimeSlot(orderId: Int){
+        Thread{
+            mGetOrderedTimeSlot.invoke(orderId)?.let {
+
+            }
         }.start()
     }
 
@@ -177,5 +223,53 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
             }
         }
         return "My Orders"
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getMonthlyPreparedDate(monthlyOnce: MonthlyOnce,timeSlot: TimeSlot):String {
+        try {
+            var text = "Next Delivery On ${DateGenerator.getDayAndMonthForDay(monthlyOnce.dayOfMonth.toString())}"
+            return text
+        }
+        catch (e:Exception){
+            println("INT CONVERTION ERROR: $e")
+        }
+        return ""
+    }
+    fun getWeeklyPreparedData(weeklyOnce: WeeklyOnce,timeSlot: TimeSlot):String{
+        return "Next Delivery this ${days[weeklyOnce.weekId]}"
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getDailyPreparedData(dailySubscription: DailySubscription, timeSlot: TimeSlot):String{
+        return checkTimeSlot(timeSlot)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun checkTimeSlot(timeSlot: TimeSlot):String {
+        var currentTime = DateGenerator.getCurrentTime()
+        when(timeSlot.timeId){
+            0 -> {
+                if(currentTime in 6..8){
+                    return "Next Delivery Today"
+                }
+            }
+            1 -> {
+                if(currentTime in 8..14){
+                    return "Next Delivery Today"
+                }
+            }
+            2 -> {
+                if(currentTime in 14..18){
+                    return "Next Delivery Today"
+                }
+            }
+            3 -> {
+                if(currentTime in 18..20){
+                    return "Next Delivery Today"
+                }
+            }
+        }
+        return "Next Delivery Tomorrow"
     }
 }

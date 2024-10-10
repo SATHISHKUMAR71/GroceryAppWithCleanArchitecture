@@ -85,6 +85,7 @@ class DateGenerator {
         }
 
         fun getDayAndMonthForDay(deliveryDay:String):String{
+            println("DELIVERY DAY: $deliveryDay")
             var date = getCurrentDate().substring(0,8)
             if(deliveryDay.toInt() < getCurrentDate().substring(8).toInt()){
 

@@ -27,6 +27,19 @@ class SubscriptionRepository(private val addSubscriptionDataSource: AddSubscript
         updateSubscriptionDataSource.updateTimeSlot(timeSlot)
     }
 
+    fun getMonthlySubscriptionWithTimeslot(orderId: Int): Map<MonthlyOnce, TimeSlot> {
+        return getSubscriptionDataSource.getMonthlySubscriptionAndTimeSlot(orderId)
+    }
+
+    fun getWeeklySubscriptionWithTimeslot(orderId: Int): Map<WeeklyOnce, TimeSlot> {
+        return getSubscriptionDataSource.getWeeklySubscriptionAndTimeSlot(orderId)
+    }
+
+    fun getDailySubscriptionWithTimeslot(orderId: Int): Map<DailySubscription, TimeSlot> {
+        return getSubscriptionDataSource.getDailySubscriptionAndTimeSlot(orderId)
+    }
+
+
     fun deleteFromWeeklySubscription(weeklyOnce: WeeklyOnce){
         updateSubscriptionDataSource.deleteFromWeeklySubscription(weeklyOnce)
     }

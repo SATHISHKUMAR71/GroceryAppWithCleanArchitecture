@@ -55,6 +55,30 @@ class SubscriptionDataSourceImpl(private val userDao: UserDao):AddSubscriptionDa
         }
     }
 
+    override fun getMonthlySubscriptionAndTimeSlot(orderId: Int): Map<MonthlyOnce, TimeSlot> {
+        val convertedMap = mutableMapOf<MonthlyOnce,TimeSlot>()
+        for(i in userDao.getMonthlyOnceWithTimeSlot(orderId)){
+            convertedMap[MonthlyOnce(i.key.orderId,i.key.dayOfMonth)] = TimeSlot(i.value.orderId,i.value.timeId)
+        }
+        return convertedMap
+    }
+
+    override fun getWeeklySubscriptionAndTimeSlot(orderId: Int): Map<WeeklyOnce, TimeSlot> {
+        val convertedMap = mutableMapOf<WeeklyOnce,TimeSlot>()
+        for(i in userDao.getWeeklyOnceWithTimeSlot(orderId)){
+            convertedMap[WeeklyOnce(i.key.orderId,i.key.weekId)] = TimeSlot(i.value.orderId,i.value.timeId)
+        }
+        return convertedMap
+    }
+
+    override fun getDailySubscriptionAndTimeSlot(orderId: Int): Map<DailySubscription, TimeSlot> {
+        val convertedMap = mutableMapOf<DailySubscription,TimeSlot>()
+        for(i in userDao.getDailySubscriptionWithTimeSlot(orderId)){
+            convertedMap[DailySubscription(i.key.orderId)] = TimeSlot(i.value.orderId,i.value.timeId)
+        }
+        return convertedMap
+    }
+
     override fun updateTimeSlot(timeSlot: TimeSlot) {
         userDao.updateTimeSlot(TimeSlotEntity(timeSlot.orderId,timeSlot.timeId))
     }

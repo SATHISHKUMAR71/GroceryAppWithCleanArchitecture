@@ -94,7 +94,7 @@ class OrderListFragment : Fragment() {
         )[OrderListViewModel::class.java]
         var cartWithProductsList = mutableListOf<MutableList<CartWithProductData>>()
         var orderedItems:MutableList<OrderDetails> = mutableListOf()
-        val orderAdapter = OrderListAdapter(orderedItems.toMutableList(), this, clickable)
+        val orderAdapter = OrderListAdapter(orderedItems.toMutableList(), this, clickable,orderListViewModel)
         val subscriptionType = arguments?.getString("subscriptionType")
         toolbar = view.findViewById(R.id.materialToolbarOrderList)
         orderListViewModel.orderedItems.observe(viewLifecycleOwner){

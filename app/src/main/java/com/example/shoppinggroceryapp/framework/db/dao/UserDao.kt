@@ -7,6 +7,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.core.domain.order.DailySubscription
+import com.core.domain.order.MonthlyOnce
+import com.core.domain.order.TimeSlot
 import com.core.domain.products.ParentCategory
 import com.example.shoppinggroceryapp.framework.db.dataclass.ChildCategoryName
 import com.example.shoppinggroceryapp.framework.db.dataclass.CustomerRequestWithName
@@ -118,6 +121,15 @@ interface UserDao {
 
     @Query("SELECT * FROM MonthlyOnceEntity Where MonthlyOnceEntity.orderId=:orderId")
     fun getOrderedDayForMonthlySubscription(orderId:Int):MonthlyOnceEntity?
+
+    @Query("SELECT * FROM MONTHLYONCEENTITY JOIN TIMESLOTENTITY ON TIMESLOTENTITY.orderId=MONTHLYONCEENTITY.orderId WHERE MONTHLYONCEENTITY.orderId=:orderId")
+    fun getMonthlyOnceWithTimeSlot(orderId: Int):Map<MonthlyOnceEntity,TimeSlotEntity>
+
+    @Query("SELECT * FROM WEEKLYONCEENTITY JOIN TIMESLOTENTITY ON TIMESLOTENTITY.orderId=WEEKLYONCEENTITY.orderId WHERE WEEKLYONCEENTITY.orderId=:orderId")
+    fun getWeeklyOnceWithTimeSlot(orderId: Int):Map<WeeklyOnceEntity,TimeSlotEntity>
+
+    @Query("SELECT * FROM DAILYSUBSCRIPTIONENTITY JOIN TIMESLOTENTITY ON TIMESLOTENTITY.orderId=DAILYSUBSCRIPTIONENTITY.orderId WHERE DAILYSUBSCRIPTIONENTITY.orderId=:orderId")
+    fun getDailySubscriptionWithTimeSlot(orderId: Int):Map<DailySubscription,TimeSlotEntity>
 
     @Query("SELECT * FROM WeeklyOnceEntity Where WeeklyOnceEntity.orderId=:orderId")
     fun getOrderedDayForWeekSubscription(orderId:Int):WeeklyOnceEntity?
