@@ -109,6 +109,7 @@ class OrderSummaryFragment : Fragment() {
         val totalAmount = view.findViewById<TextView>(R.id.priceDetailsTotalAmountOrderSummary)
         continueToPayment = view.findViewById(R.id.continueButtonOrderSummary)
         viewProductDetails = view.findViewById(R.id.viewPriceDetailsButtonOrderSummary)
+
         val orderSummaryToolBar = view.findViewById<MaterialToolbar>(R.id.orderSummaryToolbar)
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
@@ -373,6 +374,7 @@ class OrderSummaryFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
+        deliveryFrequency.setText("")
         InitialFragment.hideBottomNav.value = false
         InitialFragment.hideSearchBar.value = false
     }
