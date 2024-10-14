@@ -53,7 +53,6 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
         if(orderedItems[position].deliveryFrequency=="Once") {
             holder.deliveryDate.setTextColor(Color.BLACK)
             holder.deliveryDate.visibility = View.VISIBLE
-            println("DELIVEry STATUS: ${orderedItems[position].deliveryStatus}")
             when (orderedItems[position].deliveryStatus) {
                 "Pending" -> {
                     val screen =
@@ -94,7 +93,7 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
                     orderListViewModel.getWeeklySubscriptionDateWithTimeSlot(orderedItems[position].orderId){
                         var data = ""
                         for(i in it){
-                            data = orderListViewModel.getWeeklyPreparedData(i.key,i.value)
+                            data = orderListViewModel.getWeeklyPreparedData(i.key,i.value,orderedItems[position].orderedDate)
                         }
                         MainActivity.handler.post{
                             holder.deliveryDate.text = data
@@ -105,7 +104,7 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
                     orderListViewModel.getMonthlySubscriptionDateWithTime(orderedItems[position].orderId){
                         var data = ""
                         for(i in it){
-                            data = orderListViewModel.getMonthlyPreparedDate(i.key,i.value)
+                            data = orderListViewModel.getMonthlyPreparedDate(i.key,i.value,orderedItems[position].orderedDate)
                         }
                         MainActivity.handler.post{
                             holder.deliveryDate.text = data

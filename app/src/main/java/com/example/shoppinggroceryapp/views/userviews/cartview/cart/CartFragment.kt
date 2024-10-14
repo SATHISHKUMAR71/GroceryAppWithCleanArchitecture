@@ -93,7 +93,6 @@ class CartFragment : Fragment() {
             price.visibility =View.VISIBLE
             adapter.noOfItemLiveData.value = str
             savedPosition?.let {value ->
-                println("POSITION rvrv $value")
 
                 (recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(value)
                 if(value+2>noOfItemsInt){

@@ -33,7 +33,7 @@ class SearchListAdapter(var fragment: Fragment) : RecyclerView.Adapter<SearchLis
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.itemView.findViewById<TextView>(R.id.text).text = searchList[position]
-        println("HIDE ICON: @#@# changed values on adapter: $hideIcon")
+
         if(hideIcon){
             holder.itemView.findViewById<ImageView>(R.id.imageIconForSearch).setImageDrawable(ContextCompat.getDrawable(fragment.requireContext(),R.drawable.history_24px))
         }

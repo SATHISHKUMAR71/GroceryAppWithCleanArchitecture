@@ -44,7 +44,7 @@ class CustomerRequestDetailFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        println("3232 HIDE called from customer detail")
+
         InitialFragment.hideSearchBar.value = false
         InitialFragment.hideBottomNav.value = false
     }

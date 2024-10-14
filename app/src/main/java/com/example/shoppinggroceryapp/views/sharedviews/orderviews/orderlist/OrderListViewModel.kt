@@ -226,50 +226,86 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getMonthlyPreparedDate(monthlyOnce: MonthlyOnce,timeSlot: TimeSlot):String {
+    fun getMonthlyPreparedDate(monthlyOnce: MonthlyOnce,timeSlot: TimeSlot,orderedDate: String):String {
         try {
+
+            if(DateGenerator.getCurrentDayOfMonth()==monthlyOnce.dayOfMonth.toString()){
+                return if(checkTimeSlot(timeSlot,orderedDate)=="Next Delivery Tomorrow"){
+                    "Next Delivery On ${DateGenerator.getNextDayForSpecificMonth(monthlyOnce.dayOfMonth.toString())}"
+                } else{
+                    checkTimeSlot(timeSlot,orderedDate)
+                }
+            }
             var text = "Next Delivery On ${DateGenerator.getDayAndMonthForDay(monthlyOnce.dayOfMonth.toString())}"
             return text
         }
         catch (e:Exception){
-            println("INT CONVERTION ERROR: $e")
+
         }
         return ""
     }
-    fun getWeeklyPreparedData(weeklyOnce: WeeklyOnce,timeSlot: TimeSlot):String{
-        return "Next Delivery this ${days[weeklyOnce.weekId]}"
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getWeeklyPreparedData(weeklyOnce: WeeklyOnce, timeSlot: TimeSlot,orderDate:String):String{
+        if(DateGenerator.getCurrentDay()==days[weeklyOnce.weekId]){
+            if(checkTimeSlot(timeSlot,orderDate)=="Next Delivery Tomorrow"){
+                return "Next Delivery on Next ${days[weeklyOnce.weekId]}"
+            }
+        }
+        return "Next Delivery this ${days[weeklyOnce.weekId]} "
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getDailyPreparedData(dailySubscription: DailySubscription, timeSlot: TimeSlot,deliveryDate:String):String{
-        return checkTimeSlot(timeSlot,deliveryDate)
+    fun getDailyPreparedData(dailySubscription: DailySubscription, timeSlot: TimeSlot,orderedDate:String):String{
+        return checkTimeSlot(timeSlot,orderedDate)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun checkTimeSlot(timeSlot: TimeSlot, deliveryDate: String):String {
+    private fun checkTimeSlot(timeSlot: TimeSlot, orderedDate: String):String {
         var currentTime = DateGenerator.getCurrentTime()
+
         when(timeSlot.timeId){
             0 -> {
-                if(currentTime in 6..8 && deliveryDate!=DateGenerator.getCurrentDate()) {
+                if(currentTime in 6..8 && orderedDate!=DateGenerator.getCurrentDate()) {
                     return "Next Delivery Today"
+                }
+                else if(currentTime<8){
+                    if (orderedDate!=DateGenerator.getCurrentDate()) {
+                        return "Next Delivery Today"
+                    }
                 }
             }
             1 -> {
-                if(currentTime in 8..14&& deliveryDate!=DateGenerator.getCurrentDate()) {
+                if(currentTime in 8..14&& orderedDate!=DateGenerator.getCurrentDate()) {
                     return "Next Delivery Today"
+                }
+                else if(currentTime<14){
+                    if (orderedDate!=DateGenerator.getCurrentDate()) {
+                        return "Next Delivery Today"
+                    }
                 }
             }
             2 -> {
-                if(currentTime in 14..18&& deliveryDate!=DateGenerator.getCurrentDate()) {
+                if(currentTime in 14..18&& orderedDate!=DateGenerator.getCurrentDate()) {
                     return "Next Delivery Today"
+                }
+                else if(currentTime<18){
+                    if (orderedDate!=DateGenerator.getCurrentDate()) {
+                        return "Next Delivery Today"
+                    }
                 }
             }
             3 -> {
-                if(currentTime in 18..20&& deliveryDate!=DateGenerator.getCurrentDate()) {
+                if(currentTime in 18..20&& orderedDate!=DateGenerator.getCurrentDate()) {
                     return "Next Delivery Today"
+                }
+                else if(currentTime<20){
+                    if (orderedDate!=DateGenerator.getCurrentDate()) {
+                        return "Next Delivery Today"
+                    }
                 }
             }
         }
         return "Next Delivery Tomorrow"
     }
+
 }

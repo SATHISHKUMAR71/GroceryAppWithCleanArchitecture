@@ -69,9 +69,7 @@ class MainActivity : AppCompatActivity() {
         if(isSigned) {
             assignCart(db2)
         }
-        Thread{
-            println(db2.getParentAndChildNames())
-        }.start()
+
     }
     private fun assignCart(db2: UserDao){
         Thread {

@@ -93,27 +93,59 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
         }.start()
     }
 
-    fun assignText(timeSlot:Int,currentTime:Int):String{
+    fun assignText(timeSlot:Int,currentTime:Int):String?{
         var text =""
         when(timeSlot){
             0 -> {
                 if (currentTime in 6..8) {
                     text = groceriesArrivingToday
                 }
+                else if(currentTime<6){
+                    if (OrderListFragment.selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
+                        return "Next Delivery Today"
+                    }
+                }
+                else{
+                    return null
+                }
             }
             1 -> {
                 if(currentTime in 8..14){
                     text = groceriesArrivingToday
+                }
+                else if(currentTime<8){
+                    if (OrderListFragment.selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
+                        return "Next Delivery Today"
+                    }
+                }
+                else{
+                    return null
                 }
             }
             2 -> {
                 if (currentTime in 14..18) {
                     text = groceriesArrivingToday
                 }
+                else if(currentTime<14){
+                    if (OrderListFragment.selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
+                        return "Next Delivery Today"
+                    }
+                }
+                else{
+                    return null
+                }
             }
             3 -> {
                 if (currentTime in 18..20) {
                     text = groceriesArrivingToday
+                }
+                else if(currentTime<18){
+                    if (OrderListFragment.selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
+                        return "Next Delivery Today"
+                    }
+                }
+                else{
+                    return null
                 }
             }
         }

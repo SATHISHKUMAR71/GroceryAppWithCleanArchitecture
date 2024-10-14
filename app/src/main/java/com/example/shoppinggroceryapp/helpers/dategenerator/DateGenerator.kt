@@ -1,10 +1,12 @@
 package com.example.shoppinggroceryapp.helpers.dategenerator
 
 import android.annotation.SuppressLint
+import android.icu.util.LocaleData
 import android.os.Build
 import androidx.annotation.RequiresApi
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.Month
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
@@ -85,10 +87,9 @@ class DateGenerator {
         }
 
         fun getDayAndMonthForDay(deliveryDay:String):String{
-            println("DELIVERY DAY: $deliveryDay")
+
             var date = getCurrentDate().substring(0,8)
             if(deliveryDay.toInt() < getCurrentDate().substring(8).toInt()){
-
                 date = getNextMonth().substring(0,8)
             }
 
@@ -99,5 +100,20 @@ class DateGenerator {
             return "${months[month-1]} $day, ${currentDateList[0]}"
         }
 
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun getNextDayForSpecificMonth(dayOfMonth: String):String{
+            var updatedDate = ""
+            var date = getCurrentDate()
+            updatedDate += date.substring(0,8)
+            updatedDate += dayOfMonth
+            val splitDate =updatedDate.split("-")
+            println("212112 NEXT splitted date: $splitDate")
+            val deliveryDateDateFormat = LocalDate.of(splitDate[0].toInt(),splitDate[1].toInt(),splitDate[2].toInt())
+            println("212112 NEXT value in date Generator ${deliveryDateDateFormat.plusMonths(1)} ")
+//            return deliveryDateDateFormat.plusMonths(1).toString()
+            val nextMonth = deliveryDateDateFormat.plusMonths(1).toString().split("-")
+            return "${months[nextMonth[1].toInt()-1]} ${nextMonth[2]}, ${nextMonth[0]}"
+        }
     }
+
 }

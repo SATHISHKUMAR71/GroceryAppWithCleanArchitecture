@@ -16,12 +16,10 @@ class OrderListDiffUtil(
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        println("@#@# ${oldList[oldItemPosition]==newList[newItemPosition]}")
         return oldList[oldItemPosition].hashCode() == newList[newItemPosition].hashCode()
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        println("@#@# ${oldList[oldItemPosition]==newList[newItemPosition]}")
         return oldList[oldItemPosition] == newList[newItemPosition]
     }
 

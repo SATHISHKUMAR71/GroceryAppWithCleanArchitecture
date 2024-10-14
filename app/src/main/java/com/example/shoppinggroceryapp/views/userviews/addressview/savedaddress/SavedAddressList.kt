@@ -75,6 +75,7 @@ class SavedAddressList : Fragment() {
 
         if(arguments?.getBoolean("clickable")==true){
             AddressAdapter.clickable = true
+            savedAddressToolbar.title = "Select an Address"
         }
         db = AppDatabase.getAppDatabase(requireContext())
         val userId = MainActivity.userId.toInt()

@@ -140,7 +140,7 @@ class HomeFragment : Fragment() {
             addViewToLayout(categoryContainer,i)
             i+=3
         }
-        println("SCROLL POSITION: $lastSelectedPosition")
+
 
         return view
     }

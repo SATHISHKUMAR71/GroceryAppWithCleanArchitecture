@@ -136,14 +136,11 @@ class ProductListAdapter(var fragment: Fragment,
 
     override fun onBindViewHolder(holder: ProductLargeImageHolder, position: Int) {
         var position = position
-        println("position  ###123 VIEW IS CREATING FOR $position ${productEntityList.size} $tag")
         if((size==0) && (tag!="C")){
 
         }
         else{
-            println("0101 VIEW is creating for how many items")
             if(tag == "C" && position==0){
-                println("0101 VIEW ${this.hashCode()} IS CREATING FOR ADDRESS TOP VIEW: $position product size ${productEntityList.size}")
                 val deliveryAddressNotFound = holder.itemView.findViewById<LinearLayout>(R.id.deliveryAddressLayoutNotFound)
                 val deliveryAddressFound = holder.itemView.findViewById<LinearLayout>(R.id.deliveryAddressLayout)
                 val addressOwnerName = holder.itemView.findViewById<TextView>(R.id.addressOwnerName)
@@ -189,7 +186,6 @@ class ProductListAdapter(var fragment: Fragment,
                 }
             }
             else if(tag=="C" && position==productEntityList.size+1){
-                println("0101 VIEW ${this.hashCode()} IS CREATING FOR BOTTOM PRICE VIEWS: $position product size ${productEntityList.size}")
                 val grandTotalAmountMrp = holder.itemView.findViewById<TextView>(R.id.priceDetailsMrpPrice)
                 val totalAmtWithDeliveryFee = holder.itemView.findViewById<TextView>(R.id.priceDetailsTotalAmount)
                 val noOfItems = holder.itemView.findViewById<TextView>(R.id.priceDetailsMrpTotalItems)
@@ -206,7 +202,6 @@ class ProductListAdapter(var fragment: Fragment,
                         holder.itemView.findViewById<ImageView>(R.id.emptyCartImage).visibility = View.VISIBLE
                     }
                 }
-                println("0303 VISIBILITY: ${holder.itemView.findViewById<LinearLayout>(R.id.cartPriceDetailsLayout).visibility} ")
                 noOfItemLiveData.observe(fragment.viewLifecycleOwner){
                     noOfItems.text = it
                 }
@@ -220,17 +215,13 @@ class ProductListAdapter(var fragment: Fragment,
             }
             else {
                 if(tag=="C"){
-                    println("position  ### before $position")
                     position-=1
-                    println("position  ### after $position")
                 }
-                println("9898 VIEW IS RECREATING: $size $position ${productEntityList[position].productName}")
                 if (MainActivity.isRetailer) {
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
                 } else {
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.VISIBLE
                 }
-                println("0101 VIEW ${this.hashCode()} IS CREATING FOR PRODUCT VIEWS: position $position product name: ${productEntityList[position].productName} product size ${productEntityList.size}")
                 productListViewModel.getSpecificCart(
                     MainActivity.cartId,
                     productEntityList[position].productId.toInt()
@@ -354,7 +345,6 @@ class ProductListAdapter(var fragment: Fragment,
                         }
                         productEntityList.removeAt(position)
                         countList.removeAt(position)
-                        println("343434 POSITION: $position size: ${productEntityList.size}")
                         notifyItemRemoved(position+1)
                         if(productEntityList.size==0){
                             notifyDataSetChanged()
@@ -472,7 +462,6 @@ class ProductListAdapter(var fragment: Fragment,
             notifyDataSetChanged()
         }
         else{
-            println("4040 is Adapter is called $newList $productEntityList")
             productsSize = newList.size
             val diffUtil = CartItemsDiffUtil(productEntityList,newList)
             for(i in newList.indices){

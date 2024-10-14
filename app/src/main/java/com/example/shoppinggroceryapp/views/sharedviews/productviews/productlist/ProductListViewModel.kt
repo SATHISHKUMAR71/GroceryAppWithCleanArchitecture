@@ -83,9 +83,7 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
 
     fun updateItemsInCart(cart: Cart){
         Thread{
-            println("**** update items in cart called: $cart")
             mAddProductInCart.invoke(cart)
-            println("**** update items in cart called: cart items ${mGetCartItems.invoke(1)}")
         }.start()
     }
 

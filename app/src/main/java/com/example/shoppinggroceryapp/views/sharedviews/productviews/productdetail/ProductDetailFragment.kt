@@ -95,7 +95,6 @@ class ProductDetailFragment : Fragment() {
     private lateinit var productDetailViewModel: ProductDetailViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println("SELECTED LIST: $selectedProductEntityList")
         imageLoader = ImageLoaderAndGetter()
         oneTimeFragmentIn = 0
     }

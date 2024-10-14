@@ -126,7 +126,6 @@ class EditProfileFragment : Fragment() {
             fileName = imageTmp
             profileBitmap = it
             deleteImage = false
-            println("IMAGE BITMAP CALLED: $it file Name: $fileName bitmap value: $profileBitmap")
             view.findViewById<ImageView>(R.id.editPictureImg).apply {
                 setImageBitmap(it)
                 setPadding(0)
@@ -170,7 +169,6 @@ class EditProfileFragment : Fragment() {
         phone.filters = arrayOf(InputFilter.LengthFilter(15))
         saveDetails.setOnClickListener {
             profileBitmap?.let {
-                println("IMAGE BITMAP CALLED: on save $it file Name: $fileName bitmap value: $profileBitmap")
                 imageLoaderAndGetter.storeImageInApp(requireContext(),it,fileName)
                 MainActivity.userImage = fileName
             }

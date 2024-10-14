@@ -29,7 +29,7 @@ class SearchViewModel(var mGetSearchList: GetSearchList, var mPerformProductSear
     }
 
     fun addItemInDb(query:String){
-        println("SearchHistory: $query ${MainActivity.userId.toInt()}")
+
         Thread {
             mAddSearchQueryInDb(SearchHistory(query,MainActivity.userId.toInt()))
         }.start()
@@ -40,10 +40,10 @@ class SearchViewModel(var mGetSearchList: GetSearchList, var mPerformProductSear
             val list = mutableListOf<String>()
             var i = 0
             for(j in (mGetSearchList(MainActivity.userId.toInt())?: listOf()).reversed()){
-                println("SearchHistory: ${j.searchText} user id ${j.userId} main user id ${MainActivity.userId.toInt()}")
+
                 list.add(j.searchText)
                 i++
-                if(i==10){
+                if(i==8){
                     break
                 }
             }

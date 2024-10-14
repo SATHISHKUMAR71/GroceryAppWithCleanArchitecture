@@ -91,21 +91,7 @@ class OrderSuccessViewModel(private val mAddOrder: AddOrder,
     }
 
     fun getSubscriptionDetails(){
-//        for(i in retailerDao.getOrderTimeSlot()){
-//            println("FOR PRODUCTS ORDER ID ${i.orderId} TIME SLOTS: ${i.timeId}")
-//        }
-//        println("==========")
-//        for(i in retailerDao.getDailySubscription()){
-//            println("FOR PRODUCTS ORDER ID ${i.orderId} Daily Subscription ")
-//        }
-//        println("==========")
-//        for(i in retailerDao.getWeeklySubscriptionList()){
-//            println("FOR PRODUCTS ORDER ID ${i.orderId} week id ${i.weekId} Weekly Subscription ")
-//        }
-//        println("==========")
-//        for(i in retailerDao.getMonthlySubscriptionList()){
-//            println("FOR PRODUCTS ORDER ID ${i.orderId} month id ${i.dayOfMonth} Monthly Subscription ")
-//        }
+
     }
     fun updateAndAssignNewCart(cartId: Int,userId:Int){
         Thread {

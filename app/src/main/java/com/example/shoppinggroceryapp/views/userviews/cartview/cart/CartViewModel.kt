@@ -18,7 +18,6 @@ class CartViewModel(private val mGetProductsByCartId: GetProductsByCartId,
     var addressEntityList:MutableLiveData<List<Address>> = MutableLiveData()
     fun getProductsByCartId(cartId:Int){
         Thread{
-            println("ON PRODUCT BIND VIEW HOLDER cart products: ${mGetProductsByCartId.invoke(cartId)} $cartId")
             cartProducts.postValue(mGetProductsByCartId.invoke(cartId))
         }.start()
     }
