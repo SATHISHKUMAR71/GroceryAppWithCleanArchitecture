@@ -46,6 +46,7 @@ import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.views.userviews.cartview.FindNumberOfCartItems
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
+import com.example.shoppinggroceryapp.helpers.toast.ShowShortToast
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.category.CategoryFragment
@@ -172,6 +173,7 @@ class ProductDetailFragment : Fragment() {
                                 deletePosition = ProductListFragment.selectedPos
                                 dialog.dismiss()
                                 setProductValue()
+                                ShowShortToast.show("Product Deleted Successfully",requireContext())
                                 parentFragmentManager.popBackStack()
                             }
                             .create()
