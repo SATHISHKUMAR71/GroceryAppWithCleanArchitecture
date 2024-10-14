@@ -69,20 +69,6 @@ class ProductListAdapter(var fragment: Fragment,
 
     inner class ProductLargeImageHolder(productLargeView:View):RecyclerView.ViewHolder(productLargeView){
 
-//        val productImage = productLargeView.findViewById<ImageView>(R.id.productImageLong)
-//        val buttonLayout = productLargeView.findViewById<LinearLayout>(R.id.buttonLayout)
-//        val brandName = productLargeView.findViewById<TextView>(R.id.brandName)
-//        val productName = productLargeView.findViewById<TextView>(R.id.productNameLong)
-//        val productQuantity = productLargeView.findViewById<TextView>(R.id.productQuantity)
-//        val productExpiryDate = productLargeView.findViewById<TextView>(R.id.productExpiryDate)
-//        val productPrice = productLargeView.findViewById<TextView>(R.id.productPriceLong)
-//        val offer = productLargeView.findViewById<TextView>(R.id.offerText)
-//        val productAddRemoveLayout:LinearLayout = productLargeView.findViewById(R.id.productAddRemoveLayout)
-//        val productAddOneTime:MaterialButton = productLargeView.findViewById(R.id.productAddLayoutOneTime)
-//        val totalItems:TextView = productLargeView.findViewById(R.id.totalItemsAdded)
-//        val addSymbolButton:ImageButton = productLargeView.findViewById(R.id.productAddSymbolButton)
-//        val removeSymbolButton:ImageButton = productLargeView.findViewById(R.id.productRemoveSymbolButton)
-//        val productMrpText:TextView = productLargeView.findViewById(R.id.productMrpText)
     }
 
 

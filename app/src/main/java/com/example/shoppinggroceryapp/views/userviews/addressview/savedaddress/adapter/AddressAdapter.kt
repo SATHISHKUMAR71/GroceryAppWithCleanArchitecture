@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -20,14 +21,24 @@ import com.google.android.material.button.MaterialButton
 class AddressAdapter(var addressEntityList: List<Address>, var fragment: Fragment):RecyclerView.Adapter<AddressAdapter.AddressHolder>() {
 
     var getNewAddress = GetNewAddress()
+    var selectedAddressPositions = mutableListOf<Boolean>()
     companion object{
         var clickable = false
+    }
+    init {
+        for(i in addressEntityList.indices){
+            if(i==CartFragment.selectedAddressPosition){
+                selectedAddressPositions.add(true)
+            }
+            selectedAddressPositions.add(false)
+        }
     }
     inner class AddressHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val contactName = itemView.findViewById<TextView>(R.id.addressOwnerName)
         val address = itemView.findViewById<TextView>(R.id.address)
         val contactNumber = itemView.findViewById<TextView>(R.id.addressPhone)
         val editAddress = itemView.findViewById<MaterialButton>(R.id.editAddressButton)
+        val checkedAddress = itemView.findViewById<RadioButton>(R.id.itemSelectedAddress)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressHolder {
@@ -39,22 +50,41 @@ class AddressAdapter(var addressEntityList: List<Address>, var fragment: Fragmen
     }
 
     override fun onBindViewHolder(holder: AddressHolder, position: Int) {
+        println("ADDRESS LIST: $selectedAddressPositions")
         val address = "${addressEntityList[position].buildingName}, ${addressEntityList[position].streetName}," +
                 "${addressEntityList[position].city}, ${addressEntityList[position].state}, ${addressEntityList[position].postalCode}"
             holder.address.text = address
             holder.contactName.text = addressEntityList[position].addressContactName
             holder.contactNumber.text = addressEntityList[position].addressContactNumber
-
+        holder.checkedAddress.isChecked = selectedAddressPositions[position]
         holder.editAddress.setOnClickListener {
             SavedAddressList.editAddressEntity = addressEntityList[position]
             FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, getNewAddress,"Edit Address")
         }
         if(clickable){
+            holder.checkedAddress.visibility = View.VISIBLE
             holder.itemView.setOnClickListener {
+                CartFragment.selectedAddressPosition = position
                 CartFragment.selectedAddressEntity = addressEntityList[position]
                 clickable =false
                 fragment.parentFragmentManager.popBackStack()
             }
+        }
+        holder.checkedAddress.setOnClickListener {
+            selectedAddressPositions[position] = true
+            for(i in 0..<selectedAddressPositions.size){
+                if(position==i){
+                    selectedAddressPositions[i] = true
+                }
+                else{
+                    selectedAddressPositions[i] = false
+                }
+            }
+            notifyItemRangeChanged(0,addressEntityList.size)
+            CartFragment.selectedAddressPosition = position
+            CartFragment.selectedAddressEntity = addressEntityList[position]
+            clickable =false
+            fragment.parentFragmentManager.popBackStack()
         }
     }
 }

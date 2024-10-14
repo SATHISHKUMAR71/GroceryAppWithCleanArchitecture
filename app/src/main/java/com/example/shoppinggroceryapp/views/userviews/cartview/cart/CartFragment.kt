@@ -42,6 +42,7 @@ class CartFragment : Fragment() {
         var viewPriceDetailData = MutableLiveData(49f)
         var cartItemsSize = 0
         var selectedAddressEntity: Address? = null
+        var selectedAddressPosition = 0
     }
 
     var noOfItemsInt = 0
