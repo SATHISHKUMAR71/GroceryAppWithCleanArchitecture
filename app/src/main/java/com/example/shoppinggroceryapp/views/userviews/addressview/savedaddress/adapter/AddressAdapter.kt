@@ -1,5 +1,6 @@
 package com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.adapter
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.core.domain.user.Address
+import com.example.shoppinggroceryapp.MainActivity
+import com.example.shoppinggroceryapp.MainActivity.Companion.selectedAddress
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.framework.db.entity.user.AddressEntity
@@ -22,12 +25,13 @@ class AddressAdapter(var addressEntityList: List<Address>, var fragment: Fragmen
 
     var getNewAddress = GetNewAddress()
     var selectedAddressPositions = mutableListOf<Boolean>()
+
     companion object{
         var clickable = false
     }
     init {
         for(i in addressEntityList.indices){
-            if(i==CartFragment.selectedAddressPosition){
+            if(i== selectedAddress){
                 selectedAddressPositions.add(true)
             }
             selectedAddressPositions.add(false)
@@ -64,6 +68,7 @@ class AddressAdapter(var addressEntityList: List<Address>, var fragment: Fragmen
         if(clickable){
             holder.checkedAddress.visibility = View.VISIBLE
             holder.itemView.setOnClickListener {
+                saveAddressPosition(position)
                 CartFragment.selectedAddressPosition = position
                 CartFragment.selectedAddressEntity = addressEntityList[position]
                 clickable =false
@@ -71,6 +76,7 @@ class AddressAdapter(var addressEntityList: List<Address>, var fragment: Fragmen
             }
         }
         holder.checkedAddress.setOnClickListener {
+            saveAddressPosition(position)
             selectedAddressPositions[position] = true
             for(i in 0..<selectedAddressPositions.size){
                 if(position==i){
@@ -86,6 +92,14 @@ class AddressAdapter(var addressEntityList: List<Address>, var fragment: Fragmen
             clickable =false
             fragment.parentFragmentManager.popBackStack()
         }
+    }
+
+    fun saveAddressPosition(pos:Int){
+        val pref = fragment.requireActivity().getSharedPreferences("freshCart", Context.MODE_PRIVATE)
+        val editor =pref.edit()
+        editor.putInt("selectedAddress${MainActivity.userId}",pos)
+        selectedAddress = pos
+        editor.apply()
     }
 }
 

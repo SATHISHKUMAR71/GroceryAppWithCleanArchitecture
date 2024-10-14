@@ -24,9 +24,6 @@ import com.example.shoppinggroceryapp.views.sharedviews.profileviews.EditProfile
 
 
 class MainActivity : AppCompatActivity() {
-
-
-
     companion object{
         val handler = Handler(Looper.getMainLooper())
         var userFirstName = ""
@@ -35,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         var userEmail = ""
         var imageCache = LruCache<String,Bitmap>((Runtime.getRuntime().maxMemory()/4).toInt())
         var userPhone = ""
+        var selectedAddress = -1
         var cartId = 0
         var userImage = ""
         var isRetailer = false

@@ -148,7 +148,7 @@ class ProductListAdapter(var fragment: Fragment,
                         deliveryAddressFound.visibility = View.VISIBLE
                         deliveryAddressNotFound.visibility = View.GONE
                         if(selectedAddressEntity ==null){
-                            selectedAddressEntity = addressList[0]
+                            selectedAddressEntity = addressList[MainActivity.selectedAddress]
                         }
                         addressOwnerName.text = selectedAddressEntity?.addressContactName
                         val addressVal = "${selectedAddressEntity?.buildingName}, ${selectedAddressEntity?.streetName}, ${selectedAddressEntity?.city}, ${selectedAddressEntity?.state}\n${selectedAddressEntity?.postalCode}"

@@ -84,6 +84,7 @@ class EditProfileViewModel(private var mUpdateExistingUser:UpdateExistingUser, p
 
     fun resetDetails(sharedPreferences: SharedPreferences){
         val editor = sharedPreferences.edit()
+        editor.putInt("selectedAddress",0)
         editor.putBoolean("isSigned",false)
         editor.putBoolean("isRetailer",false)
         editor.putString("userFirstName",null)
