@@ -482,7 +482,14 @@ class AddOrEditProductFragment : Fragment() {
                     if (isCategoryImageAdded) {
                         addEditProductViewModel.updateInventory(brandNameStr, (ProductListFragment.selectedProductEntity.value == null), Product(0, 0, subCategoryName, productName.text.toString(), productDescription.text.toString(), productPrice.text.toString().toFloat(), productOffer.text.toString().toFloat(), productQuantity.text.toString(), mainImage, isVeg.isChecked, rawManufactureDate, rawExpiryDate, productAvailableItems.text.toString().toInt()), ProductListFragment.selectedProductEntity.value?.productId, imageListNames, deletedImageList,oldMainImage)
                         parentFragmentManager.popBackStack()
-                        Toast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT).show()
+                        if(ProductListFragment.selectedProductEntity.value==null) {
+                            Toast.makeText(context, "Product Added Successfully", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                        else{
+                            Toast.makeText(context, "Product Updated Successfully", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
                     else{
                         Toast.makeText(context, "Please add the Category Image", Toast.LENGTH_SHORT).show()
