@@ -166,9 +166,6 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
                         putString("brandName$i",cartWithProductList[position][i].brandName)
                     }
                 }
-
-//                OrderListFragment.correspondingCartList = cartWithProductList[position]
-
                 fragment.parentFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.anim.fade_in,
