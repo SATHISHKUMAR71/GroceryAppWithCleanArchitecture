@@ -51,7 +51,7 @@ class SavedAddressList : Fragment() {
     private lateinit var addressCount:TextView
     private lateinit var savedAddressToolbar:MaterialToolbar
     companion object{
-        var editAddressEntity: Address? = null
+//        var editAddressEntity: Address? = null
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

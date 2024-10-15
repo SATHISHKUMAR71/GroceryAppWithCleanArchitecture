@@ -15,6 +15,7 @@ import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.alertdialog.DataLossAlertDialog
+import com.example.shoppinggroceryapp.helpers.extensions.getAddress
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
@@ -47,7 +48,7 @@ class GetNewAddress : Fragment() {
     private lateinit var addressTopBar:MaterialToolbar
     private lateinit var addressInputChecker: InputChecker
     private lateinit var getAddressViewModel: GetAddressViewModel
-
+    private var editAddress :Address? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addressInputChecker = TextLayoutInputChecker()
@@ -63,8 +64,24 @@ class GetNewAddress : Fragment() {
         val retailerDao = db1.getRetailerDao()
         getAddressViewModel = ViewModelProvider(this, GroceryAppUserVMFactory(userDao, retailerDao))[GetAddressViewModel::class.java]
         initViews(view)
-        if(SavedAddressList.editAddressEntity !=null){
-            SavedAddressList.editAddressEntity?.let {
+        editAddress= arguments?.let {
+            Address(it.getInt("addressId"),MainActivity.userId.toInt(),it.getString("addressContactName",""),it.getString("addressContactNumber",""),
+                it.getString("buildingName",""),it.getString("streetName",""),it.getString("city",""),it.getString("state",""),"India",
+                it.getString("postalCode",""))
+        }
+//        if(SavedAddressList.editAddressEntity !=null){
+//            SavedAddressList.editAddressEntity?.let {
+//                fullName.setText(it.addressContactName)
+//                phone.setText(it.addressContactNumber)
+//                houseNo.setText(it.buildingName)
+//                street.setText(it.streetName)
+//                state.setText(it.state)
+//                city.setText(it.city)
+//                postalCode.setText(it.postalCode)
+//            }
+//        }
+        if(editAddress !=null){
+            editAddress?.let {
                 fullName.setText(it.addressContactName)
                 phone.setText(it.addressContactNumber)
                 houseNo.setText(it.buildingName)
@@ -84,10 +101,10 @@ class GetNewAddress : Fragment() {
             validateInput()
             if(fullNameLayout.error==null && houseLayout.error==null && phoneLayout.error==null &&streetLayout.error==null &&
                 cityLayout.error ==null && stateLayout.error==null && postalCodeLayout.error == null){
-                if(SavedAddressList.editAddressEntity !=null){
+                if(editAddress !=null){
                     getAddressViewModel.updateAddress(
                         Address(
-                            addressId = SavedAddressList.editAddressEntity!!.addressId,
+                            addressId = editAddress!!.addressId,
                             userId = MainActivity.userId.toInt(),
                             addressContactName = fullName.text.toString(),
                             addressContactNumber = phone.text.toString(),
@@ -173,7 +190,7 @@ class GetNewAddress : Fragment() {
         super.onStop()
         InitialFragment.hideSearchBar.value = false
         InitialFragment.hideBottomNav.value = false
-        SavedAddressList.editAddressEntity = null
+//        SavedAddressList.editAddressEntity = null
     }
 
     private fun addFocusChangeListeners(){
@@ -199,7 +216,7 @@ class GetNewAddress : Fragment() {
     }
 
     fun inputChangeChecker(){
-        SavedAddressList.editAddressEntity?.let {
+        editAddress?.let {
             if(it.city==city.text.toString() && it.state == state.text.toString() && it.addressContactNumber==phone.text.toString()
                 && it.buildingName==houseNo.text.toString() && it.addressContactName==fullName.text.toString() && it.streetName==street.text.toString()
                 && it.postalCode == postalCode.text.toString()){

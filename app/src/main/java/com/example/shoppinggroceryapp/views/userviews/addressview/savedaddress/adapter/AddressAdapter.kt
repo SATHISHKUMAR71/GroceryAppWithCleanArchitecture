@@ -62,7 +62,17 @@ class AddressAdapter(var addressEntityList: List<Address>, var fragment: Fragmen
             holder.contactNumber.text = addressEntityList[position].addressContactNumber
         holder.checkedAddress.isChecked = selectedAddressPositions[position]
         holder.editAddress.setOnClickListener {
-            SavedAddressList.editAddressEntity = addressEntityList[position]
+            getNewAddress.arguments = Bundle().apply {
+                this.putInt("addressId",addressEntityList[position].addressId)
+                this.putString("addressContactName",addressEntityList[position].addressContactName)
+                this.putString("addressContactNumber",addressEntityList[position].addressContactNumber)
+                this.putString("buildingName",addressEntityList[position].buildingName)
+                this.putString("streetName",addressEntityList[position].streetName)
+                this.putString("city",addressEntityList[position].city)
+                this.putString("state",addressEntityList[position].state)
+                this.putString("postalCode",addressEntityList[position].postalCode)
+            }
+//            SavedAddressList.editAddressEntity = addressEntityList[position]
             FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, getNewAddress,"Edit Address")
         }
         if(clickable){
