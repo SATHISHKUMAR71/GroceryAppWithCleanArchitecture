@@ -291,10 +291,39 @@ class OrderDetailFragment : Fragment() {
         }
 
         var totalItems = 0
-        for(i in OrderListFragment.correspondingCartList!!){
-            addView(productsContainer,i)
+        var i=0
+        var mainImageI:String? = null
+        var productNameI:String? = null
+        var descriptionI:String? =null
+        var manufactureDateI:String? = null
+        var expiryDateI:String? = null
+        var totalItemsI = -1
+        var unitPriceI = -1f
+        var productQuantityI:String? = null
+        var brandNameI:String? =null
+        while (true){
+            arguments?.let {
+                mainImageI = it.getString("mainImage$i")
+                productNameI = it.getString("productName$i")
+                descriptionI = it.getString("productDescription$i")
+                totalItemsI = it.getInt("totalItems$i")
+                unitPriceI = it.getFloat("unitPrice$i")
+                manufactureDateI = it.getString("manufactureDate$i")
+                expiryDateI = it.getString("expiryDate$i")
+                productQuantityI = it.getString("productQuantity$i")
+                brandNameI = it.getString("brandName$i")
+            }
+            if(manufactureDateI==null && mainImageI==null && productQuantityI==null && productNameI==null && descriptionI==null && expiryDateI==null && brandNameI==null){
+                break
+            }
+            addView(productsContainer,CartWithProductData(mainImageI,productNameI?:"",descriptionI?:"",totalItemsI,unitPriceI,manufactureDateI?:"",expiryDateI?:"",productQuantityI?:"",brandNameI?:""))
             totalItems++
+            i++
         }
+//        for(i in OrderListFragment.correspondingCartList!!){
+//            addView(productsContainer,i)
+//            totalItems++
+//        }
         val totalItemsStr = "MRP ($totalItems Products)"
         view.findViewById<TextView>(R.id.priceDetailsMrpTotalItems).text = totalItemsStr
         val totalPriceStr = "₹${totalPrice}"

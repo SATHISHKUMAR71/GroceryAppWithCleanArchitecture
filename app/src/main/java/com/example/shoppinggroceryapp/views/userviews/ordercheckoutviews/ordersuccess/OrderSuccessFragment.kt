@@ -9,38 +9,20 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
-import com.core.data.repository.AddressRepository
-import com.core.data.repository.AuthenticationRepository
-import com.core.data.repository.CartRepository
-import com.core.data.repository.HelpRepository
-import com.core.data.repository.OrderRepository
-import com.core.data.repository.ProductRepository
-import com.core.data.repository.SearchRepository
-import com.core.data.repository.SubscriptionRepository
-import com.core.data.repository.UserRepository
 import com.core.domain.order.DailySubscription
 import com.core.domain.order.MonthlyOnce
 import com.core.domain.order.OrderDetails
 import com.core.domain.order.TimeSlot
 import com.core.domain.order.WeeklyOnce
+import com.core.domain.products.CartWithProductData
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.MainActivity.Companion.cartId
 import com.example.shoppinggroceryapp.MainActivity.Companion.userId
 import com.example.shoppinggroceryapp.R
-import com.example.shoppinggroceryapp.framework.data.authentication.AuthenticationDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.address.AddressDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.cart.CartDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.help.HelpDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.order.OrderDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.product.ProductDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail.OrderDetailFragment
-import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.PaymentFragment
 import com.google.android.material.appbar.MaterialToolbar
@@ -113,11 +95,12 @@ class OrderSuccessFragment : Fragment() {
         orderSuccessViewModel.orderWithCart.observe(viewLifecycleOwner){
             if(it.values.isNotEmpty() && it.keys.isNotEmpty()) {
                 var selectedOrder:OrderDetails? = null
+                var cartProductData:List<CartWithProductData> = listOf()
                 for (i in it) {
                     selectedOrder = i.key
-                    OrderListFragment.correspondingCartList = i.value
+                    cartProductData = i.value
                 }
-                selectedOrder?.let { doFragmentTransaction(it) }
+                selectedOrder?.let { doFragmentTransaction(it,cartProductData) }
             }
         }
 
@@ -129,7 +112,10 @@ class OrderSuccessFragment : Fragment() {
         return view
     }
 
-    private fun doFragmentTransaction(selectedOrder:OrderDetails) {
+    private fun doFragmentTransaction(
+        selectedOrder: OrderDetails,
+        cartProductData: List<CartWithProductData>
+    ) {
         val orderDetailFrag = OrderDetailFragment()
 
         view?.findViewById<LinearLayout>(R.id.progressBarInOrderSummary)?.visibility = View.GONE
@@ -152,6 +138,18 @@ class OrderSuccessFragment : Fragment() {
             this.putString("deliveryStatus",selectedOrder.deliveryStatus)
             this.putString("deliveryDate",selectedOrder.deliveryDate)
             this.putString("orderedDate",selectedOrder.orderedDate)
+
+            for(i in cartProductData.indices){
+                putString("mainImage$i",cartProductData[i].mainImage)
+                putString("productName$i",cartProductData[i].productName)
+                putString("productDescription$i",cartProductData[i].productDescription)
+                putInt("totalItems$i",cartProductData[i].totalItems)
+                putFloat("unitPrice$i",cartProductData[i].unitPrice)
+                putString("manufactureDate$i",cartProductData[i].manufactureDate)
+                putString("expiryDate$i",cartProductData[i].expiryDate)
+                putString("productQuantity$i",cartProductData[i].productQuantity)
+                putString("brandName$i",cartProductData[i].brandName)
+            }
         }
         parentFragmentManager.beginTransaction()
             .setCustomAnimations(

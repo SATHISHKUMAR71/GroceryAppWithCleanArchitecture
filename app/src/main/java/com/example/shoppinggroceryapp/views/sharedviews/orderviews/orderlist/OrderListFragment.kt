@@ -48,17 +48,8 @@ import com.google.android.material.appbar.MaterialToolbar
 
 class OrderListFragment : Fragment() {
 
-
-    companion object{
-//        var selectedOrder: OrderDetails? = null
-        var correspondingCartList:List<CartWithProductData>? = null
-    }
-
     private lateinit var orderList:RecyclerView
     private lateinit var toolbar:MaterialToolbar
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -134,7 +125,7 @@ class OrderListFragment : Fragment() {
                 orderList.adapter = orderAdapter
                 orderList.layoutManager = LinearLayoutManager(context)
             }
-            OrderListAdapter.cartWithProductList = cartWithProductsList
+            orderAdapter.cartWithProductList = cartWithProductsList
         }
 
         if(!MainActivity.isRetailer) {

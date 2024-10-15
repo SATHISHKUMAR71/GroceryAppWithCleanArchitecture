@@ -119,8 +119,19 @@ class CustomerRequestListFragment : Fragment() {
                         this.putString("deliveryDate",selectedOrder.deliveryDate)
                         this.putString("orderedDate",selectedOrder.orderedDate)
                     }
+                    for(i in it.indices){
+                        putString("mainImage$i",it[i].mainImage)
+                        putString("productName$i",it[i].productName)
+                        putString("productDescription$i",it[i].productDescription)
+                        putInt("totalItems$i",it[i].totalItems)
+                        putFloat("unitPrice$i",it[i].unitPrice)
+                        putString("manufactureDate$i",it[i].manufactureDate)
+                        putString("expiryDate$i",it[i].expiryDate)
+                        putString("productQuantity$i",it[i].productQuantity)
+                        putString("brandName$i",it[i].brandName)
+                    }
                 }
-                OrderListFragment.correspondingCartList = it
+//                OrderListFragment.correspondingCartList = it
 //                OrderListFragment.selectedOrder = customerViewModel.selectedOrderLiveData.value
                 FragmentTransaction.navigateWithBackstack(parentFragmentManager,
                     customerDetailFragment,"Request Detail Fragment")

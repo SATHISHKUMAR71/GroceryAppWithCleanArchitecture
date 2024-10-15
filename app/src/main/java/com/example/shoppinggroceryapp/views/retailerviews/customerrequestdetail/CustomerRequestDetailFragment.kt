@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.core.domain.order.OrderDetails
+import com.core.domain.products.CartWithProductData
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.CustomerRequestListFragment
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail.OrderDetailFragment
+
 import com.google.android.material.appbar.MaterialToolbar
 
 class CustomerRequestDetailFragment : Fragment() {
@@ -35,6 +37,35 @@ class CustomerRequestDetailFragment : Fragment() {
                 it.getString("orderedDate",""),
             )
         }
+        val cartProductsData = mutableListOf<CartWithProductData>()
+        var i=0
+        var mainImageI:String? = null
+        var productNameI:String? = null
+        var descriptionI:String? =null
+        var manufactureDateI:String? = null
+        var expiryDateI:String? = null
+        var totalItemsI = -1
+        var unitPriceI = -1f
+        var productQuantityI:String? = null
+        var brandNameI:String? =null
+        while (true){
+            arguments?.let {
+                mainImageI = it.getString("mainImage$i")
+                productNameI = it.getString("productName$i")
+                descriptionI = it.getString("productDescription$i")
+                totalItemsI = it.getInt("totalItems$i")
+                unitPriceI = it.getFloat("unitPrice$i")
+                manufactureDateI = it.getString("manufactureDate$i")
+                expiryDateI = it.getString("expiryDate$i")
+                productQuantityI = it.getString("productQuantity$i")
+                brandNameI = it.getString("brandName$i")
+            }
+            if(manufactureDateI==null && mainImageI==null && productQuantityI==null && productNameI==null && descriptionI==null && expiryDateI==null && brandNameI==null){
+                break
+            }
+            cartProductsData.add(CartWithProductData(mainImageI,productNameI?:"",descriptionI?:"",totalItemsI,unitPriceI,manufactureDateI?:"",expiryDateI?:"",productQuantityI?:"",brandNameI?:""))
+            i++
+        }
         orderDetailFrag.arguments = Bundle().apply {
             putBoolean("hideToolBar",true)
             selectedOrder?.let {selectedOrders ->
@@ -47,6 +78,17 @@ class CustomerRequestDetailFragment : Fragment() {
                 this.putString("deliveryStatus",selectedOrders.deliveryStatus)
                 this.putString("deliveryDate",selectedOrders.deliveryDate)
                 this.putString("orderedDate",selectedOrders.orderedDate)
+            }
+            for(i in cartProductsData.indices){
+                putString("mainImage$i", cartProductsData[i].mainImage)
+                putString("productName$i", cartProductsData[i].productName)
+                putString("productDescription$i", cartProductsData[i].productDescription)
+                putInt("totalItems$i", cartProductsData[i].totalItems)
+                putFloat("unitPrice$i", cartProductsData[i].unitPrice)
+                putString("manufactureDate$i", cartProductsData[i].manufactureDate)
+                putString("expiryDate$i", cartProductsData[i].expiryDate)
+                putString("productQuantity$i", cartProductsData[i].productQuantity)
+                putString("brandName$i", cartProductsData[i].brandName)
             }
         }
         view.findViewById<MaterialToolbar>(R.id.customerRequestToolbar).setNavigationOnClickListener {

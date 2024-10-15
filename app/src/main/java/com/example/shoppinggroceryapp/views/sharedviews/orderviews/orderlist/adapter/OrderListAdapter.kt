@@ -29,10 +29,7 @@ import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.Ord
 
 class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:Fragment, var clickable:Boolean?,var orderListViewModel: OrderListViewModel):RecyclerView.Adapter<OrderListAdapter.OrderLayoutViewHolder>() {
 
-    companion object{
-        var cartWithProductList = mutableListOf<MutableList<CartWithProductData>>()
-    }
-
+    var cartWithProductList = mutableListOf<MutableList<CartWithProductData>>()
     inner class OrderLayoutViewHolder(orderView:View):RecyclerView.ViewHolder(orderView){
         val productNames = orderView.findViewById<TextView>(R.id.orderedProductsList)
         val deliveryDate = orderView.findViewById<TextView>(R.id.deliveryDate)
@@ -157,9 +154,21 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
                     this.putString("deliveryStatus",orderedItems[position].deliveryStatus)
                     this.putString("deliveryDate",orderedItems[position].deliveryDate)
                     this.putString("orderedDate",orderedItems[position].orderedDate)
+                    for(i in cartWithProductList[position].indices){
+                        putString("mainImage$i",cartWithProductList[position][i].mainImage)
+                        putString("productName$i",cartWithProductList[position][i].productName)
+                        putString("productDescription$i",cartWithProductList[position][i].productDescription)
+                        putInt("totalItems$i",cartWithProductList[position][i].totalItems)
+                        putFloat("unitPrice$i",cartWithProductList[position][i].unitPrice)
+                        putString("manufactureDate$i",cartWithProductList[position][i].manufactureDate)
+                        putString("expiryDate$i",cartWithProductList[position][i].expiryDate)
+                        putString("productQuantity$i",cartWithProductList[position][i].productQuantity)
+                        putString("brandName$i",cartWithProductList[position][i].brandName)
+                    }
                 }
 
-                OrderListFragment.correspondingCartList = cartWithProductList[position]
+//                OrderListFragment.correspondingCartList = cartWithProductList[position]
+
                 fragment.parentFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.anim.fade_in,
