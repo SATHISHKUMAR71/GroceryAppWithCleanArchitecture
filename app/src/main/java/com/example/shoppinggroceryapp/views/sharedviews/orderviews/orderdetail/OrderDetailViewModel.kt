@@ -93,7 +93,7 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
         }.start()
     }
 
-    fun assignText(timeSlot:Int,currentTime:Int):String?{
+    fun assignText(timeSlot:Int,currentTime:Int,selectedOrder:OrderDetails?):String?{
         var text =""
         when(timeSlot){
             0 -> {
@@ -101,7 +101,7 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
                     text = groceriesArrivingToday
                 }
                 else if(currentTime<6){
-                    if (OrderListFragment.selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
+                    if (selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
                         return "Next Delivery Today"
                     }
                 }
@@ -114,7 +114,7 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
                     text = groceriesArrivingToday
                 }
                 else if(currentTime<8){
-                    if (OrderListFragment.selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
+                    if (selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
                         return "Next Delivery Today"
                     }
                 }
@@ -127,7 +127,7 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
                     text = groceriesArrivingToday
                 }
                 else if(currentTime<14){
-                    if (OrderListFragment.selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
+                    if (selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
                         return "Next Delivery Today"
                     }
                 }
@@ -140,7 +140,7 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
                     text = groceriesArrivingToday
                 }
                 else if(currentTime<18){
-                    if (OrderListFragment.selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
+                    if (selectedOrder?.orderedDate!=DateGenerator.getCurrentDate()) {
                         return "Next Delivery Today"
                     }
                 }
@@ -153,15 +153,15 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
     }
 
 
-    fun assignDeliveryStatus(deliveryDate:String?):String?{
+    fun assignDeliveryStatus(deliveryDate:String?,selectedOrder: OrderDetails?):String?{
 
-        return if(OrderListFragment.selectedOrder!!.deliveryStatus=="Delivered"){
+        return if(selectedOrder!!.deliveryStatus=="Delivered"){
             "Delivered on ${DateGenerator.getDayAndMonth(deliveryDate?: DateGenerator.getDeliveryDate())}"
-        } else if((OrderListFragment.selectedOrder!!.deliveryStatus=="Pending")){
+        } else if((selectedOrder!!.deliveryStatus=="Pending")){
             "Delivery Expected on:  ${DateGenerator.getDayAndMonth(deliveryDate?: DateGenerator.getDeliveryDate())}"
-        } else if(OrderListFragment.selectedOrder!!.deliveryStatus == "Delayed"){
+        } else if(selectedOrder!!.deliveryStatus == "Delayed"){
             "Delivery Expected on:  ${DateGenerator.getDayAndMonth(DateGenerator.getDeliveryDate())}"
-        } else if(OrderListFragment.selectedOrder!!.deliveryStatus== "Cancelled"){
+        } else if(selectedOrder!!.deliveryStatus== "Cancelled"){
             null
         } else{
             "Delivery Expected on:  ${DateGenerator.getDayAndMonth(DateGenerator.getDeliveryDate())}"

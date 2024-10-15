@@ -20,6 +20,7 @@ import com.core.data.repository.SubscriptionRepository
 import com.core.data.repository.UserRepository
 import com.core.domain.order.DailySubscription
 import com.core.domain.order.MonthlyOnce
+import com.core.domain.order.OrderDetails
 import com.core.domain.order.TimeSlot
 import com.core.domain.order.WeeklyOnce
 import com.example.shoppinggroceryapp.MainActivity
@@ -110,13 +111,13 @@ class OrderSuccessFragment : Fragment() {
             }
         }
         orderSuccessViewModel.orderWithCart.observe(viewLifecycleOwner){
-
             if(it.values.isNotEmpty() && it.keys.isNotEmpty()) {
+                var selectedOrder:OrderDetails? = null
                 for (i in it) {
-                    OrderListFragment.selectedOrder = i.key
+                    selectedOrder = i.key
                     OrderListFragment.correspondingCartList = i.value
                 }
-                doFragmentTransaction()
+                selectedOrder?.let { doFragmentTransaction(it) }
             }
         }
 
@@ -128,7 +129,7 @@ class OrderSuccessFragment : Fragment() {
         return view
     }
 
-    private fun doFragmentTransaction() {
+    private fun doFragmentTransaction(selectedOrder:OrderDetails) {
         val orderDetailFrag = OrderDetailFragment()
 
         view?.findViewById<LinearLayout>(R.id.progressBarInOrderSummary)?.visibility = View.GONE
@@ -142,6 +143,15 @@ class OrderSuccessFragment : Fragment() {
         orderDetailFrag.arguments = Bundle().apply {
             putBoolean("hideToolBar",true)
             putBoolean("hideCancelOrderButton",true)
+            this.putInt("orderId",selectedOrder.orderId)
+            this.putInt("cartId",selectedOrder.cartId)
+            this.putInt("addressId",selectedOrder.addressId)
+            this.putString("paymentMode",selectedOrder.paymentMode)
+            this.putString("deliveryFrequency",selectedOrder.deliveryFrequency)
+            this.putString("paymentStatus",selectedOrder.paymentStatus)
+            this.putString("deliveryStatus",selectedOrder.deliveryStatus)
+            this.putString("deliveryDate",selectedOrder.deliveryDate)
+            this.putString("orderedDate",selectedOrder.orderedDate)
         }
         parentFragmentManager.beginTransaction()
             .setCustomAnimations(

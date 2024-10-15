@@ -50,7 +50,7 @@ class OrderListFragment : Fragment() {
 
 
     companion object{
-        var selectedOrder: OrderDetails? = null
+//        var selectedOrder: OrderDetails? = null
         var correspondingCartList:List<CartWithProductData>? = null
     }
 

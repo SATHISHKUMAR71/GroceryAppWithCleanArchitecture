@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.core.domain.order.OrderDetails
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.CustomerRequestListFragment
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
@@ -21,9 +22,32 @@ class CustomerRequestDetailFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_request_detail, container, false)
         val orderDetailFrag = OrderDetailFragment()
-
+        val selectedOrder = arguments?.let {
+            OrderDetails(
+                it.getInt("orderId",-1),
+                it.getInt("cartId",-1) ,
+                it.getInt("addressId",-1),
+                it.getString("paymentMode",""),
+                it.getString("deliveryFrequency",""),
+                it.getString("paymentStatus",""),
+                it.getString("deliveryStatus",""),
+                it.getString("deliveryDate",""),
+                it.getString("orderedDate",""),
+            )
+        }
         orderDetailFrag.arguments = Bundle().apply {
             putBoolean("hideToolBar",true)
+            selectedOrder?.let {selectedOrders ->
+                this.putInt("orderId",selectedOrders.orderId)
+                this.putInt("cartId",selectedOrders.cartId)
+                this.putInt("addressId",selectedOrders.addressId)
+                this.putString("paymentMode",selectedOrders.paymentMode)
+                this.putString("deliveryFrequency",selectedOrders.deliveryFrequency)
+                this.putString("paymentStatus",selectedOrders.paymentStatus)
+                this.putString("deliveryStatus",selectedOrders.deliveryStatus)
+                this.putString("deliveryDate",selectedOrders.deliveryDate)
+                this.putString("orderedDate",selectedOrders.orderedDate)
+            }
         }
         view.findViewById<MaterialToolbar>(R.id.customerRequestToolbar).setNavigationOnClickListener {
             parentFragmentManager.popBackStack()

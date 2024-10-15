@@ -106,10 +106,24 @@ class CustomerRequestListFragment : Fragment() {
         }
         customerViewModel.correspondingCartLiveData.observe(viewLifecycleOwner){
             if(it!=null) {
+                val customerDetailFragment = CustomerRequestDetailFragment()
+                customerDetailFragment.arguments = Bundle().apply {
+                    customerViewModel.selectedOrderLiveData.value?.let {selectedOrder ->
+                        this.putInt("orderId",selectedOrder.orderId)
+                        this.putInt("cartId",selectedOrder.cartId)
+                        this.putInt("addressId",selectedOrder.addressId)
+                        this.putString("paymentMode",selectedOrder.paymentMode)
+                        this.putString("deliveryFrequency",selectedOrder.deliveryFrequency)
+                        this.putString("paymentStatus",selectedOrder.paymentStatus)
+                        this.putString("deliveryStatus",selectedOrder.deliveryStatus)
+                        this.putString("deliveryDate",selectedOrder.deliveryDate)
+                        this.putString("orderedDate",selectedOrder.orderedDate)
+                    }
+                }
                 OrderListFragment.correspondingCartList = it
-                OrderListFragment.selectedOrder = customerViewModel.selectedOrderLiveData.value
+//                OrderListFragment.selectedOrder = customerViewModel.selectedOrderLiveData.value
                 FragmentTransaction.navigateWithBackstack(parentFragmentManager,
-                    CustomerRequestDetailFragment(),"Request Detail Fragment")
+                    customerDetailFragment,"Request Detail Fragment")
             }
         }
         return view

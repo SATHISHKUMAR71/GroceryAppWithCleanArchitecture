@@ -32,6 +32,7 @@ import com.core.data.repository.SubscriptionRepository
 import com.core.data.repository.UserRepository
 import com.core.domain.order.DailySubscription
 import com.core.domain.order.MonthlyOnce
+import com.core.domain.order.OrderDetails
 import com.core.domain.order.TimeSlot
 import com.core.domain.order.WeeklyOnce
 import com.example.shoppinggroceryapp.MainActivity
@@ -86,7 +87,7 @@ class OrderSummaryFragment : Fragment() {
     private lateinit var noteForUserLayout: LinearLayout
     private lateinit var dayOfMonth:MaterialAutoCompleteTextView
     private lateinit var deliveryDate:TextView
-
+    private var selectedOrder:OrderDetails? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -109,7 +110,19 @@ class OrderSummaryFragment : Fragment() {
         val totalAmount = view.findViewById<TextView>(R.id.priceDetailsTotalAmountOrderSummary)
         continueToPayment = view.findViewById(R.id.continueButtonOrderSummary)
         viewProductDetails = view.findViewById(R.id.viewPriceDetailsButtonOrderSummary)
-
+        selectedOrder = arguments?.let {
+            OrderDetails(
+                it.getInt("orderId",-1),
+                it.getInt("cartId",-1) ,
+                it.getInt("addressId",-1),
+                it.getString("paymentMode",""),
+                it.getString("deliveryFrequency",""),
+                it.getString("paymentStatus",""),
+                it.getString("deliveryStatus",""),
+                it.getString("deliveryDate",""),
+                it.getString("orderedDate",""),
+            )
+        }
         val orderSummaryToolBar = view.findViewById<MaterialToolbar>(R.id.orderSummaryToolbar)
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
@@ -349,7 +362,7 @@ class OrderSummaryFragment : Fragment() {
         paymentFragment.arguments =orderSummaryViewModel.putBundleValuesForOrder(timeSlot,deliveryFrequency.text.toString(),dayOfMonth, dayOfWeek)
         val timeId = orderSummaryViewModel.timeIdForOrder
         if(tmpAddress!=0 && tmpCart != 0 && tmpOrderId!=0){
-            OrderListFragment.selectedOrder?.let {
+            selectedOrder?.let {
                 orderSummaryViewModel.updateOrderDetails(it.copy(deliveryFrequency = deliveryFrequency.text.toString()))
                 orderSummaryViewModel.updateTimeSlot(TimeSlot(tmpOrderId!!,timeId))
                 orderSummaryViewModel.updateSubscription(deliveryFrequency.text.toString(),tmpOrderId,dayOfMonth, dayOfWeek)

@@ -3,6 +3,7 @@ package com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.ad
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -145,7 +146,19 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
                 FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, Help(),"Help")
             }
             else {
-                OrderListFragment.selectedOrder = orderedItems[position]
+                val orderDetailFragment = OrderDetailFragment()
+                orderDetailFragment.arguments = Bundle().apply {
+                    this.putInt("orderId",orderedItems[position].orderId)
+                    this.putInt("cartId",orderedItems[position].cartId)
+                    this.putInt("addressId",orderedItems[position].addressId)
+                    this.putString("paymentMode",orderedItems[position].paymentMode)
+                    this.putString("deliveryFrequency",orderedItems[position].deliveryFrequency)
+                    this.putString("paymentStatus",orderedItems[position].paymentStatus)
+                    this.putString("deliveryStatus",orderedItems[position].deliveryStatus)
+                    this.putString("deliveryDate",orderedItems[position].deliveryDate)
+                    this.putString("orderedDate",orderedItems[position].orderedDate)
+                }
+
                 OrderListFragment.correspondingCartList = cartWithProductList[position]
                 fragment.parentFragmentManager.beginTransaction()
                     .setCustomAnimations(
@@ -154,7 +167,7 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
                         R.anim.fade_in,
                         R.anim.fade_out
                     )
-                    .replace(R.id.fragmentMainLayout, OrderDetailFragment())
+                    .replace(R.id.fragmentMainLayout, orderDetailFragment)
                     .addToBackStack("Order Detail Fragment")
                     .commit()
             }
