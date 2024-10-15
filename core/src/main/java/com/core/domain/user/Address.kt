@@ -1,5 +1,6 @@
 package com.core.domain.user
 
+
 data class Address (
     val addressId:Int,
     val userId:Int,
