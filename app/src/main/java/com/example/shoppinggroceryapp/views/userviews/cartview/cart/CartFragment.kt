@@ -1,7 +1,9 @@
 package com.example.shoppinggroceryapp.views.userviews.cartview.cart
 
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.MutableLiveData
@@ -32,6 +35,7 @@ import com.example.shoppinggroceryapp.views.userviews.addressview.getaddress.Get
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersummary.OrderSummaryFragment
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressList
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.google.android.material.button.MaterialButton
 
 import java.io.File
@@ -62,7 +66,7 @@ class CartFragment : Fragment() {
         recyclerView = view.findViewById<RecyclerView>(R.id.cartList)
         var fileDir = File(requireContext().filesDir,"AppImages")
         val db = AppDatabase.getAppDatabase(requireContext()).getUserDao()
-        bottomLayout = view.findViewById<LinearLayout>(R.id.linearLayout11)
+        bottomLayout = view.findViewById(R.id.linearLayout11)
         price = view.findViewById<MaterialButton>(R.id.viewPriceDetailsButton)
 
         val continueButton = view.findViewById<MaterialButton>(R.id.continueButton)
@@ -84,7 +88,7 @@ class CartFragment : Fragment() {
 
         price.setOnClickListener {
 //            view.findViewById<AppBarLayout>(R.id.carttoolbar).setExpanded(false,false)
-            (recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(noOfItemsInt,-50)
+            (recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(noOfItemsInt,-500)
         }
         cartViewModel.getProductsByCartId(MainActivity.cartId)
         cartViewModel.cartProducts.observe(viewLifecycleOwner){
@@ -94,7 +98,6 @@ class CartFragment : Fragment() {
             price.visibility =View.VISIBLE
             adapter.noOfItemLiveData.value = str
             savedPosition?.let {value ->
-
                 (recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(value)
                 if(value+2>noOfItemsInt){
                     (recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(value-1)
@@ -141,8 +144,6 @@ class CartFragment : Fragment() {
             }
         }
 
-
-
         return view
     }
 
@@ -161,6 +162,7 @@ class CartFragment : Fragment() {
         InitialFragment.hideSearchBar.value = false
         savedPosition = (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
     }
+
 
 
     override fun onDestroy() {

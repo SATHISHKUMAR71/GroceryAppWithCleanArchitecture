@@ -241,31 +241,21 @@ class ProductListAdapter(var fragment: Fragment,
                         paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                         visibility = View.VISIBLE
                     }
-//                    holder.itemView.findViewById<TextView>(R.id.productMrpText).text = str
-//                    holder.itemView.findViewById<TextView>(R.id.productMrpText).paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-//                    holder.itemView.findViewById<TextView>(R.id.productMrpText).visibility = View.VISIBLE
-
                     val offerText = productEntityList[position].offer.toInt().toString() + "% Off"
                     holder.itemView.findViewById<TextView>(R.id.offerText).apply {
                         visibility = View.VISIBLE
                         text = offerText
                     }
-//                    holder.itemView.findViewById<TextView>(R.id.offerText).visibility = View.VISIBLE
-//                    holder.itemView.findViewById<TextView>(R.id.offerText).text = offerText
                 } else {
                     val str = "MRP"
                     holder.itemView.findViewById<TextView>(R.id.productMrpText).apply {
                         text = str
                         paintFlags = 0
                     }
-//                    holder.itemView.findViewById<TextView>(R.id.productMrpText).text = str
-//                    holder.itemView.findViewById<TextView>(R.id.productMrpText).paintFlags = 0
                     holder.itemView.findViewById<TextView>(R.id.offerText).apply {
                         text = null
                         visibility = View.GONE
                     }
-//                    holder.itemView.findViewById<TextView>(R.id.offerText).text = null
-//                    holder.itemView.findViewById<TextView>(R.id.offerText).visibility = View.GONE
                 }
                 holder.itemView.findViewById<TextView>(R.id.productNameLong).text = productEntityList[position].productName
                 holder.itemView.findViewById<TextView>(R.id.productExpiryDate).text =
@@ -279,6 +269,50 @@ class ProductListAdapter(var fragment: Fragment,
                 val url = (productEntityList[position].mainImage)
                 SetProductImage.setImageView(holder.itemView.findViewById(R.id.productImageLong), url, file)
                 setUpListeners(holder, position)
+                if(tag=="C"){
+
+                    holder.itemView.findViewById<MaterialButton>(R.id.deleteButton).visibility = View.VISIBLE
+                    holder.itemView.findViewById<MaterialButton>(R.id.deleteButton).setOnClickListener {
+                        if ((holder.absoluteAdapterPosition == position) || ((tag == "C") && (holder.absoluteAdapterPosition == position + 1))) {
+                            productsSize--
+                            var positionVal = calculateDiscountPrice(
+                                productEntityList[position].price,
+                                productEntityList[position].offer
+                            )
+                            positionVal *= (countList[position])
+                            var count = countList[position]
+                            productListViewModel.getSpecificCart(
+                                MainActivity.cartId,
+                                productEntityList[position].productId.toInt()
+                            ) { cart ->
+                                if (cart != null) {
+                                    productListViewModel.removeProductInCart(cart)
+                                }
+                                CartFragment.viewPriceDetailData.postValue(CartFragment.viewPriceDetailData.value!! - positionVal)
+                            }
+                            productEntityList.removeAt(position)
+                            countList.removeAt(position)
+                            notifyItemRemoved(position + 1)
+                            if (productEntityList.size == 0) {
+                                notifyDataSetChanged()
+                            } else {
+                                notifyItemRangeChanged(
+                                    position + 1,
+                                    productEntityList.size + 1
+                                )
+                            }
+                            println("POSITION VALUE: before $positionVal count $count $countList product ${ProductListFragment.totalCost.value} cart: ${CartFragment.viewPriceDetailData.value}")
+                            FindNumberOfCartItems.productCount.value =
+                                FindNumberOfCartItems.productCount.value!! - 1
+                            ProductListFragment.totalCost.value =
+                                ProductListFragment.totalCost.value!! - positionVal
+//                            CartFragment.viewPriceDetailData.value =
+//                                CartFragment.viewPriceDetailData.value!! - positionVal
+                            println("POSITION VALUE: $positionVal count $count $countList product ${ProductListFragment.totalCost.value} cart: ${CartFragment.viewPriceDetailData.value}")
+
+                        }
+                    }
+                }
             }
         }
     }

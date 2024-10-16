@@ -370,7 +370,7 @@ class OrderDetailFragment : Fragment() {
                 .setPositiveButton("Yes"){dialog,_->
                     dialog.dismiss()
                     selectedOrder?.let {
-                        orderDetailViewModel.updateOrderDetails(it.copy(deliveryFrequency = "Once", deliveryStatus = "Cancelled"))
+                        orderDetailViewModel.updateOrderDetails(it.copy(deliveryStatus = "Cancelled"))
                         when(it.deliveryFrequency){
                             "Monthly Once" -> {orderDetailViewModel.deleteMonthly(it.orderId)}
                             "Weekly Once" -> {orderDetailViewModel.deleteWeekly(it.orderId)}

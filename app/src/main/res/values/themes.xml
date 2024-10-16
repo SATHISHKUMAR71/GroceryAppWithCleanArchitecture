@@ -6,5 +6,7 @@
 
     </style>
 
-    <style name="Theme.ShoppingGroceryApp" parent="Base.Theme.ShoppingGroceryApp" />
+    <style name="Theme.ShoppingGroceryApp" parent="Base.Theme.ShoppingGroceryApp" >
+
+    </style>
 </resources>
