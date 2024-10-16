@@ -58,6 +58,7 @@ import com.core.usecases.orderusecase.getordersusecase.GetSpecificDailyOrderWith
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificMonthlyOrderWithOrderId
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWithOrderId
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWithTimeSlot
+import com.core.usecases.productusecase.setproductusecase.RemoveFromRecentlyViewedProducts
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromDailySubscription
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromMonthlySubscription
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromWeeklySubscription
@@ -166,6 +167,7 @@ class GroceryAppSharedVMFactory (private val retailerDao:RetailerDao,
     private val mGetSpecificWeeklyOrderWithTimeSlot:GetSpecificWeeklyOrderWithTimeSlot by lazy { GetSpecificWeeklyOrderWithTimeSlot(subscriptionRepository) }
     private val mGetDailySubscriptionOrderWithTimeSlot:GetDailySubscriptionOrderWithTimeSlot by lazy { GetDailySubscriptionOrderWithTimeSlot(subscriptionRepository) }
     private val mGetCartItems: GetCartItems by lazy { GetCartItems(cartRepository) }
+    private val mRemoveFromRecentlyViewedProducts: RemoveFromRecentlyViewedProducts by lazy { RemoveFromRecentlyViewedProducts(productRepository) }
 
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T = with(modelClass){
@@ -189,7 +191,7 @@ class GroceryAppSharedVMFactory (private val retailerDao:RetailerDao,
                 OrderListViewModel(mGetOrderForUser,mUpdateOrderDetails, mGetOrderForUserMonthlySubscription, mGetOrderForUserDailySubscription, mGetOrderForUserWeeklySubscription, mGetOrdersForUserNoSubscription, mGetProductsWithCartData, mGetDeletedProductsWithCarId, mGetWeeklyOrders, mGetMonthlyOrders, mGetNormalOrder, mGetDailyOrders, mGetAllOrders,mGetDailySubscriptionOrderWithTimeSlot, mGetMonthlySubscriptionWithTimeSlot, mGetSpecificWeeklyOrderWithTimeSlot, mGetOrderedTimeSlot)
             }
             isAssignableFrom(ProductDetailViewModel::class.java)->{
-                ProductDetailViewModel(mDeleteProduct, mGetBrandName, mGetProductsByCartId, mGetProductInRecentList, mAddProductInRecentList, mGetSpecificProductInCart, mGetProductsByCategory, mAddProductInCart, mUpdateCartItems, mRemoveProductInCart, mGetImagesForProduct, mAddDeletedProductInDb)
+                ProductDetailViewModel(mDeleteProduct, mGetBrandName, mGetProductsByCartId, mGetProductInRecentList, mAddProductInRecentList, mGetSpecificProductInCart, mGetProductsByCategory, mAddProductInCart, mUpdateCartItems, mRemoveProductInCart, mGetImagesForProduct, mAddDeletedProductInDb,mRemoveFromRecentlyViewedProducts)
             }
             isAssignableFrom(ProductListViewModel::class.java)->{
                 ProductListViewModel(mGetProductsByCategory, mGetProductByName, mGetAllProducts,mAddProductInCart, mGetSpecificProductInCart, mGetBrandName, mRemoveProductInCart, mUpdateCartItems, mGetCartItems)

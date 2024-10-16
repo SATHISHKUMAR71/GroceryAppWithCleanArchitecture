@@ -23,6 +23,7 @@ interface ProductDataSource {
     fun getParentAndChildNames(): Map<ParentCategory, List<Category>>
 
     fun addProductInRecentlyViewedItems(recentlyViewedItems: RecentlyViewedItems)
+    fun removeProductInRecentlyViewedItems(recentlyViewedItems: RecentlyViewedItems)
     fun getParentCategoryList():List<ParentCategory>?
     fun getChildName(parent:String):List<String>?
 }

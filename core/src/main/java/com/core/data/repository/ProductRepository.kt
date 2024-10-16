@@ -131,4 +131,7 @@ class ProductRepository(private val productDataSource: ProductDataSource,private
         productDataSource.addProductInRecentlyViewedItems(recentlyViewedItem)
     }
 
+    fun removeProductInRecentlyViewedItems(recentlyViewedItem: RecentlyViewedItems){
+        productDataSource.removeProductInRecentlyViewedItems(recentlyViewedItem)
+    }
 }

@@ -175,6 +175,10 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
         retailerDao.addProductInRecentlyViewedItems(RecentlyViewedItemsEntity(recentlyViewedItems.recentlyViewedId,recentlyViewedItems.userId,recentlyViewedItems.productId))
     }
 
+    override fun removeProductInRecentlyViewedItems(recentlyViewedItems: RecentlyViewedItems) {
+        retailerDao.deleteRecentlyViewedItems(RecentlyViewedItemsEntity(recentlyViewedItems.recentlyViewedId,recentlyViewedItems.userId,recentlyViewedItems.productId))
+    }
+
     override fun getParentCategoryList(): List<ParentCategory>? {
         return  retailerDao.getParentCategoryList()?.map { ParentCategory(it.parentCategoryName,it.parentCategoryImage,it.parentCategoryDescription,it.isEssential) }
     }

@@ -19,6 +19,7 @@ import com.core.usecases.productusecase.retailerproductusecase.setretailerproduc
 import com.core.usecases.productusecase.retailerproductusecase.setretailerproduct.DeleteProduct
 import com.core.usecases.productusecase.retailerproductusecase.getretailerproduct.GetProductInRecentList
 import com.core.usecases.productusecase.setproductusecase.AddProductInRecentList
+import com.core.usecases.productusecase.setproductusecase.RemoveFromRecentlyViewedProducts
 import com.example.shoppinggroceryapp.MainActivity
 
 class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
@@ -32,7 +33,8 @@ class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
                              private val mUpdateCartItems: UpdateCartItems,
                              private val mRemoveProductInCart: RemoveProductInCart,
                              private val mGetImagesForProduct: GetImagesForProduct,
-                             private val mAddDeletedProductInDb: AddDeletedProductInDb
+                             private val mAddDeletedProductInDb: AddDeletedProductInDb,
+                             private val mRemoveFromRecentlyViewedProducts:RemoveFromRecentlyViewedProducts
 ):ViewModel() {
 
 
@@ -61,8 +63,12 @@ class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
 
     fun addInRecentlyViewedItems(productId: Long){
         Thread {
-
+//            mAddProductInRecentList.invoke((RecentlyViewedItems(0, MainActivity.userId.toInt(),productId)))
             if(mGetProductInRecentList.invoke(productId,MainActivity.userId.toInt())==null) {
+                mAddProductInRecentList.invoke((RecentlyViewedItems(0, MainActivity.userId.toInt(),productId)))
+            }
+            else{
+                mRemoveFromRecentlyViewedProducts.invoke(mGetProductInRecentList.invoke(productId,MainActivity.userId.toInt())!!)
                 mAddProductInRecentList.invoke((RecentlyViewedItems(0, MainActivity.userId.toInt(),productId)))
             }
         }.start()
