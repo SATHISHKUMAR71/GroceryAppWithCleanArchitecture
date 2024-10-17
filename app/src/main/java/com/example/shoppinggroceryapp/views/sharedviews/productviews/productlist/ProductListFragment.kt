@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.OptIn
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -221,11 +222,13 @@ class ProductListFragment : Fragment() {
                 productRV.adapter = adapter
                 productRV.layoutManager = LinearLayoutManager(requireContext())
             }
+            println("989898 adapter set product called on on line 224")
             adapter.setProducts(FilterFragment.list!!)
             if(FilterFragment.list!!.size==0){
                 hideProductRV()
             }
             else{
+                println("767623 show products called on 232")
                 showProductRV()
             }
         }
@@ -256,21 +259,32 @@ class ProductListFragment : Fragment() {
             }
             if(FilterFragment.list==null) {
                 if(BottomSheetDialogFragment.selectedOption.value==null) {
+                    println("989898 adapter set product called on line 260")
                     adapter.setProducts(it)
+                    if (it.isEmpty()) {
+                        hideProductRV()
+                    }
+                    else{
+                        println("767623 show products called on 268")
+                        showProductRV()
+                    }
                 }
                 else{
+                    println("989898 adapter set product called on line 270")
                     adapter.setProducts(productEntityList)
+                    if (productEntityList.size == 0) {
+                        hideProductRV()
+                    }
+                    else{
+                        println("767623 show products called on 279")
+                        showProductRV()
+                    }
                 }
                 if (productRV.adapter == null) {
                     productRV.adapter = adapter
                     productRV.layoutManager = LinearLayoutManager(context)
                 }
-                if (productEntityList.size == 0) {
-                    hideProductRV()
-                }
-                else{
-                    showProductRV()
-                }
+
             }
         }
         productListViewModel.productEntityCategoryList.observe(viewLifecycleOwner){
@@ -280,21 +294,38 @@ class ProductListFragment : Fragment() {
             realProductEntityList = it.toMutableList()
             if(FilterFragment.list==null) {
                 if(BottomSheetDialogFragment.selectedOption.value==null) {
+                    println("989898 adapter set product called on line 293 $it ${it.isEmpty()}")
                     adapter.setProducts(it)
+                    if (it.isEmpty()) {
+                        hideProductRV()
+                    }
+                    else{
+                        println("767623 show products called on 303")
+                        showProductRV()
+                    }
                 }
                 else{
+                    println("989898 adapter set product called on line 303")
                     adapter.setProducts(productEntityList)
+                    if (productEntityList.size == 0) {
+                        hideProductRV()
+                    }
+                    else{
+                        println("767623 show products called on 314 ")
+                        showProductRV()
+                    }
                 }
                 if (productRV.adapter == null) {
                     productRV.adapter = adapter
                     productRV.layoutManager = LinearLayoutManager(requireContext())
                 }
-                if (productEntityList.size == 0) {
-                    hideProductRV()
-                }
-                else{
-                    showProductRV()
-                }
+//                if (productEntityList.size == 0) {
+//                    hideProductRV()
+//                }
+//                else{
+//                    println("767623 show products called on 326")
+//                    showProductRV()
+//                }
             }
         }
         sortButton.setOnClickListener {
@@ -366,24 +397,46 @@ class ProductListFragment : Fragment() {
                 productRV.adapter = adapter
                 productRV.layoutManager = LinearLayoutManager(requireContext())
             }
+            println("989898 adapter set product called on line 393")
             adapter.setProducts(FilterFragment.list!!)
             checkDeletedItem()
+            println("989898 adapter set product called on line 396")
             adapter.setProducts(FilterFragment.list!!)
             if (FilterFragment.list!!.size == 0) {
                 hideProductRV()
             }
             else{
+                println("767623 show products called on 409")
                 showProductRV()
             }
         }
 
         if(FilterFragment.list?.isNotEmpty()==true){
+            println("989898 adapter set product called on line 407")
             adapter.setProducts(FilterFragment.list!!)
+            if (FilterFragment.list!!.size == 0) {
+                hideProductRV()
+            }
+            else{
+                println("767623 show products called on 421")
+                showProductRV()
+            }
         }
         else if (productEntityList.isNotEmpty()) {
+            println("989898 adapter set product called on line 417")
             adapter.setProducts(productEntityList)
+            if (productEntityList.size == 0) {
+                hideProductRV()
+            }
+            else{
+                println("767623 show products called on 432 ")
+                showProductRV()
+            }
         }
+
         productRV.scrollToPosition(productListFirstVisiblePos ?: 0)
+
+        println("9090980 product list: $productEntityList")
     }
 
 
@@ -446,7 +499,8 @@ class ProductListFragment : Fragment() {
         }
     }
 
-    private fun showProductRV(){
+    private fun showProductRV() {
+        println("89890090 show called")
         productRV.animate()
             .alpha(1f)
             .setDuration(50)
@@ -466,6 +520,7 @@ class ProductListFragment : Fragment() {
     }
 
     private fun hideProductRV(){
+        println("89890090 before HIDE PRODUCT RV IS CALLED ${productRV.isVisible} ${notifyNoItems.isVisible} ${noItemsImage.isVisible}")
         productRV.animate()
             .alpha(0f)
             .setDuration(50)
@@ -481,5 +536,6 @@ class ProductListFragment : Fragment() {
             .setDuration(50)
             .withEndAction { noItemsImage.visibility = View.VISIBLE }
             .start()
+        println("89890090 after HIDE PRODUCT RV IS CALLED ${productRV.isVisible} ${notifyNoItems.isVisible} ${noItemsImage.isVisible}")
     }
 }

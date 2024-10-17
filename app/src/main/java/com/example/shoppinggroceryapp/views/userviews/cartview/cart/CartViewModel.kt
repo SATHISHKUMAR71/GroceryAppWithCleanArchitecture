@@ -27,6 +27,7 @@ class CartViewModel(private val mGetProductsByCartId: GetProductsByCartId,
         Thread{
             val list = mGetCartItems.invoke(cartId)
             var price = 49f
+            println("CART ITEMS: $list")
             for(i in list){
                 price += (i.unitPrice*i.totalItems)
             }

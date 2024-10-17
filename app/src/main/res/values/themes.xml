@@ -5,8 +5,29 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
 
     </style>
-
     <style name="Theme.ShoppingGroceryApp" parent="Base.Theme.ShoppingGroceryApp" >
+
+    </style>
+    <style name="Theme.App" parent="Theme.Material3.Light.NoActionBar">
+
+        <item name="sliderStyle">@style/Widget.App.Slider</item>
+    </style>
+
+    <style name="Widget.App.Slider" parent="Widget.Material3.Slider.Legacy">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Slider</item>
+        <item name="labelStyle">@style/Widget.App.Tooltip</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Slider" parent="">
+
+    </style>
+
+    <style name="Widget.App.Tooltip" parent="Widget.Material3.Tooltip">
+        <item name="android:textAppearance">@style/TextAppearance.App.Tooltip</item>
+
+    </style>
+
+    <style name="TextAppearance.App.Tooltip" parent="TextAppearance.Material3.BodySmall">
 
     </style>
 </resources>

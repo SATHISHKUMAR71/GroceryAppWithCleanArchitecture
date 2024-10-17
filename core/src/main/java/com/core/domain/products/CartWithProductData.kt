@@ -1,6 +1,7 @@
 package com.core.domain.products
 
 data class CartWithProductData (
+    val productId:Long,
     val mainImage:String?,
     val productName:String,
     val productDescription:String,

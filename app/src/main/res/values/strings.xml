@@ -9,4 +9,5 @@
     <string name="freshcart">Fresh Cart</string>
     <string name="login">Login</string>
     <string name="add_products_to_inventory">Add Products to Inventory</string>
+    <string name="slider_desc">price range slider</string>
 </resources>

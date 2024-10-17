@@ -1,6 +1,7 @@
 package com.example.shoppinggroceryapp.framework.db.entity.products
 
 data class CartWithProductDataEntity (
+    val productId:Long,
     val mainImage:String?,
     val productName:String,
     val productDescription:String,

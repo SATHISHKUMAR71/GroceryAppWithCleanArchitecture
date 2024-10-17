@@ -27,9 +27,12 @@ import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.helpers.imagehandlers.SetProductImage
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersummary.OrderSummaryFragment
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
+import com.example.shoppinggroceryapp.helpers.toast.ShowShortToast
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
+import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailFragment
+import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import java.io.File
@@ -247,6 +250,7 @@ class OrderDetailFragment : Fragment() {
             deliveryTimeSlot.text = text
             isTimeSlotAvailable.value = it
         }
+        orderDetailViewModel.selectedOrderProduct = MutableLiveData()
         isTimeSlotAvailable.observe(viewLifecycleOwner) { timeSlot ->
             orderDetailViewModel.date.observe(viewLifecycleOwner) {
                 val currentTime = DateGenerator.getCurrentTime()
@@ -292,6 +296,7 @@ class OrderDetailFragment : Fragment() {
 
         var totalItems = 0
         var i=0
+        var productId:Long = -1
         var mainImageI:String? = null
         var productNameI:String? = null
         var descriptionI:String? =null
@@ -303,6 +308,7 @@ class OrderDetailFragment : Fragment() {
         var brandNameI:String? =null
         while (true){
             arguments?.let {
+                productId = it.getLong("productId$i")
                 mainImageI = it.getString("mainImage$i")
                 productNameI = it.getString("productName$i")
                 descriptionI = it.getString("productDescription$i")
@@ -316,7 +322,7 @@ class OrderDetailFragment : Fragment() {
             if(manufactureDateI==null && mainImageI==null && productQuantityI==null && productNameI==null && descriptionI==null && expiryDateI==null && brandNameI==null){
                 break
             }
-            addView(productsContainer,CartWithProductData(mainImageI,productNameI?:"",descriptionI?:"",totalItemsI,unitPriceI,manufactureDateI?:"",expiryDateI?:"",productQuantityI?:"",brandNameI?:""))
+            addView(productsContainer,CartWithProductData(productId,mainImageI,productNameI?:"",descriptionI?:"",totalItemsI,unitPriceI,manufactureDateI?:"",expiryDateI?:"",productQuantityI?:"",brandNameI?:""))
             totalItems++
             i++
         }
@@ -348,6 +354,19 @@ class OrderDetailFragment : Fragment() {
         }
         else{
             view.findViewById<LinearLayout>(R.id.deliveryStatus).visibility = View.GONE
+        }
+        orderDetailViewModel.selectedOrderProduct.observe(viewLifecycleOwner){
+            if(it!=null) {
+                ProductListFragment.selectedProductEntity.value = it
+                FragmentTransaction.navigateWithBackstack(
+                    parentFragmentManager,
+                    ProductDetailFragment(),
+                    "product List"
+                )
+            }
+            else{
+                ShowShortToast.show("Product has been removed from inventory",requireContext())
+            }
         }
         return view
     }
@@ -384,12 +403,17 @@ class OrderDetailFragment : Fragment() {
                 }
                 .show()
         }
+
     }
 
 
     private fun addView(container:LinearLayout,productInfo: CartWithProductData){
         val newView =LayoutInflater.from(requireContext()).inflate(R.layout.ordered_product_layout,container,false)
         newView.findViewById<ImageView>(R.id.orderedProductImage)
+        newView.setOnClickListener {
+            println("SLECTED ORDER PRODUCT: in listener: ${productInfo.productId} ${productInfo.productName}")
+            orderDetailViewModel.getProductById(productInfo.productId)
+        }
         SetProductImage.setImageView(newView.findViewById(R.id.orderedProductImage),productInfo.mainImage?:"",
             File(requireContext().filesDir,"AppImages")
         )

@@ -135,11 +135,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="5dp"
-            android:id="@+id/linearLayout9"
+            android:id="@+id/linearLayout19"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/productExpiryLayout">
 
@@ -178,7 +179,7 @@
             android:gravity="center"
             app:icon="@drawable/delete_24px"
             app:layout_constraintEnd_toStartOf="@+id/buttonLayout"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
+            app:layout_constraintTop_toBottomOf="@+id/lastlyOrderedDate" />
         <LinearLayout
             android:id="@+id/buttonLayout"
             android:layout_marginTop="10dp"
@@ -186,7 +187,7 @@
             android:layout_width="110dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+            app:layout_constraintTop_toBottomOf="@+id/lastlyOrderedDate">
 
             <LinearLayout
                 android:id="@+id/productAddRemoveLayout"
@@ -194,7 +195,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/linearLayout9"
+                app:layout_constraintBottom_toBottomOf="@+id/lastlyOrderedDate"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/productExpiryDate">
 
@@ -271,28 +272,21 @@
                 android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
                 app:cornerRadius="4dp"
-                app:layout_constraintBottom_toBottomOf="@+id/linearLayout9"
+                app:layout_constraintBottom_toBottomOf="@+id/lastlyOrderedDate"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/productExpiryDate"
                 app:rippleColor="?attr/colorControlHighlight" />
-
         </LinearLayout>
-            <!--            <com.google.android.material.button.MaterialButton-->
-            <!--                android:id="@+id/productAddSymbolButtonOneTime"-->
-            <!--                style="@style/Widget.Material3.Button.TonalButton.Icon"-->
-            <!--                android:layout_width="48dp"-->
-            <!--                android:layout_height="54dp"-->
-            <!--                android:layout_alignParentEnd="true"-->
-            <!--                android:layout_marginTop="-3dp"-->
-            <!--                android:layout_marginBottom="-3dp"-->
-            <!--                app:iconTint="?attr/colorOnPrimary"-->
-            <!--                android:backgroundTint="?attr/colorPrimaryDark"-->
-            <!--                android:clickable="false"-->
-            <!--                app:cornerRadius="4dp"-->
-            <!--                app:icon="@drawable/add_24px"-->
-            <!--                app:iconGravity="start" />-->
-<!--        </LinearLayout>-->
 
+        <TextView
+            android:layout_marginStart="10dp"
+            android:id="@+id/lastlyOrderedDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lastly ordered on"
+            android:textColor="@color/offerColor"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout19"
+            tools:layout_editor_absoluteX="10dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

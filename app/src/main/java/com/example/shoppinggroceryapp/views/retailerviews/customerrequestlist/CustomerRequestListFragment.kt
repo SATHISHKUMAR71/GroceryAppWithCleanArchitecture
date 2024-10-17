@@ -120,6 +120,7 @@ class CustomerRequestListFragment : Fragment() {
                         this.putString("orderedDate",selectedOrder.orderedDate)
                     }
                     for(i in it.indices){
+                        putLong("productId$i",it[i].productId)
                         putString("mainImage$i",it[i].mainImage)
                         putString("productName$i",it[i].productName)
                         putString("productDescription$i",it[i].productDescription)

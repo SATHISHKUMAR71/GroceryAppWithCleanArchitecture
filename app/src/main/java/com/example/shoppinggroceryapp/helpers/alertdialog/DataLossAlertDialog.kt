@@ -3,20 +3,33 @@ package com.example.shoppinggroceryapp.helpers.alertdialog
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
 import androidx.fragment.app.FragmentManager
+import com.example.shoppinggroceryapp.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class DataLossAlertDialog {
     fun showDataLossAlertDialog(context: Context,parentFragmentManager:FragmentManager){
-        AlertDialog.Builder(context)
-            .setTitle("Confirm Exit")
+
+        var dialog = MaterialAlertDialogBuilder(context)
+            .setTitle("Confirm to Exit?")
             .setMessage("Your changes will not be saved. Do you want to exit?")
-            .setPositiveButton("Yes", DialogInterface.OnClickListener { dialog, which ->
+            .setPositiveButton("Exit", DialogInterface.OnClickListener { dialog, which ->
                 dialog.dismiss()
                 parentFragmentManager.popBackStack()
             })
-            .setNegativeButton("No", DialogInterface.OnClickListener { dialog, which ->
+
+            .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which ->
                 dialog.dismiss()
             })
-            .show()
+            .create()
+
+        dialog.setOnShowListener {
+            var positiveBtn = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            positiveBtn.setTextColor(Color.WHITE)
+            positiveBtn.setBackgroundColor(com.google.android.material.R.attr.colorErrorContainer)
+        }
+        dialog.show()
+
     }
 }

@@ -13,6 +13,7 @@ import com.core.usecases.productusecase.getproductusecase.GetAllProducts
 import com.core.usecases.productusecase.getproductusecase.GetBrandName
 import com.core.usecases.productusecase.getproductusecase.GetProductByName
 import com.core.usecases.productusecase.getproductusecase.GetProductsByCategory
+import com.core.usecases.userusecase.GetLastlyOrderedDateForProduct
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
@@ -27,6 +28,7 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
                            private val mGetBrandName: GetBrandName,
                            private val mRemoveProductInCart: RemoveProductInCart,
                            private val mUpdateCartItems: UpdateCartItems,
+                           private val mGetLastlyOrderedDate:GetLastlyOrderedDateForProduct,
                            private val mGetCartItems: GetCartItems
 ):ViewModel() {
 
@@ -64,6 +66,11 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
         }.start()
     }
 
+    fun getLastlyOrderedDate(userId: Int,productId: Long,callback:(String?)->Unit){
+        Thread{
+            callback(mGetLastlyOrderedDate.invoke(userId,productId))
+        }.start()
+    }
     fun addItemsInCart(cart: Cart){
         Thread{
             mAddProductInCart.invoke(cart)

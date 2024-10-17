@@ -65,7 +65,6 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
                         setBackgroundColor(Color.RED)
                         text = screen
                     }
-
                 }
 
                 "Delivered" -> {
@@ -86,38 +85,84 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
         else{
             holder.deliveryDate.setTextColor(ContextCompat.getColor(fragment.requireContext(),R.color.offerColor))
 //            holder.deliveryDate.setTextColor(androidx.appcompat.R.attr.colorControlHighlight)
-            when(orderedItems[position].deliveryFrequency){
-                "Weekly Once" -> {
-                    orderListViewModel.getWeeklySubscriptionDateWithTimeSlot(orderedItems[position].orderId){
-                        var data = ""
-                        for(i in it){
-                            data = orderListViewModel.getWeeklyPreparedData(i.key,i.value,orderedItems[position].orderedDate)
+            if(orderedItems[position].deliveryStatus!="Cancelled") {
+                when (orderedItems[position].deliveryFrequency) {
+                    "Weekly Once" -> {
+                        orderListViewModel.getWeeklySubscriptionDateWithTimeSlot(orderedItems[position].orderId) {
+                            var data = ""
+                            for (i in it) {
+                                data = orderListViewModel.getWeeklyPreparedData(
+                                    i.key,
+                                    i.value,
+                                    orderedItems[position].orderedDate
+                                )
+                            }
+                            MainActivity.handler.post {
+                                holder.deliveryDate.text = data
+                            }
                         }
-                        MainActivity.handler.post{
-                            holder.deliveryDate.text = data
+                    }
+
+                    "Monthly Once" -> {
+                        orderListViewModel.getMonthlySubscriptionDateWithTime(orderedItems[position].orderId) {
+                            var data = ""
+                            for (i in it) {
+                                data = orderListViewModel.getMonthlyPreparedDate(
+                                    i.key,
+                                    i.value,
+                                    orderedItems[position].orderedDate
+                                )
+                            }
+                            MainActivity.handler.post {
+                                holder.deliveryDate.text = data
+                            }
+                        }
+                    }
+
+                    "Daily" -> {
+                        orderListViewModel.getDailySubscriptionDateWithTime(orderedItems[position].orderId) {
+                            var data = ""
+                            for (i in it) {
+                                data = orderListViewModel.getDailyPreparedData(
+                                    i.key,
+                                    i.value,
+                                    orderedItems[position].orderedDate
+                                )
+                            }
+                            MainActivity.handler.post {
+                                holder.deliveryDate.text = data
+                            }
                         }
                     }
                 }
-                "Monthly Once" -> {
-                    orderListViewModel.getMonthlySubscriptionDateWithTime(orderedItems[position].orderId){
-                        var data = ""
-                        for(i in it){
-                            data = orderListViewModel.getMonthlyPreparedDate(i.key,i.value,orderedItems[position].orderedDate)
-                        }
-                        MainActivity.handler.post{
-                            holder.deliveryDate.text = data
+            }
+            else{
+                when (orderedItems[position].deliveryStatus) {
+                    "Pending" -> {
+                        val screen =
+                            "Expected On: ${DateGenerator.getDayAndMonth(orderedItems[position].deliveryDate)}"
+                        holder.deliveryDate.text = screen
+                    }
+
+                    "Cancelled" -> {
+                        val screen = "Order Cancelled"
+                        holder.deliveryDate.apply {
+                            setTextColor(Color.WHITE)
+                            setBackgroundColor(Color.RED)
+                            text = screen
                         }
                     }
-                }
-                "Daily"->{
-                    orderListViewModel.getDailySubscriptionDateWithTime(orderedItems[position].orderId){
-                        var data = ""
-                        for(i in it){
-                            data = orderListViewModel.getDailyPreparedData(i.key,i.value,orderedItems[position].orderedDate)
-                        }
-                        MainActivity.handler.post{
-                            holder.deliveryDate.text = data
-                        }
+
+                    "Delivered" -> {
+                        val screen =
+                            "Delivered On: ${DateGenerator.getDayAndMonth(orderedItems[position].deliveryDate)}"
+                        holder.deliveryDate.text = screen
+                    }
+
+                    else -> {
+                        val screen =
+                            "Expected On: ${DateGenerator.getDayAndMonth(orderedItems[position].deliveryDate)}"
+                        holder.deliveryDate.text = screen
                     }
                 }
             }
@@ -155,6 +200,7 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
                     this.putString("deliveryDate",orderedItems[position].deliveryDate)
                     this.putString("orderedDate",orderedItems[position].orderedDate)
                     for(i in cartWithProductList[position].indices){
+                        putLong("productId$i",cartWithProductList[position][i].productId)
                         putString("mainImage$i",cartWithProductList[position][i].mainImage)
                         putString("productName$i",cartWithProductList[position][i].productName)
                         putString("productDescription$i",cartWithProductList[position][i].productDescription)

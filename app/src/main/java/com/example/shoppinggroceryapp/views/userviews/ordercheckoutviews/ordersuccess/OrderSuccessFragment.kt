@@ -140,6 +140,7 @@ class OrderSuccessFragment : Fragment() {
             this.putString("orderedDate",selectedOrder.orderedDate)
 
             for(i in cartProductData.indices){
+                putLong("productId$i",cartProductData[i].productId)
                 putString("mainImage$i",cartProductData[i].mainImage)
                 putString("productName$i",cartProductData[i].productName)
                 putString("productDescription$i",cartProductData[i].productDescription)

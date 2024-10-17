@@ -22,6 +22,7 @@ import com.core.usecases.cartusecase.getcartusecase.GetProductsWithCartData
 import com.core.usecases.cartusecase.getcartusecase.GetSpecificProductInCart
 import com.core.usecases.cartusecase.setcartusecase.RemoveProductInCart
 import com.core.usecases.cartusecase.setcartusecase.UpdateCartItems
+import com.core.usecases.filterusecases.GetAllBrands
 import com.core.usecases.orderusecase.getordersusecase.GetOrderForUser
 import com.core.usecases.subscriptionusecase.getsubscriptionusecase.GetOrderForUserDailySubscription
 import com.core.usecases.subscriptionusecase.getsubscriptionusecase.GetOrderForUserMonthlySubscription
@@ -58,10 +59,12 @@ import com.core.usecases.orderusecase.getordersusecase.GetSpecificDailyOrderWith
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificMonthlyOrderWithOrderId
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWithOrderId
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWithTimeSlot
+import com.core.usecases.productusecase.getproductusecase.GetProductsById
 import com.core.usecases.productusecase.setproductusecase.RemoveFromRecentlyViewedProducts
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromDailySubscription
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromMonthlySubscription
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromWeeklySubscription
+import com.core.usecases.userusecase.GetLastlyOrderedDateForProduct
 import com.example.shoppinggroceryapp.framework.data.address.AddressDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.authentication.AuthenticationDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.cart.CartDataSourceImpl
@@ -75,6 +78,7 @@ import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
 import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.login.LoginViewModel
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.signup.SignUpViewModel
+import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterViewModel
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail.OrderDetailViewModel
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListViewModel
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailViewModel
@@ -134,6 +138,7 @@ class GroceryAppSharedVMFactory (private val retailerDao:RetailerDao,
     private val addCartForUser: AddCartForUser by lazy { AddCartForUser(cartRepository) }
     private val mAddNewUser: AddNewUser by lazy { AddNewUser(userRepository) }
     private val mUpdateOrderDetails: UpdateOrderDetails by lazy { UpdateOrderDetails(orderRepository) }
+    private val mGetProductById : GetProductsById by lazy { GetProductsById(productRepository) }
     private val mGetSpecificAddress: GetSpecificAddress by lazy { GetSpecificAddress(addressRepository) }
     private val mGetSpecificDailyOrderWithOrderId: GetSpecificDailyOrderWithOrderId by lazy { GetSpecificDailyOrderWithOrderId(subscriptionRepository) }
     private val mGetSpecificMonthlyOrderWithOrderId: GetSpecificMonthlyOrderWithOrderId by lazy { GetSpecificMonthlyOrderWithOrderId(subscriptionRepository) }
@@ -167,6 +172,8 @@ class GroceryAppSharedVMFactory (private val retailerDao:RetailerDao,
     private val mGetSpecificWeeklyOrderWithTimeSlot:GetSpecificWeeklyOrderWithTimeSlot by lazy { GetSpecificWeeklyOrderWithTimeSlot(subscriptionRepository) }
     private val mGetDailySubscriptionOrderWithTimeSlot:GetDailySubscriptionOrderWithTimeSlot by lazy { GetDailySubscriptionOrderWithTimeSlot(subscriptionRepository) }
     private val mGetCartItems: GetCartItems by lazy { GetCartItems(cartRepository) }
+    private val mGetAllBrands:GetAllBrands by lazy { GetAllBrands(productRepository) }
+    private val mGetLastlyOrderedDateForProduct:GetLastlyOrderedDateForProduct by lazy { GetLastlyOrderedDateForProduct(productRepository) }
     private val mRemoveFromRecentlyViewedProducts: RemoveFromRecentlyViewedProducts by lazy { RemoveFromRecentlyViewedProducts(productRepository) }
 
 
@@ -185,7 +192,7 @@ class GroceryAppSharedVMFactory (private val retailerDao:RetailerDao,
                 SignUpViewModel(mGetUserByInputData,mAddNewUser)
             }
             isAssignableFrom(OrderDetailViewModel::class.java) -> {
-                OrderDetailViewModel(mUpdateOrderDetails, mGetSpecificAddress, mGetSpecificDailyOrderWithOrderId, mGetSpecificMonthlyOrderWithOrderId, mGetSpecificWeeklyOrderWithOrderId, mRemoveOrderFromMonthlySubscription, mRemoveOrderFromDailySubscription, mRemoveOrderFromWeeklySubscription, mGetOrderedTimeSlot)
+                OrderDetailViewModel(mUpdateOrderDetails, mGetSpecificAddress, mGetSpecificDailyOrderWithOrderId, mGetSpecificMonthlyOrderWithOrderId, mGetSpecificWeeklyOrderWithOrderId, mRemoveOrderFromMonthlySubscription, mRemoveOrderFromDailySubscription, mRemoveOrderFromWeeklySubscription,mGetProductById, mGetOrderedTimeSlot)
             }
             isAssignableFrom(OrderListViewModel::class.java)->{
                 OrderListViewModel(mGetOrderForUser,mUpdateOrderDetails, mGetOrderForUserMonthlySubscription, mGetOrderForUserDailySubscription, mGetOrderForUserWeeklySubscription, mGetOrdersForUserNoSubscription, mGetProductsWithCartData, mGetDeletedProductsWithCarId, mGetWeeklyOrders, mGetMonthlyOrders, mGetNormalOrder, mGetDailyOrders, mGetAllOrders,mGetDailySubscriptionOrderWithTimeSlot, mGetMonthlySubscriptionWithTimeSlot, mGetSpecificWeeklyOrderWithTimeSlot, mGetOrderedTimeSlot)
@@ -194,9 +201,11 @@ class GroceryAppSharedVMFactory (private val retailerDao:RetailerDao,
                 ProductDetailViewModel(mDeleteProduct, mGetBrandName, mGetProductsByCartId, mGetProductInRecentList, mAddProductInRecentList, mGetSpecificProductInCart, mGetProductsByCategory, mAddProductInCart, mUpdateCartItems, mRemoveProductInCart, mGetImagesForProduct, mAddDeletedProductInDb,mRemoveFromRecentlyViewedProducts)
             }
             isAssignableFrom(ProductListViewModel::class.java)->{
-                ProductListViewModel(mGetProductsByCategory, mGetProductByName, mGetAllProducts,mAddProductInCart, mGetSpecificProductInCart, mGetBrandName, mRemoveProductInCart, mUpdateCartItems, mGetCartItems)
+                ProductListViewModel(mGetProductsByCategory, mGetProductByName, mGetAllProducts,mAddProductInCart, mGetSpecificProductInCart, mGetBrandName, mRemoveProductInCart, mUpdateCartItems,mGetLastlyOrderedDateForProduct, mGetCartItems)
             }
-
+            isAssignableFrom(FilterViewModel::class.java) -> {
+                FilterViewModel(mGetAllBrands)
+            }
             else -> {
                 throw IllegalArgumentException("unknown viewmodel: ${modelClass.name}")
             }

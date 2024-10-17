@@ -39,6 +39,7 @@ class CustomerRequestDetailFragment : Fragment() {
         }
         val cartProductsData = mutableListOf<CartWithProductData>()
         var i=0
+        var productId:Long = -1
         var mainImageI:String? = null
         var productNameI:String? = null
         var descriptionI:String? =null
@@ -50,6 +51,7 @@ class CustomerRequestDetailFragment : Fragment() {
         var brandNameI:String? =null
         while (true){
             arguments?.let {
+                productId = it.getLong("productId$i")
                 mainImageI = it.getString("mainImage$i")
                 productNameI = it.getString("productName$i")
                 descriptionI = it.getString("productDescription$i")
@@ -63,7 +65,7 @@ class CustomerRequestDetailFragment : Fragment() {
             if(manufactureDateI==null && mainImageI==null && productQuantityI==null && productNameI==null && descriptionI==null && expiryDateI==null && brandNameI==null){
                 break
             }
-            cartProductsData.add(CartWithProductData(mainImageI,productNameI?:"",descriptionI?:"",totalItemsI,unitPriceI,manufactureDateI?:"",expiryDateI?:"",productQuantityI?:"",brandNameI?:""))
+            cartProductsData.add(CartWithProductData(productId,mainImageI,productNameI?:"",descriptionI?:"",totalItemsI,unitPriceI,manufactureDateI?:"",expiryDateI?:"",productQuantityI?:"",brandNameI?:""))
             i++
         }
         orderDetailFrag.arguments = Bundle().apply {

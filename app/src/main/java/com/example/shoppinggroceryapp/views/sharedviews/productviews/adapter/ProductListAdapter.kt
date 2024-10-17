@@ -228,7 +228,26 @@ class ProductListAdapter(var fragment: Fragment,
                         }
                     }
                 }
-
+                if((!MainActivity.isRetailer) && !isShort) {
+                    productListViewModel.getLastlyOrderedDate(
+                        MainActivity.userId.toInt(),
+                        productEntityList[position].productId
+                    ) {
+                        println("ON THE LASTLY ORDERED PRODUCT: $it")
+                        if(it!=null){
+                            holder.itemView.findViewById<TextView>(R.id.lastlyOrderedDate).apply {
+                                visibility = View.VISIBLE
+                                text = "Lastly Ordered On ${DateGenerator.getDayAndMonth(it)}"
+                            }
+                        }
+                        else{
+                            holder.itemView.findViewById<TextView>(R.id.lastlyOrderedDate).visibility = View.GONE
+                        }
+                    }
+                }
+                else if(MainActivity.isRetailer && !isShort){
+                    holder.itemView.findViewById<TextView>(R.id.lastlyOrderedDate).visibility = View.GONE
+                }
                 productListViewModel.getBrandName(productEntityList[position].brandId) { brand ->
                     MainActivity.handler.post {
                         holder.itemView.findViewById<TextView>(R.id.brandName).text = brand
@@ -471,7 +490,7 @@ class ProductListAdapter(var fragment: Fragment,
     }
 
     fun setProducts(newList:List<Product>){
-
+        println("989898 adapter set product called on adapter setproducts called $newList")
         if(tag=="C"){
             productsSize = newList.size
             for(i in newList.indices){

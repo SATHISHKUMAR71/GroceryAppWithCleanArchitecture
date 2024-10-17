@@ -35,6 +35,9 @@ interface RetailerDao: UserDao {
     @Query("SELECT * FROM DailySubscriptionEntity")
     fun getDailySubscription():List<DailySubscriptionEntity>?
 
+    @Query("SELECT BrandDataEntity.brandName FROM BrandDataEntity Order by BrandDataEntity.brandName")
+    fun getAllBrands():List<String>
+
     @Query("SELECT * FROM TimeSlotEntity")
     fun getOrderTimeSlot():List<TimeSlotEntity>?
 
@@ -58,6 +61,9 @@ interface RetailerDao: UserDao {
 
     @Query("SELECT * FROM ProductEntity ORDER BY productId DESC")
     fun getLastProduct():ProductEntity?
+
+    @Query("SELECT OrderDetailsEntity.orderedDate FROM OrderDetailsEntity JOIN CartMappingEntity on CartMappingEntity.cartId=OrderDetailsEntity.cartId join CartEntity on CartEntity.cartId=OrderDetailsEntity.cartId where CartMappingEntity.status='not available' and CartEntity.productId=:productId and CartMappingEntity.userId=:userId and (OrderDetailsEntity.deliveryStatus!='Cancelled' or OrderDetailsEntity.deliveryFrequency!='Once') ORDER BY OrderDetailsEntity.orderedDate DESC" )
+    fun getLastlyOrderedDate(userId:Int,productId: Long):String?
 
     @Update
     fun updateProduct(productEntity: ProductEntity)

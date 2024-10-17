@@ -21,9 +21,10 @@ interface ProductDataSource {
     fun getDeletedProductsWithCartId(cartId:Int):List<CartWithProductData>?
     fun getImagesForProduct(productId: Long):List<Images>?
     fun getParentAndChildNames(): Map<ParentCategory, List<Category>>
-
+    fun getAllBrands():List<String>
     fun addProductInRecentlyViewedItems(recentlyViewedItems: RecentlyViewedItems)
     fun removeProductInRecentlyViewedItems(recentlyViewedItems: RecentlyViewedItems)
     fun getParentCategoryList():List<ParentCategory>?
     fun getChildName(parent:String):List<String>?
+    fun getLastlyOrderedProductDate(userId: Int,productId: Long):String?
 }

@@ -66,7 +66,7 @@ class OrderDataSourceImpl(private val retailerDao:RetailerDao):CustomerOrderData
 
         retailerDao.getOrderWithProductsWithOrderId(orderId)?.let {orderDetailsMap ->
             for( i in orderDetailsMap){
-                map[convertorHelper.convertOrderEntityToOrderDetails(i.key)] = i.value.map { CartWithProductData(it.mainImage,it.productName,it.productDescription,it.totalItems,it.unitPrice,
+                map[convertorHelper.convertOrderEntityToOrderDetails(i.key)] = i.value.map { CartWithProductData(it.productId,it.mainImage,it.productName,it.productDescription,it.totalItems,it.unitPrice,
                     it.manufactureDate,it.expiryDate,it.productQuantity,it.brandName) }
             }
         }

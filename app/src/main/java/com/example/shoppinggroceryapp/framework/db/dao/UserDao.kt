@@ -273,7 +273,7 @@ interface UserDao {
     @Query("SELECT * From CartMappingEntity Where CartMappingEntity.userId=:userId and CartMappingEntity.status!='available'")
     fun getCartId(userId:Int):List<CartMappingEntity>?
 
-    @Query("SELECT * FROM CartEntity WHERE CartEntity.cartId=:cartId")
+    @Query("SELECT * FROM CartEntity Inner join ProductEntity on ProductEntity.productId=CartEntity.productId WHERE CartEntity.cartId=:cartId")
     fun getCartItems(cartId:Int):List<CartEntity>?
 
     @Query("SELECT ProductEntity.* FROM CartEntity Join ProductEntity ON ProductEntity.productId = CartEntity.productId WHERE CartEntity.cartId=:cartId")
@@ -293,7 +293,7 @@ interface UserDao {
     fun updateOrderDetails(orderDetailsEntity: OrderDetailsEntity)
 
     @Query(
-        "SELECT ProductEntity.mainImage AS mainImage,ProductEntity.productName AS productName,ProductEntity.productDescription as productDescription,CartEntity.totalItems as totalItems,CartEntity.unitPrice as unitPrice,ProductEntity.manufactureDate AS manufactureDate" +
+        "SELECT ProductEntity.productId as productId,ProductEntity.mainImage AS mainImage,ProductEntity.productName AS productName,ProductEntity.productDescription as productDescription,CartEntity.totalItems as totalItems,CartEntity.unitPrice as unitPrice,ProductEntity.manufactureDate AS manufactureDate" +
                 ",ProductEntity.expiryDate as expiryDate,ProductEntity.productQuantity as productQuantity,BrandDataEntity.brandName as brandName FROM CartEntity Join ProductEntity ON ProductEntity.productId=CartEntity.productId JOIN BrandDataEntity ON BrandDataEntity.brandId=ProductEntity.brandId WHERE CartEntity.cartId=:cartId"
     )
     fun getProductsWithCartData(cartId:Int):List<CartWithProductDataEntity>?
@@ -302,7 +302,7 @@ interface UserDao {
     fun addOrder(order:OrderDetailsEntity):Long?
 
     @Query(
-        "SELECT DeletedProductListEntity.mainImage AS mainImage,DeletedProductListEntity.productName AS productName,DeletedProductListEntity.productDescription as productDescription,CartEntity.totalItems as totalItems,CartEntity.unitPrice as unitPrice,DeletedProductListEntity.manufactureDate AS manufactureDate" +
+        "SELECT DeletedProductListEntity.productId as productId,DeletedProductListEntity.mainImage AS mainImage,DeletedProductListEntity.productName AS productName,DeletedProductListEntity.productDescription as productDescription,CartEntity.totalItems as totalItems,CartEntity.unitPrice as unitPrice,DeletedProductListEntity.manufactureDate AS manufactureDate" +
                 ",DeletedProductListEntity.expiryDate as expiryDate,DeletedProductListEntity.productQuantity as productQuantity,BrandDataEntity.brandName as brandName FROM CartEntity Join DeletedProductListEntity ON DeletedProductListEntity.productId=CartEntity.productId JOIN BrandDataEntity ON BrandDataEntity.brandId=DeletedProductListEntity.brandId WHERE CartEntity.cartId=:cartId"
     )
     fun getDeletedProductsWithCartId(cartId:Int):List<CartWithProductDataEntity>?
@@ -345,7 +345,7 @@ interface UserDao {
     fun getImagesForProduct(productId: Long):List<ImagesEntity>?
 
     @Query(
-        "SELECT OrderDetailsEntity.*,ProductEntity.mainImage AS mainImage,ProductEntity.productName AS productName,ProductEntity.productDescription as productDescription,CartEntity.totalItems as totalItems," +
+        "SELECT OrderDetailsEntity.*,ProductEntity.productId as productId,ProductEntity.mainImage AS mainImage,ProductEntity.productName AS productName,ProductEntity.productDescription as productDescription,CartEntity.totalItems as totalItems," +
                 "CartEntity.unitPrice as unitPrice,ProductEntity.manufactureDate AS manufactureDate,ProductEntity.expiryDate as expiryDate,ProductEntity.productQuantity as productQuantity,BrandDataEntity.brandName as brandName FROM OrderDetailsEntity JOIN CartEntity ON CartEntity.cartId=OrderDetailsEntity.cartId JOIN ProductEntity ON ProductEntity.productId=CartEntity.productId JOIN BrandDataEntity ON BrandDataEntity.brandId=ProductEntity.brandId WHERE OrderDetailsEntity.orderId=:orderId"
     )
     fun getOrderWithProductsWithOrderId(orderId: Int):Map<OrderDetailsEntity,List<CartWithProductDataEntity>>?

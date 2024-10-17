@@ -80,6 +80,9 @@ class MainActivity : AppCompatActivity() {
                 cartId = cart.cartId
             }
         }.start()
+        Thread{
+            println("767676 ${db2.getProductsByCartId(MainActivity.cartId)} product list: ${db2.getProductById(8)}")
+        }.start()
     }
 
     override fun onLowMemory() {

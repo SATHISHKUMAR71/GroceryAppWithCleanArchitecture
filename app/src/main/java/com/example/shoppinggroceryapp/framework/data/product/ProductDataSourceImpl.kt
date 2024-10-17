@@ -68,7 +68,7 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
     }
     override fun getDeletedProductsWithCartId(cartId: Int): List<CartWithProductData>? {
         return retailerDao.getDeletedProductsWithCartId(cartId)?.let { cartProductList ->
-            cartProductList.map { CartWithProductData(it.mainImage,it.productName,it.productDescription,it.totalItems,it.unitPrice
+            cartProductList.map { CartWithProductData(it.productId,it.mainImage,it.productName,it.productDescription,it.totalItems,it.unitPrice
                 ,it.manufactureDate,it.expiryDate,it.productQuantity,it.brandName) }
         }
 
@@ -171,6 +171,10 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
         return mapData
     }
 
+    override fun getAllBrands(): List<String> {
+        return retailerDao.getAllBrands()
+    }
+
     override fun addProductInRecentlyViewedItems(recentlyViewedItems: RecentlyViewedItems) {
         retailerDao.addProductInRecentlyViewedItems(RecentlyViewedItemsEntity(recentlyViewedItems.recentlyViewedId,recentlyViewedItems.userId,recentlyViewedItems.productId))
     }
@@ -185,6 +189,10 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
 
     override fun getChildName(parent: String): List<String>? {
         return retailerDao.getChildName(parent)?.map { it.categoryName }
+    }
+
+    override fun getLastlyOrderedProductDate(userId: Int, productId: Long): String? {
+        return retailerDao.getLastlyOrderedDate(userId,productId)
     }
 
     override fun getImagesForProduct(productId: Long): List<Images>? {

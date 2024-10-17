@@ -40,7 +40,7 @@ class CartDataSourceImpl(private val userDao: UserDao):CartDataSource {
 
     override fun getProductsWithCartData(cartId: Int): List<CartWithProductData>? {
         return (userDao.getProductsWithCartData(cartId))?.let { cartDataList ->
-            cartDataList.map { CartWithProductData(it.mainImage,it.productName,it.productDescription,it.totalItems,it.unitPrice
+            cartDataList.map { CartWithProductData(it.productId,it.mainImage,it.productName,it.productDescription,it.totalItems,it.unitPrice
                 ,it.manufactureDate,it.expiryDate,it.productQuantity,it.brandName) }
         }
     }
@@ -48,7 +48,7 @@ class CartDataSourceImpl(private val userDao: UserDao):CartDataSource {
 
     override fun getDeletedProductsWithCartId(cartId: Int): List<CartWithProductData>? {
         return userDao.getDeletedProductsWithCartId(cartId)?.let { cartProductList ->
-            cartProductList.map { CartWithProductData(it.mainImage,it.productName,it.productDescription,it.totalItems,it.unitPrice
+            cartProductList.map { CartWithProductData(it.productId,it.mainImage,it.productName,it.productDescription,it.totalItems,it.unitPrice
                 ,it.manufactureDate,it.expiryDate,it.productQuantity,it.brandName) }
         }
     }

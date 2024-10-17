@@ -103,6 +103,13 @@ class ProductRepository(private val productDataSource: ProductDataSource,private
     fun getProductByCategory(query:String):List<Product>?{
         return productDataSource.getProductByCategory(query)
     }
+
+    fun getLastlyOrderedProduct(userId: Int,productId: Long):String?{
+        return productDataSource.getLastlyOrderedProductDate(userId, productId)
+    }
+    fun getAllBrands():List<String>{
+        return productDataSource.getAllBrands()
+    }
     fun getProductsByName(query: String): List<Product>? {
         return productDataSource.getProductsByName(query)
     }

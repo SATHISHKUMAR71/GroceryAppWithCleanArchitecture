@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.order.OrderDetails
+import com.core.domain.products.Product
 import com.core.domain.user.Address
 import com.core.usecases.addressusecase.GetSpecificAddress
 import com.core.usecases.orderusecase.updateorderusecase.UpdateOrderDetails
@@ -11,6 +12,7 @@ import com.core.usecases.orderusecase.getordersusecase.GetOrderedTimeSlot
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificDailyOrderWithOrderId
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificMonthlyOrderWithOrderId
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWithOrderId
+import com.core.usecases.productusecase.getproductusecase.GetProductsById
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromDailySubscription
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromMonthlySubscription
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromWeeklySubscription
@@ -25,9 +27,11 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
                            private val mRemoveOrderFromMonthlySubscription: RemoveOrderFromMonthlySubscription,
                            private val mRemoveOrderFromDailySubscription: RemoveOrderFromDailySubscription,
                            private val mRemoveOrderFromWeeklySubscription: RemoveOrderFromWeeklySubscription,
+                           private val mGetProductById:GetProductsById,
                            private val mGetOrderedTimeSlot: GetOrderedTimeSlot
 ): ViewModel() {
     var groceriesArrivingToday = "Groceries Arriving Today"
+    var selectedOrderProduct:MutableLiveData<Product> = MutableLiveData()
     var selectedAddress:MutableLiveData<Address> = MutableLiveData()
     var date:MutableLiveData<Int> = MutableLiveData()
     var timeSlot:MutableLiveData<Int> = MutableLiveData()
@@ -153,6 +157,11 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
     }
 
 
+    fun getProductById(productId:Long){
+        Thread{
+            selectedOrderProduct.postValue(mGetProductById.invoke(productId))
+        }.start()
+    }
     fun assignDeliveryStatus(deliveryDate:String?,selectedOrder: OrderDetails?):String?{
 
         return if(selectedOrder!!.deliveryStatus=="Delivered"){
