@@ -53,6 +53,7 @@ import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
 import com.example.shoppinggroceryapp.helpers.snackbar.ShowShortSnackBar
+import com.example.shoppinggroceryapp.helpers.toast.ShowShortToast
 import com.example.shoppinggroceryapp.views.GroceryAppRetailerVMFactory
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -169,11 +170,52 @@ class AddOrEditProductFragment : Fragment() {
 
         dateManufacturePicker.addOnPositiveButtonClickListener {
             rawManufactureDate = formatter.format(it)
+            var res:String? = null
+            if(rawExpiryDate.isNotEmpty()){
+                println("123321 manufacture date: manu date $rawManufactureDate expiry date: $rawExpiryDate compare: ${
+                    DateGenerator.compareDeliveryStatus(
+                        rawManufactureDate,
+                        rawExpiryDate
+                    )
+                }"
+                )
+                res = DateGenerator.compareDeliveryStatus(
+                    rawManufactureDate,
+                    rawExpiryDate
+                )
+            }
             productManufactureDate.setText(DateGenerator.getDayAndMonth(formatter.format(it)))
+            res?.let {
+                if(it=="Delivered" || it=="Out For Delivery"){
+                    productManufactureDate.setText("")
+                    ShowShortToast.show("Manufacture Date Should be minimum than expiry date",requireContext())
+                }
+            }
         }
         dateExpiryPicker.addOnPositiveButtonClickListener {
+            var res:String? = null
             rawExpiryDate = formatter.format(it)
+            if(rawManufactureDate.isNotEmpty()) {
+                println(
+                    "123321 manufacture date: manu date $rawManufactureDate expiry date: $rawExpiryDate compare: ${
+                        DateGenerator.compareDeliveryStatus(
+                            rawManufactureDate,
+                            rawExpiryDate
+                        )
+                    }"
+                )
+                res = DateGenerator.compareDeliveryStatus(
+                    rawManufactureDate,
+                    rawExpiryDate
+                )
+            }
             productExpiryDate.setText(DateGenerator.getDayAndMonth(formatter.format(it)))
+            res?.let {
+                if(it=="Delivered" || it=="Out For Delivery"){
+                    productExpiryDate.setText("")
+                    ShowShortToast.show("Expiry Date Should be maximum than Manufacture date",requireContext())
+                }
+            }
         }
 
         setUpDatePickerListeners(dateManufacturePicker,dateExpiryPicker)
