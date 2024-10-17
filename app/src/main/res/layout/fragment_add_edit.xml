@@ -311,7 +311,6 @@
                 android:id="@+id/expiryDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/productExpiryLayout"
                     android:layout_width="match_parent"
@@ -327,6 +326,14 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
+            <CheckBox
+                android:id="@+id/noExpiryDate"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Expiry Date"/>
             <CheckBox
                 android:id="@+id/productIsVegEditFrag"
                 android:layout_marginStart="30dp"

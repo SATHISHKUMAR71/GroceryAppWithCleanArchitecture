@@ -373,8 +373,14 @@ class ProductDetailFragment : Fragment() {
                 var offerStr =
                     ProductListFragment.selectedProductEntity.value?.offer?.toInt().toString() + "% Off"
                 offerView?.text = offerStr
-                view?.findViewById<TextView>(R.id.expiryDateProductDetail)?.text =
-                    DateGenerator.getDayAndMonth(ProductListFragment.selectedProductEntity.value?.expiryDate!!)
+                if(ProductListFragment.selectedProductEntity.value?.expiryDate?.isNotEmpty()==true) {
+                    view?.findViewById<TextView>(R.id.expiryDateProductDetail)?.apply {
+                        text = DateGenerator.getDayAndMonth(ProductListFragment.selectedProductEntity.value?.expiryDate!!)
+                    }
+                }
+                else{
+                    view?.findViewById<TextView>(R.id.expiryDateProductDetail)?.text = "No Expiry"
+                }
                 view?.findViewById<TextView>(R.id.manufactureDateProductDetail)?.text =
                     DateGenerator.getDayAndMonth(ProductListFragment.selectedProductEntity.value?.manufactureDate!!)
 

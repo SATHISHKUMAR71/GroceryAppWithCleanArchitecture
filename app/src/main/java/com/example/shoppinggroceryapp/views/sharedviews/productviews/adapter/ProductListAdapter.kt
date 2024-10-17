@@ -277,8 +277,14 @@ class ProductListAdapter(var fragment: Fragment,
                     }
                 }
                 holder.itemView.findViewById<TextView>(R.id.productNameLong).text = productEntityList[position].productName
-                holder.itemView.findViewById<TextView>(R.id.productExpiryDate).text =
-                    DateGenerator.getDayAndMonth(productEntityList[position].expiryDate)
+                if(productEntityList[position].expiryDate.isNotEmpty()) {
+                    holder.itemView.findViewById<LinearLayout>(R.id.productExpiryLayout).visibility = View.VISIBLE
+                    holder.itemView.findViewById<TextView>(R.id.productExpiryDate).text =
+                        DateGenerator.getDayAndMonth(productEntityList[position].expiryDate)
+                }
+                else{
+                    holder.itemView.findViewById<LinearLayout>(R.id.productExpiryLayout).visibility = View.GONE
+                }
                 holder.itemView.findViewById<TextView>(R.id.productQuantity).text = productEntityList[position].productQuantity
                 val price = "₹" + calculateDiscountPrice(
                     productEntityList[position].price,

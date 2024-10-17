@@ -17,6 +17,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.core.data.repository.AddressRepository
 import com.core.data.repository.AuthenticationRepository
@@ -227,6 +228,14 @@ class AddOrEditProductFragment : Fragment() {
         view.findViewById<MaterialToolbar>(R.id.materialToolbarEditProductFrag).setNavigationOnClickListener {
             inputChecker()
         }
+        view.findViewById<CheckBox>(R.id.noExpiryDate).setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked){
+                expiryDateLayout.visibility = View.GONE
+            }
+            else{
+                expiryDateLayout.visibility = View.VISIBLE
+            }
+        }
         return view
     }
 
@@ -316,7 +325,13 @@ class AddOrEditProductFragment : Fragment() {
         rawExpiryDate = it.expiryDate
         rawManufactureDate = it.manufactureDate
         productManufactureDate.setText(DateGenerator.getDayAndMonth(it.manufactureDate))
-        productExpiryDate.setText(DateGenerator.getDayAndMonth(it.expiryDate))
+        if(it.expiryDate.isNotEmpty()) {
+            productExpiryDate.setText(DateGenerator.getDayAndMonth(it.expiryDate))
+        }
+        else{
+            expiryDateLayout.visibility = View.GONE
+            view.findViewById<CheckBox>(R.id.noExpiryDate).isChecked = true
+        }
     }
 
     private fun initViews(view: View) {
@@ -555,7 +570,7 @@ class AddOrEditProductFragment : Fragment() {
                 productQuantityLayout.error == null&&
                 availableItemsLayout.error == null&&
                 manufactureDateLayout.error == null&&
-                expiryDateLayout.error == null)
+                (expiryDateLayout.error == null || !expiryDateLayout.isVisible))
     }
 
     private fun errorCheck() {
