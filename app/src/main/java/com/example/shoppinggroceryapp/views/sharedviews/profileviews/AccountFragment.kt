@@ -26,6 +26,7 @@ import com.core.data.repository.SubscriptionRepository
 import com.core.data.repository.UserRepository
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
+import com.example.shoppinggroceryapp.WishListFragment
 import com.example.shoppinggroceryapp.framework.data.authentication.AuthenticationDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.address.AddressDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.cart.CartDataSourceImpl
@@ -127,6 +128,9 @@ class AccountFragment : Fragment() {
             profileView.setPadding(0)
         }
 
+        view.findViewById<MaterialButton>(R.id.wishlist).setOnClickListener {
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,WishListFragment(),"Wish List Fragment")
+        }
         recentlyPurchasedItems = view.findViewById(R.id.recentlyPurchasedItemsList)
         editUser.getPurchasedProducts(MainActivity.userId.toInt())
         val adapter = ProductListAdapter(this,

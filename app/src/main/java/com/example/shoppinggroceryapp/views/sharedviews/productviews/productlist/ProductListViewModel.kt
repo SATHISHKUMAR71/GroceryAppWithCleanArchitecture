@@ -15,6 +15,7 @@ import com.core.usecases.productusecase.getproductusecase.GetAllProducts
 import com.core.usecases.productusecase.getproductusecase.GetBrandName
 import com.core.usecases.productusecase.getproductusecase.GetProductByName
 import com.core.usecases.productusecase.getproductusecase.GetProductsByCategory
+import com.core.usecases.productusecase.getproductusecase.GetWishListProducts
 import com.core.usecases.productusecase.getproductusecase.GetWishLists
 import com.core.usecases.productusecase.getproductusecase.RemoveFromWishList
 import com.core.usecases.productusecase.setproductusecase.UpdateAvailableProducts
@@ -35,6 +36,7 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
                            private val mGetBrandName: GetBrandName,
                            private val mRemoveProductInCart: RemoveProductInCart,
                            private val mUpdateCartItems: UpdateCartItems,
+                           private val mGetWishListProducts:GetWishListProducts,
                            private val mAddProductToWishList: AddProductToWishList,
                            private val mGetWishLists: GetWishLists,
                            private val mRemoveFromWishList: RemoveFromWishList,
@@ -114,6 +116,12 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
     fun updateProductInInventory(product: Product){
         Thread{
             mUpdateAvailableProducts.invoke(product)
+        }.start()
+    }
+
+    fun getWishedProducts(userId:Int){
+        Thread{
+            productEntityList.postValue(mGetWishListProducts.invoke(userId))
         }.start()
     }
 

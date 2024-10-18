@@ -217,6 +217,10 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
         return null
     }
 
+    override fun getWishedProductsList(userId: Int): List<Product> {
+        return retailerDao.getWishedProductList(userId).map { convertorHelper.convertProductEntityToProduct(it) }
+    }
+
     override fun getImagesForProduct(productId: Long): List<Images>? {
         return retailerDao.getImagesForProduct(productId)?.map { Images(it.imageId,it.productId,it.images) }
     }

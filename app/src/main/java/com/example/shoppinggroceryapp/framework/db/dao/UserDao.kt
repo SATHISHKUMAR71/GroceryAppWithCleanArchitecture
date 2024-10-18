@@ -38,6 +38,10 @@ import com.example.shoppinggroceryapp.framework.db.entity.user.UserEntity
 interface UserDao {
 
 
+
+    @Query("SELECT * FROM WishListEntity JOIN ProductEntity on ProductEntity.productId=WishListEntity.productId WHERE WishListEntity.userId=:userId")
+    fun getWishedProductList(userId: Int):List<ProductEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addUser(userEntity: UserEntity):Long
 

@@ -25,6 +25,10 @@ class ProductRepository(private val productDataSource: ProductDataSource,private
         productDataSource.addToWishList(wishList)
     }
 
+    fun getWishedProductsList(userId: Int):List<Product>{
+        return productDataSource.getWishedProductsList(userId)
+    }
+
     fun deleteWishList(wishList: WishList) {
         productDataSource.deleteWishList(wishList)
     }
