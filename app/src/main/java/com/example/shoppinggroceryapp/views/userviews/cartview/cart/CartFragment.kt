@@ -136,11 +136,27 @@ class CartFragment : Fragment() {
                 ShowShortSnackBar.showRedColor(view,"Please Add the Delivery Address to order Items")
             }
             else{
-                val orderSummaryFragment = OrderSummaryFragment()
-                orderSummaryFragment.arguments = Bundle().apply {
-                    putInt("noOfItems",noOfItemsInt)
+                var flag = true
+                cartViewModel.cartProducts.value?.let {
+                    for(i in it){
+                        if(i.availableItems==0){
+                            flag = false
+                            ShowShortSnackBar.showRedColor(view,"Please Remove Out of Stock Items from cart")
+                            break
+                        }
+                    }
                 }
-                FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderSummaryFragment,"Order Summary Fragment")
+                if(flag) {
+                    val orderSummaryFragment = OrderSummaryFragment()
+                    orderSummaryFragment.arguments = Bundle().apply {
+                        putInt("noOfItems", noOfItemsInt)
+                    }
+                    FragmentTransaction.navigateWithBackstack(
+                        parentFragmentManager,
+                        orderSummaryFragment,
+                        "Order Summary Fragment"
+                    )
+                }
             }
         }
 

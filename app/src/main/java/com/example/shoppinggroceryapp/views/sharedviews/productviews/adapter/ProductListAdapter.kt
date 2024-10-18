@@ -9,7 +9,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
@@ -24,11 +23,7 @@ import com.example.shoppinggroceryapp.views.userviews.cartview.FindNumberOfCartI
 import com.example.shoppinggroceryapp.helpers.imagehandlers.SetProductImage
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.cartview.diffutil.CartItemsDiffUtil
-import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
-import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
-import com.example.shoppinggroceryapp.framework.db.entity.order.CartEntity
-import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailFragment
@@ -210,15 +205,7 @@ class ProductListAdapter(var fragment: Fragment,
                 } else {
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.VISIBLE
                 }
-
-                if(productEntityList[position].availableItems<=countList[position]|| productEntityList[position].availableItems==0){
-                    holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
-                    holder.itemView.findViewById<TextView>(R.id.outOfStock).visibility = View.VISIBLE
-                }
-                else if(productEntityList[position].availableItems>countList[position]){
-                    holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.VISIBLE
-                    holder.itemView.findViewById<TextView>(R.id.outOfStock).visibility = View.GONE
-                }
+                isProductAvailable(holder, position)
                 productListViewModel.getSpecificCart(
                     MainActivity.cartId,
                     productEntityList[position].productId.toInt()
@@ -228,15 +215,8 @@ class ProductListAdapter(var fragment: Fragment,
                             countList[position] = cart.totalItems
                             holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).visibility = View.GONE
                             holder.itemView.findViewById<LinearLayout>(R.id.productAddRemoveLayout).visibility = View.VISIBLE
-                            if(productEntityList[position].availableItems<=countList[position]|| productEntityList[position].availableItems==0){
-                                holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.INVISIBLE
-                                holder.itemView.findViewById<TextView>(R.id.outOfStock).visibility = View.VISIBLE
-                            }
-                            else if(productEntityList[position].availableItems>countList[position]){
-                                holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.VISIBLE
-                                holder.itemView.findViewById<TextView>(R.id.outOfStock).visibility = View.GONE
-                            }
                             holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = cart.totalItems.toString()
+                            isProductAvailable(holder, position)
                         }
                     } else {
                         MainActivity.handler.post {
@@ -244,8 +224,10 @@ class ProductListAdapter(var fragment: Fragment,
                             holder.itemView.findViewById<LinearLayout>(R.id.productAddRemoveLayout).visibility = View.GONE
                             countList[position] = 0
                             holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = "0"
+                            isProductAvailable(holder, position)
                         }
                     }
+
                 }
                 if((!MainActivity.isRetailer) && !isShort) {
                     productListViewModel.getLastlyOrderedDate(
@@ -399,6 +381,7 @@ class ProductListAdapter(var fragment: Fragment,
                         FindNumberOfCartItems.productCount.value = FindNumberOfCartItems.productCount.value!!-1
                         holder.itemView.findViewById<LinearLayout>(R.id.productAddRemoveLayout).visibility = View.GONE
                         holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).visibility = View.VISIBLE
+                        checkIsProductAvailable(holder,position)
                     } else if (tag == "C") {
                         productListViewModel.getSpecificCart(MainActivity.cartId,productEntityList[position].productId.toInt()){ cart ->
                             if (cart != null) {
@@ -445,15 +428,8 @@ class ProductListAdapter(var fragment: Fragment,
                         ProductListFragment.totalCost.value!! - positionVal
                     CartFragment.viewPriceDetailData.value =
                         CartFragment.viewPriceDetailData.value!! - positionVal
-                    if(productEntityList[position].availableItems>countList[position]){
-                        holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.VISIBLE
-                        holder.itemView.findViewById<TextView>(R.id.outOfStock).visibility = View.GONE
-                    }
+                    checkIsProductAvailable(holder,position)
                 }
-//                if(productEntityList[position].availableItems>countList[position]){
-//                    holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.VISIBLE
-//                    holder.itemView.findViewById<TextView>(R.id.outOfStock).visibility = View.GONE
-//                }
             }
         }
 
@@ -482,12 +458,8 @@ class ProductListAdapter(var fragment: Fragment,
                 )
                 }
                 productListViewModel.updateItemsInCart(cartEntity)
-
-                if((productEntityList[position].availableItems<=countList[position]) || productEntityList[position].availableItems==0){
-                    holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.INVISIBLE
-                    holder.itemView.findViewById<TextView>(R.id.outOfStock).visibility = View.VISIBLE
-                }
                 holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = count.toString()
+                checkIsProductAvailable(holder,position)
             }
         }
 
@@ -522,7 +494,7 @@ class ProductListAdapter(var fragment: Fragment,
                 FindNumberOfCartItems.productCount.value = FindNumberOfCartItems.productCount.value!!+1
                 holder.itemView.findViewById<LinearLayout>(R.id.productAddRemoveLayout).visibility = View.VISIBLE
                 holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).visibility = View.GONE
-
+                checkIsProductAvailable(holder,position)
             }
         }
     }
@@ -569,5 +541,39 @@ class ProductListAdapter(var fragment: Fragment,
         noOfItemLiveData.value = noOfItems
     }
 
+    fun isProductAvailable(holder: ProductLargeImageHolder,position: Int){
+        var outOfStock = holder.itemView.findViewById<TextView>(R.id.outOfStock)
+        outOfStock.text = "Out Of Stocks"
+        if(productEntityList[position].availableItems!=0 && productEntityList[position].availableItems>countList[position]){
+            println("JUJUTSU ON IF LINE 542 ${productEntityList[position].productName}")
+            outOfStock.visibility = View.GONE
+            if(productEntityList[position].availableItems-countList[position]<100){
+                outOfStock.visibility = View.VISIBLE
+                outOfStock.text = "Few Stocks Left: ${productEntityList[position].availableItems-countList[position]}"
+                println("JUJUTSU on text change: in if")
+            }
+
+        }
+        else if(productEntityList[position].availableItems==0){
+            println("JUJUTSU ON ELSE IF LINE 546 ${productEntityList[position].productName} ${productEntityList[position].availableItems}")
+            outOfStock.visibility = View.VISIBLE
+            holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.INVISIBLE
+        }
+        else if((productEntityList[position].availableItems)<=countList[position]){
+            outOfStock.visibility = View.VISIBLE
+            holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.INVISIBLE
+        }
+
+    }
+
+    fun checkIsProductAvailable(holder: ProductLargeImageHolder,position: Int){
+        isProductAvailable(holder, position)
+        if(productEntityList[position].availableItems-countList[position]>0){
+            holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.VISIBLE
+        }
+        else{
+            holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.INVISIBLE
+        }
+    }
 
 }

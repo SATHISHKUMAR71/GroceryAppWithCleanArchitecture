@@ -269,12 +269,12 @@
         <TextView
             android:textAlignment="center"
             android:textSize="16sp"
-            android:id="@+id/outOfStock"
             android:visibility="gone"
+            android:id="@+id/outOfStock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#F42031"
-            android:text="No Stocks Left"/>
+            android:text="Currently Unavailable"/>
     </LinearLayout>
 
 </LinearLayout>

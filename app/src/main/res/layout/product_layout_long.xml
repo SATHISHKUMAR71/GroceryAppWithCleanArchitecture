@@ -46,6 +46,7 @@
             android:src="@drawable/grains_and_pulses"
             android:scaleType="fitXY"/>
         </LinearLayout>
+
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -236,30 +237,7 @@
                     android:layout_height="40dp"
                     android:backgroundTint="?attr/colorPrimaryDark"
                     android:src="@drawable/add_24px" />
-
-                <!--            <com.google.android.material.button.MaterialButton-->
-                <!--                android:id="@+id/productAddSymbolButton"-->
-                <!--                app:iconTint="?attr/colorOnPrimary"-->
-                <!--                android:backgroundTint="?attr/colorPrimaryDark"-->
-                <!--                style="@style/Widget.Material3.Button.TonalButton.Icon"-->
-                <!--                android:layout_width="48dp"-->
-                <!--                android:layout_height="48dp"-->
-                <!--                app:cornerRadius="6dp"-->
-                <!--                app:icon="@drawable/add_24px"/>-->
-
             </LinearLayout>
-
-            <!--        <LinearLayout-->
-            <!--            android:id="@+id/productAddLayoutOneTime"-->
-            <!--            android:layout_width="100dp"-->
-            <!--            android:layout_height="40dp"-->
-            <!--            android:background="@drawable/button_background"-->
-            <!--            android:clickable="true"-->
-            <!--            android:orientation="horizontal"-->
-            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--            app:layout_constraintEnd_toEndOf="parent"-->
-            <!--            app:layout_constraintTop_toBottomOf="@+id/productExpiryDate">-->
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/productAddLayoutOneTime"
                 style="@style/Widget.Material3.Button.OutlinedButton.Icon"
@@ -279,18 +257,6 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/outOfStock"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="No Stocks Left"
-            android:textAlignment="center"
-            android:textColor="#F42031"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lastlyOrderedDate" />
-        <TextView
             android:layout_marginStart="10dp"
             android:id="@+id/lastlyOrderedDate"
             android:layout_width="match_parent"
@@ -299,6 +265,17 @@
             android:textColor="@color/offerColor"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout19"
             tools:layout_editor_absoluteX="10dp" />
+
+        <TextView
+            android:id="@+id/outOfStock"
+            android:layout_width="95dp"
+            android:layout_height="wrap_content"
+            android:text="Out Of Stocks"
+            android:textAlignment="center"
+            android:textColor="#F42031"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
