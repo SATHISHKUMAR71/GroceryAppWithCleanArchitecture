@@ -28,6 +28,9 @@ class ProductRepository(private val productDataSource: ProductDataSource,private
         return productDataSource.getParentAndChildNames()
     }
 
+    fun updateAvailableProducts(product:Product){
+        productDataSource.updateAvailableProducts(product)
+    }
 
     fun addNewBrand(brandData: BrandData){
         retailerProductDataSource.addNewBrand(brandData)
@@ -128,6 +131,7 @@ class ProductRepository(private val productDataSource: ProductDataSource,private
     fun getDeletedProductsWithCartId(cartId:Int):List<CartWithProductData>? {
         return productDataSource.getDeletedProductsWithCartId(cartId)
     }
+
     fun getParentCategoryList():List<ParentCategory>?{
         return productDataSource.getParentCategoryList()
     }

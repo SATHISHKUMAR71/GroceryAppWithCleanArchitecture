@@ -34,6 +34,7 @@ import com.core.usecases.productusecase.getproductusecase.GetParentAndChildCateg
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificDailyOrderWithOrderId
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificMonthlyOrderWithOrderId
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWithOrderId
+import com.core.usecases.productusecase.setproductusecase.UpdateAvailableProducts
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromDailySubscription
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromMonthlySubscription
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromWeeklySubscription
@@ -116,6 +117,7 @@ class GroceryAppUserVMFactory (private val userDao: UserDao,
     private val mAddCartForUser: AddCartForUser by lazy { AddCartForUser(cartRepository) }
     private val mUpdateTimeSlot: UpdateTimeSlot by lazy { UpdateTimeSlot(subscriptionRepository) }
     private val mGetParentAndChild: GetParentAndChildCategories by lazy { GetParentAndChildCategories(productRepository) }
+    private val mUpdateAvailableProducts: UpdateAvailableProducts by lazy { UpdateAvailableProducts(productRepository) }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T = with(modelClass){
         when{
@@ -141,7 +143,7 @@ class GroceryAppUserVMFactory (private val userDao: UserDao,
                 OfferViewModel(mGetOfferedProducts)
             }
             isAssignableFrom(OrderSuccessViewModel::class.java)->{
-                OrderSuccessViewModel(mAddOrder, mGetOrderWithProductsByOrderId, mAddMonthlySubscription, mAddWeeklySubscription, mAddDailySubscription, mAddTimeSlot, mUpdateCart, mAddCartForUser, mGetCartForUser)
+                OrderSuccessViewModel(mAddOrder, mGetOrderWithProductsByOrderId, mAddMonthlySubscription, mAddWeeklySubscription,mUpdateAvailableProducts,mAddDailySubscription,mGetProductsById, mAddTimeSlot, mUpdateCart, mAddCartForUser, mGetCartForUser,mGetCartItems)
             }
             isAssignableFrom(OrderSummaryViewModel::class.java)->{
                 OrderSummaryViewModel(mGetProductsWithCartData, mUpdateOrderDetails, mUpdateTimeSlot, mAddMonthlySubscription, mAddWeeklySubscription, mAddDailySubscription, mGetSpecificMonthlyOrderWithOrderId, mGetSpecificWeeklyOrderWithOrderId, mGetSpecificDailyOrderWithOrderId, mRemoveOrderFromDailySubscription, mRemoveOrderFromWeeklySubscription, mRemoveOrderFromMonthlySubscription)

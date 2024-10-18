@@ -57,12 +57,14 @@ class ProductListAdapter(var fragment: Fragment,
     var grandTolAmtLiveData:MutableLiveData<String> = MutableLiveData()
     var totAmtWithFeeLiveData:MutableLiveData<String> = MutableLiveData()
     var noOfItemLiveData:MutableLiveData<String> = MutableLiveData()
-    var productEntityList:MutableList<Product> = mutableListOf()
+    val productEntityList:MutableList<Product> = mutableListOf()
 
     private var countList = mutableListOf<Int>()
+    private var availableItemsList = mutableListOf<Int>()
     init {
         for(i in 0..<productEntityList.size){
             countList.add(i,0)
+            availableItemsList.add(i,productEntityList[i].availableItems)
         }
     }
 
@@ -208,15 +210,32 @@ class ProductListAdapter(var fragment: Fragment,
                 } else {
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.VISIBLE
                 }
+
+                if(productEntityList[position].availableItems<=countList[position]|| productEntityList[position].availableItems==0){
+                    holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
+                    holder.itemView.findViewById<TextView>(R.id.outOfStock).visibility = View.VISIBLE
+                }
+                else if(productEntityList[position].availableItems>countList[position]){
+                    holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.VISIBLE
+                    holder.itemView.findViewById<TextView>(R.id.outOfStock).visibility = View.GONE
+                }
                 productListViewModel.getSpecificCart(
                     MainActivity.cartId,
                     productEntityList[position].productId.toInt()
                 ) { cart ->
                     if (cart != null) {
                         MainActivity.handler.post {
+                            countList[position] = cart.totalItems
                             holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).visibility = View.GONE
                             holder.itemView.findViewById<LinearLayout>(R.id.productAddRemoveLayout).visibility = View.VISIBLE
-                            countList[position] = cart.totalItems
+                            if(productEntityList[position].availableItems<=countList[position]|| productEntityList[position].availableItems==0){
+                                holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.INVISIBLE
+                                holder.itemView.findViewById<TextView>(R.id.outOfStock).visibility = View.VISIBLE
+                            }
+                            else if(productEntityList[position].availableItems>countList[position]){
+                                holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.VISIBLE
+                                holder.itemView.findViewById<TextView>(R.id.outOfStock).visibility = View.GONE
+                            }
                             holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = cart.totalItems.toString()
                         }
                     } else {
@@ -233,15 +252,18 @@ class ProductListAdapter(var fragment: Fragment,
                         MainActivity.userId.toInt(),
                         productEntityList[position].productId
                     ) {
-                        println("ON THE LASTLY ORDERED PRODUCT: $it")
-                        if(it!=null){
-                            holder.itemView.findViewById<TextView>(R.id.lastlyOrderedDate).apply {
-                                visibility = View.VISIBLE
-                                text = "Lastly Ordered On ${DateGenerator.getDayAndMonth(it)}"
+                        MainActivity.handler.post {
+                            if (it != null) {
+                                holder.itemView.findViewById<TextView>(R.id.lastlyOrderedDate)
+                                    .apply {
+                                        visibility = View.VISIBLE
+                                        text =
+                                            "Lastly Ordered On ${DateGenerator.getDayAndMonth(it)}"
+                                    }
+                            } else {
+                                holder.itemView.findViewById<TextView>(R.id.lastlyOrderedDate).visibility =
+                                    View.GONE
                             }
-                        }
-                        else{
-                            holder.itemView.findViewById<TextView>(R.id.lastlyOrderedDate).visibility = View.GONE
                         }
                     }
                 }
@@ -326,14 +348,10 @@ class ProductListAdapter(var fragment: Fragment,
                                     productEntityList.size + 1
                                 )
                             }
-                            println("POSITION VALUE: before $positionVal count $count $countList product ${ProductListFragment.totalCost.value} cart: ${CartFragment.viewPriceDetailData.value}")
                             FindNumberOfCartItems.productCount.value =
                                 FindNumberOfCartItems.productCount.value!! - 1
                             ProductListFragment.totalCost.value =
                                 ProductListFragment.totalCost.value!! - positionVal
-//                            CartFragment.viewPriceDetailData.value =
-//                                CartFragment.viewPriceDetailData.value!! - positionVal
-                            println("POSITION VALUE: $positionVal count $count $countList product ${ProductListFragment.totalCost.value} cart: ${CartFragment.viewPriceDetailData.value}")
 
                         }
                     }
@@ -427,7 +445,15 @@ class ProductListAdapter(var fragment: Fragment,
                         ProductListFragment.totalCost.value!! - positionVal
                     CartFragment.viewPriceDetailData.value =
                         CartFragment.viewPriceDetailData.value!! - positionVal
+                    if(productEntityList[position].availableItems>countList[position]){
+                        holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.VISIBLE
+                        holder.itemView.findViewById<TextView>(R.id.outOfStock).visibility = View.GONE
+                    }
                 }
+//                if(productEntityList[position].availableItems>countList[position]){
+//                    holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.VISIBLE
+//                    holder.itemView.findViewById<TextView>(R.id.outOfStock).visibility = View.GONE
+//                }
             }
         }
 
@@ -456,6 +482,11 @@ class ProductListAdapter(var fragment: Fragment,
                 )
                 }
                 productListViewModel.updateItemsInCart(cartEntity)
+
+                if((productEntityList[position].availableItems<=countList[position]) || productEntityList[position].availableItems==0){
+                    holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.INVISIBLE
+                    holder.itemView.findViewById<TextView>(R.id.outOfStock).visibility = View.VISIBLE
+                }
                 holder.itemView.findViewById<TextView>(R.id.totalItemsAdded).text = count.toString()
             }
         }
@@ -491,16 +522,17 @@ class ProductListAdapter(var fragment: Fragment,
                 FindNumberOfCartItems.productCount.value = FindNumberOfCartItems.productCount.value!!+1
                 holder.itemView.findViewById<LinearLayout>(R.id.productAddRemoveLayout).visibility = View.VISIBLE
                 holder.itemView.findViewById<MaterialButton>(R.id.productAddLayoutOneTime).visibility = View.GONE
+
             }
         }
     }
 
     fun setProducts(newList:List<Product>){
-        println("989898 adapter set product called on adapter setproducts called $newList")
         if(tag=="C"){
             productsSize = newList.size
             for(i in newList.indices){
                 countList.add(i,0)
+                availableItemsList.add(i,newList[i].availableItems)
             }
             productEntityList.clear()
             productEntityList.addAll(newList)
@@ -511,6 +543,7 @@ class ProductListAdapter(var fragment: Fragment,
             val diffUtil = CartItemsDiffUtil(productEntityList,newList)
             for(i in newList.indices){
                 countList.add(i,0)
+                availableItemsList.add(i,newList[i].availableItems)
             }
             val diffResults = DiffUtil.calculateDiff(diffUtil)
             productEntityList.clear()

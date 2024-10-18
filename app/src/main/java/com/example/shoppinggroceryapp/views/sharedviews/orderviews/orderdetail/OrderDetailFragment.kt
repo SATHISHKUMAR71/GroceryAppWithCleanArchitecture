@@ -356,6 +356,7 @@ class OrderDetailFragment : Fragment() {
             view.findViewById<LinearLayout>(R.id.deliveryStatus).visibility = View.GONE
         }
         orderDetailViewModel.selectedOrderProduct.observe(viewLifecycleOwner){
+            println("989891  in observer  value $it")
             if(it!=null) {
                 ProductListFragment.selectedProductEntity.value = it
                 FragmentTransaction.navigateWithBackstack(
@@ -416,6 +417,7 @@ class OrderDetailFragment : Fragment() {
         newView.findViewById<ImageView>(R.id.orderedProductImage)
         newView.setOnClickListener {
             println("SLECTED ORDER PRODUCT: in listener: ${productInfo.productId} ${productInfo.productName}")
+            println("989891  in observer in add view value ${productInfo.productId}")
             orderDetailViewModel.getProductById(productInfo.productId)
         }
         SetProductImage.setImageView(newView.findViewById(R.id.orderedProductImage),productInfo.mainImage?:"",

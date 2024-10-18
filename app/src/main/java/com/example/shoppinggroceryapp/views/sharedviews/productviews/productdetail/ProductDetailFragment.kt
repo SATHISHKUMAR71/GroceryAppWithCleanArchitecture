@@ -246,8 +246,23 @@ class ProductDetailFragment : Fragment() {
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             }
         }
+        ProductListFragment.selectedProductEntity.value?.let {
+            if(it.availableItems==0){
+                view.findViewById<TextView>(R.id.outOfStockInProductDetail).visibility = View.VISIBLE
+                addProductButton.visibility = View.GONE
+            }
+            else if(it.availableItems<=countOfOneProduct){
+                view.findViewById<TextView>(R.id.outOfStockInProductDetail).visibility = View.VISIBLE
+            }
+        }
         addProductButton.setOnClickListener {
             countOfOneProduct++
+            ProductListFragment.selectedProductEntity.value?.let {
+                if(it.availableItems<=countOfOneProduct){
+                    view.findViewById<TextView>(R.id.outOfStockInProductDetail).visibility = View.VISIBLE
+                    addProductButton.visibility = View.GONE
+                }
+            }
             productDetailViewModel.addProductInCart(Cart(MainActivity.cartId, ProductListFragment.selectedProductEntity.value!!.productId.toInt(), countOfOneProduct, productDetailViewModel.calculateDiscountPrice(ProductListFragment.selectedProductEntity.value!!.price, ProductListFragment.selectedProductEntity.value!!.offer)))
             totalItemsAddedProductDetail.text = countOfOneProduct.toString()
             addProductButton.visibility = View.GONE
@@ -269,6 +284,12 @@ class ProductDetailFragment : Fragment() {
         }
         addProductImgButton.setOnClickListener {
             countOfOneProduct++
+            ProductListFragment.selectedProductEntity.value?.let {
+                if(it.availableItems<=countOfOneProduct){
+                    view.findViewById<TextView>(R.id.outOfStockInProductDetail).visibility = View.VISIBLE
+                    addProductImgButton.visibility = View.INVISIBLE
+                }
+            }
             productDetailViewModel.updateProductInCart(Cart(MainActivity.cartId, ProductListFragment.selectedProductEntity.value!!.productId.toInt(), countOfOneProduct, productDetailViewModel.calculateDiscountPrice(ProductListFragment.selectedProductEntity.value!!.price, ProductListFragment.selectedProductEntity.value!!.offer)))
             totalItemsAddedProductDetail.text = countOfOneProduct.toString()
         }
@@ -287,6 +308,12 @@ class ProductDetailFragment : Fragment() {
                 resetBadge(badgeDrawable, productDetailToolBar)
                 addRemoveLayout.visibility = View.GONE
                 addProductButton.visibility = View.VISIBLE
+            }
+            ProductListFragment.selectedProductEntity.value?.let {
+                if(it.availableItems>countOfOneProduct){
+                    view.findViewById<TextView>(R.id.outOfStockInProductDetail).visibility = View.GONE
+                    addProductImgButton.visibility = View.VISIBLE
+                }
             }
         }
         FindNumberOfCartItems.productCount.observe(viewLifecycleOwner){
@@ -399,6 +426,18 @@ class ProductDetailFragment : Fragment() {
                             addProductButton.visibility = View.GONE
                             countOfOneProduct = it.totalItems
                             totalItemsAddedProductDetail.text = countOfOneProduct.toString()
+                        }
+                        if(ProductListFragment.selectedProductEntity.value?.availableItems==0){
+                            addProductButton.visibility = View.GONE
+                        }
+                        else{
+                            ProductListFragment.selectedProductEntity.value?.let {
+                                if(it.availableItems<=countOfOneProduct){
+                                    addProductImgButton.visibility = View.INVISIBLE
+                                    view?.findViewById<TextView>(R.id.outOfStockInProductDetail)?.visibility = View.VISIBLE
+
+                                }
+                            }
                         }
                     }
                 }

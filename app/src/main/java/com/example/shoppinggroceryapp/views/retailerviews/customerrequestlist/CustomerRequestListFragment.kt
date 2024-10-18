@@ -88,6 +88,7 @@ class CustomerRequestListFragment : Fragment() {
             navToolBar.navigationIcon = null
         }
         else{
+            navToolBar.title = "Your Requests"
             navToolBar.setNavigationOnClickListener {
                 parentFragmentManager.popBackStack()
             }

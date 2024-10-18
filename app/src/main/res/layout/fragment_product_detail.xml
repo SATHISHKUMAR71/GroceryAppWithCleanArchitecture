@@ -213,6 +213,20 @@
     </ScrollView>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
+        <TextView
+            android:id="@+id/outOfStockInProductDetail"
+            android:visibility="gone"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="Out Of Stock"
+            android:textColor="#f23"
+            android:textStyle="bold"
+            android:layout_gravity="end"/>
+    <LinearLayout
         android:background="@color/white"
         android:id="@+id/exploreBottomLayout"
         android:layout_width="match_parent"
@@ -228,6 +242,8 @@
             app:rippleColor="?attr/colorControlHighlight"
             android:layout_weight="1"
             app:cornerRadius="8dp" />
+
+
         <LinearLayout
             android:id="@+id/productAddRemoveLayoutProductDetail"
             android:layout_width="110dp"
@@ -238,6 +254,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/linearLayout9"
             app:layout_constraintTop_toBottomOf="@+id/productExpiryDate">
+
             <ImageButton
                 android:id="@+id/productRemoveSymbolButtonProductDetail"
                 android:layout_width="40dp"
@@ -279,5 +296,6 @@
             android:layout_marginEnd="10dp"
             android:text="Add Product" />
 
+    </LinearLayout>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

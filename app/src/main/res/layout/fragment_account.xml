@@ -124,6 +124,7 @@
         <LinearLayout
             android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
+            android:layout_marginTop="-10dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
@@ -131,13 +132,27 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/customerReqHistory"
                 style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:layout_weight="0.5"
                 android:text="Your Requests"
                 android:textAlignment="viewStart"
                 app:cornerRadius="4dp"
                 app:icon="@drawable/history_24px"
+                app:iconGravity="textStart" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/wishlist"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="WishList"
+                android:layout_weight="0.5"
+                android:textAlignment="viewStart"
+                app:cornerRadius="4dp"
+                app:icon="@drawable/favorite_24px"
                 app:iconGravity="textStart" />
 
         </LinearLayout>

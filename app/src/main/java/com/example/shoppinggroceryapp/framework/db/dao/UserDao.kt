@@ -45,6 +45,9 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addTimeSlot(timeSlotEntity: TimeSlotEntity)
 
+    @Update
+    fun updateProductAvailable(product:ProductEntity)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addMonthlyOnceSubscription(monthlyOnceEntity: MonthlyOnceEntity)
 

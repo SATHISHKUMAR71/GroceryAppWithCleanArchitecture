@@ -13,6 +13,7 @@ import com.core.usecases.productusecase.getproductusecase.GetAllProducts
 import com.core.usecases.productusecase.getproductusecase.GetBrandName
 import com.core.usecases.productusecase.getproductusecase.GetProductByName
 import com.core.usecases.productusecase.getproductusecase.GetProductsByCategory
+import com.core.usecases.productusecase.setproductusecase.UpdateAvailableProducts
 import com.core.usecases.userusecase.GetLastlyOrderedDateForProduct
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
@@ -24,6 +25,7 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
                            private val mGetProductByName: GetProductByName,
                            private val mGetAllProducts: GetAllProducts,
                            private val mAddProductInCart: AddProductInCart,
+                           private val mUpdateAvailableProducts: UpdateAvailableProducts,
                            private val mGetSpecificProductInCart: GetSpecificProductInCart,
                            private val mGetBrandName: GetBrandName,
                            private val mRemoveProductInCart: RemoveProductInCart,
@@ -91,6 +93,12 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
     fun updateItemsInCart(cart: Cart){
         Thread{
             mAddProductInCart.invoke(cart)
+        }.start()
+    }
+
+    fun updateProductInInventory(product: Product){
+        Thread{
+            mUpdateAvailableProducts.invoke(product)
         }.start()
     }
 

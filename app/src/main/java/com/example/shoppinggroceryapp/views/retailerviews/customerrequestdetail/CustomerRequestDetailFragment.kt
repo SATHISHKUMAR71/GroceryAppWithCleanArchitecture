@@ -83,6 +83,7 @@ class CustomerRequestDetailFragment : Fragment() {
                 this.putString("orderedDate",selectedOrders.orderedDate)
             }
             for(i in cartProductsData.indices){
+                putLong("productId$i",cartProductsData[i].productId)
                 putString("mainImage$i", cartProductsData[i].mainImage)
                 putString("productName$i", cartProductsData[i].productName)
                 putString("productDescription$i", cartProductsData[i].productDescription)

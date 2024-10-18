@@ -46,6 +46,7 @@ class OrderSuccessFragment : Fragment() {
         val orderSuccessViewModel = ViewModelProvider(this,
             GroceryAppUserVMFactory(userDao, retailerDao)
         )[OrderSuccessViewModel::class.java]
+        orderSuccessViewModel.oldCartId = MainActivity.cartId
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object :OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
@@ -66,6 +67,7 @@ class OrderSuccessFragment : Fragment() {
 
         orderSuccessViewModel.placeOrder(tmpCartId,
             PaymentFragment.paymentMode,address!!.addressId,"Pending","Pending",deliveryFrequency)
+        orderSuccessViewModel.updateProductDetails()
         
         orderSuccessViewModel.orderedId.observe(viewLifecycleOwner){
             orderSuccessViewModel.getOrderAndCorrespondingCart(it.toInt())

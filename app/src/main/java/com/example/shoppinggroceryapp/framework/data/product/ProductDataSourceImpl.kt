@@ -195,6 +195,11 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
         return retailerDao.getLastlyOrderedDate(userId,productId)
     }
 
+    override fun updateAvailableProducts(product: Product) {
+        retailerDao.updateProductAvailable(convertorHelper.convertProductToProductEntity(product))
+        println("434324 Product Updated: $product")
+    }
+
     override fun getImagesForProduct(productId: Long): List<Images>? {
         return retailerDao.getImagesForProduct(productId)?.map { Images(it.imageId,it.productId,it.images) }
     }

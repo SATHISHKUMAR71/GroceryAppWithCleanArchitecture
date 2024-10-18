@@ -27,4 +27,5 @@ interface ProductDataSource {
     fun getParentCategoryList():List<ParentCategory>?
     fun getChildName(parent:String):List<String>?
     fun getLastlyOrderedProductDate(userId: Int,productId: Long):String?
+    fun updateAvailableProducts(product:Product)
 }
