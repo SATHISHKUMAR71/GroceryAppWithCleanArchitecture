@@ -5,6 +5,7 @@ import com.core.domain.products.Category
 import com.core.domain.products.Images
 import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
+import com.core.domain.products.WishList
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
 
 interface ProductDataSource {
@@ -28,4 +29,7 @@ interface ProductDataSource {
     fun getChildName(parent:String):List<String>?
     fun getLastlyOrderedProductDate(userId: Int,productId: Long):String?
     fun updateAvailableProducts(product:Product)
+    fun addToWishList(wishList: WishList)
+    fun deleteWishList(wishList: WishList)
+    fun getAllWishList(userId:Int,productId: Long):WishList?
 }

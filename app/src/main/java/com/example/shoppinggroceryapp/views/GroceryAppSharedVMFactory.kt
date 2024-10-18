@@ -59,7 +59,10 @@ import com.core.usecases.orderusecase.getordersusecase.GetSpecificDailyOrderWith
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificMonthlyOrderWithOrderId
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWithOrderId
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWithTimeSlot
+import com.core.usecases.productusecase.getproductusecase.AddProductToWishList
 import com.core.usecases.productusecase.getproductusecase.GetProductsById
+import com.core.usecases.productusecase.getproductusecase.GetWishLists
+import com.core.usecases.productusecase.getproductusecase.RemoveFromWishList
 import com.core.usecases.productusecase.setproductusecase.RemoveFromRecentlyViewedProducts
 import com.core.usecases.productusecase.setproductusecase.UpdateAvailableProducts
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromDailySubscription
@@ -176,8 +179,10 @@ class GroceryAppSharedVMFactory (private val retailerDao:RetailerDao,
     private val mGetAllBrands:GetAllBrands by lazy { GetAllBrands(productRepository) }
     private val mGetLastlyOrderedDateForProduct:GetLastlyOrderedDateForProduct by lazy { GetLastlyOrderedDateForProduct(productRepository) }
     private val mRemoveFromRecentlyViewedProducts: RemoveFromRecentlyViewedProducts by lazy { RemoveFromRecentlyViewedProducts(productRepository) }
+    private val mAddProductToWishList:AddProductToWishList by lazy { AddProductToWishList(productRepository) }
+    private val mRemoveFromWishList:RemoveFromWishList by lazy { RemoveFromWishList(productRepository) }
     private val mUpdateAvailableProducts: UpdateAvailableProducts by lazy { UpdateAvailableProducts(productRepository) }
-
+    private val mGetWishList:GetWishLists by lazy { GetWishLists(productRepository) }
     override fun <T : ViewModel> create(modelClass: Class<T>): T = with(modelClass){
         when{
             isAssignableFrom(SearchViewModel::class.java) -> {
@@ -202,7 +207,7 @@ class GroceryAppSharedVMFactory (private val retailerDao:RetailerDao,
                 ProductDetailViewModel(mDeleteProduct, mGetBrandName, mGetProductsByCartId, mGetProductInRecentList, mAddProductInRecentList, mGetSpecificProductInCart, mGetProductsByCategory, mAddProductInCart, mUpdateCartItems, mRemoveProductInCart, mGetImagesForProduct, mAddDeletedProductInDb,mRemoveFromRecentlyViewedProducts)
             }
             isAssignableFrom(ProductListViewModel::class.java)->{
-                ProductListViewModel(mGetProductsByCategory, mGetProductByName, mGetAllProducts,mAddProductInCart, mUpdateAvailableProducts,mGetSpecificProductInCart, mGetBrandName, mRemoveProductInCart, mUpdateCartItems,mGetLastlyOrderedDateForProduct, mGetCartItems)
+                ProductListViewModel(mGetProductsByCategory, mGetProductByName, mGetAllProducts,mAddProductInCart, mUpdateAvailableProducts,mGetSpecificProductInCart, mGetBrandName, mRemoveProductInCart, mUpdateCartItems,mAddProductToWishList,mGetWishList,mRemoveFromWishList,mGetLastlyOrderedDateForProduct, mGetCartItems)
             }
             isAssignableFrom(FilterViewModel::class.java) -> {
                 FilterViewModel(mGetAllBrands)

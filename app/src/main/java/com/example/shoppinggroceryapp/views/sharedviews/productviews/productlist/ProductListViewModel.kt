@@ -4,17 +4,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.order.Cart
 import com.core.domain.products.Product
+import com.core.domain.products.WishList
 import com.core.usecases.cartusecase.setcartusecase.AddProductInCart
 import com.core.usecases.cartusecase.getcartusecase.GetCartItems
 import com.core.usecases.cartusecase.getcartusecase.GetSpecificProductInCart
 import com.core.usecases.cartusecase.setcartusecase.RemoveProductInCart
 import com.core.usecases.cartusecase.setcartusecase.UpdateCartItems
+import com.core.usecases.productusecase.getproductusecase.AddProductToWishList
 import com.core.usecases.productusecase.getproductusecase.GetAllProducts
 import com.core.usecases.productusecase.getproductusecase.GetBrandName
 import com.core.usecases.productusecase.getproductusecase.GetProductByName
 import com.core.usecases.productusecase.getproductusecase.GetProductsByCategory
+import com.core.usecases.productusecase.getproductusecase.GetWishLists
+import com.core.usecases.productusecase.getproductusecase.RemoveFromWishList
 import com.core.usecases.productusecase.setproductusecase.UpdateAvailableProducts
 import com.core.usecases.userusecase.GetLastlyOrderedDateForProduct
+import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
@@ -30,6 +35,9 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
                            private val mGetBrandName: GetBrandName,
                            private val mRemoveProductInCart: RemoveProductInCart,
                            private val mUpdateCartItems: UpdateCartItems,
+                           private val mAddProductToWishList: AddProductToWishList,
+                           private val mGetWishLists: GetWishLists,
+                           private val mRemoveFromWishList: RemoveFromWishList,
                            private val mGetLastlyOrderedDate:GetLastlyOrderedDateForProduct,
                            private val mGetCartItems: GetCartItems
 ):ViewModel() {
@@ -68,6 +76,13 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
         }.start()
     }
 
+    fun getWishList(productId: Long,callback: (WishList?) -> Unit){
+        Thread{
+            callback(mGetWishLists.invoke(MainActivity.userId.toInt(),productId))
+        }.start()
+    }
+
+
     fun getLastlyOrderedDate(userId: Int,productId: Long,callback:(String?)->Unit){
         Thread{
             callback(mGetLastlyOrderedDate.invoke(userId,productId))
@@ -102,6 +117,17 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
         }.start()
     }
 
+    fun addProductToWishList(productId: Long){
+        Thread{
+            mAddProductToWishList.invoke(WishList(productId,MainActivity.userId.toInt()))
+        }.start()
+    }
+
+    fun removeProductFromWishList(productId: Long){
+        Thread{
+            mRemoveFromWishList.invoke(WishList(productId,MainActivity.userId.toInt()))
+        }.start()
+    }
 
     fun doSorting(adapter: ProductListAdapter, it:Int, productEntities:List<Product>, sorter: ProductSorter):List<Product>? {
         var newList: List<Product> = mutableListOf()

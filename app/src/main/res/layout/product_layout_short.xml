@@ -23,6 +23,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:id="@+id/favourites"
+            android:layout_gravity="end"
+            android:layout_height="wrap_content"
+            android:button="@drawable/favourite_chckbox_background" />
 
         <LinearLayout
             android:layout_width="95dp"

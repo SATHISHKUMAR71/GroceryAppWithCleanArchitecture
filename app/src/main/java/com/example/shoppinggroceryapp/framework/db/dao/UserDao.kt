@@ -11,6 +11,7 @@ import com.core.domain.order.DailySubscription
 import com.core.domain.order.MonthlyOnce
 import com.core.domain.order.TimeSlot
 import com.core.domain.products.ParentCategory
+import com.core.domain.products.WishList
 import com.example.shoppinggroceryapp.framework.db.dataclass.ChildCategoryName
 import com.example.shoppinggroceryapp.framework.db.dataclass.CustomerRequestWithName
 import com.example.shoppinggroceryapp.framework.db.dataclass.ParentWithChildName
@@ -28,6 +29,7 @@ import com.example.shoppinggroceryapp.framework.db.entity.products.DeletedProduc
 import com.example.shoppinggroceryapp.framework.db.entity.products.ImagesEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
+import com.example.shoppinggroceryapp.framework.db.entity.products.WishListEntity
 import com.example.shoppinggroceryapp.framework.db.entity.search.SearchHistoryEntity
 import com.example.shoppinggroceryapp.framework.db.entity.user.AddressEntity
 import com.example.shoppinggroceryapp.framework.db.entity.user.UserEntity
@@ -266,6 +268,16 @@ interface UserDao {
 
     @Query("SELECT * FROM CartMappingEntity WHERE CartMappingEntity.userId=:userId and CartMappingEntity.status='available'")
     fun getCartForUser(userId:Int): CartMappingEntity?
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addToWishList(wishList: WishListEntity)
+
+    @Delete
+    fun deleteFromWishList(wishList: WishListEntity)
+
+    @Query("SELECT * FROM WISHLISTENTITY where userId=:userId and productId=:productId")
+    fun getWishLists(userId: Int,productId: Long):WishListEntity?
 
     @Insert
     fun addCartForUser(cartMappingEntity: CartMappingEntity)

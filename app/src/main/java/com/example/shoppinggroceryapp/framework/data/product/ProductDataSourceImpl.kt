@@ -10,6 +10,7 @@ import com.core.domain.products.DeletedProductList
 import com.core.domain.products.Images
 import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
+import com.core.domain.products.WishList
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
 import com.example.shoppinggroceryapp.framework.data.ConvertorHelper
 import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
@@ -18,6 +19,7 @@ import com.example.shoppinggroceryapp.framework.db.entity.products.CategoryEntit
 import com.example.shoppinggroceryapp.framework.db.entity.products.DeletedProductListEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ImagesEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
+import com.example.shoppinggroceryapp.framework.db.entity.products.WishListEntity
 import com.example.shoppinggroceryapp.framework.db.entity.recentlyvieweditems.RecentlyViewedItemsEntity
 
 class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSource,RetailerProductDataSource {
@@ -198,6 +200,21 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
     override fun updateAvailableProducts(product: Product) {
         retailerDao.updateProductAvailable(convertorHelper.convertProductToProductEntity(product))
         println("434324 Product Updated: $product")
+    }
+
+    override fun addToWishList(wishList: WishList) {
+        retailerDao.addToWishList(WishListEntity(wishList.productId,wishList.userId))
+    }
+
+    override fun deleteWishList(wishList: WishList) {
+        retailerDao.deleteFromWishList(WishListEntity(wishList.productId,wishList.userId))
+    }
+
+    override fun getAllWishList(userId: Int,productId: Long): WishList? {
+        retailerDao.getWishLists(userId,productId)?.let {
+            return WishList(it.productId,it.userId)
+        }
+        return null
     }
 
     override fun getImagesForProduct(productId: Long): List<Images>? {

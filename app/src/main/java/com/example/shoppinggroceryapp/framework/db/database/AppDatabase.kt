@@ -26,13 +26,14 @@ import com.example.shoppinggroceryapp.framework.db.entity.products.DeletedProduc
 import com.example.shoppinggroceryapp.framework.db.entity.products.ImagesEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
+import com.example.shoppinggroceryapp.framework.db.entity.products.WishListEntity
 import com.example.shoppinggroceryapp.framework.db.entity.recentlyvieweditems.RecentlyViewedItemsEntity
 import com.example.shoppinggroceryapp.framework.db.entity.search.SearchHistoryEntity
 import com.example.shoppinggroceryapp.framework.db.entity.user.AddressEntity
 import com.example.shoppinggroceryapp.framework.db.entity.user.UserEntity
 
 
-@Database(entities = [UserEntity::class, AddressEntity::class, ProductEntity::class, ImagesEntity::class, ParentCategoryEntity::class, CategoryEntity::class, DealsEntity::class, FAQEntity::class, CustomerRequestEntity::class, BrandDataEntity::class, CartMappingEntity::class, CartEntity::class, OrderDetailsEntity::class, RecentlyViewedItemsEntity::class, DailySubscriptionEntity::class, DeletedProductListEntity::class, SearchHistoryEntity::class, WeeklyOnceEntity::class, TimeSlotEntity::class, MonthlyOnceEntity::class], version = 5)
+@Database(entities = [UserEntity::class, AddressEntity::class, ProductEntity::class, ImagesEntity::class, ParentCategoryEntity::class, CategoryEntity::class, DealsEntity::class, FAQEntity::class, CustomerRequestEntity::class, BrandDataEntity::class, CartMappingEntity::class, CartEntity::class, OrderDetailsEntity::class, RecentlyViewedItemsEntity::class, DailySubscriptionEntity::class, DeletedProductListEntity::class, SearchHistoryEntity::class, WeeklyOnceEntity::class, TimeSlotEntity::class, MonthlyOnceEntity::class,WishListEntity::class], version = 5)
 abstract class AppDatabase:RoomDatabase(){
 
     abstract fun getUserDao(): UserDao

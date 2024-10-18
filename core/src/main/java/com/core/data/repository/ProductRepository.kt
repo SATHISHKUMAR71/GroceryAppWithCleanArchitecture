@@ -9,6 +9,7 @@ import com.core.domain.products.DeletedProductList
 import com.core.domain.products.Images
 import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
+import com.core.domain.products.WishList
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
 
 class ProductRepository(private val productDataSource: ProductDataSource,private val retailerProductDataSource: RetailerProductDataSource) {
@@ -20,6 +21,17 @@ class ProductRepository(private val productDataSource: ProductDataSource,private
         retailerProductDataSource.addParentCategory(parentCategory)
     }
 
+    fun addToWishList(wishList: WishList) {
+        productDataSource.addToWishList(wishList)
+    }
+
+    fun deleteWishList(wishList: WishList) {
+        productDataSource.deleteWishList(wishList)
+    }
+
+    fun getAllWishList(userId: Int,productId: Long): WishList? {
+        return productDataSource.getAllWishList(userId,productId)
+    }
     fun addSubCategory(category: Category){
         retailerProductDataSource.addSubCategory(category)
     }

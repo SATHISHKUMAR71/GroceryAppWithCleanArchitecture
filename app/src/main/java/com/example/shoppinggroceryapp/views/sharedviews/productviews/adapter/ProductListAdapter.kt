@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -25,6 +26,7 @@ import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.cartview.diffutil.CartItemsDiffUtil
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
+import com.example.shoppinggroceryapp.helpers.toast.ShowShortToast
 import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
@@ -55,11 +57,11 @@ class ProductListAdapter(var fragment: Fragment,
     val productEntityList:MutableList<Product> = mutableListOf()
 
     private var countList = mutableListOf<Int>()
-    private var availableItemsList = mutableListOf<Int>()
+    private var checkedList = mutableListOf<Boolean>()
     init {
         for(i in 0..<productEntityList.size){
             countList.add(i,0)
-            availableItemsList.add(i,productEntityList[i].availableItems)
+            checkedList.add(i,false)
         }
     }
 
@@ -205,7 +207,21 @@ class ProductListAdapter(var fragment: Fragment,
                 } else {
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.VISIBLE
                 }
+
                 isProductAvailable(holder, position)
+                productListViewModel.getWishList(productEntityList[position].productId){
+                    if(it!=null){
+                        checkedList[position] = true
+                        MainActivity.handler.post{
+                            holder.itemView.findViewById<CheckBox>(R.id.favourites).isChecked = true
+                        }
+                    }
+                    else{
+                        MainActivity.handler.post{
+                            holder.itemView.findViewById<CheckBox>(R.id.favourites).isChecked = false
+                        }
+                    }
+                }
                 productListViewModel.getSpecificCart(
                     MainActivity.cartId,
                     productEntityList[position].productId.toInt()
@@ -227,7 +243,6 @@ class ProductListAdapter(var fragment: Fragment,
                             isProductAvailable(holder, position)
                         }
                     }
-
                 }
                 if((!MainActivity.isRetailer) && !isShort) {
                     productListViewModel.getLastlyOrderedDate(
@@ -391,6 +406,7 @@ class ProductListAdapter(var fragment: Fragment,
                         }
                         productEntityList.removeAt(position)
                         countList.removeAt(position)
+                        checkedList.removeAt(position)
                         notifyItemRemoved(position+1)
                         if(productEntityList.size==0){
                             notifyDataSetChanged()
@@ -432,7 +448,19 @@ class ProductListAdapter(var fragment: Fragment,
                 }
             }
         }
-
+        holder.itemView.findViewById<CheckBox>(R.id.favourites).setOnClickListener {
+            if((holder.absoluteAdapterPosition==position) || ((tag=="C") && (holder.absoluteAdapterPosition==position+1))) {
+                if (holder.itemView.findViewById<CheckBox>(R.id.favourites).isChecked) {
+                    checkedList[position] = true
+                    productListViewModel.addProductToWishList(productEntityList[position].productId)
+                    ShowShortToast.show("Added to WishList", fragment.requireContext())
+                } else {
+                    checkedList[position] = false
+                    productListViewModel.removeProductFromWishList((productEntityList[position].productId))
+                    ShowShortToast.show("Removed from WishList", fragment.requireContext())
+                }
+            }
+        }
         holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).setOnClickListener {
             if((holder.absoluteAdapterPosition==position) || ((tag=="C") && (holder.absoluteAdapterPosition==position+1))) {
                 val count = ++countList[position]
@@ -504,7 +532,7 @@ class ProductListAdapter(var fragment: Fragment,
             productsSize = newList.size
             for(i in newList.indices){
                 countList.add(i,0)
-                availableItemsList.add(i,newList[i].availableItems)
+                checkedList.add(i,false)
             }
             productEntityList.clear()
             productEntityList.addAll(newList)
@@ -515,7 +543,7 @@ class ProductListAdapter(var fragment: Fragment,
             val diffUtil = CartItemsDiffUtil(productEntityList,newList)
             for(i in newList.indices){
                 countList.add(i,0)
-                availableItemsList.add(i,newList[i].availableItems)
+                checkedList.add(i,false)
             }
             val diffResults = DiffUtil.calculateDiff(diffUtil)
             productEntityList.clear()
