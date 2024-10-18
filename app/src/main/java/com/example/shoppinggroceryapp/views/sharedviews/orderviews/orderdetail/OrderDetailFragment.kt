@@ -343,7 +343,7 @@ class OrderDetailFragment : Fragment() {
             deleteSubscription.visibility = View.GONE
             changeSubscription.visibility = View.GONE
         }
-        if(!(MainActivity.isRetailer) && (selectedOrder?.deliveryFrequency!="Once") && (hideCancelOrderButton!=true)) {
+        if(!(MainActivity.isRetailer) && ((selectedOrder?.deliveryFrequency!="Once") &&  (selectedOrder?.deliveryStatus!="Cancelled")) && (hideCancelOrderButton!=true)) {
             changeSubscription.visibility = View.VISIBLE
         }
         else{
@@ -367,6 +367,10 @@ class OrderDetailFragment : Fragment() {
             else{
                 ShowShortToast.show("Product has been removed from inventory",requireContext())
             }
+        }
+        if(arguments?.getBoolean("hideButtons")==true){
+            deleteSubscription.visibility = View.GONE
+            changeSubscription.visibility = View.GONE
         }
         return view
     }

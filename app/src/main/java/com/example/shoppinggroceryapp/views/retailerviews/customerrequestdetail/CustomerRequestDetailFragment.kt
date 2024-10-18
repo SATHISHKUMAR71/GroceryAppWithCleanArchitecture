@@ -70,6 +70,7 @@ class CustomerRequestDetailFragment : Fragment() {
         }
         orderDetailFrag.arguments = Bundle().apply {
             putBoolean("hideToolBar",true)
+            putBoolean("hideButtons",true)
             selectedOrder?.let {selectedOrders ->
                 this.putInt("orderId",selectedOrders.orderId)
                 this.putInt("cartId",selectedOrders.cartId)

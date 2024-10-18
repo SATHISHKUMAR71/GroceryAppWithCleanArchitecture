@@ -9,6 +9,8 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/materialToolbar"
         android:layout_width="match_parent"
+        app:navigationIcon="@drawable/arrow_back_24px"
+        app:navigationIconTint="@color/white"
         app:titleCentered="true"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"

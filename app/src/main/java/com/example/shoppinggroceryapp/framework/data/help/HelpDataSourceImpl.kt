@@ -17,6 +17,10 @@ class HelpDataSourceImpl(private val retailerDao: RetailerDao):HelpDataSource,Re
         )
     }
 
+    override fun getSpecificCustomerReqList(userId: Int): List<CustomerRequestWithName>? {
+        return retailerDao.getCustomerReqWithNameForSpecificCustomer(userId)?.map { CustomerRequestWithName(it.helpId,it.userId,it.requestedDate,it.orderId,it.request,it.userFirstName,it.userLastName,it.userEmail,it.userPhone) }
+    }
+
     override fun getDataFromCustomerReqWithName(): List<CustomerRequestWithName>? {
         return retailerDao.getDataFromCustomerReqWithName()?.map { CustomerRequestWithName(it.helpId,it.userId,it.requestedDate,it.orderId,it.request,it.userFirstName,it.userLastName,it.userEmail,it.userPhone) }
     }

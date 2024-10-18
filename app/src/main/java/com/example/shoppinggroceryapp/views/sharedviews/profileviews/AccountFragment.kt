@@ -48,6 +48,7 @@ import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.views.sharedviews.sort.BottomSheetDialogFragment
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
+import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.CustomerRequestListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.OrderHistoryFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
@@ -102,6 +103,11 @@ class AccountFragment : Fragment() {
         val recent = view.findViewById<LinearLayout>(R.id.recentlyPurchasedItems)
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
+        val customerReqHistory = view.findViewById<MaterialButton>(R.id.customerReqHistory)
+
+        customerReqHistory.setOnClickListener {
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,CustomerRequestListFragment(),"customer request fragment")
+        }
         val retailerDao = db1.getRetailerDao()
         editUser = ViewModelProvider(this,
             GroceryAppSharedVMFactory(

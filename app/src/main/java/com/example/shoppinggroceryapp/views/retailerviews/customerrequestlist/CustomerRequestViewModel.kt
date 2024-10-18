@@ -6,10 +6,12 @@ import com.core.domain.help.CustomerRequestWithName
 import com.core.domain.order.OrderDetails
 import com.core.domain.products.CartWithProductData
 import com.core.usecases.cartusecase.getcartusecase.GetProductsWithCartData
+import com.core.usecases.helpusecase.GetCustomerReqForSpecificUser
 import com.core.usecases.orderusecase.getordersusecase.GetOrderDetailsWithOrderId
 import com.core.usecases.helpusecase.GetCustomerRequestWithName
 
-class CustomerRequestViewModel(private var mGetCustomerRequestWithName: GetCustomerRequestWithName, private var mGetOrderDetailsWithOrderId: GetOrderDetailsWithOrderId, private val mGetProductsWithCartData: GetProductsWithCartData):ViewModel() {
+class CustomerRequestViewModel(private var mGetCustomerRequestWithName: GetCustomerRequestWithName, private var mGetOrderDetailsWithOrderId: GetOrderDetailsWithOrderId, private val mGetProductsWithCartData: GetProductsWithCartData,private val mGetCustomerReqForSpecificUser: GetCustomerReqForSpecificUser):ViewModel() {
+
 
     var customerRequestList:MutableLiveData<List<CustomerRequestWithName>> = MutableLiveData()
     var selectedOrderLiveData:MutableLiveData<OrderDetails> = MutableLiveData()
@@ -21,6 +23,11 @@ class CustomerRequestViewModel(private var mGetCustomerRequestWithName: GetCusto
         }.start()
     }
 
+    fun getSpecificCustomerReq(userId:Int){
+        Thread{
+            customerRequestList.postValue(mGetCustomerReqForSpecificUser.invoke(userId))
+        }.start()
+    }
     fun getOrderDetails(orderId:Int){
         Thread {
             selectedOrderLiveData.postValue(mGetOrderDetailsWithOrderId.invoke(orderId))

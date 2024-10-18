@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,7 @@ import com.core.data.repository.ProductRepository
 import com.core.data.repository.SearchRepository
 import com.core.data.repository.SubscriptionRepository
 import com.core.data.repository.UserRepository
+import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.data.authentication.AuthenticationDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.address.AddressDataSourceImpl
@@ -41,6 +43,7 @@ import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.adapter.CustomerRequestAdapter.Companion.requestList
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestdetail.CustomerRequestDetailFragment
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.adapter.CustomerRequestAdapter
+import com.google.android.material.appbar.MaterialToolbar
 
 class CustomerRequestListFragment : Fragment() {
 
@@ -79,7 +82,18 @@ class CustomerRequestListFragment : Fragment() {
         customerViewModel = ViewModelProvider(this,
             GroceryAppRetailerVMFactory(userDao, retailerDao)
         )[CustomerRequestViewModel::class.java]
-        customerViewModel.getCustomerRequest()
+        val navToolBar = view.findViewById<MaterialToolbar>(R.id.materialToolbar)
+        if(MainActivity.isRetailer) {
+            customerViewModel.getCustomerRequest()
+            navToolBar.navigationIcon = null
+        }
+        else{
+            navToolBar.setNavigationOnClickListener {
+                parentFragmentManager.popBackStack()
+            }
+            navToolBar.navigationIcon = ContextCompat.getDrawable(requireContext(),R.drawable.arrow_back_24px)
+            customerViewModel.getSpecificCustomerReq(MainActivity.userId.toInt())
+        }
         customerViewModel.customerRequestList.observe(viewLifecycleOwner){
             if(customerReqRV.adapter==null) {
                 val adapter = CustomerRequestAdapter(customerViewModel, this)
@@ -143,8 +157,9 @@ class CustomerRequestListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        InitialFragment.hideBottomNav.value = !MainActivity.isRetailer
         InitialFragment.hideSearchBar.value = true
-        InitialFragment.hideBottomNav.value = false
+
     }
 
     override fun onStop() {

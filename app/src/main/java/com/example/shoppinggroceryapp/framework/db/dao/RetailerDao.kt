@@ -92,6 +92,9 @@ interface RetailerDao: UserDao {
     @Query("SELECT CustomerRequestEntity.helpId,CustomerRequestEntity.userId,CustomerRequestEntity.requestedDate,CustomerRequestEntity.orderId,CustomerRequestEntity.request,UserEntity.userFirstName,UserEntity.userLastName,UserEntity.userEmail,UserEntity.userPhone FROM CustomerRequestEntity JOIN UserEntity ON UserEntity.userId=CustomerRequestEntity.userId ORDER BY CustomerRequestEntity.helpId DESC")
     fun getDataFromCustomerReqWithName():List<CustomerRequestWithName>?
 
+    @Query("SELECT CustomerRequestEntity.helpId,CustomerRequestEntity.userId,CustomerRequestEntity.requestedDate,CustomerRequestEntity.orderId,CustomerRequestEntity.request,UserEntity.userFirstName,UserEntity.userLastName,UserEntity.userEmail,UserEntity.userPhone FROM CustomerRequestEntity JOIN UserEntity ON UserEntity.userId=CustomerRequestEntity.userId WHERE CustomerRequestEntity.userId=:userId ORDER BY CustomerRequestEntity.helpId DESC")
+    fun getCustomerReqWithNameForSpecificCustomer(userId:Int):List<CustomerRequestWithName>?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addDeletedProduct(deletedProductListEntity: DeletedProductListEntity)
 

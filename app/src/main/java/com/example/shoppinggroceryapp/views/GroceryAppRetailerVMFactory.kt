@@ -7,6 +7,7 @@ import com.core.data.repository.HelpRepository
 import com.core.data.repository.OrderRepository
 import com.core.data.repository.ProductRepository
 import com.core.usecases.cartusecase.getcartusecase.GetProductsWithCartData
+import com.core.usecases.helpusecase.GetCustomerReqForSpecificUser
 import com.core.usecases.orderusecase.getordersusecase.GetOrderDetailsWithOrderId
 import com.core.usecases.productusecase.getproductusecase.GetBrandName
 import com.core.usecases.productusecase.getproductusecase.GetImagesForProduct
@@ -87,7 +88,7 @@ class GroceryAppRetailerVMFactory(private val userDao:UserDao,
     private val mGetCustomerRequestWithName: GetCustomerRequestWithName by lazy { GetCustomerRequestWithName(helpRepository) }
     private val mGetOrderDetailsWithOrderId: GetOrderDetailsWithOrderId by lazy { GetOrderDetailsWithOrderId(orderRepository) }
     private val mGetProductsWithCartData: GetProductsWithCartData by lazy { GetProductsWithCartData(cartRepository) }
-
+    private val mGetCustomerReqForSpecificUser: GetCustomerReqForSpecificUser by lazy { GetCustomerReqForSpecificUser(helpRepository) }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T = with(modelClass){
         when{
@@ -95,7 +96,7 @@ class GroceryAppRetailerVMFactory(private val userDao:UserDao,
                 AddEditProductViewModel(productManagementGetters,productManagementSetters,productDeleteUseCases)
             }
             isAssignableFrom(CustomerRequestViewModel::class.java) -> {
-                CustomerRequestViewModel(mGetCustomerRequestWithName,mGetOrderDetailsWithOrderId, mGetProductsWithCartData)
+                CustomerRequestViewModel(mGetCustomerRequestWithName,mGetOrderDetailsWithOrderId, mGetProductsWithCartData,mGetCustomerReqForSpecificUser)
             }
             else -> {
                 throw IllegalArgumentException("unknown viewmodel: ${modelClass.name}")

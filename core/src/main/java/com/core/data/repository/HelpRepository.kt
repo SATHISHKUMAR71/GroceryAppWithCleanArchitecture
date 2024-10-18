@@ -13,4 +13,8 @@ class HelpRepository(private val customerHelpDataSource: HelpDataSource,private 
     fun addCustomerRequest(customerRequest: CustomerRequest) {
         customerHelpDataSource.addCustomerRequest(customerRequest)
     }
+
+    fun getDataFromCustomerReqWithNameForSpecificUser(userId:Int):List<CustomerRequestWithName>?{
+        return customerHelpDataSource.getSpecificCustomerReqList(userId)
+    }
 }
