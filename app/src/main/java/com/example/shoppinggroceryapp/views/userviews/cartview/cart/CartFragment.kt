@@ -79,7 +79,7 @@ class CartFragment : Fragment() {
 
         adapter = ProductListAdapter(this,fileDir,"C",false,productListViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(retailerDao, userDao)
-        )[ProductListViewModel::class.java])
+        )[ProductListViewModel::class.java],cartViewModel)
 //        adapter.setProducts(listOf())
         if(recyclerView.adapter == null){
             recyclerView.adapter = adapter

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.core.domain.products.ParentCategory
+import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.dataclass.ChildCategoryName
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
@@ -42,7 +43,13 @@ class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: 
     override fun onBindViewHolder(holder: MainCategoryHolder, position: Int) {
         holder.parentCategoryName.text = mainCategoryList[position].parentCategoryName
         holder.parentCategoryDescription.text = mainCategoryList[position].parentCategoryDescription
-        holder.parentCategoryImage.setImageBitmap(imageLoader.getImageInApp(fragment.requireContext(),mainCategoryList[position].parentCategoryImage))
+        Thread{
+            val i = imageLoader.getImageInApp(fragment.requireContext(),mainCategoryList[position].parentCategoryImage)
+            MainActivity.handler.post {
+                holder.parentCategoryImage.setImageBitmap(i)
+            }
+        }.start()
+//        holder.parentCategoryImage.setImageBitmap(imageLoader.getImageInApp(fragment.requireContext(),mainCategoryList[position].parentCategoryImage))
         refreshViews(fragment.requireContext(),position,holder)
         holder.itemView.setOnClickListener {
             if (holder.adapterPosition == position) {

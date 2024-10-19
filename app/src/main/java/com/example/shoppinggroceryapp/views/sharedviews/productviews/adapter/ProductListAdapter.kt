@@ -41,7 +41,7 @@ import java.io.File
 
 class ProductListAdapter(var fragment: Fragment,
                          private var file: File,
-                         private var tag:String,private var isShort:Boolean,var productListViewModel: ProductListViewModel):RecyclerView.Adapter<ProductListAdapter.ProductLargeImageHolder>() {
+                         private var tag:String,private var isShort:Boolean,var productListViewModel: ProductListViewModel,var cartViewModel:CartViewModel?):RecyclerView.Adapter<ProductListAdapter.ProductLargeImageHolder>() {
 
     companion object{
         var productsSize = 0
@@ -335,6 +335,7 @@ class ProductListAdapter(var fragment: Fragment,
                                 CartFragment.viewPriceDetailData.postValue(CartFragment.viewPriceDetailData.value!! - positionVal)
                             }
                             productEntityList.removeAt(position)
+                            cartViewModel?.cartProducts?.value?.removeAt(position)
                             countList.removeAt(position)
                             notifyItemRemoved(position + 1)
                             if (productEntityList.size == 0) {
@@ -407,6 +408,7 @@ class ProductListAdapter(var fragment: Fragment,
                         productEntityList.removeAt(position)
                         countList.removeAt(position)
                         checkedList.removeAt(position)
+                        cartViewModel?.cartProducts?.value?.removeAt(position)
                         notifyItemRemoved(position+1)
                         if(productEntityList.size==0){
                             notifyDataSetChanged()

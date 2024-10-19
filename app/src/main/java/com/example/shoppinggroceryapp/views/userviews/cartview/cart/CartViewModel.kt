@@ -13,12 +13,12 @@ class CartViewModel(private val mGetProductsByCartId: GetProductsByCartId,
                     private val mGetAllAddress: GetAllAddress
 ):ViewModel() {
 
-    var cartProducts:MutableLiveData<List<Product>> = MutableLiveData()
+    var cartProducts:MutableLiveData<MutableList<Product>> = MutableLiveData()
     var totalPrice:MutableLiveData<Float> = MutableLiveData()
     var addressEntityList:MutableLiveData<List<Address>> = MutableLiveData()
     fun getProductsByCartId(cartId:Int){
         Thread{
-            cartProducts.postValue(mGetProductsByCartId.invoke(cartId))
+            cartProducts.postValue(mGetProductsByCartId.invoke(cartId).toMutableList())
         }.start()
     }
 

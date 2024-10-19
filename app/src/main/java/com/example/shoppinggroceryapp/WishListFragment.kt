@@ -46,7 +46,7 @@ class WishListFragment : Fragment() {
         )[ProductListViewModel::class.java]
         if(recyclerView.adapter==null) {
             adapter = ProductListAdapter(
-                this, File(requireContext().filesDir, "AppImages"), "P", false,viewModel)
+                this, File(requireContext().filesDir, "AppImages"), "P", false,viewModel,null)
             recyclerView.adapter =adapter
             recyclerView.layoutManager = LinearLayoutManager(context)
         }
@@ -81,6 +81,9 @@ class WishListFragment : Fragment() {
         viewModel.getWishedProducts(MainActivity.userId.toInt())
         viewModel.productEntityList.observe(viewLifecycleOwner){
             adapter.setProducts(it)
+        }
+        toolbar.setNavigationOnClickListener {
+            parentFragmentManager.popBackStack()
         }
         return view
     }

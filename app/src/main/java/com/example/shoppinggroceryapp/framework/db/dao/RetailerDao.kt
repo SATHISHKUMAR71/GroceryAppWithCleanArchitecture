@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.core.domain.products.BrandData
 import com.example.shoppinggroceryapp.framework.db.dataclass.CustomerRequestWithName
 import com.example.shoppinggroceryapp.framework.db.entity.order.DailySubscriptionEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.MonthlyOnceEntity
@@ -35,8 +36,8 @@ interface RetailerDao: UserDao {
     @Query("SELECT * FROM DailySubscriptionEntity")
     fun getDailySubscription():List<DailySubscriptionEntity>?
 
-    @Query("SELECT BrandDataEntity.brandName FROM BrandDataEntity Order by BrandDataEntity.brandName")
-    fun getAllBrands():List<String>
+    @Query("SELECT BrandDataEntity.* FROM BrandDataEntity Order by BrandDataEntity.brandName")
+    fun getAllBrands():List<BrandData>
 
     @Query("SELECT * FROM TimeSlotEntity")
     fun getOrderTimeSlot():List<TimeSlotEntity>?

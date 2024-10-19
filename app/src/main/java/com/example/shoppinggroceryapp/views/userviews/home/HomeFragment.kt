@@ -108,7 +108,7 @@ class HomeFragment : Fragment() {
 
         val adapter = ProductListAdapter(this,File(requireContext().filesDir,"AppImages"),"P",true,productListViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(retailerDao, userDao)
-        )[ProductListViewModel::class.java])
+        )[ProductListViewModel::class.java],null)
 
         homeViewModel.getRecentlyViewedItems()
 

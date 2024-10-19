@@ -136,7 +136,7 @@ class AccountFragment : Fragment() {
         val adapter = ProductListAdapter(this,
             File(requireContext().filesDir,"AppImages"),"P",true,productListViewModel = ViewModelProvider(this,
                 GroceryAppSharedVMFactory(retailerDao, userDao)
-            )[ProductListViewModel::class.java])
+            )[ProductListViewModel::class.java],null)
         editUser.recentlyBoughtList.observe(viewLifecycleOwner){
             if((it!=null)&&(it.isNotEmpty())){
                 if(recentlyPurchasedItems.adapter == null) {

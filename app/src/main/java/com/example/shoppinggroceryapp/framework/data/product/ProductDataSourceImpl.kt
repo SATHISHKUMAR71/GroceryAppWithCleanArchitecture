@@ -173,7 +173,7 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
         return mapData
     }
 
-    override fun getAllBrands(): List<String> {
+    override fun getAllBrands(): List<BrandData> {
         return retailerDao.getAllBrands()
     }
 

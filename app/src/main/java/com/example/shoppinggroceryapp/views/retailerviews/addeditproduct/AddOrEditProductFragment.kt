@@ -152,13 +152,13 @@ class AddOrEditProductFragment : Fragment() {
         setUpObservers()
 
         val dateManufacturePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select the Birthday Date")
+            .setTitleText("Select the Manufactured Date")
             .setTextInputFormat(SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()))
             .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
             .build()
 
         val dateExpiryPicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select the Birthday Date")
+            .setTitleText("Select the Expiry Date")
             .setTextInputFormat(SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()))
             .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
             .build()

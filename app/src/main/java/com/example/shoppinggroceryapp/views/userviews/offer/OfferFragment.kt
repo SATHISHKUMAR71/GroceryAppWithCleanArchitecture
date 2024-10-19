@@ -119,7 +119,7 @@ class OfferFragment : Fragment() {
         filterButton = view.findViewById(R.id.filterButton)
         adapter = ProductListAdapter(this,File(requireContext().filesDir,"AppImages"),"O",false,productListViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(retailerDao, userDao)
-        )[ProductListViewModel::class.java])
+        )[ProductListViewModel::class.java],null)
 
         adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
         offerViewModel = ViewModelProvider(this,

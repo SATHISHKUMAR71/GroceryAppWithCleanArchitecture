@@ -125,7 +125,7 @@ class ProductListFragment : Fragment() {
         productListViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(retailerDao, userDao)
         )[ProductListViewModel::class.java]
-        adapter = ProductListAdapter(this,fileDir,"P",false,productListViewModel)
+        adapter = ProductListAdapter(this,fileDir,"P",false,productListViewModel,null)
         adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
         filterCountText = view.findViewById(R.id.filterCountTextView)
         toolbar = view.findViewById<MaterialToolbar>(R.id.productListToolBar)

@@ -231,7 +231,7 @@ class ProductDetailFragment : Fragment() {
                     this,
                     File(requireContext().filesDir, "AppImages"),
                     "P",
-                    true,productListViewModel
+                    true,productListViewModel,null
                 )
                 recyclerView.adapter = adapter
                 val tmpList = mutableListOf<Product>()

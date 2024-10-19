@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.core.domain.products.Product
+import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
@@ -30,6 +31,7 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
     private lateinit var dis40:CheckBox
     private lateinit var dis30:CheckBox
     private lateinit var dis20:CheckBox
+    private lateinit var adapter: FilterAdapter
     private lateinit var dis10:CheckBox
     private lateinit var availableProducts:TextView
 
@@ -58,72 +60,70 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
             parentFragmentManager.popBackStack()
         }
         val recyclerViewFilterType = view.findViewById<RecyclerView>(R.id.categoryType)
+        adapter = FilterAdapter(listOf("Discounts","Brand","Expiry Date","Price","Manufacture Date"),
+            listOf(),this,
+            listOf("10% or more","20% or more","30% or more","40% or more","50% or more")
+        )
         filterViewModel.getBrandNames()
         filterViewModel.brandList.observe(viewLifecycleOwner){
+            adapter = FilterAdapter(listOf("Discounts","Brand","Expiry Date","Price","Manufacture Date"),it,this,
+                listOf("10% or more","20% or more","30% or more","40% or more","50% or more")
+            )
             if(recyclerViewFilterType.adapter==null){
-                recyclerViewFilterType.adapter = FilterAdapter(listOf("Discounts","Brand","Expiry Date","Price","Manufacture Date"),it,this)
+                recyclerViewFilterType.adapter = adapter
                 recyclerViewFilterType.layoutManager = LinearLayoutManager(context)
             }
         }
 
+        applyButton.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+        println("98416 ${FilterExpiry.isDataChanged.value}")
+        FilterExpiry.isDataChanged.observe(viewLifecycleOwner){
+            Thread {
+                list = filterViewModel.doFilter(products).toMutableList()
+                MainActivity.handler.post {
+                    availableProducts.text = list?.size.toString()
+                }
+            }.start()
+        }
 
-//        setCheckboxOnClickListeners()
-//
-//        clearAllButton.setOnClickListener {
-//            dis10.isChecked =false
-//            dis20.isChecked =false
-//            dis30.isChecked =false
-//            dis40.isChecked =false
-//            dis50.isChecked =false
-//            list = null
-//            availableProducts.text =products.size.toString()
+        FilterPrice.isPriceDataChanged.observe(viewLifecycleOwner){
+            Thread {
+                list = filterViewModel.doFilter(products).toMutableList()
+                MainActivity.handler.post {
+                    availableProducts.text = list?.size.toString()
+                }
+            }.start()
+        }
+
+        FilterFragmentSearch.isCheckBoxClicked.observe(viewLifecycleOwner){
+            Thread {
+                list = filterViewModel.doFilter(products).toMutableList()
+                MainActivity.handler.post {
+                    availableProducts.text = list?.size.toString()
+                }
+            }.start()
+        }
+//        FilterExpiry.startExpiryDate.observe(viewLifecycleOwner){
+//            list = filterViewModel.filterListByDate(products,it,FilterExpiry.endExpiryDate.value?:"").toMutableList()
+//            availableProducts.text = list?.size.toString()
 //        }
-//        if(OfferFragment.dis10Val==true || (ProductListFragment.dis10Val==true)){
-//            dis10.isChecked = true
+//        FilterExpiry.endExpiryDate.observe(viewLifecycleOwner){
+//            list = filterViewModel.filterListByDate(products,FilterExpiry.startExpiryDate.value?:"",it).toMutableList()
+//            availableProducts.text = list?.size.toString()
 //        }
-//        if(OfferFragment.dis20Val==true || ProductListFragment.dis20Val==true){
-//            dis20.isChecked = true
+//        FilterExpiry.startExpiryDate.observe(viewLifecycleOwner){
+//            list = filterViewModel.filterListByDate(products,it,FilterExpiry.endExpiryDate.value?:"").toMutableList()
+//            availableProducts.text = list?.size.toString()
 //        }
-//        if(OfferFragment.dis30Val==true || ProductListFragment.dis30Val==true){
-//            dis30.isChecked = true
-//        }
-//        if(OfferFragment.dis40Val==true || ProductListFragment.dis40Val==true){
-//            dis40.isChecked = true
-//        }
-//        if(ProductListFragment.dis50Val==true || ProductListFragment.dis50Val==true){
-//            dis50.isChecked = true
-//        }
-//        applyButton.setOnClickListener {
-//            parentFragmentManager.popBackStack()
+//        FilterExpiry.endExpiryDate.observe(viewLifecycleOwner){
+//            list = filterViewModel.filterListByDate(products,FilterExpiry.startExpiryDate.value?:"",it).toMutableList()
+//            availableProducts.text = list?.size.toString()
 //        }
         return view
     }
 
-//    private fun setCheckboxOnClickListeners() {
-//
-//        val discountMap = mutableMapOf<CheckBox,Float>()
-//        discountMap[dis50] = 50f
-//        discountMap[dis40] = 40f
-//        discountMap[dis30] = 30f
-//        discountMap[dis20] = 20f
-//        discountMap[dis10] = 10f
-//
-//        for((dis,value) in discountMap){
-//            dis.setOnCheckedChangeListener { _, isChecked ->
-//                if(isChecked){
-//                    availableProducts.text = filterViewModel.filterList(products,value).size.toString()
-//                    ProductListFragment.productListFilterCount++
-//                    OfferFragment.offerFilterCount++
-//                }
-//                else{
-//                    availableProducts.text = filterViewModel.filterListBelow(products,value).size.toString()
-//                    ProductListFragment.productListFilterCount--
-//                    OfferFragment.offerFilterCount--
-//                }
-//                assignList()
-//            }
-//        }
-//    }
 
 
     override fun onResume() {
@@ -188,5 +188,41 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
 //        ProductListFragment.dis30Val = dis30.isChecked
 //        ProductListFragment.dis40Val = dis40.isChecked
 //        ProductListFragment.dis50Val = dis50.isChecked
+//    }
+
+//    fun setExpiryFilter(){
+//        println("98416 SET EXPIRY IS CALLED")
+//        if(FilterExpiry.startExpiryDate.isNotEmpty() && FilterExpiry.endExpiryDate.isNotEmpty()){
+//            adapter.setBadgeForExpiryDate(2)
+//        }
+//        else if(FilterExpiry.startExpiryDate.isNotEmpty() && FilterExpiry.endExpiryDate.isEmpty()){
+//            adapter.setBadgeForExpiryDate(1)
+//        }
+//        else if(FilterExpiry.startExpiryDate.isEmpty() && FilterExpiry.endExpiryDate.isNotEmpty()){
+//            adapter.setBadgeForExpiryDate(1)
+//        }
+//        else if(FilterExpiry.startExpiryDate.isEmpty() && FilterExpiry.endExpiryDate.isEmpty()){
+//            adapter.setBadgeForExpiryDate(-1)
+//        }
+//        if(FilterExpiry.startManufactureDate.isNotEmpty() && FilterExpiry.endManufactureDate.isNotEmpty()){
+//            adapter.setBadgeForManufactureDate(2)
+//        }
+//        else if(FilterExpiry.startManufactureDate.isNotEmpty() && FilterExpiry.endManufactureDate.isEmpty()){
+//            adapter.setBadgeForManufactureDate(1)
+//        }
+//        else if(FilterExpiry.startManufactureDate.isEmpty() && FilterExpiry.endManufactureDate.isNotEmpty()){
+//            adapter.setBadgeForManufactureDate(1)
+//        }
+//        else if(FilterExpiry.startManufactureDate.isEmpty() && FilterExpiry.endManufactureDate.isEmpty()){
+//            adapter.setBadgeForManufactureDate(-1)
+//        }
+//    }
+//    fun returnNonNullList():MutableList<Product>{
+//        return if(list==null){
+//            products
+//        }
+//        else{
+//            list!!
+//        }
 //    }
 }

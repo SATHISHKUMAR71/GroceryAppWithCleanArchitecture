@@ -1,5 +1,6 @@
 package com.core.data.datasource.productdatasource
 
+import com.core.domain.products.BrandData
 import com.core.domain.products.CartWithProductData
 import com.core.domain.products.Category
 import com.core.domain.products.Images
@@ -22,7 +23,7 @@ interface ProductDataSource {
     fun getDeletedProductsWithCartId(cartId:Int):List<CartWithProductData>?
     fun getImagesForProduct(productId: Long):List<Images>?
     fun getParentAndChildNames(): Map<ParentCategory, List<Category>>
-    fun getAllBrands():List<String>
+    fun getAllBrands():List<BrandData>
     fun addProductInRecentlyViewedItems(recentlyViewedItems: RecentlyViewedItems)
     fun removeProductInRecentlyViewedItems(recentlyViewedItems: RecentlyViewedItems)
     fun getParentCategoryList():List<ParentCategory>?

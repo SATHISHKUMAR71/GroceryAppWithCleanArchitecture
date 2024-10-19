@@ -1,19 +1,29 @@
 package com.example.shoppinggroceryapp.views.sharedviews.filter
 
 import android.graphics.Color
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinggroceryapp.R
 import com.google.android.material.button.MaterialButton
 
-class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,var fragment:Fragment):RecyclerView.Adapter<FilterAdapter.FilterTypeViewHolder>() {
+class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,var fragment:Fragment,var discountList:List<String>):RecyclerView.Adapter<FilterAdapter.FilterTypeViewHolder>() {
     var highlightedPos = -1
     inner class FilterTypeViewHolder(filterTypeView:View):RecyclerView.ViewHolder(filterTypeView){
-        val button = filterTypeView.findViewById<MaterialButton>(R.id.filterOptionsDiscount)
+        val layout = filterTypeView.findViewById<ConstraintLayout>(R.id.filterOptionsDiscount)
+        val button  = filterTypeView.findViewById<MaterialButton>(R.id.filterOptionsDiscountBtn)
+        val badge = filterTypeView.findViewById<TextView>(R.id.filterCountTextView)
     }
+    var discountBadge = -1
+    var brandBadge = -1
+    var expiryDateBadge = -1
+    var priceBadge = -1
+    var manufactureBadge = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterTypeViewHolder {
         return FilterTypeViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.filter_button_option,parent,false))
@@ -25,19 +35,65 @@ class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,
 
     override fun onBindViewHolder(holder: FilterTypeViewHolder, position: Int) {
         holder.button.text = filterTypeList[position]
+        if(position==0){
+            if(discountBadge!=-1){
+                setBadgeVisibility(discountBadge,holder)
+            }
+            else{
+                setBadgeInVisibility(holder)
+            }
+        }
+        else if(position==1){
+            if(brandBadge!=-1){
+                setBadgeVisibility(brandBadge,holder)
+            }
+            else{
+                setBadgeInVisibility(holder)
+            }
+        }
+        else if(position==2){
+            println("98416 EXPIRY DATE CHANGED CALLED notfied $expiryDateBadge")
+            if(expiryDateBadge!=-1){
+                setBadgeVisibility(expiryDateBadge,holder)
+            }
+            else{
+                setBadgeInVisibility(holder)
+            }
+        }
+        else if(position==3){
+            if(priceBadge!=-1){
+                setBadgeVisibility(priceBadge,holder)
+            }
+            else{
+                setBadgeInVisibility(holder)
+            }
+        }
+        else if(position==4){
+            if(manufactureBadge!=-1){
+                setBadgeVisibility(manufactureBadge,holder)
+            }
+            else{
+                setBadgeInVisibility(holder)
+            }
+        }
         if(highlightedPos==position){
-            holder.button.setBackgroundColor(Color.WHITE)
+            holder.layout.setBackgroundColor(Color.WHITE)
         }
         else{
-            holder.button.setBackgroundColor(Color.TRANSPARENT)
+            holder.layout.setBackgroundColor(Color.TRANSPARENT)
         }
-        holder.itemView.setOnClickListener {
+        holder.button.setOnClickListener {
             highlightedPos = holder.absoluteAdapterPosition
             resetViews()
             when(filterTypeList[position]){
                 "Brand" -> {
                     fragment.parentFragmentManager.beginTransaction()
-                        .replace(R.id.detailOptions,FilterFragmentSearch(brandData))
+                        .replace(R.id.detailOptions,FilterFragmentSearch(brandData)
+                            .apply {
+                                arguments = Bundle().apply {
+                                    putBoolean("isDiscount",false)
+                                }
+                            })
                         .commit()
                 }
                 "Price" -> {
@@ -45,12 +101,73 @@ class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,
                         .replace(R.id.detailOptions,FilterPrice())
                         .commit()
                 }
+                "Expiry Date" -> {
+
+                    fragment.parentFragmentManager.beginTransaction()
+                        .replace(R.id.detailOptions,FilterExpiry().apply {
+                            arguments = Bundle().apply {
+                                putBoolean("isExpiry",true)
+                            }
+                        })
+                        .commit()
+                }
+                "Manufacture Date" -> {
+                    fragment.parentFragmentManager.beginTransaction()
+                        .replace(R.id.detailOptions,FilterExpiry().apply {
+                            arguments = Bundle().apply {
+                                putBoolean("isExpiry",false)
+                            }
+                        })
+                        .commit()
+                }
+                "Discounts" -> {
+                    fragment.parentFragmentManager.beginTransaction()
+                        .replace(R.id.detailOptions,FilterFragmentSearch(discountList)
+                            .apply {
+                                arguments = Bundle().apply {
+                                    putBoolean("isDiscount",true)
+                                }
+                            })
+                        .commit()
+                }
             }
         }
 
     }
 
+    private fun setBadgeVisibility(discountBadge: Int,holder: FilterTypeViewHolder) {
+        holder.badge.text =discountBadge.toString()
+        holder.badge.visibility = View.VISIBLE
+    }
+
+    private fun setBadgeInVisibility(holder: FilterTypeViewHolder) {
+        holder.badge.visibility = View.GONE
+    }
+
     fun resetViews(){
         notifyDataSetChanged()
+    }
+
+    fun setBadgeForDiscount(badgeNumber:Int){
+        discountBadge = badgeNumber
+        notifyItemChanged(0)
+    }
+
+    fun setBadgeForBrand(badgeNumber:Int){
+        brandBadge = badgeNumber
+        notifyItemChanged(1)
+    }
+    fun setBadgeForExpiryDate(badgeNumber:Int){
+        println("98416 EXPIRY DATE CHANGED CALLED $badgeNumber")
+        expiryDateBadge = badgeNumber
+        notifyItemChanged(2)
+    }
+    fun setBadgeForPrice(badgeNumber:Int){
+        priceBadge = badgeNumber
+        notifyItemChanged(3)
+    }
+    fun setBadgeForManufactureDate(badgeNumber:Int){
+        manufactureBadge = badgeNumber
+        notifyItemChanged(4)
     }
 }
