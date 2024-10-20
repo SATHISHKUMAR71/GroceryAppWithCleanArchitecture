@@ -143,6 +143,14 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
             FilterFragmentSearch.checkedList = mutableListOf()
             FilterFragmentSearch.checkedDiscountList = mutableListOf()
             adapter.resetViews()
+            FilterFragmentSearch.clearAll.value = true
+            FilterPrice.clearAll.value = true
+            FilterExpiry.clearAll.value = true
+            adapter.setBadgeForBrand(0)
+            adapter.setBadgeForDiscount(0)
+            adapter.setBadgeForPrice(0)
+            adapter.setBadgeForExpiryDate(0)
+            adapter.setBadgeForManufactureDate(0)
             Thread {
                 filterViewModel.doFilter(products)
                 list = null

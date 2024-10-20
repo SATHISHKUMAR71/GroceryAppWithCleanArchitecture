@@ -22,6 +22,7 @@ class FilterPrice : Fragment() {
     companion object{
         var priceStartFrom = 0f
         var priceEndTo = 2010f
+        var clearAll:MutableLiveData<Boolean> =MutableLiveData()
         var isPriceDataChanged:MutableLiveData<Boolean> = MutableLiveData()
     }
     private lateinit var rangeSlider: RangeSlider
@@ -74,6 +75,9 @@ class FilterPrice : Fragment() {
             priceTo.text = "2000+"
         }
         println("RANGE SLIDER VALUES after start value: $priceStartFrom end value: $priceEndTo org from value:${ rangeSlider.values[0]}  org to value: ${rangeSlider.values[1]}")
+        clearAll.observe(viewLifecycleOwner){
+            rangeSlider.setValues(0f,2010f)
+        }
         return view
     }
 

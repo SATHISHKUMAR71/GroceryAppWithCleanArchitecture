@@ -18,6 +18,7 @@ class FilterFragmentSearch(private var brandList:List<String>) : Fragment() {
         var isCheckBoxClicked:MutableLiveData<Boolean> = MutableLiveData()
         var checkedList:MutableList<String> = mutableListOf()
         var checkedDiscountList:MutableList<Float> = mutableListOf()
+        var clearAll:MutableLiveData<Boolean> = MutableLiveData()
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +36,12 @@ class FilterFragmentSearch(private var brandList:List<String>) : Fragment() {
         for(i in brandList){
             newList.add(false)
         }
-        recyclerView.adapter = FilterCheckBoxItemsAdapter(brandList,newList,isDiscount?:false)
+        var adapter = FilterCheckBoxItemsAdapter(brandList,newList,isDiscount?:false)
+        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
+        clearAll.observe(viewLifecycleOwner){
+            adapter.notifyDataSetChanged()
+        }
         return view
     }
 

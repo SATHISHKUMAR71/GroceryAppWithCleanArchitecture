@@ -24,6 +24,7 @@ class FilterExpiry : Fragment() {
         var startExpiryDate = ""
         var endExpiryDate= ""
         var isExpiry:Boolean? = null
+        var clearAll:MutableLiveData<Boolean> =MutableLiveData()
         var isDataChanged:MutableLiveData<Boolean> = MutableLiveData()
     }
     override fun onCreateView(
@@ -159,7 +160,12 @@ class FilterExpiry : Fragment() {
                 clearEndDate.visibility = View.VISIBLE
             }
         }
-
+        clearAll.observe(viewLifecycleOwner){
+            startDateTextInput.setText("")
+            endDateTextInput.setText("")
+            clearStartDate.visibility = View.INVISIBLE
+            clearEndDate.visibility = View.INVISIBLE
+        }
         return view
     }
 }
