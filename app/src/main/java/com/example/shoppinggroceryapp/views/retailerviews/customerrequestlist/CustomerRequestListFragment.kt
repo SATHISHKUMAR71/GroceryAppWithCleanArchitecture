@@ -62,7 +62,7 @@ class CustomerRequestListFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         productListFilterCount = 0
-        OfferFragment.offerFilterCount = 0
+//        OfferFragment.offerFilterCount = 0
         FilterFragment.list = null
         OfferFragment.dis10Val = false
         OfferFragment.dis20Val = false

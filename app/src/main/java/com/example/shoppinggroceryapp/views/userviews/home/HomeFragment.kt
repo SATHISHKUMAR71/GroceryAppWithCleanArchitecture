@@ -83,7 +83,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         productListFilterCount = 0
-        OfferFragment.offerFilterCount = 0
+//        OfferFragment.offerFilterCount = 0
         OfferFragment.dis10Val = false
         OfferFragment.dis20Val = false
         OfferFragment.dis30Val = false

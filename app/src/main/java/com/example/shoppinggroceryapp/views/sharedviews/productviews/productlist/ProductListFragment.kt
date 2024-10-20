@@ -96,7 +96,7 @@ class ProductListFragment : Fragment() {
         category = arguments?.getString("category")
         FilterFragment.list = null
         productListFilterCount = 0
-        OfferFragment.offerFilterCount = 0
+//        OfferFragment.offerFilterCount = 0
         OfferFragment.dis10Val = false
         OfferFragment.dis20Val = false
         OfferFragment.dis30Val = false
@@ -469,7 +469,7 @@ class ProductListFragment : Fragment() {
         super.onDestroy()
         productListFirstVisiblePos =null
         productListFilterCount = 0
-        OfferFragment.offerFilterCount = 0
+//        OfferFragment.offerFilterCount = 0
         OfferFragment.dis10Val = false
         OfferFragment.dis20Val = false
         OfferFragment.dis30Val = false

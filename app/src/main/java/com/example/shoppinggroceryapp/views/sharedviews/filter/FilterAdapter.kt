@@ -19,11 +19,11 @@ class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,
         val button  = filterTypeView.findViewById<MaterialButton>(R.id.filterOptionsDiscountBtn)
         val badge = filterTypeView.findViewById<TextView>(R.id.filterCountTextView)
     }
-    var discountBadge = -1
-    var brandBadge = -1
-    var expiryDateBadge = -1
-    var priceBadge = -1
-    var manufactureBadge = -1
+    var discountBadge = 0
+    var brandBadge = 0
+    var expiryDateBadge = 0
+    var priceBadge = 0
+    var manufactureBadge = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterTypeViewHolder {
         return FilterTypeViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.filter_button_option,parent,false))
@@ -35,8 +35,10 @@ class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,
 
     override fun onBindViewHolder(holder: FilterTypeViewHolder, position: Int) {
         holder.button.text = filterTypeList[position]
+        FilterFragment.badgeNumber = (if(discountBadge!=0) 1 else 0) + (if(brandBadge!=0)1 else 0) + (if(expiryDateBadge!=0)1 else 0)+ (if(priceBadge!=0)1 else 0)+(if(manufactureBadge!=0)1 else 0)
+        println("FILTER ADAPTER: VALUE: ${FilterFragment.badgeNumber}")
         if(position==0){
-            if(discountBadge!=-1){
+            if(discountBadge!=0){
                 setBadgeVisibility(discountBadge,holder)
             }
             else{
@@ -44,7 +46,7 @@ class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,
             }
         }
         else if(position==1){
-            if(brandBadge!=-1){
+            if(brandBadge!=0){
                 setBadgeVisibility(brandBadge,holder)
             }
             else{
@@ -53,7 +55,7 @@ class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,
         }
         else if(position==2){
             println("98416 EXPIRY DATE CHANGED CALLED notfied $expiryDateBadge")
-            if(expiryDateBadge!=-1){
+            if(expiryDateBadge!=0){
                 setBadgeVisibility(expiryDateBadge,holder)
             }
             else{
@@ -61,7 +63,7 @@ class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,
             }
         }
         else if(position==3){
-            if(priceBadge!=-1){
+            if(priceBadge!=0){
                 setBadgeVisibility(priceBadge,holder)
             }
             else{
@@ -69,7 +71,7 @@ class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,
             }
         }
         else if(position==4){
-            if(manufactureBadge!=-1){
+            if(manufactureBadge!=0){
                 setBadgeVisibility(manufactureBadge,holder)
             }
             else{

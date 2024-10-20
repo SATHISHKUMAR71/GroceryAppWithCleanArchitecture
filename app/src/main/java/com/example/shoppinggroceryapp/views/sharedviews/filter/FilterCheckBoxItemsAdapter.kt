@@ -9,6 +9,7 @@ import com.example.shoppinggroceryapp.R
 
 class FilterCheckBoxItemsAdapter(var items:List<String>, var isChecked:List<Boolean>,var isDiscount:Boolean):RecyclerView.Adapter<FilterCheckBoxItemsAdapter.FilterCheckBoxHolder>() {
 
+
     inner class FilterCheckBoxHolder(checkBoxHolder:View):RecyclerView.ViewHolder(checkBoxHolder){
         val isItemChecked =checkBoxHolder.findViewById<CheckBox>(R.id.fragmentOptionCheckbox)
     }

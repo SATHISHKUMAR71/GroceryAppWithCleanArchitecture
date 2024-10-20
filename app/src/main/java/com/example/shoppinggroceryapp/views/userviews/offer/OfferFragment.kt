@@ -62,7 +62,7 @@ class OfferFragment : Fragment() {
         var dis30Val: Boolean? = null
         var dis20Val: Boolean? = null
         var dis10Val: Boolean? = null
-        var offerFilterCount:Int  = 0
+//        var offerFilterCount:Int  = 0
         var offerListFirstVisiblePos:Int? = null
     }
     private lateinit var filterAndSortLayout:LinearLayout
@@ -89,7 +89,7 @@ class OfferFragment : Fragment() {
     private fun initStaticVariable() {
         productListFilterCount = 0
         BottomSheetDialogFragment.selectedOption.value = null
-        offerFilterCount = 0
+//        offerFilterCount = 0
         dis10Val = false
         dis20Val = false
         dis30Val = false
@@ -140,8 +140,8 @@ class OfferFragment : Fragment() {
         setUpObservers()
         attachBadge()
 
-        if(offerFilterCount !=0){
-            filterCount.text = offerFilterCount.toString()
+        if(FilterFragment.badgeNumber >0){
+            filterCount.text = FilterFragment.badgeNumber.toString()
             filterCount.visibility = View.VISIBLE
         }
         else{
@@ -201,7 +201,7 @@ class OfferFragment : Fragment() {
         }
 
         filterButton.setOnClickListener {
-            offerFilterCount = 0
+//            offerFilterCount = 0
             productEntities = realList
             FragmentTransaction.navigateWithBackstack(
                 parentFragmentManager,
@@ -242,7 +242,7 @@ class OfferFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         FilterFragment.list = null
-        offerFilterCount = 0
+//        offerFilterCount = 0
         offerListFirstVisiblePos = null
         productListFilterCount = 0
         dis10Val = false
