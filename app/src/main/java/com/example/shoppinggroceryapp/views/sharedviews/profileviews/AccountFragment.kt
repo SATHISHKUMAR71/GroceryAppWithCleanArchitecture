@@ -15,27 +15,8 @@ import androidx.core.view.setPadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.core.data.repository.AddressRepository
-import com.core.data.repository.AuthenticationRepository
-import com.core.data.repository.CartRepository
-import com.core.data.repository.HelpRepository
-import com.core.data.repository.OrderRepository
-import com.core.data.repository.ProductRepository
-import com.core.data.repository.SearchRepository
-import com.core.data.repository.SubscriptionRepository
-import com.core.data.repository.UserRepository
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
-import com.example.shoppinggroceryapp.WishListFragment
-import com.example.shoppinggroceryapp.framework.data.authentication.AuthenticationDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.address.AddressDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.cart.CartDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.help.HelpDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.order.OrderDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.product.ProductDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
-import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.permissionhandler.CameraPermissionHandler
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
@@ -131,7 +112,7 @@ class AccountFragment : Fragment() {
         }
 
         view.findViewById<MaterialButton>(R.id.wishlist).setOnClickListener {
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager,WishListFragment(),"Wish List Fragment")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager, WishListFragment(),"Wish List Fragment")
         }
         recentlyPurchasedItems = view.findViewById(R.id.recentlyPurchasedItemsList)
         editUser.getPurchasedProducts(MainActivity.userId.toInt())

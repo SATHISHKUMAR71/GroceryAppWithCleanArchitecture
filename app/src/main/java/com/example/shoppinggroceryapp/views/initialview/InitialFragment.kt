@@ -23,10 +23,12 @@ import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.MainActivity.Companion.isRetailer
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
+import com.example.shoppinggroceryapp.helpers.PutExtras
 import com.example.shoppinggroceryapp.views.userviews.cartview.FindNumberOfCartItems
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.helpers.permissionhandler.MicPermissionHandler
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
+import com.example.shoppinggroceryapp.views.retailerviews.addeditproduct.AddOrEditProductFragment
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.signup.SignUpFragment
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.CustomerRequestListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.search.SearchViewModel
@@ -92,6 +94,7 @@ class InitialFragment : Fragment() {
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
+
         searchViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(retailerDao, userDao)
         )[SearchViewModel::class.java]
@@ -379,7 +382,13 @@ class InitialFragment : Fragment() {
 
         bottomNav.setOnItemReselectedListener {
         }
-
+        if(arguments?.getBoolean("isEdit")==true){
+            println("INTENT PRODUCT: ON TRUE")
+            arguments?.let {
+                ProductListFragment.selectedProductEntity.value = PutExtras.getProductFromExtras(it)
+            }
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,AddOrEditProductFragment().apply { arguments = Bundle().apply { putBoolean("isEdit",true) } },"productList")
+        }
         return view
     }
 

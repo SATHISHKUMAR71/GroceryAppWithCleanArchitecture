@@ -23,8 +23,10 @@ import com.core.usecases.subscriptionusecase.setsubscriptionusecase.AddWeeklySub
 import com.core.usecases.orderusecase.getordersusecase.GetOrderWithProductsByOrderId
 import com.core.usecases.productusecase.getproductusecase.GetProductsById
 import com.core.usecases.productusecase.setproductusecase.UpdateAvailableProducts
+import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.framework.db.entity.order.OrderDetailsEntity
+import com.example.shoppinggroceryapp.helpers.NotificationBuilder
 
 class OrderSuccessViewModel(private val mAddOrder: AddOrder,
                             private val mGetOrderWithProductsByOrderId: GetOrderWithProductsByOrderId,
@@ -43,6 +45,7 @@ class OrderSuccessViewModel(private val mAddOrder: AddOrder,
     val lock = Any()
     var gotOrder: OrderDetailsEntity? = null
     var oldCartId:Int = -1
+    var notifyProduct:MutableLiveData<List<Product>> = MutableLiveData()
     var orderedId:MutableLiveData<Long> = MutableLiveData()
     var newCart:MutableLiveData<CartMapping> = MutableLiveData()
     var orderWithCart:MutableLiveData<Map<OrderDetails,List<CartWithProductData>>> = MutableLiveData()
@@ -74,14 +77,24 @@ class OrderSuccessViewModel(private val mAddOrder: AddOrder,
 
     fun updateProductDetails(){
         Thread{
+            var list = mutableListOf<Product>()
             for(i in mGetCartItems.invoke(oldCartId)){
                 mGetProductsById.invoke(i.productId.toLong())?.let {
+                    if(it.availableItems<100){
+                        list.add(it)
+                        println("675743 value changed ${it.productName} ")
+                    }
                     println("32145 BEFORE UPDATING PRODUCT: $it")
                     mUpdateAvailableProducts.invoke(it.copy(availableItems = it.availableItems-i.totalItems))
                     println("32145 AFTER UPDATING PRODUCT: ${it.copy(availableItems = it.availableItems-i.totalItems)}")
                 }
             }
+            notifyProduct.postValue(list)
         }.start()
+    }
+
+    fun notificationBuilder(notificationBuilder: NotificationBuilder){
+
     }
 
     fun addMonthlySubscription(monthlyOnce: MonthlyOnce){
@@ -114,6 +127,7 @@ class OrderSuccessViewModel(private val mAddOrder: AddOrder,
     fun getSubscriptionDetails(){
 
     }
+
     fun updateAndAssignNewCart(cartId: Int,userId:Int){
         Thread {
             synchronized(lock) {

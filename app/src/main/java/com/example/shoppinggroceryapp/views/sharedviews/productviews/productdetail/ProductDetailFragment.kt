@@ -228,9 +228,6 @@ class ProductDetailFragment : Fragment() {
             productDetailViewModel.getBrandName(it)
         }
 
-        productDetailViewModel.brandName.observe(viewLifecycleOwner){
-            view.findViewById<TextView>(R.id.brandNameProductDetail).text = it
-        }
 
 
         productDetailToolBar.setNavigationOnClickListener {
@@ -405,6 +402,9 @@ class ProductDetailFragment : Fragment() {
                     "${ProductListFragment.selectedProductEntity.value?.productName} (${ProductListFragment.selectedProductEntity.value?.productQuantity})"
                 view?.findViewById<TextView>(R.id.productNameProductDetail)?.text =
                     productNameWithQuantity
+                productDetailViewModel.brandName.observe(viewLifecycleOwner){
+                    view?.findViewById<TextView>(R.id.productNameProductDetail)?.text = "$it $productNameWithQuantity"
+                }
                 var price = ""
                 if ((ProductListFragment.selectedProductEntity.value?.offer ?: -1f) > 0f) {
                     mrpTextView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
@@ -435,15 +435,16 @@ class ProductDetailFragment : Fragment() {
                     ProductListFragment.selectedProductEntity.value?.offer?.toInt().toString() + "% Off"
                 offerView?.text = offerStr
                 if(ProductListFragment.selectedProductEntity.value?.expiryDate?.isNotEmpty()==true) {
+                    var expiry = DateGenerator.getDayAndMonth(ProductListFragment.selectedProductEntity.value?.expiryDate!!)
                     view?.findViewById<TextView>(R.id.expiryDateProductDetail)?.apply {
-                        text = DateGenerator.getDayAndMonth(ProductListFragment.selectedProductEntity.value?.expiryDate!!)
+                        text = "Expiry: $expiry"
                     }
                 }
                 else{
-                    view?.findViewById<TextView>(R.id.expiryDateProductDetail)?.text = "No Expiry"
+                    view?.findViewById<TextView>(R.id.expiryDateProductDetail)?.text = "Expiry: No Expiry"
                 }
-                view?.findViewById<TextView>(R.id.manufactureDateProductDetail)?.text =
-                    DateGenerator.getDayAndMonth(ProductListFragment.selectedProductEntity.value?.manufactureDate!!)
+                var manufactureDate = DateGenerator.getDayAndMonth(ProductListFragment.selectedProductEntity.value?.manufactureDate!!)
+                view?.findViewById<TextView>(R.id.manufactureDateProductDetail)?.text = "Manufacture Date: $manufactureDate"
 
                 if (ProductListFragment.selectedProductEntity.value != null) {
                     productDetailViewModel.getCartForSpecificProduct(

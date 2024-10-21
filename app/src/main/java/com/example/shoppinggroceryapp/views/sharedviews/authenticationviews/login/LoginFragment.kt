@@ -180,6 +180,16 @@ class LoginFragment : Fragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        InitialFragment.hideSearchBar.value = false
+        InitialFragment.hideBottomNav.value = false
+    }
+    override fun onResume() {
+        super.onResume()
+        InitialFragment.hideSearchBar.value = true
+        InitialFragment.hideBottomNav.value = true
+    }
     private fun initViews(view: View) {
         emailPhoneText = view.findViewById(R.id.emailOrMobile)
         handler = Handler(Looper.getMainLooper())

@@ -71,6 +71,7 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
             adapter = FilterAdapter(listOf("Discounts","Brand","Expiry Date","Price","Manufacture Date"),it,this,
                 listOf("10% or more","20% or more","30% or more","40% or more","50% or more")
             )
+
             if(recyclerViewFilterType.adapter==null){
                 recyclerViewFilterType.adapter = adapter
                 recyclerViewFilterType.layoutManager = LinearLayoutManager(context)

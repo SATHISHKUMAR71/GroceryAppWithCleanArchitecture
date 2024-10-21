@@ -71,7 +71,6 @@ class OfferFragment : Fragment() {
     private lateinit var offerList:RecyclerView
     private lateinit var adapter: ProductListAdapter
     private lateinit var offerViewModel: OfferViewModel
-    private lateinit var noItemsFoundImage:ImageView
     private lateinit var noItemsFoundImageText:TextView
     private lateinit var sortButton:MaterialButton
     private lateinit var filterButton: MaterialButton
@@ -109,7 +108,6 @@ class OfferFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_offer, container, false)
-        noItemsFoundImage = view.findViewById(R.id.noItemFoundImageOfferFragment)
         noItemsFoundImageText = view.findViewById(R.id.noItemsFoundText)
         offerList = view.findViewById(R.id.offerList)
         filterCount = view.findViewById(R.id.filterCountTextViewOffer)
@@ -260,12 +258,10 @@ class OfferFragment : Fragment() {
         if(products.isEmpty()){
             offerList.visibility = View.GONE
             noItemsFoundImageText.visibility = View.VISIBLE
-            noItemsFoundImage.visibility =View.VISIBLE
         }
         else{
             offerList.visibility = View.VISIBLE
             noItemsFoundImageText.visibility = View.GONE
-            noItemsFoundImage.visibility =View.GONE
         }
     }
 

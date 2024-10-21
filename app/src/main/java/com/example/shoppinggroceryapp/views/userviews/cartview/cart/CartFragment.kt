@@ -37,6 +37,7 @@ import com.example.shoppinggroceryapp.views.userviews.addressview.getaddress.Get
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersummary.OrderSummaryFragment
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressList
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.google.android.material.button.MaterialButton
 
@@ -73,7 +74,13 @@ class CartFragment : Fragment() {
         FilterFragment.badgeNumber = 0
         ResetFilterValues.resetFilterValues()
         val continueButton = view.findViewById<MaterialButton>(R.id.continueButton)
-
+        val cartAppBar = view.findViewById<AppBarLayout>(R.id.carttoolbar)
+        cartAppBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            println("987983 OFFSET LISTENER CALLED $verticalOffset")
+        }
+//        toolBar.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+//
+//        }
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()

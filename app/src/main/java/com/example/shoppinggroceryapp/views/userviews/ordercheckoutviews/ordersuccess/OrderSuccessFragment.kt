@@ -1,6 +1,7 @@
 package com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersuccess
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.core.domain.order.DailySubscription
 import com.core.domain.order.MonthlyOnce
@@ -20,6 +22,7 @@ import com.example.shoppinggroceryapp.MainActivity.Companion.cartId
 import com.example.shoppinggroceryapp.MainActivity.Companion.userId
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
+import com.example.shoppinggroceryapp.helpers.NotificationBuilder
 import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail.OrderDetailFragment
@@ -32,6 +35,7 @@ import com.google.android.material.button.MaterialButton
 class OrderSuccessFragment : Fragment() {
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,11 +68,19 @@ class OrderSuccessFragment : Fragment() {
         val deliveryFrequency = arguments?.getString("deliveryFrequency")?:"Once"
         val address = CartFragment.selectedAddressEntity
         val tmpCartId = cartId
+        val notificationBuilder = NotificationBuilder(requireContext())
+        notificationBuilder.createNotificationChannel()
 
         orderSuccessViewModel.placeOrder(tmpCartId,
             PaymentFragment.paymentMode,address!!.addressId,"Pending","Pending",deliveryFrequency)
+        orderSuccessViewModel.notificationBuilder(notificationBuilder)
+        orderSuccessViewModel.notifyProduct.observe(viewLifecycleOwner){
+            for(i in it) {
+                println("675743 value called in observer ${i.productName} ")
+                notificationBuilder.showNotification(i)
+            }
+        }
         orderSuccessViewModel.updateProductDetails()
-        
         orderSuccessViewModel.orderedId.observe(viewLifecycleOwner){
             orderSuccessViewModel.getOrderAndCorrespondingCart(it.toInt())
             val selectedTimeSlot = arguments?.getInt("timeSlotInt")

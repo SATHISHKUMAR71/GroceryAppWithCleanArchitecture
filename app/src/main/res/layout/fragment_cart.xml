@@ -11,15 +11,26 @@
         android:layout_width="match_parent"
         android:id="@+id/carttoolbar"
         android:layout_height="wrap_content">
-        <com.google.android.material.appbar.MaterialToolbar
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="My Cart"
-            android:id="@+id/linearLayout10"
-            app:titleCentered="true"
-            app:layout_constraintTop_toTopOf="parent"
-            app:titleTextColor="@color/white"
-            android:background="?attr/colorPrimaryDark"/>
+            app:contentScrim="@android:color/transparent"
+            app:layout_scrollFlags="scroll|enterAlways">
+            <LinearLayout
+                app:layout_collapseMode="pin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="My Cart"
+                    android:id="@+id/linearLayout10"
+                    app:titleCentered="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:titleTextColor="@color/white"
+                    android:background="?attr/colorPrimaryDark"/>
+            </LinearLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 

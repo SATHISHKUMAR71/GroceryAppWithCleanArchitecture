@@ -327,8 +327,8 @@ class ProductListAdapter(var fragment: Fragment,
                 setUpListeners(holder, position)
                 if(tag=="C"){
 
-                    holder.itemView.findViewById<MaterialButton>(R.id.deleteButton).visibility = View.VISIBLE
-                    holder.itemView.findViewById<MaterialButton>(R.id.deleteButton).setOnClickListener {
+                    holder.itemView.findViewById<ImageButton>(R.id.deleteButton).visibility = View.VISIBLE
+                    holder.itemView.findViewById<ImageButton>(R.id.deleteButton).setOnClickListener {
                         if ((holder.absoluteAdapterPosition == position) || ((tag == "C") && (holder.absoluteAdapterPosition == position + 1))) {
                             productsSize--
                             var positionVal = calculateDiscountPrice(
@@ -587,23 +587,23 @@ class ProductListAdapter(var fragment: Fragment,
         var outOfStock = holder.itemView.findViewById<TextView>(R.id.outOfStock)
         outOfStock.text = "Out Of Stocks"
         if(productEntityList[position].availableItems!=0 && productEntityList[position].availableItems>countList[position]){
-            println("JUJUTSU ON IF LINE 542 ${productEntityList[position].productName}")
             outOfStock.visibility = View.GONE
             if(productEntityList[position].availableItems-countList[position]<100){
-                outOfStock.visibility = View.VISIBLE
-                outOfStock.text = "Few Stocks Left: ${productEntityList[position].availableItems-countList[position]}"
-                println("JUJUTSU on text change: in if")
+                if(!isShort) {
+                    outOfStock.visibility = View.VISIBLE
+                    outOfStock.text =
+                        "Few Stocks Left: ${productEntityList[position].availableItems - countList[position]}"
+                }
             }
 
         }
         else if(productEntityList[position].availableItems==0){
-            println("JUJUTSU ON ELSE IF LINE 546 ${productEntityList[position].productName} ${productEntityList[position].availableItems}")
             outOfStock.visibility = View.VISIBLE
-            holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.INVISIBLE
+            holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
         }
         else if((productEntityList[position].availableItems)<=countList[position]){
             outOfStock.visibility = View.VISIBLE
-            holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.INVISIBLE
+            holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.GONE
         }
 
     }
@@ -614,7 +614,7 @@ class ProductListAdapter(var fragment: Fragment,
             holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.VISIBLE
         }
         else{
-            holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.INVISIBLE
+            holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.GONE
         }
     }
 

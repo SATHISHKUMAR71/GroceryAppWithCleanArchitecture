@@ -18,14 +18,20 @@ class HomeViewModel(private val mGetRecentlyViewedProducts: GetRecentlyViewedPro
             val recentlyViewedProduct =mGetRecentlyViewedProducts.invoke(MainActivity.userId.toInt())
             if (recentlyViewedProduct != null) {
                 for(i in recentlyViewedProduct){
-                    var product: Product? = mGetProductsById.invoke(i.toLong())
+                    val product: Product? = mGetProductsById.invoke(i.toLong())
                     product?.let {
                         list.add(it)
                     }
                 }
             }
             list.reverse()
-            recentlyViewedList.postValue(list)
+            var size = list.size
+            if(size>20){
+                recentlyViewedList.postValue(list.subList(0,20))
+            }
+            else{
+                recentlyViewedList.postValue(list.subList(0,size))
+            }
         }.start()
     }
 }

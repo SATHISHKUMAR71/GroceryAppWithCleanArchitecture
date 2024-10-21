@@ -404,7 +404,7 @@ abstract class AppDatabase:RoomDatabase(){
                                         ), fileName
                                     )
                                     dbRetailer.addProduct(i.copy(mainImage = fileName))
-                                    println("Products Added $productNo $fileName")
+                                    println("98986431 Products Added $productNo $fileName")
                                     productNo++
                                 }
                                 var drawableNo = 0

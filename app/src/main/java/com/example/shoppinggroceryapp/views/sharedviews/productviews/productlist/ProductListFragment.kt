@@ -85,7 +85,7 @@ class ProductListFragment : Fragment() {
     private lateinit var toolbar:MaterialToolbar
     private var productEntityList:MutableList<Product> = mutableListOf()
     private lateinit var adapter: ProductListAdapter
-    private lateinit var noItemsImage:ImageView
+//    private lateinit var noItemsImage:ImageView
     private lateinit var notifyNoItems:TextView
 
 
@@ -162,7 +162,7 @@ class ProductListFragment : Fragment() {
         }
         productRV = view.findViewById(R.id.productListRecyclerView)
         notifyNoItems = view.findViewById(R.id.notifyNoItemsAvailable)
-        noItemsImage = view.findViewById(R.id.noItemsFound)
+//        noItemsImage = view.findViewById(R.id.noItemsFound)
         val totalCostButton = view.findViewById<MaterialButton>(R.id.totalPriceWorthInCart)
         val exploreCategoryButton = view.findViewById<MaterialButton>(R.id.categoryButtonProductList)
         val sortButton = view.findViewById<MaterialButton>(R.id.sortButton)
@@ -432,7 +432,12 @@ class ProductListFragment : Fragment() {
         }
 
         productRV.scrollToPosition(productListFirstVisiblePos ?: 0)
-
+        if(arguments?.getBoolean("isEdit")==true){
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentMainLayout, AddOrEditProductFragment())
+                .addToBackStack("Product Detail Fragment")
+                .commit()
+        }
         println("9090980 product list: $productEntityList")
     }
 
@@ -508,15 +513,11 @@ class ProductListFragment : Fragment() {
             .setDuration(50)
             .withEndAction { notifyNoItems.visibility = View.GONE }
             .start()
-        noItemsImage.animate()
-            .alpha(0f)
-            .setDuration(50)
-            .withEndAction { noItemsImage.visibility = View.GONE }
-            .start()
+
     }
 
     private fun hideProductRV(){
-        println("89890090 before HIDE PRODUCT RV IS CALLED ${productRV.isVisible} ${notifyNoItems.isVisible} ${noItemsImage.isVisible}")
+        println("89890090 before HIDE PRODUCT RV IS CALLED ${productRV.isVisible} ${notifyNoItems.isVisible}")
         productRV.animate()
             .alpha(0f)
             .setDuration(50)
@@ -527,11 +528,6 @@ class ProductListFragment : Fragment() {
             .setDuration(50)
             .withEndAction { notifyNoItems.visibility = View.VISIBLE }
             .start()
-        noItemsImage.animate()
-            .alpha(1f)
-            .setDuration(50)
-            .withEndAction { noItemsImage.visibility = View.VISIBLE }
-            .start()
-        println("89890090 after HIDE PRODUCT RV IS CALLED ${productRV.isVisible} ${notifyNoItems.isVisible} ${noItemsImage.isVisible}")
+        println("89890090 after HIDE PRODUCT RV IS CALLED ${productRV.isVisible} ${notifyNoItems.isVisible}")
     }
 }
