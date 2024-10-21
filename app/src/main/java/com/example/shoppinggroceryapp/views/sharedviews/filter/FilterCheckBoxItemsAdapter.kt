@@ -68,6 +68,7 @@ class FilterCheckBoxItemsAdapter(var items:List<String>, var isChecked:List<Bool
             }
 
             holder.isItemChecked.setOnClickListener {
+
                 if(holder.isItemChecked.isChecked){
                     if(isDiscount){
                         when(holder.isItemChecked.text.toString()) {
@@ -96,7 +97,13 @@ class FilterCheckBoxItemsAdapter(var items:List<String>, var isChecked:List<Bool
                         FilterFragmentSearch.checkedList.remove(holder.isItemChecked.text.toString())
                     }
                 }
-                FilterFragmentSearch.isCheckBoxClicked.value = true
+                if(isDiscount){
+                    FilterFragmentSearch.isCheckBoxDiscountClicked.value = true
+                }
+                else{
+                    FilterFragmentSearch.isCheckBoxBrandClicked.value = true
+                }
+//                FilterFragmentSearch.isCheckBoxClicked.value = true
             }
         }
     }

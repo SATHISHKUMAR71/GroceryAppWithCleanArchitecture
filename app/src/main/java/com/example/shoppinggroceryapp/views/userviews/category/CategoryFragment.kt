@@ -32,8 +32,8 @@ import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
 import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
-import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
+import com.example.shoppinggroceryapp.views.sharedviews.filter.ResetFilterValues
 import com.example.shoppinggroceryapp.views.userviews.category.adapter.MainCategoryAdapter
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
 
@@ -53,8 +53,10 @@ class CategoryFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        productListFilterCount = 0
+
 //        OfferFragment.offerFilterCount = 0
+        FilterFragment.badgeNumber = 0
+        ResetFilterValues.resetFilterValues()
         OfferFragment.dis10Val = false
         OfferFragment.dis20Val = false
         OfferFragment.dis30Val = false

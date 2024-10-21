@@ -34,4 +34,5 @@ interface ProductDataSource {
     fun deleteWishList(wishList: WishList)
     fun getAllWishList(userId:Int,productId: Long):WishList?
     fun getWishedProductsList(userId: Int):List<Product>
+    fun getSpecificWishList(userId:Int,productId:Long):WishList?
 }

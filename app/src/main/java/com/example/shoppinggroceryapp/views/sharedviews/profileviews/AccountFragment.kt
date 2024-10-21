@@ -45,11 +45,11 @@ import com.example.shoppinggroceryapp.helpers.permissionhandler.interfaces.Image
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
-import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.views.sharedviews.sort.BottomSheetDialogFragment
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.CustomerRequestListFragment
+import com.example.shoppinggroceryapp.views.sharedviews.filter.ResetFilterValues
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.OrderHistoryFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
@@ -87,8 +87,10 @@ class AccountFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        productListFilterCount = 0
+
 //        OfferFragment.offerFilterCount = 0
+        FilterFragment.badgeNumber = 0
+        ResetFilterValues.resetFilterValues()
         OfferFragment.dis10Val = false
         OfferFragment.dis20Val = false
         OfferFragment.dis30Val = false

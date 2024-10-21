@@ -147,28 +147,34 @@ class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,
     }
 
     fun resetViews(){
+        println("8787878 notify data set changed")
         notifyDataSetChanged()
     }
 
     fun setBadgeForDiscount(badgeNumber:Int){
+        println("8787878 notify item changed called: for discount")
         discountBadge = badgeNumber
         notifyItemChanged(0)
     }
 
     fun setBadgeForBrand(badgeNumber:Int){
+        println("8787878 notify item changed called: for brand")
         brandBadge = badgeNumber
         notifyItemChanged(1)
     }
     fun setBadgeForExpiryDate(badgeNumber:Int){
+        println("8787878 notify item changed called: for expiry")
         println("98416 EXPIRY DATE CHANGED CALLED $badgeNumber")
         expiryDateBadge = badgeNumber
         notifyItemChanged(2)
     }
     fun setBadgeForPrice(badgeNumber:Int){
+        println("8787878 notify item changed called: for price")
         priceBadge = badgeNumber
         notifyItemChanged(3)
     }
     fun setBadgeForManufactureDate(badgeNumber:Int){
+        println("8787878 notify item changed called: for manufacture")
         manufactureBadge = badgeNumber
         notifyItemChanged(4)
     }

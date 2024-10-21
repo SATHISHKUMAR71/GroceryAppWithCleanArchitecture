@@ -42,6 +42,9 @@ interface UserDao {
     @Query("SELECT * FROM WishListEntity JOIN ProductEntity on ProductEntity.productId=WishListEntity.productId WHERE WishListEntity.userId=:userId")
     fun getWishedProductList(userId: Int):List<ProductEntity>
 
+    @Query("SELECT * FROM WISHLISTENTITY where productId=:productId and userId=:userId")
+    fun getSpecificProductInWishList(userId: Int,productId: Long):WishListEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addUser(userEntity: UserEntity):Long
 

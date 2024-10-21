@@ -29,6 +29,8 @@ import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
+import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
+import com.example.shoppinggroceryapp.views.sharedviews.filter.ResetFilterValues
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListViewModel
 import com.example.shoppinggroceryapp.views.userviews.category.CategoryFragment
 import com.example.shoppinggroceryapp.views.userviews.addressview.getaddress.GetNewAddress
@@ -68,7 +70,8 @@ class CartFragment : Fragment() {
         val db = AppDatabase.getAppDatabase(requireContext()).getUserDao()
         bottomLayout = view.findViewById(R.id.linearLayout11)
         price = view.findViewById<MaterialButton>(R.id.viewPriceDetailsButton)
-
+        FilterFragment.badgeNumber = 0
+        ResetFilterValues.resetFilterValues()
         val continueButton = view.findViewById<MaterialButton>(R.id.continueButton)
 
         val db1 = AppDatabase.getAppDatabase(requireContext())

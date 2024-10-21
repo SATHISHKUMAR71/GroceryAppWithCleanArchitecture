@@ -112,7 +112,21 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
             }.start()
         }
 
-        FilterFragmentSearch.isCheckBoxClicked.observe(viewLifecycleOwner){
+        FilterFragmentSearch.isCheckBoxBrandClicked.observe(viewLifecycleOwner){
+            Thread {
+                list = filterViewModel.doFilter(products).toMutableList()
+                MainActivity.handler.post {
+                    availableProducts.text = list?.size.toString()
+                    if(FilterFragmentSearch.checkedList.isNotEmpty()){
+                        adapter.setBadgeForBrand(FilterFragmentSearch.checkedList.size)
+                    }
+                    else{
+                        adapter.setBadgeForBrand(0)
+                    }
+                }
+            }.start()
+        }
+        FilterFragmentSearch.isCheckBoxDiscountClicked.observe(viewLifecycleOwner){
             Thread {
                 list = filterViewModel.doFilter(products).toMutableList()
                 MainActivity.handler.post {
@@ -122,12 +136,6 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
                     }
                     else{
                         adapter.setBadgeForDiscount(0)
-                    }
-                    if(FilterFragmentSearch.checkedList.isNotEmpty()){
-                        adapter.setBadgeForBrand(FilterFragmentSearch.checkedList.size)
-                    }
-                    else{
-                        adapter.setBadgeForBrand(0)
                     }
                 }
             }.start()

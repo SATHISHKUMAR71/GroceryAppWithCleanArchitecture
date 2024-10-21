@@ -16,6 +16,7 @@ import androidx.annotation.OptIn
 import androidx.core.view.setPadding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -61,8 +62,11 @@ import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.launch
 import java.io.File
+import kotlin.coroutines.coroutineContext
 
 
 class ProductDetailFragment : Fragment() {
@@ -144,7 +148,7 @@ class ProductDetailFragment : Fragment() {
         }
 
 
-        productDetailToolBar.setOnMenuItemClickListener {
+        productDetailToolBar.setOnMenuItemClickListener { it ->
             when (it.itemId) {
                 R.id.cart -> {
                     if (!MainActivity.isRetailer) {
@@ -157,6 +161,24 @@ class ProductDetailFragment : Fragment() {
                         FragmentTransaction.navigateWithBackstack(parentFragmentManager,
                             AddOrEditProductFragment(),"Edit in Product Detail")
                     }
+                }
+                R.id.addedInWishlist -> {
+                    ShowShortToast.show("Removed From Wishlist",requireContext())
+                    println("43543 CALLED IN ON MENU CLICK remove from wishlist ${ProductListFragment.selectedProductEntity.value?.productName}")
+                    ProductListFragment.selectedProductEntity.value?.let {prod ->
+                        productDetailViewModel.removeProductFromWishList(prod.productId,MainActivity.userId.toInt())
+                    }
+                    productDetailToolBar.menu.findItem(R.id.addedInWishlist).setVisible(false)
+                    productDetailToolBar.menu.findItem(R.id.addToWishlist).setVisible(true)
+                }
+                R.id.addToWishlist -> {
+                    ShowShortToast.show("Added To Wishlist",requireContext())
+                    println("43543 CALLED IN ON MENU CLICK add to wishlist ${ProductListFragment.selectedProductEntity.value?.productName}")
+                    ProductListFragment.selectedProductEntity.value?.let {prod ->
+                        productDetailViewModel.addProductToWishList(prod.productId,MainActivity.userId.toInt())
+                    }
+                    productDetailToolBar.menu.findItem(R.id.addedInWishlist).setVisible(true)
+                    productDetailToolBar.menu.findItem(R.id.addToWishlist).setVisible(false)
                 }
                 R.id.delete -> {
                     if(MainActivity.isRetailer){
@@ -316,6 +338,17 @@ class ProductDetailFragment : Fragment() {
                 }
             }
         }
+        productDetailViewModel.isWishListChecked.observe(viewLifecycleOwner){
+            println("wishlist OBSERVER CALLED: $it")
+            if(it){
+                productDetailToolBar.menu.findItem(R.id.addToWishlist).setVisible(false)
+                productDetailToolBar.menu.findItem(R.id.addedInWishlist).setVisible(true)
+            }
+            else{
+                productDetailToolBar.menu.findItem(R.id.addedInWishlist).setVisible(false)
+                productDetailToolBar.menu.findItem(R.id.addToWishlist).setVisible(true)
+            }
+        }
         FindNumberOfCartItems.productCount.observe(viewLifecycleOwner){
             if(FindNumberOfCartItems.productCount.value==0){
                 badgeDrawable.isVisible = false
@@ -363,6 +396,7 @@ class ProductDetailFragment : Fragment() {
                 selectedProductEntityList.add(selectedProduct)
             }
             if((oneTimeFragmentIn==0) || (backNavigated) || (MainActivity.isRetailer)) {
+                productDetailViewModel.getSpecificProductWishList(MainActivity.userId.toInt(),selectedProduct.productId)
                 productDetailToolBar.title = selectedProduct.productName
                 view?.findViewById<TextView>(R.id.productDescriptionProductDetail)?.text =
                     selectedProduct.productDescription

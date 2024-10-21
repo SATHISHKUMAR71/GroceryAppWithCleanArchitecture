@@ -25,6 +25,9 @@ class ProductRepository(private val productDataSource: ProductDataSource,private
         productDataSource.addToWishList(wishList)
     }
 
+    fun getSpecificWishList(userId: Int, productId: Long): WishList? {
+        return productDataSource.getSpecificWishList(userId,productId)
+    }
     fun getWishedProductsList(userId: Int):List<Product>{
         return productDataSource.getWishedProductsList(userId)
     }

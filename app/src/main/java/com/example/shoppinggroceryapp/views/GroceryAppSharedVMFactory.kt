@@ -61,6 +61,7 @@ import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWit
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWithTimeSlot
 import com.core.usecases.productusecase.getproductusecase.AddProductToWishList
 import com.core.usecases.productusecase.getproductusecase.GetProductsById
+import com.core.usecases.productusecase.getproductusecase.GetSpecificProductWishlist
 import com.core.usecases.productusecase.getproductusecase.GetWishListProducts
 import com.core.usecases.productusecase.getproductusecase.GetWishLists
 import com.core.usecases.productusecase.getproductusecase.RemoveFromWishList
@@ -185,6 +186,7 @@ class GroceryAppSharedVMFactory (private val retailerDao:RetailerDao,
     private val mUpdateAvailableProducts: UpdateAvailableProducts by lazy { UpdateAvailableProducts(productRepository) }
     private val mGetWishList:GetWishLists by lazy { GetWishLists(productRepository) }
     private val mGetWishListProducts: GetWishListProducts by lazy { GetWishListProducts(productRepository) }
+    private val mGetSpecificProductWishlist: GetSpecificProductWishlist by lazy{ GetSpecificProductWishlist(productRepository) }
     override fun <T : ViewModel> create(modelClass: Class<T>): T = with(modelClass){
         when{
             isAssignableFrom(SearchViewModel::class.java) -> {
@@ -206,10 +208,10 @@ class GroceryAppSharedVMFactory (private val retailerDao:RetailerDao,
                 OrderListViewModel(mGetOrderForUser,mUpdateOrderDetails, mGetOrderForUserMonthlySubscription, mGetOrderForUserDailySubscription, mGetOrderForUserWeeklySubscription, mGetOrdersForUserNoSubscription, mGetProductsWithCartData, mGetDeletedProductsWithCarId, mGetWeeklyOrders, mGetMonthlyOrders, mGetNormalOrder, mGetDailyOrders, mGetAllOrders,mGetDailySubscriptionOrderWithTimeSlot, mGetMonthlySubscriptionWithTimeSlot, mGetSpecificWeeklyOrderWithTimeSlot, mGetOrderedTimeSlot)
             }
             isAssignableFrom(ProductDetailViewModel::class.java)->{
-                ProductDetailViewModel(mDeleteProduct, mGetBrandName, mGetProductsByCartId, mGetProductInRecentList, mAddProductInRecentList, mGetSpecificProductInCart, mGetProductsByCategory, mAddProductInCart, mUpdateCartItems, mRemoveProductInCart, mGetImagesForProduct, mAddDeletedProductInDb,mRemoveFromRecentlyViewedProducts)
+                ProductDetailViewModel(mDeleteProduct, mGetBrandName, mGetProductsByCartId, mGetProductInRecentList, mAddProductInRecentList, mGetSpecificProductInCart, mGetProductsByCategory, mAddProductInCart, mUpdateCartItems, mRemoveProductInCart, mGetImagesForProduct, mAddProductToWishList, mRemoveFromWishList, mGetSpecificProductWishlist, mAddDeletedProductInDb, mRemoveFromRecentlyViewedProducts)
             }
             isAssignableFrom(ProductListViewModel::class.java)->{
-                ProductListViewModel(mGetProductsByCategory, mGetProductByName, mGetAllProducts,mAddProductInCart, mUpdateAvailableProducts,mGetSpecificProductInCart, mGetBrandName, mRemoveProductInCart, mUpdateCartItems,mGetWishListProducts,mAddProductToWishList,mGetWishList,mRemoveFromWishList,mGetLastlyOrderedDateForProduct, mGetCartItems)
+                ProductListViewModel(mGetProductsByCategory, mGetProductByName, mGetAllProducts,mAddProductInCart, mUpdateAvailableProducts,mGetSpecificProductInCart, mGetBrandName, mRemoveProductInCart, mUpdateCartItems,mGetImagesForProduct,mGetWishListProducts,mAddProductToWishList,mGetWishList,mRemoveFromWishList,mGetLastlyOrderedDateForProduct, mGetCartItems)
             }
             isAssignableFrom(FilterViewModel::class.java) -> {
                 FilterViewModel(mGetAllBrands)

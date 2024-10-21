@@ -15,7 +15,8 @@ class FilterFragmentSearch(private var brandList:List<String>) : Fragment() {
 
 
     companion object{
-        var isCheckBoxClicked:MutableLiveData<Boolean> = MutableLiveData()
+        var isCheckBoxBrandClicked:MutableLiveData<Boolean> = MutableLiveData()
+        var isCheckBoxDiscountClicked:MutableLiveData<Boolean> = MutableLiveData()
         var checkedList:MutableList<String> = mutableListOf()
         var checkedDiscountList:MutableList<Float> = mutableListOf()
         var clearAll:MutableLiveData<Boolean> = MutableLiveData()

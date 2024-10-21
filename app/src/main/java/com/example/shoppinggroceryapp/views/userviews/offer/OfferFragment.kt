@@ -41,7 +41,6 @@ import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransa
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
-import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.views.sharedviews.sort.BottomSheetDialogFragment
@@ -87,7 +86,7 @@ class OfferFragment : Fragment() {
     }
 
     private fun initStaticVariable() {
-        productListFilterCount = 0
+
         BottomSheetDialogFragment.selectedOption.value = null
 //        offerFilterCount = 0
         dis10Val = false
@@ -244,7 +243,6 @@ class OfferFragment : Fragment() {
         FilterFragment.list = null
 //        offerFilterCount = 0
         offerListFirstVisiblePos = null
-        productListFilterCount = 0
         dis10Val = false
         dis20Val = false
         dis30Val = false

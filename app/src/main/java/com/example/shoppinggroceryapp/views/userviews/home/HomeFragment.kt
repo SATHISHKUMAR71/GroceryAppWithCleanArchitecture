@@ -39,9 +39,9 @@ import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransa
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
-import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
+import com.example.shoppinggroceryapp.views.sharedviews.filter.ResetFilterValues
 import com.example.shoppinggroceryapp.views.sharedviews.sort.BottomSheetDialogFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListViewModel
 import com.example.shoppinggroceryapp.views.userviews.category.CategoryFragment
@@ -82,8 +82,9 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        productListFilterCount = 0
 //        OfferFragment.offerFilterCount = 0
+        FilterFragment.badgeNumber = 0
+        ResetFilterValues.resetFilterValues()
         OfferFragment.dis10Val = false
         OfferFragment.dis20Val = false
         OfferFragment.dis30Val = false

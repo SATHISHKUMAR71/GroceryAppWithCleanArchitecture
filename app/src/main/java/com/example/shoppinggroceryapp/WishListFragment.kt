@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.OptIn
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -80,7 +81,15 @@ class WishListFragment : Fragment() {
         }
         viewModel.getWishedProducts(MainActivity.userId.toInt())
         viewModel.productEntityList.observe(viewLifecycleOwner){
-            adapter.setProducts(it)
+            if(it.isEmpty()){
+                recyclerView.visibility = View.GONE
+                view.findViewById<TextView>(R.id.noItemsAvailableText).visibility = View.VISIBLE
+            }
+            else{
+                recyclerView.visibility = View.VISIBLE
+                view.findViewById<TextView>(R.id.noItemsAvailableText).visibility = View.GONE
+                adapter.setProducts(it)
+            }
         }
         toolbar.setNavigationOnClickListener {
             parentFragmentManager.popBackStack()

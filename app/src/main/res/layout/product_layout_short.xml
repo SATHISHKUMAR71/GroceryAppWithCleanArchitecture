@@ -54,6 +54,24 @@
                 android:src="@drawable/grains_and_pulses"
                 android:scaleType="fitXY"/>
         </LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/moreImagesView"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/moreImagesText"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="+2 more"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
     <LinearLayout

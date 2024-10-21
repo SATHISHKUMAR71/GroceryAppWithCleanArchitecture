@@ -38,11 +38,11 @@ import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
-import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.adapter.CustomerRequestAdapter.Companion.requestList
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestdetail.CustomerRequestDetailFragment
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.adapter.CustomerRequestAdapter
+import com.example.shoppinggroceryapp.views.sharedviews.filter.ResetFilterValues
 import com.google.android.material.appbar.MaterialToolbar
 
 class CustomerRequestListFragment : Fragment() {
@@ -61,9 +61,10 @@ class CustomerRequestListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        productListFilterCount = 0
 //        OfferFragment.offerFilterCount = 0
         FilterFragment.list = null
+        FilterFragment.badgeNumber = 0
+        ResetFilterValues.resetFilterValues()
         OfferFragment.dis10Val = false
         OfferFragment.dis20Val = false
         OfferFragment.dis30Val = false

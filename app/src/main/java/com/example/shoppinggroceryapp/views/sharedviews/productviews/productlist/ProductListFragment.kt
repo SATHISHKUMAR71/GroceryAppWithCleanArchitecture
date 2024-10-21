@@ -72,7 +72,6 @@ class ProductListFragment : Fragment() {
         var dis20Val: Boolean? = null
         var dis10Val: Boolean? = null
         var productListFirstVisiblePos:Int? = null
-        var productListFilterCount =0
     }
     private var firstTime = 0
     var category:String? = null
@@ -95,7 +94,6 @@ class ProductListFragment : Fragment() {
         BottomSheetDialogFragment.selectedOption.value = null
         category = arguments?.getString("category")
         FilterFragment.list = null
-        productListFilterCount = 0
 //        OfferFragment.offerFilterCount = 0
         OfferFragment.dis10Val = false
         OfferFragment.dis20Val = false
@@ -129,8 +127,8 @@ class ProductListFragment : Fragment() {
         adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
         filterCountText = view.findViewById(R.id.filterCountTextView)
         toolbar = view.findViewById<MaterialToolbar>(R.id.productListToolBar)
-        if(productListFilterCount !=0){
-            filterCountText.text = productListFilterCount.toString()
+        if(FilterFragment.badgeNumber !=0){
+            filterCountText.text = FilterFragment.badgeNumber.toString()
             filterCountText.visibility = View.VISIBLE
         }
         else{
@@ -188,7 +186,6 @@ class ProductListFragment : Fragment() {
             }
         }
         filterButton.setOnClickListener {
-            productListFilterCount = 0
             productEntityList = realProductEntityList
             var filterFragment = FilterFragment(realProductEntityList).apply {
                 arguments = Bundle().apply { putString("category",category) }
@@ -468,7 +465,6 @@ class ProductListFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         productListFirstVisiblePos =null
-        productListFilterCount = 0
 //        OfferFragment.offerFilterCount = 0
         OfferFragment.dis10Val = false
         OfferFragment.dis20Val = false

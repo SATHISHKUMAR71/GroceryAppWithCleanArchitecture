@@ -2,6 +2,7 @@ package com.example.shoppinggroceryapp.views.sharedviews.productviews.productlis
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.core.domain.order.Cart
 import com.core.domain.products.Product
 import com.core.domain.products.WishList
@@ -13,6 +14,7 @@ import com.core.usecases.cartusecase.setcartusecase.UpdateCartItems
 import com.core.usecases.productusecase.getproductusecase.AddProductToWishList
 import com.core.usecases.productusecase.getproductusecase.GetAllProducts
 import com.core.usecases.productusecase.getproductusecase.GetBrandName
+import com.core.usecases.productusecase.getproductusecase.GetImagesForProduct
 import com.core.usecases.productusecase.getproductusecase.GetProductByName
 import com.core.usecases.productusecase.getproductusecase.GetProductsByCategory
 import com.core.usecases.productusecase.getproductusecase.GetWishListProducts
@@ -26,6 +28,8 @@ import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
 import com.example.shoppinggroceryapp.views.sharedviews.sort.ProductSorter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCategory,
                            private val mGetProductByName: GetProductByName,
@@ -36,6 +40,7 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
                            private val mGetBrandName: GetBrandName,
                            private val mRemoveProductInCart: RemoveProductInCart,
                            private val mUpdateCartItems: UpdateCartItems,
+                           private val mGetAllImagesForProduct: GetImagesForProduct,
                            private val mGetWishListProducts:GetWishListProducts,
                            private val mAddProductToWishList: AddProductToWishList,
                            private val mGetWishLists: GetWishLists,
@@ -59,7 +64,12 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
         }.start()
     }
 
-
+    fun getImagesCountForProduct(productId: Long,callback:(Int) -> Unit){
+        viewModelScope.launch(Dispatchers.IO){
+            val size = mGetAllImagesForProduct.invoke(productId)?.size?:0
+            callback(size)
+        }
+    }
     fun getProductsByCategory(category: String) {
         Thread {
 

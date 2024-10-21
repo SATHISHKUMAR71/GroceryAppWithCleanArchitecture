@@ -37,9 +37,9 @@ import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
-import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
+import com.example.shoppinggroceryapp.views.sharedviews.filter.ResetFilterValues
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.adapter.OrderListAdapter
 import com.example.shoppinggroceryapp.views.userviews.help.Help
@@ -60,8 +60,9 @@ class OrderListFragment : Fragment() {
             parentFragmentManager.popBackStack()
             Help.backPressed = false
         }
-        productListFilterCount = 0
 //        OfferFragment.offerFilterCount = 0
+        FilterFragment.badgeNumber = 0
+        ResetFilterValues.resetFilterValues()
         OfferFragment.dis10Val = false
         OfferFragment.dis20Val = false
         OfferFragment.dis30Val = false
