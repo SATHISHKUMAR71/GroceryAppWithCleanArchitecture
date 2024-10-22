@@ -22,14 +22,15 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Popular Categories"
                 android:layout_margin="20dp"
-                android:textStyle="bold"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="Popular Categories"
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:id="@+id/categoryLayoutRow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,7 +42,8 @@
                 android:id="@+id/viewAllCategoriesBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
+                android:elevation="4dp"
                 android:text="View All Categories"
                 app:cornerRadius="4dp"
                 app:icon="@drawable/arrow_forward_ios_24px"
@@ -53,14 +55,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/viewAllCategoriesBtn">
+
                 <TextView
                     android:id="@+id/recentlyViewedItemsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Recently Viewed Items"
-                    android:textSize="18sp"
                     android:layout_margin="20dp"
-                    android:textStyle="bold"/>
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:text="Recently Viewed Items"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_weight="1"

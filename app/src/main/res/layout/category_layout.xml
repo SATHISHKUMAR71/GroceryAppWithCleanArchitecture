@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:padding="10dp"
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="0dp"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+    <androidx.cardview.widget.CardView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:id="@+id/card1"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        android:layout_weight="1"
+        app:cardCornerRadius="12dp"
+        android:elevation="12dp"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -15,56 +32,96 @@
             android:id="@+id/categoryImage0"
             android:layout_height="100dp"
             android:src="@drawable/grains_and_pulses"
-            android:scaleType="centerCrop"
-            android:padding="10dp" />
+            android:scaleType="centerCrop"/>
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
         <TextView
             android:padding="10dp"
+            android:layout_gravity="center"
             android:id="@+id/categoryType0"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
             android:gravity="center"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="Atta,Rice &amp; Dal"/>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card2"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        android:layout_width="wrap_content"
+        app:cardCornerRadius="12dp"
+        android:elevation="12dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:gravity="center"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
         <ImageView
-            android:padding="10dp"
             android:scaleType="centerCrop"
             android:layout_width="100dp"
             android:id="@+id/categoryImage1"
             android:layout_height="100dp"
             android:src="@drawable/grains_and_pulses" />
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
         <TextView
-            android:padding="10dp"
+            android:layout_gravity="center"
             android:id="@+id/categoryType1"
-            android:textStyle="bold"
+            android:padding="10dp"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
             android:gravity="center"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="Atta,Rice &amp; Dal"/>
     </LinearLayout>
     <LinearLayout
-        android:gravity="center"
         android:layout_width="0dp"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card3"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        android:layout_width="wrap_content"
+        app:cardCornerRadius="12dp"
+        android:elevation="12dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
         <ImageView
-            android:padding="10dp"
             android:layout_width="100dp"
             android:id="@+id/categoryImage2"
             android:layout_height="100dp"
             android:src="@drawable/grains_and_pulses"
             android:scaleType="centerCrop"/>
+
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
         <TextView
-            android:padding="10dp"
             android:id="@+id/categoryType2"
-            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
             android:gravity="center"
             android:layout_width="100dp"
             android:layout_height="wrap_content"

@@ -1,14 +1,17 @@
 package com.example.shoppinggroceryapp.views.userviews.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
@@ -148,6 +151,9 @@ class HomeFragment : Fragment() {
 
     private fun addViewToLayout(container: ViewGroup, index:Int){
         val newView = LayoutInflater.from(requireContext()).inflate(R.layout.category_layout,container,false)
+        val card0 = newView.findViewById<CardView>(R.id.card1)
+        val card1 = newView.findViewById<CardView>(R.id.card2)
+        val card2 = newView.findViewById<CardView>(R.id.card3)
         val imageView0 = newView.findViewById<ImageView>(R.id.categoryImage0)
         val imageView1 = newView.findViewById<ImageView>(R.id.categoryImage1)
         val imageView2 = newView.findViewById<ImageView>(R.id.categoryImage2)
@@ -162,17 +168,18 @@ class HomeFragment : Fragment() {
             imageView0.setImageDrawable(ContextCompat.getDrawable(requireContext(),imagesList[index]))
             imageView1.setImageDrawable(ContextCompat.getDrawable(requireContext(),imagesList[index+1]))
             imageView2.setImageDrawable(ContextCompat.getDrawable(requireContext(),imagesList[index+2]))
-            setImageAndTextListener(imageView0,categoryType0)
-            setImageAndTextListener(imageView1,categoryType1)
-            setImageAndTextListener(imageView2,categoryType2)
+            setImageAndTextListener(imageView0,categoryType0,card0)
+            setImageAndTextListener(imageView1,categoryType1,card1)
+            setImageAndTextListener(imageView2,categoryType2,card2)
         }
         else if ((index+1) <= essentialSize) {
             categoryType0.text = essentialItems[index]
             categoryType1.text = essentialItems[index+1]
             imageView0.setImageDrawable(ContextCompat.getDrawable(requireContext(),imagesList[index]))
             imageView1.setImageDrawable(ContextCompat.getDrawable(requireContext(),imagesList[index+1]))
-            setImageAndTextListener(imageView0,categoryType0)
-            setImageAndTextListener(imageView1,categoryType1)
+            setImageAndTextListener(imageView0,categoryType0,card0)
+            setImageAndTextListener(imageView1,categoryType1,card1)
+            card2.visibility = View.INVISIBLE
             imageView2.visibility = View.INVISIBLE
             categoryType2.visibility = View.INVISIBLE
         }
@@ -181,25 +188,76 @@ class HomeFragment : Fragment() {
             imageView0.setImageDrawable(ContextCompat.getDrawable(requireContext(),imagesList[index]))
             imageView2.visibility = View.INVISIBLE
             imageView1.visibility = View.INVISIBLE
-            setImageAndTextListener(imageView0,categoryType0)
+            setImageAndTextListener(imageView0,categoryType0,card0)
             categoryType1.visibility = View.INVISIBLE
             categoryType2.visibility = View.INVISIBLE
+            card2.visibility = View.INVISIBLE
+            card1.visibility = View.INVISIBLE
         }
         container.addView(newView)
     }
 
-    private fun setImageAndTextListener(image:ImageView, text:TextView){
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setImageAndTextListener(image:ImageView, text:TextView, cardView: CardView){
         val productListFrag = ProductListFragment()
         productListFrag.arguments = Bundle().apply {
             putString("category",text.text.toString())
         }
-        image.setOnClickListener {
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager,productListFrag,
-                "Product List Opened")
-        }
+//        image.setOnClickListener {
+//            FragmentTransaction.navigateWithBackstack(parentFragmentManager,productListFrag,
+//                "Product List Opened")
+//        }
         text.setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,productListFrag
             ,"Product List Opened")
+        }
+        text.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    scaleView(cardView, 1.1f)
+                    scaleView(text,1.1f)
+                    true
+                }
+                MotionEvent.ACTION_UP -> {
+                    scaleView(cardView, 1f)
+                    scaleView(text,1f)
+                    v.performClick()
+                    true
+                }
+                MotionEvent.ACTION_CANCEL -> {
+                    scaleView(cardView, 1f)
+                    scaleView(text,1f)
+                    true
+                }
+
+                else -> false
+            }
+        }
+        cardView.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    scaleView(cardView, 1.1f)
+                    scaleView(text,1.1f)
+                    true
+                }
+                MotionEvent.ACTION_UP -> {
+                    scaleView(cardView, 1f)
+                    scaleView(text,1f)
+                    v.performClick()
+                    true
+                }
+                MotionEvent.ACTION_CANCEL -> {
+                    scaleView(cardView, 1f)
+                    scaleView(text,1f)
+                    true
+                }
+
+                else -> false
+            }
+        }
+        cardView.setOnClickListener {
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,productListFrag
+                ,"Product List Opened")
         }
     }
 
@@ -220,5 +278,13 @@ class HomeFragment : Fragment() {
 //        homeViewModel.recentlyViewedList.value = null
         homeViewModel.recentlyViewedList.removeObservers(viewLifecycleOwner)
     }
+    private fun scaleView(view: View, scale: Float) {
+        view.animate()
+            .scaleX(scale)
+            .scaleY(scale)
+            .setDuration(100) // Duration of the animation
+            .start()
+    }
+
 
 }

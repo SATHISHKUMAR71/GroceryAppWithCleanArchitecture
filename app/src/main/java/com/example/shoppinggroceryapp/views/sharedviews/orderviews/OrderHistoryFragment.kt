@@ -27,7 +27,7 @@ class OrderHistoryFragment : Fragment() {
         val dailySubscription = view.findViewById<MaterialButton>(R.id.dailySubscriptionButton)
         val weeklySubscription = view.findViewById<MaterialButton>(R.id.weeklySubscriptionButton)
         val monthlySubscription = view.findViewById<MaterialButton>(R.id.monthlySubscriptionButton)
-        val toolbar = view.findViewById<MaterialTextView>(R.id.orderHistoryNavigationIcon)
+        val toolbar = view.findViewById<MaterialToolbar>(R.id.orderHistoryNavigationIcon)
         var orderListFragment = OrderListFragment()
         var bundle = Bundle()
         var clickable = arguments?.getBoolean("isClickable")
@@ -52,13 +52,16 @@ class OrderHistoryFragment : Fragment() {
             orderListFragment.arguments = bundle
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Monthly Fragment")
         }
+        toolbar.setNavigationOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
         if(MainActivity.isRetailer){
-            toolbar.text = "Orders"
-//            toolbar.navigationIcon = null
-//            toolbar.isTitleCentered = true
+            toolbar.title = "Orders"
+            toolbar.navigationIcon = null
+            toolbar.isTitleCentered = true
         }
         if(clickable==true){
-            toolbar.text = "Select an Order Type"
+            toolbar.title= "Select an Order Type"
             bundle.putBoolean("isClickable",true)
             orderListFragment.arguments = bundle
         }
