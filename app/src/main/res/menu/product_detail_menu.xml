@@ -6,27 +6,27 @@
         android:title="Added in WishList"
         android:icon="@drawable/heart_filled_white"
         app:showAsAction="always"
-        android:visible="false"/>
+        />
     <item android:id="@+id/addToWishlist"
         android:title="Add To WishList"
         android:icon="@drawable/favoutirte_outline_white"
         app:showAsAction="always"
-        android:visible="false"/>
+        />
     <item android:id="@+id/cart"
         android:title="Cart"
         android:icon="@drawable/cart_white"
         app:showAsAction="always"
-        android:visible="false"/>
+        />
 
     <item android:id="@+id/edit"
         android:title="Edit Product"
         android:icon="@drawable/edit_24px"
         app:showAsAction="always"
-        android:visible="false"/>
+        />
     <item android:id="@+id/delete"
         android:title="Delete Product"
         android:icon="@drawable/delete_white"
         app:showAsAction="always"
-        android:visible="false"/>
+        />
 
 </menu>

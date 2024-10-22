@@ -174,6 +174,7 @@ class ProductDetailFragment : Fragment() {
                     }
                     productDetailToolBar.menu.findItem(R.id.addedInWishlist).setVisible(false)
                     productDetailToolBar.menu.findItem(R.id.addToWishlist).setVisible(true)
+                    resetBadge(badgeDrawable,productDetailToolBar)
                 }
                 R.id.addToWishlist -> {
                     ShowShortToast.show("Added To Wishlist",requireContext())
@@ -183,6 +184,7 @@ class ProductDetailFragment : Fragment() {
                     }
                     productDetailToolBar.menu.findItem(R.id.addedInWishlist).setVisible(true)
                     productDetailToolBar.menu.findItem(R.id.addToWishlist).setVisible(false)
+                    resetBadge(badgeDrawable,productDetailToolBar)
                 }
                 R.id.delete -> {
                     if(MainActivity.isRetailer){
