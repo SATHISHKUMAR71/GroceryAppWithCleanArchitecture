@@ -102,12 +102,12 @@ class OrderListFragment : Fragment() {
             }
             if(it.isEmpty()){
                 view.findViewById<TextView>(R.id.noOrderFoundText).visibility =View.VISIBLE
-                view.findViewById<ImageView>(R.id.noOrderFoundImage).visibility =View.VISIBLE
+//                view.findViewById<ImageView>(R.id.noOrderFoundImage).visibility =View.VISIBLE
                 orderList.visibility = View.GONE
             }
             else{
                 view.findViewById<TextView>(R.id.noOrderFoundText).visibility =View.GONE
-                view.findViewById<ImageView>(R.id.noOrderFoundImage).visibility =View.GONE
+//                view.findViewById<ImageView>(R.id.noOrderFoundImage).visibility =View.GONE
                 orderList.visibility = View.VISIBLE
             }
             orderedItems = list.toMutableList()

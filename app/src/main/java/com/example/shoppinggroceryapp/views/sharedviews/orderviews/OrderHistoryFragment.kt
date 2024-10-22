@@ -12,6 +12,7 @@ import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textview.MaterialTextView
 
 class OrderHistoryFragment : Fragment() {
 
@@ -26,7 +27,7 @@ class OrderHistoryFragment : Fragment() {
         val dailySubscription = view.findViewById<MaterialButton>(R.id.dailySubscriptionButton)
         val weeklySubscription = view.findViewById<MaterialButton>(R.id.weeklySubscriptionButton)
         val monthlySubscription = view.findViewById<MaterialButton>(R.id.monthlySubscriptionButton)
-        val toolbar = view.findViewById<MaterialToolbar>(R.id.orderHistoryNavigationIcon)
+        val toolbar = view.findViewById<MaterialTextView>(R.id.orderHistoryNavigationIcon)
         var orderListFragment = OrderListFragment()
         var bundle = Bundle()
         var clickable = arguments?.getBoolean("isClickable")
@@ -36,9 +37,6 @@ class OrderHistoryFragment : Fragment() {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"No Subscription Fragment")
         }
 
-        toolbar.setNavigationOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
         dailySubscription.setOnClickListener {
             bundle.putString("subscriptionType","Daily")
             orderListFragment.arguments = bundle
@@ -55,12 +53,12 @@ class OrderHistoryFragment : Fragment() {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Monthly Fragment")
         }
         if(MainActivity.isRetailer){
-            toolbar.setTitle("Orders")
-            toolbar.navigationIcon = null
-            toolbar.isTitleCentered = true
+            toolbar.text = "Orders"
+//            toolbar.navigationIcon = null
+//            toolbar.isTitleCentered = true
         }
         if(clickable==true){
-            toolbar.setTitle("Select an Order Type")
+            toolbar.text = "Select an Order Type"
             bundle.putBoolean("isClickable",true)
             orderListFragment.arguments = bundle
         }

@@ -28,19 +28,10 @@
         android:id="@+id/noOrderFoundText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="No Orders Placed"
-        android:layout_margin="10dp"
-        android:visibility="gone"
+        android:text="No Orders Placed (^_^)"
+        android:layout_margin="20dp"
         android:textSize="20dp"
         app:layout_constraintTop_toBottomOf="@+id/materialToolbarOrderList"
         tools:layout_editor_absoluteX="0dp" />
-    <ImageView
-        android:layout_width="match_parent"
-        android:id="@+id/noOrderFoundImage"
-        android:layout_marginTop="20dp"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:src="@drawable/no_order_found"
-        app:layout_constraintTop_toBottomOf="@+id/noOrderFoundText"
-        tools:layout_editor_absoluteX="0dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

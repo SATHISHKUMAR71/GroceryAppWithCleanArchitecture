@@ -205,6 +205,7 @@ class ProductListAdapter(var fragment: Fragment,
                 }
                 if (MainActivity.isRetailer) {
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
+                    holder.itemView.findViewById<CheckBox>(R.id.favourites).visibility = View.GONE
                 } else {
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.VISIBLE
                 }

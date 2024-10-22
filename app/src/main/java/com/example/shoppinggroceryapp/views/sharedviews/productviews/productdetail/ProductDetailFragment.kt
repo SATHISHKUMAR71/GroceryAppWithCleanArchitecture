@@ -140,6 +140,8 @@ class ProductDetailFragment : Fragment() {
             productDetailToolBar.menu.findItem(R.id.edit).setVisible(true)
             productDetailToolBar.menu.findItem(R.id.delete).setVisible(true)
             productDetailToolBar.menu.findItem(R.id.cart).setVisible(false)
+            productDetailToolBar.menu.findItem(R.id.addedInWishlist).setVisible(false)
+            productDetailToolBar.menu.findItem(R.id.addToWishlist).setVisible(false)
             view.findViewById<ScrollView>(R.id.productDetailScrollView).setPadding(0)
             view.findViewById<LinearLayout>(R.id.exploreBottomLayout).visibility = View.GONE
         }
@@ -148,6 +150,8 @@ class ProductDetailFragment : Fragment() {
             productDetailToolBar.menu.findItem(R.id.edit).setVisible(false)
             productDetailToolBar.menu.findItem(R.id.cart).setVisible(true)
             productDetailToolBar.menu.findItem(R.id.delete).setVisible(false)
+            productDetailToolBar.menu.findItem(R.id.addedInWishlist).setVisible(true)
+            productDetailToolBar.menu.findItem(R.id.addToWishlist).setVisible(true)
             view.findViewById<LinearLayout>(R.id.exploreBottomLayout).visibility = View.VISIBLE
         }
 
@@ -168,7 +172,6 @@ class ProductDetailFragment : Fragment() {
                 }
                 R.id.addedInWishlist -> {
                     ShowShortToast.show("Removed From Wishlist",requireContext())
-                    println("43543 CALLED IN ON MENU CLICK remove from wishlist ${ProductListFragment.selectedProductEntity.value?.productName}")
                     ProductListFragment.selectedProductEntity.value?.let {prod ->
                         productDetailViewModel.removeProductFromWishList(prod.productId,MainActivity.userId.toInt())
                     }
@@ -178,7 +181,6 @@ class ProductDetailFragment : Fragment() {
                 }
                 R.id.addToWishlist -> {
                     ShowShortToast.show("Added To Wishlist",requireContext())
-                    println("43543 CALLED IN ON MENU CLICK add to wishlist ${ProductListFragment.selectedProductEntity.value?.productName}")
                     ProductListFragment.selectedProductEntity.value?.let {prod ->
                         productDetailViewModel.addProductToWishList(prod.productId,MainActivity.userId.toInt())
                     }
@@ -365,7 +367,6 @@ class ProductDetailFragment : Fragment() {
             }
         }
         productDetailViewModel.isWishListChecked.observe(viewLifecycleOwner){
-            println("wishlist OBSERVER CALLED: $it")
             if(it){
                 productDetailToolBar.menu.findItem(R.id.addToWishlist).setVisible(false)
                 productDetailToolBar.menu.findItem(R.id.addedInWishlist).setVisible(true)
@@ -422,7 +423,12 @@ class ProductDetailFragment : Fragment() {
                 selectedProductEntityList.add(selectedProduct)
             }
             if((oneTimeFragmentIn==0) || (backNavigated) || (MainActivity.isRetailer)) {
-                productDetailViewModel.getSpecificProductWishList(MainActivity.userId.toInt(),selectedProduct.productId)
+                if(!MainActivity.isRetailer) {
+                    productDetailViewModel.getSpecificProductWishList(
+                        MainActivity.userId.toInt(),
+                        selectedProduct.productId
+                    )
+                }
                 productDetailToolBar.title = selectedProduct.productName
                 view?.findViewById<TextView>(R.id.productDescriptionProductDetail)?.text =
                     selectedProduct.productDescription

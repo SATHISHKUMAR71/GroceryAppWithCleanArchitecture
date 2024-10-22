@@ -17,7 +17,7 @@
         android:icon="@drawable/person_24px"/>
 
     <item android:id="@+id/addOtherAdmin"
-        android:title="Add Admin"
+        android:title="Add Retailer"
         android:icon="@drawable/person_add_24px"/>
 
 </menu>

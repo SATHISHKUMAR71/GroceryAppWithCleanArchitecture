@@ -7,21 +7,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.sharedviews.orderviews.OrderHistoryFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
+
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimaryDark"
-        app:title="My Orders"
+        android:text="My Orders"
+        android:typeface="serif"
+        android:layout_marginStart="15dp"
         android:id="@+id/orderHistoryNavigationIcon"
-        app:navigationIcon="@drawable/arrow_back_24px"
-        app:navigationIconTint="@color/white"
-        app:titleTextColor="@color/white"/>
+        android:layout_marginTop="15dp"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:layout_height="wrap_content"/>
+<!--    <com.google.android.material.appbar.MaterialToolbar-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="?attr/colorPrimaryDark"-->
+<!--        app:title="My Orders"-->
+<!--        android:id="@+id/orderHistoryNavigationIcon"-->
+
+<!--        app:navigationIconTint="@color/white"-->
+<!--        app:titleTextColor="@color/white"/>-->
    <com.google.android.material.button.MaterialButton
        android:layout_marginTop="10dp"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:layout_marginStart="10dp"
-       android:layout_marginEnd="10dp"
+       android:layout_marginStart="15dp"
+       android:layout_marginEnd="15dp"
        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
        app:icon="@drawable/arrow_forward_ios_24px"
        app:iconGravity="end"
@@ -32,8 +42,8 @@
     <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         style="@style/Widget.Material3.Button.OutlinedButton.Icon"
         app:icon="@drawable/arrow_forward_ios_24px"
         app:iconGravity="end"
@@ -43,8 +53,8 @@
         android:text="Daily Orders"/>
     <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:layout_height="wrap_content"
         style="@style/Widget.Material3.Button.OutlinedButton.Icon"
         app:icon="@drawable/arrow_forward_ios_24px"
@@ -56,8 +66,8 @@
     <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         style="@style/Widget.Material3.Button.OutlinedButton.Icon"
         app:icon="@drawable/arrow_forward_ios_24px"
         app:iconGravity="end"

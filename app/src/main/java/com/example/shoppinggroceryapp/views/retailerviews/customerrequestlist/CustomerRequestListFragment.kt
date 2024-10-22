@@ -105,12 +105,12 @@ class CustomerRequestListFragment : Fragment() {
             requestList = it.toMutableList()
             if(requestList.isEmpty()){
                 customerReqRV.visibility = View.GONE
-                view.findViewById<ImageView>(R.id.noDataFoundImage).visibility = View.VISIBLE
+//                view.findViewById<ImageView>(R.id.noDataFoundImage).visibility = View.VISIBLE
                 view.findViewById<TextView>(R.id.noRequestAvailableFromTheUser).visibility =View.VISIBLE
             }
             else{
                 customerReqRV.visibility = View.VISIBLE
-                view.findViewById<ImageView>(R.id.noDataFoundImage).visibility = View.GONE
+//                view.findViewById<ImageView>(R.id.noDataFoundImage).visibility = View.GONE
                 view.findViewById<TextView>(R.id.noRequestAvailableFromTheUser).visibility =View.GONE
             }
         }
