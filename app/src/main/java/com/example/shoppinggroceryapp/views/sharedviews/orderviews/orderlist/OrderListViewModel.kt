@@ -56,6 +56,7 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
         MutableLiveData<MutableList<MutableList<CartWithProductData>>>().apply {
             value = mutableListOf()
         }
+    var isDeletedProduct:MutableList<MutableList<Boolean>> = mutableListOf()
 
     fun getOrdersForSelectedUser(userId:Int){
         Thread {
@@ -159,14 +160,20 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
         Thread {
             for(i in orderedItems.value!!) {
                 synchronized(lock) {
+                    val isDeletedSubList = mutableListOf<Boolean>()
                     val tmpList = mGetProductsWithCartData.invoke(i.cartId).toMutableList()
-                    tmpList.addAll(mGetDeletedProductsWithCarId.invoke(i.cartId))
+                    val tmpDeleteList = mGetDeletedProductsWithCarId.invoke(i.cartId)
+                    for(k in tmpList){
+                        isDeletedSubList.add(false)
+                    }
+                    for(k in tmpDeleteList){
+                        isDeletedSubList.add(true)
+                    }
+                    tmpList.addAll(tmpDeleteList)
                     cartWithProductList.value!!.add(
                         tmpList
                     )
-
-                    for(j in tmpList){
-                    }
+                    isDeletedProduct.add(isDeletedSubList)
                 }
             }
             dataReady.postValue(true)

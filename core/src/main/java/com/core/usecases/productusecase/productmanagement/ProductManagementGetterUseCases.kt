@@ -11,6 +11,7 @@ import com.core.usecases.productusecase.retailerproductusecase.getretailerproduc
 import com.core.usecases.productusecase.retailerproductusecase.getretailerproduct.GetParentCategoryImageUsingChild
 import com.core.usecases.productusecase.retailerproductusecase.getretailerproduct.GetParentCategoryImageUsingParentName
 import com.core.usecases.productusecase.retailerproductusecase.getretailerproduct.GetParentCategoryNameForChild
+import com.core.usecases.productusecase.retailerproductusecase.getretailerproduct.GetUserInfoForModifiedProduct
 
 data class ProductManagementGetterUseCases(var mGetBrandName: GetBrandName,
                                            var mGetAllParentCategoryNames: GetAllParentCategoryNames,
@@ -22,5 +23,6 @@ data class ProductManagementGetterUseCases(var mGetBrandName: GetBrandName,
                                            var mGetImagesForProduct: GetImagesForProduct,
                                            var mGetBandWithName: GetBrandWithName,
                                            var mGetLastProduct: GetLastProduct,
-                                           var mGetImage: GetImage
+                                           var mGetImage: GetImage,
+                                           val mGetUserInfoForModifiedProduct: GetUserInfoForModifiedProduct,
 )

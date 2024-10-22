@@ -221,13 +221,13 @@ class ProductDetailFragment : Fragment() {
         }
         productDetailViewModel.deletedProductUserInfo.observe(viewLifecycleOwner){
             if(it.isNotEmpty()){
-                println("45234 LIST OF USER THEY ORDERED THAT PRODUCT: $it")
+                productDetailViewModel.updateOrders(it)
                 if(modifiedProductName!=null) {
                     notificationBuilder.showNotification(
                         modifiedProductName!!,
                         "${modifiedProductName?.productName} is Not Available in Order ${it[0].orderId}",
                         "The Ordered Products are removed from inventory",
-                        "The Ordered Products are removed from inventory please take necessary action by cancel order or else leave as it was,the available products will be delivered to you"
+                        "Some items in your order are out of stock. You can either cancel your order or keep it as is. We’ll deliver the available items. If all items are out of stock, your order will be canceled automatically."
                     )
                 }
             }

@@ -18,7 +18,10 @@ import com.core.usecases.cartusecase.getcartusecase.GetSpecificProductInCart
 import com.core.usecases.cartusecase.setcartusecase.RemoveProductInCart
 import com.core.usecases.cartusecase.setcartusecase.UpdateCartItems
 import com.core.usecases.orderusecase.getordersusecase.GetAllOrders
+import com.core.usecases.orderusecase.getordersusecase.GetSpecificOrder
+import com.core.usecases.orderusecase.updateorderusecase.UpdateOrderDetails
 import com.core.usecases.productusecase.getproductusecase.AddProductToWishList
+import com.core.usecases.productusecase.getproductusecase.GetAvailableProductsInOrder
 import com.core.usecases.productusecase.getproductusecase.GetBrandName
 import com.core.usecases.productusecase.getproductusecase.GetImagesForProduct
 import com.core.usecases.productusecase.getproductusecase.GetProductsByCategory
@@ -45,7 +48,10 @@ class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
                              private val mGetUserInfoForModifiedProduct: GetUserInfoForModifiedProduct,
                              private val mAddProductInCart: AddProductInCart,
                              private val mUpdateCartItems: UpdateCartItems,
+                             private val mGetAvailableProductsInOrder: GetAvailableProductsInOrder,
                              private val mRemoveProductInCart: RemoveProductInCart,
+                             private var mUpdateOrderDetails: UpdateOrderDetails,
+                             private val mGetSpecificOrder: GetSpecificOrder,
                              private val mGetImagesForProduct: GetImagesForProduct,
                              private val mAddProductToWishList: AddProductToWishList,
                              private val mRemoveFromWishList: RemoveFromWishList,
@@ -178,6 +184,19 @@ class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
         viewModelScope.launch(Dispatchers.IO){
             deletedProductUserInfo.postValue(mGetUserInfoForModifiedProduct.invoke(productId))
         }
+    }
+
+    fun updateOrders(deletedProductInfo:List<UserInfoWithOrderInfo>){
+        Thread {
+            for (i in deletedProductInfo) {
+                println("6564 ORDER ID FOR THE DETAILS ORDER ID: ${mGetAvailableProductsInOrder.invoke(i.orderId)} DELETED INFO: $i")
+                val counts = mGetAvailableProductsInOrder.invoke(i.orderId)
+                if(counts.productCount==counts.deletedProductCount){
+                    println("UPDATING ORDER DETAILS: ")
+                    mUpdateOrderDetails.invoke(mGetSpecificOrder.invoke(i.orderId).copy(deliveryStatus = "Cancelled"))
+                }
+            }
+        }.start()
     }
     fun calculateDiscountPrice(price:Float, offer:Float):Float{
         if(offer>0f) {

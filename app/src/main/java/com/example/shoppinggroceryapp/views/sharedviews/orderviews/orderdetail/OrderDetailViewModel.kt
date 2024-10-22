@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.core.domain.order.OrderDetails
+import com.core.domain.products.CartWithProductData
 import com.core.domain.products.Product
 import com.core.domain.user.Address
 import com.core.usecases.addressusecase.GetSpecificAddress
@@ -13,6 +14,7 @@ import com.core.usecases.orderusecase.getordersusecase.GetSpecificDailyOrderWith
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificMonthlyOrderWithOrderId
 import com.core.usecases.orderusecase.getordersusecase.GetSpecificWeeklyOrderWithOrderId
 import com.core.usecases.productusecase.getproductusecase.GetProductsById
+import com.core.usecases.productusecase.retailerproductusecase.setretailerproduct.UpdateProduct
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromDailySubscription
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromMonthlySubscription
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromWeeklySubscription
@@ -28,15 +30,25 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
                            private val mRemoveOrderFromDailySubscription: RemoveOrderFromDailySubscription,
                            private val mRemoveOrderFromWeeklySubscription: RemoveOrderFromWeeklySubscription,
                            private val mGetProductById:GetProductsById,
+                           private val mUpdateProduct: UpdateProduct,
                            private val mGetOrderedTimeSlot: GetOrderedTimeSlot
 ): ViewModel() {
     var groceriesArrivingToday = "Groceries Arriving Today"
     var selectedOrderProduct:MutableLiveData<Product> = MutableLiveData()
+    var selectedOrderWithProductData = mutableListOf<CartWithProductData>()
     var selectedAddress:MutableLiveData<Address> = MutableLiveData()
     var date:MutableLiveData<Int> = MutableLiveData()
     var timeSlot:MutableLiveData<Int> = MutableLiveData()
     fun updateOrderDetails(orderDetails: OrderDetails){
         Thread{
+            println("9812 $selectedOrderWithProductData")
+            for(i in selectedOrderWithProductData){
+                mGetProductById.invoke(i.productId)?.let {
+                    val newProd = it.copy(availableItems = it.availableItems+i.totalItems)
+                    mUpdateProduct.invoke(newProd)
+                    println("9812 NEW PRODUCT DETAILS: $newProd")
+                }
+            }
             mUpdateOrderDetails.invoke(orderDetails)
         }.start()
     }

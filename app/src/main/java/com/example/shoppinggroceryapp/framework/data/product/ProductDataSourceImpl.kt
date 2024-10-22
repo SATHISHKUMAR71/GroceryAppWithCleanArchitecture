@@ -3,6 +3,7 @@ package com.example.shoppinggroceryapp.framework.data.product
 import android.provider.ContactsContract.CommonDataKinds.Im
 import com.core.data.datasource.productdatasource.ProductDataSource
 import com.core.data.datasource.productdatasource.RetailerProductDataSource
+import com.core.domain.order.OrderDetails
 import com.core.domain.products.BrandData
 import com.core.domain.products.CartWithProductData
 import com.core.domain.products.Category
@@ -10,11 +11,13 @@ import com.core.domain.products.DeletedProductList
 import com.core.domain.products.Images
 import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
+import com.core.domain.products.ProductAndDeletedCounts
 import com.core.domain.products.WishList
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
 import com.core.domain.user.UserInfoWithOrderInfo
 import com.example.shoppinggroceryapp.framework.data.ConvertorHelper
 import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
+import com.example.shoppinggroceryapp.framework.db.dataclass.ProductWithDeletedCounts
 import com.example.shoppinggroceryapp.framework.db.entity.products.BrandDataEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.CategoryEntity
 import com.example.shoppinggroceryapp.framework.db.entity.products.DeletedProductListEntity
@@ -180,6 +183,14 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
             it.deliveryStatus,
             it.deliveryDate,
             it.orderedDate)}
+    }
+
+    override fun getAvailableProductsInOrderId(orderId: Int): ProductAndDeletedCounts {
+        return retailerDao.getAvailableProductsInOrderId(orderId).let { ProductAndDeletedCounts(it.productCount,it.deletedProductCount) }
+    }
+
+    override fun getSpecificOrder(orderId: Int): OrderDetails {
+        return convertorHelper.convertOrderEntityToOrderDetails(retailerDao.getSpecificOrder(orderId))
     }
 
     override fun getParentAndChildNames(): Map<ParentCategory, List<Category>> {

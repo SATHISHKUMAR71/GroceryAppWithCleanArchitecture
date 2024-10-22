@@ -6,8 +6,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.core.domain.order.OrderDetails
 import com.core.domain.products.BrandData
 import com.example.shoppinggroceryapp.framework.db.dataclass.CustomerRequestWithName
+import com.example.shoppinggroceryapp.framework.db.dataclass.ProductWithDeletedCounts
 import com.example.shoppinggroceryapp.framework.db.dataclass.UserInfoWithOrder
 import com.example.shoppinggroceryapp.framework.db.entity.order.DailySubscriptionEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.MonthlyOnceEntity
@@ -31,8 +33,15 @@ interface RetailerDao: UserDao {
             ",OrderDetailsEntity.paymentStatus as paymentStatus,OrderDetailsEntity.deliveryStatus as deliveryStatus,OrderDetailsEntity.deliveryDate as deliveryDate,OrderDetailsEntity.orderedDate as orderedDate FROM ORDERDETAILSENTITY JOIN CARTMAPPINGENTITY ON CARTMAPPINGENTITY.cartId=ORDERDETAILSENTITY.cartId JOIN CARTENTITY ON CARTENTITY.cartId=ORDERDETAILSENTITY.cartId JOIN USERENTITY ON USERENTITY.userId=CARTMAPPINGENTITY.userId WHERE CARTENTITY.productId=:productId and (ORDERDETAILSENTITY.deliveryStatus!='Cancelled' or ORDERDETAILSENTITY.deliveryStatus!='Delivered' )")
     fun getOrderInfoForSpecificProduct(productId:Long):List<UserInfoWithOrder>
 
+    @Query("SELECT * FROM ORDERDETAILSENTITY WHERE ORDERDETAILSENTITY.orderId=:orderId")
+    fun getSpecificOrder(orderId: Int):OrderDetailsEntity
+
+    @Query("SELECT COUNT(CARTENTITY.productId) as productCount,COUNT(DELETEDPRODUCTLISTENTITY.productId) as deletedProductCount FROM ORDERDETAILSENTITY JOIN CARTENTITY ON ORDERDETAILSENTITY.cartId=CARTENTITY.cartId LEFT JOIN DELETEDPRODUCTLISTENTITY ON DELETEDPRODUCTLISTENTITY.productId=CARTENTITY.productId WHERE ORDERDETAILSENTITY.orderId=:orderId")
+    fun getAvailableProductsInOrderId(orderId:Int):ProductWithDeletedCounts
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addParentCategory(parentCategoryEntity: ParentCategoryEntity)
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addSubCategory(categoryEntity: CategoryEntity)

@@ -12,5 +12,4 @@ class ProductManagementSetterUseCases(var mAddParentCategory: AddParentCategory,
                                       var mAddProduct: AddProduct,
                                       var mUpdateProduct: UpdateProduct,
                                       var mAddProductImage: AddProductImage,
-                                      var mAddNewBrand: AddNewBrand
-)
+                                      var mAddNewBrand: AddNewBrand)

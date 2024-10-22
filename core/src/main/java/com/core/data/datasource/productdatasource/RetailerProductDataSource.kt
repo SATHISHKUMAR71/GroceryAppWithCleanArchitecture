@@ -1,11 +1,13 @@
 package com.core.data.datasource.productdatasource
 
+import com.core.domain.order.OrderDetails
 import com.core.domain.products.BrandData
 import com.core.domain.products.Category
 import com.core.domain.products.DeletedProductList
 import com.core.domain.products.Images
 import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
+import com.core.domain.products.ProductAndDeletedCounts
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
 import com.core.domain.user.UserInfoWithOrderInfo
 
@@ -31,4 +33,6 @@ interface RetailerProductDataSource {
     fun getChildCategoryName():Array<String>?
     fun getChildCategoryName(parentName:String):Array<String>?
     fun getOrderInfoForSpecificProduct(productId:Long):List<UserInfoWithOrderInfo>
+    fun getAvailableProductsInOrderId(orderId:Int):ProductAndDeletedCounts
+    fun getSpecificOrder(orderId: Int):OrderDetails
 }

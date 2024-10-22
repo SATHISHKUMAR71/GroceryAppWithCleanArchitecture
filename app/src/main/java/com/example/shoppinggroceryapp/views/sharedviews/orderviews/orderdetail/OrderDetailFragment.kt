@@ -50,6 +50,7 @@ class OrderDetailFragment : Fragment() {
     private var totalPrice = 0f
     private var selectedOrder:OrderDetails? = null
     var status:MutableLiveData<String> = MutableLiveData()
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,6 +60,8 @@ class OrderDetailFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_order_detail, container, false)
         val productsContainer = view.findViewById<LinearLayout>(R.id.orderedProductViews)
         val changeSubscription = view.findViewById<MaterialButton>(R.id.modifySubscriptionOrder)
+        val mrpPrice = view.findViewById<TextView>(R.id.priceDetailsMrpPrice)
+        val grandTot = view.findViewById<TextView>(R.id.priceDetailsTotalAmount)
         selectedOrder = arguments?.let {
             OrderDetails(
                 it.getInt("orderId",-1),
@@ -306,6 +309,7 @@ class OrderDetailFragment : Fragment() {
         var unitPriceI = -1f
         var productQuantityI:String? = null
         var brandNameI:String? =null
+        var isDeleted = false
         while (true){
             arguments?.let {
                 productId = it.getLong("productId$i")
@@ -318,12 +322,17 @@ class OrderDetailFragment : Fragment() {
                 expiryDateI = it.getString("expiryDate$i")
                 productQuantityI = it.getString("productQuantity$i")
                 brandNameI = it.getString("brandName$i")
+                isDeleted = it.getBoolean("isDeleted$i")
             }
             if(manufactureDateI==null && mainImageI==null && productQuantityI==null && productNameI==null && descriptionI==null && expiryDateI==null && brandNameI==null){
                 break
             }
-            addView(productsContainer,CartWithProductData(productId,mainImageI,productNameI?:"",descriptionI?:"",totalItemsI,unitPriceI,manufactureDateI?:"",expiryDateI?:"",productQuantityI?:"",brandNameI?:""))
-            totalItems++
+            val cartWithOrderData = CartWithProductData(productId,mainImageI,productNameI?:"",descriptionI?:"",totalItemsI,unitPriceI,manufactureDateI?:"",expiryDateI?:"",productQuantityI?:"",brandNameI?:"")
+            orderDetailViewModel.selectedOrderWithProductData.add(cartWithOrderData)
+            addView(productsContainer,cartWithOrderData,isDeleted)
+            if(!isDeleted) {
+                totalItems++
+            }
             i++
         }
 //        for(i in OrderListFragment.correspondingCartList!!){
@@ -334,8 +343,11 @@ class OrderDetailFragment : Fragment() {
         view.findViewById<TextView>(R.id.priceDetailsMrpTotalItems).text = totalItemsStr
         val totalPriceStr = "₹${totalPrice}"
         val grandTotal = "₹${totalPrice+49}"
-        view.findViewById<TextView>(R.id.priceDetailsMrpPrice).text = totalPriceStr
-        view.findViewById<TextView>(R.id.priceDetailsTotalAmount).text = grandTotal
+        if(totalPrice==0f){
+            view.findViewById<LinearLayout>(R.id.linearLayout12).visibility = View.GONE
+        }
+        mrpPrice.text = totalPriceStr
+        grandTot.text = grandTotal
         setUpDeleteSubscriptionListeners()
 
 
@@ -412,7 +424,7 @@ class OrderDetailFragment : Fragment() {
     }
 
 
-    private fun addView(container:LinearLayout,productInfo: CartWithProductData){
+    private fun addView(container:LinearLayout,productInfo: CartWithProductData,addDeleteTag:Boolean){
         val newView =LayoutInflater.from(requireContext()).inflate(R.layout.ordered_product_layout,container,false)
         newView.findViewById<ImageView>(R.id.orderedProductImage)
         newView.setOnClickListener {
@@ -427,7 +439,13 @@ class OrderDetailFragment : Fragment() {
         newView.findViewById<TextView>(R.id.orderedProductFullName).text = productInfo.productName
         newView.findViewById<TextView>(R.id.orderedProductQuantity).text = productInfo.productQuantity
         newView.findViewById<TextView>(R.id.orderedProductBrandName).text = productInfo.brandName
-        totalPrice += (productInfo.totalItems*productInfo.unitPrice)
+        if(addDeleteTag){
+            newView.findViewById<TextView>(R.id.productDeletedTag).visibility = View.VISIBLE
+        }
+        else{
+            newView.findViewById<TextView>(R.id.productDeletedTag).visibility = View.GONE
+            totalPrice += (productInfo.totalItems*productInfo.unitPrice)
+        }
         val totalPrice = "₹${(productInfo.totalItems*productInfo.unitPrice)}"
         newView.findViewById<TextView>(R.id.orderedProductTotalPrice).text = totalPrice
         val eachPrice = "₹${(productInfo.unitPrice)}"

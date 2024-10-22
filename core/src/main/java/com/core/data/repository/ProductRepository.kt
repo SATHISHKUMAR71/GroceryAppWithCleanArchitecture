@@ -2,6 +2,7 @@ package com.core.data.repository
 
 import com.core.data.datasource.productdatasource.ProductDataSource
 import com.core.data.datasource.productdatasource.RetailerProductDataSource
+import com.core.domain.order.OrderDetails
 import com.core.domain.products.BrandData
 import com.core.domain.products.CartWithProductData
 import com.core.domain.products.Category
@@ -9,6 +10,7 @@ import com.core.domain.products.DeletedProductList
 import com.core.domain.products.Images
 import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
+import com.core.domain.products.ProductAndDeletedCounts
 import com.core.domain.products.WishList
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
 import com.core.domain.user.UserInfoWithOrderInfo
@@ -20,7 +22,13 @@ class ProductRepository(private val productDataSource: ProductDataSource,private
     fun getOrderInfoForSpecificProduct(productId: Long): List<UserInfoWithOrderInfo>{
         return retailerProductDataSource.getOrderInfoForSpecificProduct(productId)
     }
+    fun getAvailableProductsInOrderId(orderId: Int): ProductAndDeletedCounts {
+        return retailerProductDataSource.getAvailableProductsInOrderId(orderId)
+    }
 
+    fun getSpecificOrder(orderId: Int):OrderDetails{
+        return retailerProductDataSource.getSpecificOrder(orderId)
+    }
     fun addParentCategory(parentCategory: ParentCategory){
         retailerProductDataSource.addParentCategory(parentCategory)
     }

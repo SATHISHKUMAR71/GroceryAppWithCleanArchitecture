@@ -210,6 +210,7 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
                         putString("expiryDate$i",cartWithProductList[position][i].expiryDate)
                         putString("productQuantity$i",cartWithProductList[position][i].productQuantity)
                         putString("brandName$i",cartWithProductList[position][i].brandName)
+                        putBoolean("isDeleted$i",orderListViewModel.isDeletedProduct[position][i])
                     }
                 }
                 fragment.parentFragmentManager.beginTransaction()

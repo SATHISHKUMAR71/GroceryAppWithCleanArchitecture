@@ -5,17 +5,21 @@ import android.graphics.Bitmap
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.core.domain.products.BrandData
 import com.core.domain.products.Category
 import com.core.domain.products.Images
 import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
+import com.core.domain.user.UserInfoWithOrderInfo
 import com.core.usecases.productusecase.productmanagement.ProductManagementDeleteUseCases
 import com.core.usecases.productusecase.productmanagement.ProductManagementGetterUseCases
 import com.core.usecases.productusecase.productmanagement.ProductManagementSetterUseCases
 import com.example.shoppinggroceryapp.framework.db.dataclass.IntWithCheckedData
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AddEditProductViewModel(private var productGetters: ProductManagementGetterUseCases, private var productSetters: ProductManagementSetterUseCases, private var productDeleteUseCases: ProductManagementDeleteUseCases):ViewModel() {
 
@@ -25,6 +29,7 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
     var parentCategory:MutableLiveData<String> = MutableLiveData()
     var childArray:MutableLiveData<Array<String>> = MutableLiveData()
     var categoryImage:MutableLiveData<String> = MutableLiveData()
+    var deletedProductUserInfo:MutableLiveData<List<UserInfoWithOrderInfo>> = MutableLiveData()
 
     fun getBrandName(brandId:Long){
         Thread{
@@ -108,12 +113,10 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
         }.start()
     }
 
-
     fun updateInventory(brandName:String, isNewProduct:Boolean, product: Product, productId:Long?, imageList: List<String>, deletedImageList:MutableList<String>,oldMainImage:String){
         var brand: BrandData?
         Thread{
             synchronized(ProductDetailViewModel.brandLock) {
-
                 brand = productGetters.mGetBandWithName.invoke(brandName)
                 var prod:Product = product
                 var lastProduct: Product? = product
