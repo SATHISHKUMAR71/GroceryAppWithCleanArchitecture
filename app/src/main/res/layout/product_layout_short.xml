@@ -35,7 +35,6 @@
                 android:id="@+id/favourites"
                 android:layout_gravity="end"
                 android:elevation="2dp"
-                android:buttonTintMode="screen"
                 android:layout_height="wrap_content"
                 android:button="@drawable/favourite_chckbox_background" />
             <LinearLayout
