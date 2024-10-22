@@ -29,7 +29,7 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
     var parentCategory:MutableLiveData<String> = MutableLiveData()
     var childArray:MutableLiveData<Array<String>> = MutableLiveData()
     var categoryImage:MutableLiveData<String> = MutableLiveData()
-    var deletedProductUserInfo:MutableLiveData<List<UserInfoWithOrderInfo>> = MutableLiveData()
+//    var alertNotification:MutableLiveData<Product> =MutableLiveData()
 
     fun getBrandName(brandId:Long){
         Thread{
@@ -113,6 +113,18 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
         }.start()
     }
 
+//    fun getOrdersForTheProducts(product:Product){
+//        viewModelScope.launch(Dispatchers.IO){
+//            for(i in productGetters.mGetUserInfoForModifiedProduct.invoke(product.productId)){
+//                productGetters.mGetSpecificProductInCart.invoke(i.cartId,product.productId.toInt())?.let {
+//                    if(product.availableItems<it.totalItems){
+//                        alertNotification.postValue(product)
+//                    }
+//                }
+//            }
+//        }
+//    }
+
     fun updateInventory(brandName:String, isNewProduct:Boolean, product: Product, productId:Long?, imageList: List<String>, deletedImageList:MutableList<String>,oldMainImage:String){
         var brand: BrandData?
         Thread{
@@ -151,6 +163,7 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
                     }
                 }
                 ProductListFragment.selectedProductEntity.postValue(prod)
+//                getOrdersForTheProducts(prod)
             }
 
         }.start()

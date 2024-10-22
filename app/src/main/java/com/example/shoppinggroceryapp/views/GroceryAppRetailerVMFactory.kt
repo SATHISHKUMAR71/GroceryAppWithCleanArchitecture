@@ -7,6 +7,7 @@ import com.core.data.repository.HelpRepository
 import com.core.data.repository.OrderRepository
 import com.core.data.repository.ProductRepository
 import com.core.usecases.cartusecase.getcartusecase.GetProductsWithCartData
+import com.core.usecases.cartusecase.getcartusecase.GetSpecificProductInCart
 import com.core.usecases.helpusecase.GetCustomerReqForSpecificUser
 import com.core.usecases.orderusecase.getordersusecase.GetOrderDetailsWithOrderId
 import com.core.usecases.productusecase.getproductusecase.GetBrandName
@@ -83,8 +84,9 @@ class GroceryAppRetailerVMFactory(private val userDao:UserDao,
     private val mAddNewBrand: AddNewBrand by lazy { AddNewBrand(productRepository) }
     private val mDeleteProductImage: DeleteProductImage by lazy { DeleteProductImage(productRepository) }
     private val mDeleteProduct: DeleteProduct by lazy { DeleteProduct(productRepository) }
+    private val mGetSpecificProductInCart: GetSpecificProductInCart by lazy { GetSpecificProductInCart(cartRepository) }
     private val mGetUserInfoForModifiedProduct:GetUserInfoForModifiedProduct by lazy { GetUserInfoForModifiedProduct(productRepository) }
-    private val productManagementGetters: ProductManagementGetterUseCases by lazy { ProductManagementGetterUseCases(mGetBrandName,mGetAllParentCategoryNames, mGetParentCategoryNameForChild, mGetChildCategoryNames, mGetParentCategoryImageUsingChild, mGetParentCategoryImageUsingParentName, mGetChildCategoriesForParent, mGetImagesForProduct, mGetBrandWithName, mGetLastProduct, mGetImage,mGetUserInfoForModifiedProduct) }
+    private val productManagementGetters: ProductManagementGetterUseCases by lazy { ProductManagementGetterUseCases(mGetBrandName,mGetAllParentCategoryNames, mGetParentCategoryNameForChild, mGetChildCategoryNames, mGetParentCategoryImageUsingChild, mGetParentCategoryImageUsingParentName, mGetChildCategoriesForParent, mGetImagesForProduct, mGetBrandWithName, mGetLastProduct, mGetImage,mGetSpecificProductInCart,mGetUserInfoForModifiedProduct) }
     private val productManagementSetters: ProductManagementSetterUseCases by lazy { ProductManagementSetterUseCases(mAddParentCategory, mAddSubCategory, mAddProduct, mUpdateProduct, mAddProductImage, mAddNewBrand) }
     private val productDeleteUseCases: ProductManagementDeleteUseCases by lazy { ProductManagementDeleteUseCases(mDeleteProductImage, mDeleteProduct) }
     private val mGetCustomerRequestWithName: GetCustomerRequestWithName by lazy { GetCustomerRequestWithName(helpRepository) }

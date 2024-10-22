@@ -3,6 +3,7 @@ package com.example.shoppinggroceryapp.views.retailerviews.addeditproduct
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -43,6 +44,7 @@ import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDa
 import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.framework.db.dataclass.IntWithCheckedData
+import com.example.shoppinggroceryapp.helpers.NotificationBuilder
 import com.example.shoppinggroceryapp.helpers.alertdialog.DataLossAlertDialog
 import com.example.shoppinggroceryapp.helpers.permissionhandler.CameraPermissionHandler
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
@@ -74,6 +76,7 @@ class AddOrEditProductFragment : Fragment() {
     private var isNewParentCategory = false
     private var isNewSubCategory = false
     var oldMainImage = ""
+    var oldAvailableItems = 0
     private lateinit var imagePermissionHandler: ImagePermissionHandler
     private var mainImage:String = ""
     private var mainImageBitmap:Bitmap?= null
@@ -89,6 +92,7 @@ class AddOrEditProductFragment : Fragment() {
     var mainImageClicked = false
     var parentCategoryImageClicked = false
     var parentCategoryImage:Bitmap? = null
+    var modifiedProduct:Product? = null
     var imageList = mutableMapOf<Int, IntWithCheckedData>()
     var imageStringList = mutableListOf<String>()
     private lateinit var addParentCategoryButton:MaterialButton
@@ -236,6 +240,14 @@ class AddOrEditProductFragment : Fragment() {
                 expiryDateLayout.visibility = View.VISIBLE
             }
         }
+//        addEditProductViewModel.alertNotification.observe(viewLifecycleOwner){
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                val notificationBuilder = NotificationBuilder(requireContext())
+//                notificationBuilder.createNotificationChannel()
+//                notificationBuilder.showNotification(it,"${it.productName} has less no of stocks","In your Orders Some of the products are less in stocks","Some Items in your order is less in stocks so unable to process that order we will delivery other products if any products in your order")
+//            }
+//        }
+
         return view
     }
 
@@ -320,6 +332,7 @@ class AddOrEditProductFragment : Fragment() {
         productOffer.setText(it.offer.toString())
         productSubCat.setText(it.categoryName)
         productQuantity.setText(it.productQuantity)
+        oldAvailableItems = it.availableItems
         productAvailableItems.setText(it.availableItems.toString())
         isVeg.isChecked = it.isVeg
         rawExpiryDate = it.expiryDate
@@ -537,14 +550,54 @@ class AddOrEditProductFragment : Fragment() {
                         addEditProductViewModel.addSubCategory(Category(productSubCat.text.toString(), productParentCategory.text.toString(), ""))
                     }
                     if (isCategoryImageAdded) {
-                        addEditProductViewModel.updateInventory(brandNameStr, (ProductListFragment.selectedProductEntity.value == null), Product(0, 0, subCategoryName, productName.text.toString(), productDescription.text.toString(), productPrice.text.toString().toFloat(), productOffer.text.toString().toFloat(), productQuantity.text.toString(), mainImage, isVeg.isChecked, rawManufactureDate, rawExpiryDate, productAvailableItems.text.toString().toInt()), ProductListFragment.selectedProductEntity.value?.productId, imageListNames, deletedImageList,oldMainImage)
-                        parentFragmentManager.popBackStack()
-                        if(ProductListFragment.selectedProductEntity.value==null) {
-                            Toast.makeText(context, "Product Added Successfully", Toast.LENGTH_SHORT)
-                                .show()
+                        val availableItems =productAvailableItems.text.toString().toInt()
+                        if(availableItems>=oldAvailableItems) {
+                            addEditProductViewModel.updateInventory(
+                                brandNameStr,
+                                (ProductListFragment.selectedProductEntity.value == null),
+                                Product(
+                                    0,
+                                    0,
+                                    subCategoryName,
+                                    productName.text.toString(),
+                                    productDescription.text.toString(),
+                                    productPrice.text.toString().toFloat(),
+                                    productOffer.text.toString().toFloat(),
+                                    productQuantity.text.toString(),
+                                    mainImage,
+                                    isVeg.isChecked,
+                                    rawManufactureDate,
+                                    rawExpiryDate,
+                                    productAvailableItems.text.toString().toInt()
+                                ),
+                                ProductListFragment.selectedProductEntity.value?.productId,
+                                imageListNames,
+                                deletedImageList,
+                                oldMainImage
+                            )
+                            parentFragmentManager.popBackStack()
+                            if (ProductListFragment.selectedProductEntity.value == null) {
+                                Toast.makeText(
+                                    context,
+                                    "Product Added Successfully",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Product Updated Successfully",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            }
                         }
                         else{
-                            Toast.makeText(context, "Product Updated Successfully", Toast.LENGTH_SHORT)
+                            Toast.makeText(
+                                context,
+                                "Available Items Should be maximum or equal to old Available Items ",
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
                     }

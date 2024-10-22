@@ -1,5 +1,6 @@
 package com.core.usecases.productusecase.productmanagement
 
+import com.core.usecases.cartusecase.getcartusecase.GetSpecificProductInCart
 import com.core.usecases.productusecase.getproductusecase.GetBrandName
 import com.core.usecases.productusecase.getproductusecase.GetImagesForProduct
 import com.core.usecases.productusecase.retailerproductusecase.getretailerproduct.GetAllParentCategoryNames
@@ -24,5 +25,6 @@ data class ProductManagementGetterUseCases(var mGetBrandName: GetBrandName,
                                            var mGetBandWithName: GetBrandWithName,
                                            var mGetLastProduct: GetLastProduct,
                                            var mGetImage: GetImage,
+                                           var mGetSpecificProductInCart: GetSpecificProductInCart,
                                            val mGetUserInfoForModifiedProduct: GetUserInfoForModifiedProduct,
 )
