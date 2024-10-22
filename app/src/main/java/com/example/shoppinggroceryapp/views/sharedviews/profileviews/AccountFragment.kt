@@ -177,6 +177,7 @@ class AccountFragment : Fragment() {
             showAlertDialog()
         }
         if(MainActivity.isRetailer){
+            view.findViewById<LinearLayout>(R.id.linearLayout3).visibility = View.GONE
             help.visibility =View.GONE
             savedAddress.visibility =View.GONE
         }
