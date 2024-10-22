@@ -33,7 +33,7 @@ class NotificationBuilder(var context: Context) {
         println("isNewlyCreated notification channel created")
     }
 
-    fun showNotification(productName:Product){
+    fun showNotification(productName:Product,contentTitle:String,contentMessage:String,bigContentMessage:String){
         println("675743 notification called: $productName")
         val intent = Intent(context, MainActivity::class.java).apply {
             putExtra("isEditProduct",true)
@@ -57,9 +57,9 @@ class NotificationBuilder(var context: Context) {
             PendingIntent.FLAG_IMMUTABLE)
         val notificationBuilder = NotificationCompat.Builder(context,NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.shopping_cart_24px)
-            .setContentTitle("Less Stocks in ${productName.productName}")
-            .setContentText("In your Subscription list Some of the products are not available")
-            .setStyle(NotificationCompat.BigTextStyle().bigText("In your Subscription list Some of the products are not available modify your order"))
+            .setContentTitle(contentTitle)
+            .setContentText(contentMessage)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(bigContentMessage))
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)

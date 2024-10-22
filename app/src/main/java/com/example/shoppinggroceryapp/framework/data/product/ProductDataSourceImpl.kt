@@ -12,6 +12,7 @@ import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
 import com.core.domain.products.WishList
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
+import com.core.domain.user.UserInfoWithOrderInfo
 import com.example.shoppinggroceryapp.framework.data.ConvertorHelper
 import com.example.shoppinggroceryapp.framework.db.dao.RetailerDao
 import com.example.shoppinggroceryapp.framework.db.entity.products.BrandDataEntity
@@ -163,6 +164,22 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
 
     override fun getChildCategoryName(parentName: String): Array<String>? {
         return retailerDao.getChildCategoryName(parentName)
+    }
+
+    override fun getOrderInfoForSpecificProduct(productId: Long): List<UserInfoWithOrderInfo> {
+        return retailerDao.getOrderInfoForSpecificProduct(productId).map { UserInfoWithOrderInfo(it.userId,it.userFirstName,
+            it.userLastName,
+            it.userEmail,
+            it.userPhone,
+            it.orderId,
+            it.cartId,
+            it.addressId,
+            it.paymentMode,
+            it.deliveryFrequency,
+            it.paymentStatus,
+            it.deliveryStatus,
+            it.deliveryDate,
+            it.orderedDate)}
     }
 
     override fun getParentAndChildNames(): Map<ParentCategory, List<Category>> {

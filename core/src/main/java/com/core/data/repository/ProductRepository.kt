@@ -11,10 +11,14 @@ import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
 import com.core.domain.products.WishList
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
+import com.core.domain.user.UserInfoWithOrderInfo
 
 class ProductRepository(private val productDataSource: ProductDataSource,private val retailerProductDataSource: RetailerProductDataSource) {
     fun addProduct(product: Product){
         retailerProductDataSource.addProduct(product)
+    }
+    fun getOrderInfoForSpecificProduct(productId: Long): List<UserInfoWithOrderInfo>{
+        return retailerProductDataSource.getOrderInfoForSpecificProduct(productId)
     }
 
     fun addParentCategory(parentCategory: ParentCategory){

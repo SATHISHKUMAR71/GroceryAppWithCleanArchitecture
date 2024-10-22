@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.core.domain.products.BrandData
 import com.example.shoppinggroceryapp.framework.db.dataclass.CustomerRequestWithName
+import com.example.shoppinggroceryapp.framework.db.dataclass.UserInfoWithOrder
 import com.example.shoppinggroceryapp.framework.db.entity.order.DailySubscriptionEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.MonthlyOnceEntity
 import com.example.shoppinggroceryapp.framework.db.entity.order.OrderDetailsEntity
@@ -23,6 +24,12 @@ import com.example.shoppinggroceryapp.framework.db.entity.recentlyvieweditems.Re
 
 @Dao
 interface RetailerDao: UserDao {
+
+
+    @Query("SELECT UserEntity.userId as userId,UserEntity.userFirstName as userFirstName,UserEntity.userLastName as userLastName,UserEntity.userEmail as userEmail,UserEntity.userPhone as userPhone" +
+            ",OrderDetailsEntity.orderId as orderId,OrderDetailsEntity.cartId as cartId,OrderDetailsEntity.addressId as addressId,OrderDetailsEntity.paymentMode as paymentMode,OrderDetailsEntity.deliveryFrequency as deliveryFrequency" +
+            ",OrderDetailsEntity.paymentStatus as paymentStatus,OrderDetailsEntity.deliveryStatus as deliveryStatus,OrderDetailsEntity.deliveryDate as deliveryDate,OrderDetailsEntity.orderedDate as orderedDate FROM ORDERDETAILSENTITY JOIN CARTMAPPINGENTITY ON CARTMAPPINGENTITY.cartId=ORDERDETAILSENTITY.cartId JOIN CARTENTITY ON CARTENTITY.cartId=ORDERDETAILSENTITY.cartId JOIN USERENTITY ON USERENTITY.userId=CARTMAPPINGENTITY.userId WHERE CARTENTITY.productId=:productId and (ORDERDETAILSENTITY.deliveryStatus!='Cancelled' or ORDERDETAILSENTITY.deliveryStatus!='Delivered' )")
+    fun getOrderInfoForSpecificProduct(productId:Long):List<UserInfoWithOrder>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addParentCategory(parentCategoryEntity: ParentCategoryEntity)

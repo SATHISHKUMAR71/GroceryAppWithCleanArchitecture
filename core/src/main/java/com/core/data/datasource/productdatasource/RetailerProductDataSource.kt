@@ -7,6 +7,7 @@ import com.core.domain.products.Images
 import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
+import com.core.domain.user.UserInfoWithOrderInfo
 
 interface RetailerProductDataSource {
     fun addProduct(product: Product)
@@ -29,4 +30,5 @@ interface RetailerProductDataSource {
     fun getParentCategoryNameForChild(childName:String):String?
     fun getChildCategoryName():Array<String>?
     fun getChildCategoryName(parentName:String):Array<String>?
+    fun getOrderInfoForSpecificProduct(productId:Long):List<UserInfoWithOrderInfo>
 }

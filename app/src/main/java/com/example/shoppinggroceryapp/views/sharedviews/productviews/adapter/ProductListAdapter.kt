@@ -586,26 +586,28 @@ class ProductListAdapter(var fragment: Fragment,
     fun isProductAvailable(holder: ProductLargeImageHolder,position: Int){
         var outOfStock = holder.itemView.findViewById<TextView>(R.id.outOfStock)
         outOfStock.text = "Out Of Stocks"
-        if(productEntityList[position].availableItems!=0 && productEntityList[position].availableItems>countList[position]){
-            outOfStock.visibility = View.GONE
-            if(productEntityList[position].availableItems-countList[position]<100){
-                if(!isShort) {
-                    outOfStock.visibility = View.VISIBLE
-                    outOfStock.text =
-                        "Few Stocks Left: ${productEntityList[position].availableItems - countList[position]}"
+        try {
+            if (productEntityList[position].availableItems != 0 && productEntityList[position].availableItems > countList[position]) {
+                outOfStock.visibility = View.GONE
+                if (productEntityList[position].availableItems - countList[position] < 100) {
+                    if (!isShort) {
+                        outOfStock.visibility = View.VISIBLE
+                        outOfStock.text =
+                            "Few Stocks Left: ${productEntityList[position].availableItems - countList[position]}"
+                    }
                 }
+            } else if (productEntityList[position].availableItems == 0) {
+                outOfStock.visibility = View.VISIBLE
+                holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
+            } else if ((productEntityList[position].availableItems) <= countList[position]) {
+                outOfStock.visibility = View.VISIBLE
+                holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility =
+                    View.GONE
             }
-
         }
-        else if(productEntityList[position].availableItems==0){
-            outOfStock.visibility = View.VISIBLE
-            holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
+        catch (e:Exception){
+            println("e exception")
         }
-        else if((productEntityList[position].availableItems)<=countList[position]){
-            outOfStock.visibility = View.VISIBLE
-            holder.itemView.findViewById<ImageButton>(R.id.productAddSymbolButton).visibility = View.GONE
-        }
-
     }
 
     fun checkIsProductAvailable(holder: ProductLargeImageHolder,position: Int){

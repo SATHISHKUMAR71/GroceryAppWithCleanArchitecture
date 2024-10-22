@@ -4,16 +4,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.core.domain.order.Cart
+import com.core.domain.products.CartWithProductData
 import com.core.domain.products.DeletedProductList
 import com.core.domain.products.Images
 import com.core.domain.products.Product
 import com.core.domain.products.WishList
 import com.core.domain.recentlyvieweditems.RecentlyViewedItems
+import com.core.domain.user.UserInfoWithOrderInfo
 import com.core.usecases.cartusecase.setcartusecase.AddProductInCart
 import com.core.usecases.cartusecase.getcartusecase.GetProductsByCartId
+import com.core.usecases.cartusecase.getcartusecase.GetProductsWithCartData
 import com.core.usecases.cartusecase.getcartusecase.GetSpecificProductInCart
 import com.core.usecases.cartusecase.setcartusecase.RemoveProductInCart
 import com.core.usecases.cartusecase.setcartusecase.UpdateCartItems
+import com.core.usecases.orderusecase.getordersusecase.GetAllOrders
 import com.core.usecases.productusecase.getproductusecase.AddProductToWishList
 import com.core.usecases.productusecase.getproductusecase.GetBrandName
 import com.core.usecases.productusecase.getproductusecase.GetImagesForProduct
@@ -23,6 +27,7 @@ import com.core.usecases.productusecase.getproductusecase.RemoveFromWishList
 import com.core.usecases.productusecase.retailerproductusecase.setretailerproduct.AddDeletedProductInDb
 import com.core.usecases.productusecase.retailerproductusecase.setretailerproduct.DeleteProduct
 import com.core.usecases.productusecase.retailerproductusecase.getretailerproduct.GetProductInRecentList
+import com.core.usecases.productusecase.retailerproductusecase.getretailerproduct.GetUserInfoForModifiedProduct
 import com.core.usecases.productusecase.setproductusecase.AddProductInRecentList
 import com.core.usecases.productusecase.setproductusecase.RemoveFromRecentlyViewedProducts
 import com.example.shoppinggroceryapp.MainActivity
@@ -37,6 +42,7 @@ class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
                              private val mAddProductInRecentList: AddProductInRecentList,
                              private val mGetSpecificProductInCart: GetSpecificProductInCart,
                              private val mGetProductsByCategory: GetProductsByCategory,
+                             private val mGetUserInfoForModifiedProduct: GetUserInfoForModifiedProduct,
                              private val mAddProductInCart: AddProductInCart,
                              private val mUpdateCartItems: UpdateCartItems,
                              private val mRemoveProductInCart: RemoveProductInCart,
@@ -55,6 +61,7 @@ class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
     var similarProductsLiveData:MutableLiveData<List<Product>> = MutableLiveData()
     var isWishListChecked:MutableLiveData<Boolean> = MutableLiveData()
     var imageList:MutableLiveData<List<Images>> = MutableLiveData()
+    var deletedProductUserInfo:MutableLiveData<List<UserInfoWithOrderInfo>> = MutableLiveData()
     var lock = Any()
     companion object{
         var brandLock = Any()
@@ -167,6 +174,11 @@ class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
         }.start()
     }
 
+    fun getOrdersForThisProduct(productId:Long){
+        viewModelScope.launch(Dispatchers.IO){
+            deletedProductUserInfo.postValue(mGetUserInfoForModifiedProduct.invoke(productId))
+        }
+    }
     fun calculateDiscountPrice(price:Float, offer:Float):Float{
         if(offer>0f) {
             return price - (price * (offer / 100))

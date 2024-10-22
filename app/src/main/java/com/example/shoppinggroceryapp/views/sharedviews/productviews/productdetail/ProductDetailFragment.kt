@@ -2,6 +2,7 @@ package com.example.shoppinggroceryapp.views.sharedviews.productviews.productdet
 
 import android.app.AlertDialog
 import android.graphics.Paint
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -43,6 +44,7 @@ import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
+import com.example.shoppinggroceryapp.helpers.NotificationBuilder
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.views.userviews.cartview.FindNumberOfCartItems
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
@@ -86,6 +88,8 @@ class ProductDetailFragment : Fragment() {
     private lateinit var addProductImgButton:ImageButton
     private lateinit var addRemoveLayout:LinearLayout
     private lateinit var onBackPressedCallback: OnBackPressedCallback
+    private lateinit var notificationBuilder: NotificationBuilder
+    private var modifiedProductName:Product? = null
     var once = 0
     var oneTimeFragmentIn = -1
     var backNavigated = false
@@ -194,7 +198,17 @@ class ProductDetailFragment : Fragment() {
                                 }
                                 deletePosition = ProductListFragment.selectedPos
                                 dialog.dismiss()
+                                notificationBuilder = NotificationBuilder(requireContext())
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    notificationBuilder.createNotificationChannel()
+                                }
+                                ProductListFragment.selectedProductEntity.value?.let {
+                                    modifiedProductName = it
+                                }
                                 setProductValue()
+                                modifiedProductName?.let {
+                                    productDetailViewModel.getOrdersForThisProduct(it.productId)
+                                }
                                 ShowShortToast.show("Product Deleted Successfully",requireContext())
                                 parentFragmentManager.popBackStack()
                             }
@@ -204,6 +218,19 @@ class ProductDetailFragment : Fragment() {
                 }
             }
             true
+        }
+        productDetailViewModel.deletedProductUserInfo.observe(viewLifecycleOwner){
+            if(it.isNotEmpty()){
+                println("45234 LIST OF USER THEY ORDERED THAT PRODUCT: $it")
+                if(modifiedProductName!=null) {
+                    notificationBuilder.showNotification(
+                        modifiedProductName!!,
+                        "${modifiedProductName?.productName} is Not Available in Order ${it[0].orderId}",
+                        "The Ordered Products are removed from inventory",
+                        "The Ordered Products are removed from inventory please take necessary action by cancel order or else leave as it was,the available products will be delivered to you"
+                    )
+                }
+            }
         }
         badgeDrawable = BadgeDrawable.create(requireContext())
 

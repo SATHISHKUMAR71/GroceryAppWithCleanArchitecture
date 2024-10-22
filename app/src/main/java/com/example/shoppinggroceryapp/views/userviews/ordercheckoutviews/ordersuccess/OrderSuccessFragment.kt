@@ -77,7 +77,7 @@ class OrderSuccessFragment : Fragment() {
         orderSuccessViewModel.notifyProduct.observe(viewLifecycleOwner){
             for(i in it) {
                 println("675743 value called in observer ${i.productName} ")
-                notificationBuilder.showNotification(i)
+                notificationBuilder.showNotification(i,"Less Stocks in ${i.productName}","In your Subscription list Some of the products are less in stocks","In your Subscription list Some of the products are less in stocks please update the product to avoid customer issues")
             }
         }
         orderSuccessViewModel.updateProductDetails()
