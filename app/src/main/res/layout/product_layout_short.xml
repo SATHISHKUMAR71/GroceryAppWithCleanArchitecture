@@ -42,12 +42,13 @@
 <!--                android:background="@drawable/checkbox_heart_bg"-->
 <!--                android:layout_height="wrap_content"-->
 <!--                android:button="@drawable/favourite_chckbox_background" />-->
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="95dp"
                 android:layout_height="130dp"
                 android:orientation="vertical"
                 android:layout_gravity="center">
                 <TextView
+                    android:elevation="1dp"
                     android:id="@+id/offerText"
                     android:background="@color/offerColor"
                     android:layout_width="wrap_content"
@@ -56,16 +57,17 @@
                     android:textStyle="bold"
                     android:padding="2dp"
                     android:textSize="12sp"
-                    android:text="Buy 1 Get 1 Free"/>
+                    android:text="Buy 1 Free"/>
                 <ImageView
                     android:id="@+id/productImageLong"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:clipToOutline="true"
+                    android:src="@drawable/bannanas"
                     android:scaleType="fitXY"/>
 
-            </LinearLayout>
+            </FrameLayout>
 
 <!--            <ImageButton-->
 <!--                android:id="@+id/uncheckedButton"-->

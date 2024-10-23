@@ -168,7 +168,7 @@
             app:iconTint="?attr/colorPrimaryDark"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-
+            android:visibility="gone"
             app:icon="@drawable/heart_filled_primary"
             app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"
             app:layout_constraintTop_toTopOf="parent" />

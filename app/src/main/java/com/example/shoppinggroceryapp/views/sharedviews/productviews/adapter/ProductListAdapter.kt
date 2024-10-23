@@ -205,23 +205,32 @@ class ProductListAdapter(var fragment: Fragment,
                 }
                 if (MainActivity.isRetailer) {
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
+                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.GONE
+                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.GONE
                 } else {
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.VISIBLE
+                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.VISIBLE
+                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.VISIBLE
                 }
 
                 isProductAvailable(holder, position)
-                productListViewModel.getWishList(productEntityList[position].productId){
-                    if(it!=null){
-                        checkedList[position] = true
-                        MainActivity.handler.post{
-                            holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.VISIBLE
-                            holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.GONE
-                        }
-                    }
-                    else{
-                        MainActivity.handler.post{
-                            holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.GONE
-                            holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.VISIBLE
+                if(!MainActivity.isRetailer) {
+                    productListViewModel.getWishList(productEntityList[position].productId) {
+                        if (it != null) {
+                            checkedList[position] = true
+                            MainActivity.handler.post {
+                                holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
+                                    View.VISIBLE
+                                holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
+                                    View.GONE
+                            }
+                        } else {
+                            MainActivity.handler.post {
+                                holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
+                                    View.GONE
+                                holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
+                                    View.VISIBLE
+                            }
                         }
                     }
                 }
