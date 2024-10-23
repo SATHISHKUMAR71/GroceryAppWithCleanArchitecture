@@ -30,13 +30,17 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:id="@+id/favourites"
-                android:layout_gravity="end"
-                android:elevation="2dp"
-                android:layout_height="wrap_content"
-                android:button="@drawable/favourite_chckbox_background" />
+
+<!--            <CheckBox-->
+<!--                android:visibility="gone"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:id="@+id/favourites"-->
+<!--                android:layout_gravity="end"-->
+<!--                android:elevation="1dp"-->
+<!--                android:backgroundTint="@android:color/transparent"-->
+<!--                android:background="@drawable/checkbox_heart_bg"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:button="@drawable/favourite_chckbox_background" />-->
             <LinearLayout
                 android:layout_width="95dp"
                 android:layout_height="130dp"
@@ -62,6 +66,50 @@
                     android:scaleType="fitXY"/>
 
             </LinearLayout>
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/uncheckedButton"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="end"-->
+<!--                android:visibility="gone"-->
+<!--                android:background="?attr/selectableItemBackground"-->
+<!--                app:iconTint="@color/white"-->
+<!--                android:src="@drawable/heart_filled_white"-->
+<!--                style="@style/Widget.Material3.Button.IconButton" />-->
+<!--            <ImageButton-->
+<!--                android:visibility="gone"-->
+<!--                android:id="@+id/checkedButton"-->
+<!--                android:src="@drawable/heart_filled_primary"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:background="?attr/selectableItemBackground"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="end"-->
+<!--                style="@style/Widget.Material3.Button.IconButton"-->
+<!--                app:icon="@drawable/heart_filled_white"/>-->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/uncheckedButton"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                app:iconTint="?attr/colorPrimaryDark"
+                app:icon="@drawable/favorite_24px"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/checkedButton"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="wrap_content"
+                app:iconTint="?attr/colorPrimaryDark"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                app:icon="@drawable/heart_filled_primary"
+                app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </FrameLayout>
 
         <androidx.cardview.widget.CardView
@@ -101,8 +149,7 @@
             android:layout_gravity="center"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-            android:fontFamily="@font/agbalumo"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:text="Classic"
@@ -118,7 +165,7 @@
             android:maxLines="1"
             android:padding="2dp"
             android:text="Wheat Flour Atta by Flipkart Grocery (godhumai maavu)"
-            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/brandName" />
 
@@ -139,8 +186,8 @@
             android:gravity="center"
             android:layout_height="wrap_content">
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:src="@drawable/history_24px"/>
             <TextView
                 android:id="@+id/productExpiryDate"

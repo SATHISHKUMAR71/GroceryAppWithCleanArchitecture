@@ -205,7 +205,6 @@ class ProductListAdapter(var fragment: Fragment,
                 }
                 if (MainActivity.isRetailer) {
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
-                    holder.itemView.findViewById<CheckBox>(R.id.favourites).visibility = View.GONE
                 } else {
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.VISIBLE
                 }
@@ -215,12 +214,14 @@ class ProductListAdapter(var fragment: Fragment,
                     if(it!=null){
                         checkedList[position] = true
                         MainActivity.handler.post{
-                            holder.itemView.findViewById<CheckBox>(R.id.favourites).isChecked = true
+                            holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.VISIBLE
+                            holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.GONE
                         }
                     }
                     else{
                         MainActivity.handler.post{
-                            holder.itemView.findViewById<CheckBox>(R.id.favourites).isChecked = false
+                            holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.GONE
+                            holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.VISIBLE
                         }
                     }
                 }
@@ -463,14 +464,35 @@ class ProductListAdapter(var fragment: Fragment,
                 }
             }
         }
-        holder.itemView.findViewById<CheckBox>(R.id.favourites).setOnClickListener {
+        holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).setOnClickListener {
             if((holder.absoluteAdapterPosition==position) || ((tag=="C") && (holder.absoluteAdapterPosition==position+1))) {
-                if (holder.itemView.findViewById<CheckBox>(R.id.favourites).isChecked) {
+                if (!checkedList[position]) {
                     checkedList[position] = true
+                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.VISIBLE
+                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.GONE
                     productListViewModel.addProductToWishList(productEntityList[position].productId)
                     ShowShortToast.show("Added to WishList", fragment.requireContext())
                 } else {
                     checkedList[position] = false
+                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.GONE
+                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.VISIBLE
+                    productListViewModel.removeProductFromWishList((productEntityList[position].productId))
+                    ShowShortToast.show("Removed from WishList", fragment.requireContext())
+                }
+            }
+        }
+        holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).setOnClickListener {
+            if((holder.absoluteAdapterPosition==position) || ((tag=="C") && (holder.absoluteAdapterPosition==position+1))) {
+                if (!checkedList[position]) {
+                    checkedList[position] = true
+                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.VISIBLE
+                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.GONE
+                    productListViewModel.addProductToWishList(productEntityList[position].productId)
+                    ShowShortToast.show("Added to WishList", fragment.requireContext())
+                } else {
+                    checkedList[position] = false
+                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.GONE
+                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.VISIBLE
                     productListViewModel.removeProductFromWishList((productEntityList[position].productId))
                     ShowShortToast.show("Removed from WishList", fragment.requireContext())
                 }

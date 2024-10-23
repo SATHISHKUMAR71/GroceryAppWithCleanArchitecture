@@ -92,6 +92,9 @@ class AccountFragment : Fragment() {
         customerReqHistory.setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,CustomerRequestListFragment(),"customer request fragment")
         }
+        view.findViewById<ImageView>(R.id.customerReqHistoryImage).setOnClickListener {
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,CustomerRequestListFragment(),"customer request fragment")
+        }
         val retailerDao = db1.getRetailerDao()
         editUser = ViewModelProvider(this,
             GroceryAppSharedVMFactory(
@@ -112,6 +115,9 @@ class AccountFragment : Fragment() {
         }
 
         view.findViewById<MaterialButton>(R.id.wishlist).setOnClickListener {
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager, WishListFragment(),"Wish List Fragment")
+        }
+        view.findViewById<ImageView>(R.id.wishlistImage).setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager, WishListFragment(),"Wish List Fragment")
         }
         recentlyPurchasedItems = view.findViewById(R.id.recentlyPurchasedItemsList)
@@ -158,6 +164,13 @@ class AccountFragment : Fragment() {
         editProfile.setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager, EditProfileFragment(),"Edit Profile")
         }
+        view.findViewById<ImageView>(R.id.editProfileImage).setOnClickListener {
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager, EditProfileFragment(),"Edit Profile")
+        }
+        view.findViewById<ImageView>(R.id.orderHistoryImage).setOnClickListener {
+            var orderHistoryFragment = OrderHistoryFragment()
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderHistoryFragment,"Order List Fragment")
+        }
         orderHistory.setOnClickListener {
             var orderHistoryFragment = OrderHistoryFragment()
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderHistoryFragment,"Order List Fragment")
@@ -169,6 +182,16 @@ class AccountFragment : Fragment() {
             }
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Help")
         }
+        view.findViewById<ImageView>(R.id.helpImage).setOnClickListener {
+            val orderListFragment = OrderHistoryFragment()
+            orderListFragment.arguments = Bundle().apply {
+                putBoolean("isClickable",true)
+            }
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Help")
+        }
+        view.findViewById<ImageView>(R.id.savedAddressImage).setOnClickListener {
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager, SavedAddressList(),"Saved Address")
+        }
         savedAddress.setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager, SavedAddressList(),"Saved Address")
         }
@@ -177,9 +200,14 @@ class AccountFragment : Fragment() {
             showAlertDialog()
         }
         if(MainActivity.isRetailer){
-            view.findViewById<LinearLayout>(R.id.linearLayout3).visibility = View.GONE
-            help.visibility =View.GONE
-            savedAddress.visibility =View.GONE
+            view.findViewById<LinearLayout>(R.id.wishListLayout).visibility =View.GONE
+            view.findViewById<LinearLayout>(R.id.savedAddressLayout).visibility =View.GONE
+            view.findViewById<LinearLayout>(R.id.yourReqLayout).visibility =View.GONE
+            view.findViewById<LinearLayout>(R.id.helpLayout).visibility =View.GONE
+            view.findViewById<View>(R.id.helpLine).visibility =View.GONE
+            view.findViewById<View>(R.id.savedAddressLine).visibility =View.GONE
+            view.findViewById<View>(R.id.requestLine).visibility =View.GONE
+            view.findViewById<View>(R.id.wishListLine).visibility =View.GONE
         }
         return view
     }

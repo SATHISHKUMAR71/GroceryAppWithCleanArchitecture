@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.dataclass.ChildCategoryName
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
+import com.google.android.material.button.MaterialButton
 
 
 class SubCategoryAdapter(var fragment: Fragment,var categoryList: List<String>):RecyclerView.Adapter<SubCategoryAdapter.SubcategoryHolder>() {
 
     var size =0
     inner class SubcategoryHolder(itemView:View):RecyclerView.ViewHolder(itemView){
-        val categoryName =itemView.findViewById<TextView>(R.id.subcategoryName)
+        val categoryName =itemView.findViewById<MaterialButton>(R.id.subcategoryName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubcategoryHolder {
@@ -40,7 +41,7 @@ class SubCategoryAdapter(var fragment: Fragment,var categoryList: List<String>):
                 Toast.makeText(fragment.context,"Item Clicked",Toast.LENGTH_SHORT).show()
             }
         }
-        holder.itemView.setOnClickListener {
+        holder.categoryName.setOnClickListener {
             var productListFrag = ProductListFragment().apply {
                 arguments = Bundle().apply {
                     putString("category",categoryList[position])

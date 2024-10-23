@@ -267,15 +267,10 @@ class HomeFragment : Fragment() {
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-//        homeFragNestedScroll.scrollTo(100,lastSelectedPosition)
-    }
 
     override fun onStop() {
         super.onStop()
         recentItems.stopScroll()
-//        homeViewModel.recentlyViewedList.value = null
         homeViewModel.recentlyViewedList.removeObservers(viewLifecycleOwner)
     }
     private fun scaleView(view: View, scale: Float) {

@@ -45,9 +45,8 @@
                 android:layout_margin="20dp"
                 android:elevation="4dp"
                 android:text="View All Categories"
-                app:cornerRadius="4dp"
                 app:icon="@drawable/arrow_forward_ios_24px"
-                app:iconGravity="textEnd"
+                app:iconGravity="textStart"
                 app:layout_constraintTop_toBottomOf="@+id/categoryLayoutRow" />
 
             <LinearLayout
