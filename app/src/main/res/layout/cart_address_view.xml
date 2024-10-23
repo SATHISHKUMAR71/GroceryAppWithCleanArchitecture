@@ -68,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Deliver to:"
-                    android:textSize="16sp" />
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"/>
             </LinearLayout>
 
             <LinearLayout
@@ -83,13 +83,14 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:text="User Name"
-                    android:textSize="20sp" />
+                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
 
                 <TextView
                     android:id="@+id/address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     android:text="#3 abc street, x city, y district, zzzzzz" />
 
                 <TextView
@@ -97,12 +98,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     android:text="Phone Number" />
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/changeAddressButton"
-                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
@@ -122,8 +124,6 @@
             android:padding="20dp"
             android:text="Add More Grocery Items"
             android:textAlignment="center"
-            app:cornerRadius="4dp"
-            app:icon="@drawable/arrow_forward_ios_24px"
             app:iconGravity="textEnd"
             app:layout_constraintTop_toBottomOf="@+id/deliveryAddressLayout"
             app:rippleColor="?attr/colorControlHighlight" />

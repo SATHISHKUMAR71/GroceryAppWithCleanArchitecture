@@ -47,7 +47,6 @@ class CartFragment : Fragment() {
 
     companion object{
         var viewPriceDetailData = MutableLiveData(49f)
-        var cartItemsSize = 0
         var selectedAddressEntity: Address? = null
         var selectedAddressPosition = 0
     }
@@ -97,8 +96,10 @@ class CartFragment : Fragment() {
         }
 
         price.setOnClickListener {
-//            view.findViewById<AppBarLayout>(R.id.carttoolbar).setExpanded(false,false)
-            (recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(noOfItemsInt,-500)
+//            (recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(noOfItemsInt+1,500)
+            (recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(noOfItemsInt+1)
+
+//            (recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(noOfItemsInt+1,5000)
         }
         cartViewModel.getProductsByCartId(MainActivity.cartId)
         cartViewModel.cartProducts.observe(viewLifecycleOwner){

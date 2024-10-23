@@ -68,7 +68,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/editProfile"
                         style="@style/Widget.Material3.Button.TextButton.Dialog.Icon"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:layout_weight="0.5"
@@ -98,7 +98,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/orderHistory"
                     style="@style/Widget.Material3.Button.TextButton.Dialog.Icon"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="0.5"
@@ -129,7 +129,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/help"
                     style="@style/Widget.Material3.Button.TextButton.Dialog.Icon"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="0.5"
@@ -161,7 +161,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/savedAddress"
                     style="@style/Widget.Material3.Button.TextButton.Dialog.Icon"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:iconSize="24dp"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
@@ -193,7 +193,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/customerReqHistory"
                     style="@style/Widget.Material3.Button.TextButton.Dialog.Icon"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     app:iconSize="24dp"
@@ -225,7 +225,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/wishlist"
                     style="@style/Widget.Material3.Button.TextButton.Dialog.Icon"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="0.5"
@@ -265,7 +265,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/logout"
-                    android:layout_width="150dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="0.5"
@@ -298,27 +298,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
-
-
-            <!--            <LinearLayout-->
-            <!--                android:id="@+id/linearLayout19"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:orientation="horizontal"-->
-            <!--                app:layout_constraintTop_toBottomOf="@+id/linearLayout4">-->
-
-            <!--                <com.google.android.material.button.MaterialButton-->
-            <!--                    android:id="@+id/logout"-->
-            <!--                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"-->
-            <!--                    android:layout_width="150dp"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_margin="20dp"-->
-            <!--                    android:layout_weight="0.5"-->
-            <!--                    android:text="Logout User"-->
-            <!--                    app:cornerRadius="4dp"-->
-            <!--                    app:icon="@drawable/logout_24px"-->
-            <!--                    app:iconGravity="textStart" />-->
-            <!--            </LinearLayout>-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

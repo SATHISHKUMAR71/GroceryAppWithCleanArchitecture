@@ -20,13 +20,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/customerName"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                 android:text="Customer Name"/>
         <TextView
             android:layout_width="match_parent"
             android:padding="5dp"
             android:layout_height="wrap_content"
             android:id="@+id/requestedDate"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
             android:text="Requested On: "/>
         <TextView
             android:layout_width="match_parent"
@@ -35,6 +36,7 @@
             android:padding="5dp"
             android:id="@+id/customerRequestText"
             android:maxLines="6"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
             android:ellipsize="end"/>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -1,5 +1,6 @@
 package com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.graphics.Paint
 import android.os.Build
@@ -59,6 +60,7 @@ import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductImageAdapter
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListViewModel
+import com.google.android.material.R.attr.textAppearanceBodyLarge
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
@@ -413,6 +415,7 @@ class ProductDetailFragment : Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onBackPressedCallback)
     }
+
     override fun onResume() {
         super.onResume()
         ProductListFragment.selectedProductEntity.observe(viewLifecycleOwner) { selectedProduct ->
@@ -442,6 +445,7 @@ class ProductDetailFragment : Fragment() {
                 }
                 var price = ""
                 if ((ProductListFragment.selectedProductEntity.value?.offer ?: -1f) > 0f) {
+                    mrpTextView.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyLarge)
                     mrpTextView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                     val discountedPriceStr = " MRP ₹${
                         productDetailViewModel.calculateDiscountPrice(
@@ -479,7 +483,7 @@ class ProductDetailFragment : Fragment() {
                     view?.findViewById<TextView>(R.id.expiryDateProductDetail)?.text = "Expiry: No Expiry"
                 }
                 var manufactureDate = DateGenerator.getDayAndMonth(ProductListFragment.selectedProductEntity.value?.manufactureDate!!)
-                view?.findViewById<TextView>(R.id.manufactureDateProductDetail)?.text = "Manufacture Date: $manufactureDate"
+                view?.findViewById<TextView>(R.id.manufactureDateProductDetail)?.text = "Manufactured: $manufactureDate"
 
                 if (ProductListFragment.selectedProductEntity.value != null) {
                     productDetailViewModel.getCartForSpecificProduct(

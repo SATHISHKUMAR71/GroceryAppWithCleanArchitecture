@@ -27,7 +27,8 @@
 
 
 
-        <FrameLayout
+        <androidx.cardview.widget.CardView
+            app:cardCornerRadius="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -58,11 +59,10 @@
                     android:text="Buy 1 Get 1 Free"/>
                 <ImageView
                     android:id="@+id/productImageLong"
-                    android:layout_width="100dp"
-                    android:layout_height="120dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:clipToOutline="true"
-                    android:src="@drawable/grains_and_pulses"
                     android:scaleType="fitXY"/>
 
             </LinearLayout>
@@ -110,7 +110,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        </FrameLayout>
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/moreImagesView"

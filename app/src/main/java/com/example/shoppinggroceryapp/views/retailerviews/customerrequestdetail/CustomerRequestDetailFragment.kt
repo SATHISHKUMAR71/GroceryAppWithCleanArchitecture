@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.core.domain.order.OrderDetails
 import com.core.domain.products.CartWithProductData
+import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.CustomerRequestListFragment
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
@@ -97,6 +98,9 @@ class CustomerRequestDetailFragment : Fragment() {
         }
         view.findViewById<MaterialToolbar>(R.id.customerRequestToolbar).setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
+        }
+        if(!MainActivity.isRetailer){
+            view.findViewById<MaterialToolbar>(R.id.customerRequestToolbar).title = "Your Request"
         }
         view.findViewById<TextView>(R.id.customerName).text = CustomerRequestListFragment.customerName
         val email = "Email: ${CustomerRequestListFragment.customerEmail}"

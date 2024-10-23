@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -87,8 +88,10 @@ class CustomerRequestListFragment : Fragment() {
         if(MainActivity.isRetailer) {
             customerViewModel.getCustomerRequest()
             navToolBar.navigationIcon = null
+            navToolBar.isTitleCentered = true
         }
         else{
+            customerReqRV.setPadding(0)
             navToolBar.title = "Your Requests"
             navToolBar.setNavigationOnClickListener {
                 parentFragmentManager.popBackStack()
