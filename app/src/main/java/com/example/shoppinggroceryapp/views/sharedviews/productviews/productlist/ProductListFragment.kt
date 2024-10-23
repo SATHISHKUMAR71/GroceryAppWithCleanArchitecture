@@ -1,5 +1,6 @@
 package com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -85,6 +86,7 @@ class ProductListFragment : Fragment() {
     private lateinit var toolbar:MaterialToolbar
     private var productEntityList:MutableList<Product> = mutableListOf()
     private lateinit var adapter: ProductListAdapter
+    lateinit var filterButton:MaterialButton
 //    private lateinit var noItemsImage:ImageView
     private lateinit var notifyNoItems:TextView
 
@@ -166,7 +168,7 @@ class ProductListFragment : Fragment() {
         val totalCostButton = view.findViewById<MaterialButton>(R.id.totalPriceWorthInCart)
         val exploreCategoryButton = view.findViewById<MaterialButton>(R.id.categoryButtonProductList)
         val sortButton = view.findViewById<MaterialButton>(R.id.sortButton)
-        val filterButton = view.findViewById<MaterialButton>(R.id.filterButton)
+        filterButton = view.findViewById<MaterialButton>(R.id.filterButton)
 
         searchViewOpened = (arguments?.getBoolean("searchViewOpened")==true)
         productListViewModel.getCartItems(MainActivity.cartId.toInt())
@@ -202,6 +204,7 @@ class ProductListFragment : Fragment() {
         exploreCategoryButton.setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Exploring Category")
         }
+        attachBadge()
 
         totalCost.value = 0f
         productListViewModel.getCartItems(cartId = MainActivity.cartId)
@@ -269,7 +272,7 @@ class ProductListFragment : Fragment() {
                 else{
                     println("989898 adapter set product called on line 270")
                     adapter.setProducts(productEntityList)
-                    if (productEntityList.size == 0) {
+                    if (productEntityList.isEmpty()) {
                         hideProductRV()
                     }
                     else{
@@ -343,6 +346,14 @@ class ProductListFragment : Fragment() {
         return view
     }
 
+    @OptIn(ExperimentalBadgeUtils::class)
+    private fun attachBadge() {
+        val filterBadge = BadgeDrawable.create(requireContext())
+        filterBadge.number = 10
+        filterBadge.badgeTextColor = Color.WHITE
+        filterBadge.backgroundColor = Color.RED
+        BadgeUtils.attachBadgeDrawable(filterBadge,filterButton)
+    }
 
     override fun onResume() {
         super.onResume()
@@ -408,28 +419,28 @@ class ProductListFragment : Fragment() {
             }
         }
 
-        if(FilterFragment.list?.isNotEmpty()==true){
-            println("989898 adapter set product called on line 407")
-            adapter.setProducts(FilterFragment.list!!)
-            if (FilterFragment.list!!.size == 0) {
-                hideProductRV()
-            }
-            else{
-                println("767623 show products called on 421")
-                showProductRV()
-            }
-        }
-        else if (productEntityList.isNotEmpty()) {
-            println("989898 adapter set product called on line 417")
-            adapter.setProducts(productEntityList)
-            if (productEntityList.size == 0) {
-                hideProductRV()
-            }
-            else{
-                println("767623 show products called on 432 ")
-                showProductRV()
-            }
-        }
+//        if(FilterFragment.list?.isNotEmpty()==true){
+//            println("989898 adapter set product called on line 407")
+//            adapter.setProducts(FilterFragment.list!!)
+//            if (FilterFragment.list!!.size == 0) {
+//                hideProductRV()
+//            }
+//            else{
+//                println("767623 show products called on 421")
+//                showProductRV()
+//            }
+//        }
+//        else if (productEntityList.isNotEmpty()) {
+//            println("989898 adapter set product called on line 417")
+//            adapter.setProducts(productEntityList)
+//            if (productEntityList.size == 0) {
+//                hideProductRV()
+//            }
+//            else{
+//                println("767623 show products called on 432 ")
+//                showProductRV()
+//            }
+//        }
 
         productRV.scrollToPosition(productListFirstVisiblePos ?: 0)
         if(arguments?.getBoolean("isEdit")==true){
@@ -502,32 +513,36 @@ class ProductListFragment : Fragment() {
 
     private fun showProductRV() {
         println("89890090 show called")
-        productRV.animate()
-            .alpha(1f)
-            .setDuration(50)
-            .withEndAction { productRV.visibility = View.VISIBLE
-            }
-            .start()
-        notifyNoItems.animate()
-            .alpha(0f)
-            .setDuration(50)
-            .withEndAction { notifyNoItems.visibility = View.GONE }
-            .start()
+//        productRV.animate()
+//            .alpha(1f)
+//            .setDuration(50)
+//            .withEndAction { productRV.visibility = View.VISIBLE
+//            }
+//            .start()
+        productRV.visibility = View.VISIBLE
+        notifyNoItems.visibility = View.GONE
+//        notifyNoItems.animate()
+//            .alpha(0f)
+//            .setDuration(50)
+//            .withEndAction { notifyNoItems.visibility = View.GONE }
+//            .start()
 
     }
 
     private fun hideProductRV(){
         println("89890090 before HIDE PRODUCT RV IS CALLED ${productRV.isVisible} ${notifyNoItems.isVisible}")
-        productRV.animate()
-            .alpha(0f)
-            .setDuration(50)
-            .withEndAction { productRV.visibility = View.GONE }
-            .start()
-        notifyNoItems.animate()
-            .alpha(1f)
-            .setDuration(50)
-            .withEndAction { notifyNoItems.visibility = View.VISIBLE }
-            .start()
+        productRV.visibility = View.GONE
+//        productRV.animate()
+//            .alpha(0f)
+//            .setDuration(50)
+//            .withEndAction { productRV.visibility = View.GONE }
+//            .start()
+        notifyNoItems.visibility = View.VISIBLE
+//        notifyNoItems.animate()
+//            .alpha(1f)
+//            .setDuration(50)
+//            .withEndAction { notifyNoItems.visibility = View.VISIBLE }
+//            .start()
         println("89890090 after HIDE PRODUCT RV IS CALLED ${productRV.isVisible} ${notifyNoItems.isVisible}")
     }
 }

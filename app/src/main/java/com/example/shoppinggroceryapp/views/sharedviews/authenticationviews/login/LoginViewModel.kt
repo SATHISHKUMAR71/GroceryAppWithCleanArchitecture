@@ -2,6 +2,7 @@ package com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.log
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.core.domain.order.CartMapping
 import com.core.domain.user.User
 import com.core.usecases.cartusecase.setcartusecase.AddCartForUser
@@ -9,6 +10,8 @@ import com.core.usecases.cartusecase.getcartusecase.GetCartForUser
 import com.core.usecases.userusecase.GetUser
 import com.core.usecases.userusecase.GetUserByInputData
 import com.example.shoppinggroceryapp.MainActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LoginViewModel(private var mGetUser: GetUser, private var mGetUserByInputData: GetUserByInputData, private var mGetCartForUser: GetCartForUser,
                      private var addCartForUser: AddCartForUser
@@ -17,19 +20,25 @@ class LoginViewModel(private var mGetUser: GetUser, private var mGetUserByInputD
     var userName:MutableLiveData<User> = MutableLiveData()
 
     fun isUser(userData:String){
-        Thread{
+        viewModelScope.launch (Dispatchers.IO){
             userName.postValue(mGetUserByInputData.invoke(userData))
-        }.start()
+        }
+//        Thread{
+//            userName.postValue(mGetUserByInputData.invoke(userData))
+//        }.start()
     }
 
     fun validateUser(email:String,password:String){
-        Thread {
+        viewModelScope.launch (Dispatchers.IO){
             user.postValue(mGetUser.invoke(email, password))
-        }.start()
+        }
+//        Thread {
+//            user.postValue(mGetUser.invoke(email, password))
+//        }.start()
     }
 
     fun assignCartForUser(){
-        Thread{
+        viewModelScope.launch (Dispatchers.IO){
             val cart: CartMapping? = mGetCartForUser.invoke(user.value?.userId?:-1)
             if(cart==null){
                 addCartForUser.invoke(CartMapping(0,user.value?.userId?:-1,"available"))
@@ -41,6 +50,19 @@ class LoginViewModel(private var mGetUser: GetUser, private var mGetUserByInputD
             else{
                 MainActivity.cartId = cart.cartId
             }
-        }.start()
+        }
+//        Thread{
+//            val cart: CartMapping? = mGetCartForUser.invoke(user.value?.userId?:-1)
+//            if(cart==null){
+//                addCartForUser.invoke(CartMapping(0,user.value?.userId?:-1,"available"))
+//                val newCart: CartMapping? =  mGetCartForUser.invoke(user.value?.userId?:-1)
+//                while (newCart==null) {
+//                }
+//                MainActivity.cartId = newCart.cartId
+//            }
+//            else{
+//                MainActivity.cartId = cart.cartId
+//            }
+//        }.start()
     }
 }

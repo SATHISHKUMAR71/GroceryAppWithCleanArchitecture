@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.core.domain.order.DailySubscription
 import com.core.domain.order.MonthlyOnce
 import com.core.domain.order.OrderDetails
@@ -29,6 +30,8 @@ import com.core.usecases.orderusecase.getordersusecase.GetWeeklyOrders
 import com.core.usecases.orderusecase.updateorderusecase.UpdateOrderDetails
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
                          private var mUpdateOrderDetails: UpdateOrderDetails,
@@ -59,105 +62,157 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
     var isDeletedProduct:MutableList<MutableList<Boolean>> = mutableListOf()
 
     fun getOrdersForSelectedUser(userId:Int){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             orderedItems.postValue(mGetOrderForUser.invoke(userId))
-        }.start()
+        }
+//        Thread {
+//            orderedItems.postValue(mGetOrderForUser.invoke(userId))
+//        }.start()
     }
 
     fun getOrdersForSelectedUserWithNoSubscription(userId:Int){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             orderedItems.postValue(mGetOrdersForUserNoSubscription.invoke(userId))
-        }.start()
+        }
+//        Thread {
+//            orderedItems.postValue(mGetOrdersForUserNoSubscription.invoke(userId))
+//        }.start()
     }
     fun getOrdersForRetailerWithNoSubscription(userId:Int){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             orderedItems.postValue(mGetNormalOrder.invoke())
-        }.start()
+        }
+//        Thread {
+//            orderedItems.postValue(mGetNormalOrder.invoke())
+//        }.start()
     }
 
     fun getOrdersForSelectedUserDailySubscription(userId:Int){
-        Thread {
-
+        viewModelScope.launch(Dispatchers.IO) {
             orderedItems.postValue(mGetOrderForUserDailySubscription.invoke(userId))
-        }.start()
+        }
+//        Thread {
+//            orderedItems.postValue(mGetOrderForUserDailySubscription.invoke(userId))
+//        }.start()
     }
 
     fun getOrdersForRetailerDailySubscription(userId:Int){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             orderedItems.postValue(mGetDailyOrders.invoke())
-        }.start()
+        }
+//        Thread {
+//            orderedItems.postValue(mGetDailyOrders.invoke())
+//        }.start()
     }
 
     fun getOrdersForSelectedUserWeeklySubscription(userId:Int){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             orderedItems.postValue(mGetOrderForUserWeeklySubscription.invoke(userId))
-        }.start()
+        }
+//        Thread {
+//            orderedItems.postValue(mGetOrderForUserWeeklySubscription.invoke(userId))
+//        }.start()
     }
 
     fun getOrdersForRetailerWeeklySubscription(userId:Int){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             orderedItems.postValue(mGetWeeklyOrders.invoke())
-        }.start()
+        }
+//        Thread {
+//            orderedItems.postValue(mGetWeeklyOrders.invoke())
+//        }.start()
     }
 
     fun getOrdersForSelectedUserMonthlySubscription(userId:Int){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             orderedItems.postValue(mGetOrderForUserMonthlySubscription.invoke(userId))
-        }.start()
+        }
+//        Thread {
+//            orderedItems.postValue(mGetOrderForUserMonthlySubscription.invoke(userId))
+//        }.start()
     }
     fun getOrdersForRetailerMonthlySubscription(userId:Int){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             orderedItems.postValue(mGetMonthlyOrders.invoke())
-        }.start()
+        }
+//        Thread {
+//            orderedItems.postValue(mGetMonthlyOrders.invoke())
+//        }.start()
     }
 
     fun getOrderedItemsForRetailer(){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             orderedItems.postValue(mGetAllOrders.invoke())
-        }.start()
+        }
+//        Thread{
+//            orderedItems.postValue(mGetAllOrders.invoke())
+//        }.start()
     }
 
     fun getDailySubscriptionDateWithTime(orderId:Int,callback: (Map<DailySubscription,TimeSlot>) -> Unit){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mGetDailyOrderWithTimeSlot.invoke(orderId)?.let {
                 callback(it)
             }
-        }.start()
+        }
+//        Thread{
+//            mGetDailyOrderWithTimeSlot.invoke(orderId)?.let {
+//                callback(it)
+//            }
+//        }.start()
     }
 
     fun getMonthlySubscriptionDateWithTime(orderId:Int,callback: (Map<MonthlyOnce,TimeSlot>) -> Unit){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mGetSpecificMonthlyOrderWithTimeSlot.invoke(orderId)?.let {
                 callback(it)
             }
-        }.start()
+        }
+//        Thread{
+//            mGetSpecificMonthlyOrderWithTimeSlot.invoke(orderId)?.let {
+//                callback(it)
+//            }
+//        }.start()
     }
 
     fun getWeeklySubscriptionDateWithTimeSlot(orderId:Int,callback:(Map<WeeklyOnce,TimeSlot>) -> Unit){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mGetSpecificWeeklyOrderWithTimeSlot.invoke(orderId)?.let {
                 callback(it)
             }
-        }.start()
+        }
+//        Thread{
+//            mGetSpecificWeeklyOrderWithTimeSlot.invoke(orderId)?.let {
+//                callback(it)
+//            }
+//        }.start()
     }
 
     fun getTimeSlot(orderId: Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mGetOrderedTimeSlot.invoke(orderId)?.let {
 
             }
-        }.start()
+        }
+//        Thread{
+//            mGetOrderedTimeSlot.invoke(orderId)?.let {
+//
+//            }
+//        }.start()
     }
 
 
     fun updateOrderDelivered(orderDetails:OrderDetails){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mUpdateOrderDetails.invoke(orderDetails)
-        }.start()
+        }
+//        Thread{
+//            mUpdateOrderDetails.invoke(orderDetails)
+//        }.start()
     }
 
     fun getCartWithProducts(){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             for(i in orderedItems.value!!) {
                 synchronized(lock) {
                     val isDeletedSubList = mutableListOf<Boolean>()
@@ -177,7 +232,28 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
                 }
             }
             dataReady.postValue(true)
-        }.start()
+        }
+//        Thread {
+//            for(i in orderedItems.value!!) {
+//                synchronized(lock) {
+//                    val isDeletedSubList = mutableListOf<Boolean>()
+//                    val tmpList = mGetProductsWithCartData.invoke(i.cartId).toMutableList()
+//                    val tmpDeleteList = mGetDeletedProductsWithCarId.invoke(i.cartId)
+//                    for(k in tmpList){
+//                        isDeletedSubList.add(false)
+//                    }
+//                    for(k in tmpDeleteList){
+//                        isDeletedSubList.add(true)
+//                    }
+//                    tmpList.addAll(tmpDeleteList)
+//                    cartWithProductList.value!!.add(
+//                        tmpList
+//                    )
+//                    isDeletedProduct.add(isDeletedSubList)
+//                }
+//            }
+//            dataReady.postValue(true)
+//        }.start()
     }
 
 
@@ -235,7 +311,6 @@ class OrderListViewModel(private var mGetOrderForUser: GetOrderForUser,
     @RequiresApi(Build.VERSION_CODES.O)
     fun getMonthlyPreparedDate(monthlyOnce: MonthlyOnce,timeSlot: TimeSlot,orderedDate: String):String {
         try {
-
             if(DateGenerator.getCurrentDayOfMonth()==monthlyOnce.dayOfMonth.toString()){
                 return if(checkTimeSlot(timeSlot,orderedDate)=="Next Delivery Tomorrow"){
                     "Next Delivery On ${DateGenerator.getNextDayForSpecificMonth(monthlyOnce.dayOfMonth.toString())}"

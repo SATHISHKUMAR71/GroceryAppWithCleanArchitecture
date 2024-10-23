@@ -565,6 +565,7 @@ class ProductListAdapter(var fragment: Fragment,
     }
 
     fun setProducts(newList:List<Product>){
+        println("989892 adapter set products called: $newList")
         if(tag=="C"){
             productsSize = newList.size
             for(i in newList.indices){

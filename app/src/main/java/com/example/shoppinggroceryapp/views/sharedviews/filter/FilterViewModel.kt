@@ -2,20 +2,26 @@ package com.example.shoppinggroceryapp.views.sharedviews.filter
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.core.domain.products.BrandData
 import com.core.domain.products.Product
 import com.core.usecases.filterusecases.GetAllBrands
 import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class FilterViewModel(var mGetAllBrands: GetAllBrands):ViewModel() {
 
     var brandList:MutableLiveData<List<String>> = MutableLiveData()
     var brandMap:List<BrandData> = mutableListOf()
     fun getBrandNames(){
-        Thread {
+        viewModelScope.launch (Dispatchers.IO){
             brandList.postValue(mGetAllBrands.invoke().map { it.brandName })
-        }.start()
+        }
+//        Thread {
+//            brandList.postValue(mGetAllBrands.invoke().map { it.brandName })
+//        }.start()
     }
 
     fun filterList(productEntityList:List<Product>, offer:Float):List<Product>{

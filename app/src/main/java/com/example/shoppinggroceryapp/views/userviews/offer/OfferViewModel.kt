@@ -2,18 +2,24 @@ package com.example.shoppinggroceryapp.views.userviews.offer
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.core.domain.products.Product
 import com.core.usecases.productusecase.getproductusecase.GetOfferedProducts
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
 import com.example.shoppinggroceryapp.views.sharedviews.sort.ProductSorter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class OfferViewModel(private val mGetOfferedProducts: GetOfferedProducts):ViewModel() {
     var offeredProductEntityList:MutableLiveData<List<Product>> = MutableLiveData()
     fun getOfferedProducts(){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             offeredProductEntityList.postValue(mGetOfferedProducts.invoke())
-        }.start()
+        }
+//        Thread {
+//            offeredProductEntityList.postValue(mGetOfferedProducts.invoke())
+//        }.start()
     }
 
     fun doSorting(adapter:ProductListAdapter,it:Int,productEntities:List<Product>,sorter: ProductSorter):List<Product>? {

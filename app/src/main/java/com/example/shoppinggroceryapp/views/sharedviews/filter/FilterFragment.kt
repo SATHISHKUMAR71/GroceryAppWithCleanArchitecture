@@ -16,7 +16,6 @@ import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
-import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton

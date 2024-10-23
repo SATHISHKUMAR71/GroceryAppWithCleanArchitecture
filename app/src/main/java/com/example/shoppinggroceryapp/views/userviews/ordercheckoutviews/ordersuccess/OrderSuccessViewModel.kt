@@ -2,6 +2,7 @@ package com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.orders
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.core.domain.order.Cart
 import com.core.domain.order.CartMapping
 import com.core.domain.order.DailySubscription
@@ -27,6 +28,8 @@ import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.framework.db.entity.order.OrderDetailsEntity
 import com.example.shoppinggroceryapp.helpers.NotificationBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class OrderSuccessViewModel(private val mAddOrder: AddOrder,
                             private val mGetOrderWithProductsByOrderId: GetOrderWithProductsByOrderId,
@@ -50,7 +53,7 @@ class OrderSuccessViewModel(private val mAddOrder: AddOrder,
     var newCart:MutableLiveData<CartMapping> = MutableLiveData()
     var orderWithCart:MutableLiveData<Map<OrderDetails,List<CartWithProductData>>> = MutableLiveData()
     fun placeOrder(cartId:Int,paymentMode:String,addressId:Int,deliveryStatus:String,paymentStatus:String,deliveryFrequency:String){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             synchronized(lock) {
                 orderedId.postValue(mAddOrder.invoke(
                     OrderDetails(0,
@@ -63,20 +66,39 @@ class OrderSuccessViewModel(private val mAddOrder: AddOrder,
                         deliveryStatus = deliveryStatus,
                         deliveryFrequency = deliveryFrequency)))
             }
-        }.start()
+        }
+//        Thread {
+//            synchronized(lock) {
+//                orderedId.postValue(mAddOrder.invoke(
+//                    OrderDetails(0,
+//                        orderedDate = DateGenerator.getCurrentDate(),
+//                        deliveryDate = DateGenerator.getDeliveryDate(),
+//                        cartId = cartId,
+//                        paymentMode = paymentMode,
+//                        paymentStatus = paymentStatus,
+//                        addressId = addressId,
+//                        deliveryStatus = deliveryStatus,
+//                        deliveryFrequency = deliveryFrequency)))
+//            }
+//        }.start()
     }
 
     fun getOrderAndCorrespondingCart(orderId:Int){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             synchronized(lock) {
                 orderWithCart.postValue(mGetOrderWithProductsByOrderId.invoke(orderId))
             }
-
-        }.start()
+        }
+//        Thread {
+//            synchronized(lock) {
+//                orderWithCart.postValue(mGetOrderWithProductsByOrderId.invoke(orderId))
+//            }
+//
+//        }.start()
     }
 
     fun updateProductDetails(){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             var list = mutableListOf<Product>()
             for(i in mGetCartItems.invoke(oldCartId)){
                 mGetProductsById.invoke(i.productId.toLong())?.let {
@@ -90,38 +112,66 @@ class OrderSuccessViewModel(private val mAddOrder: AddOrder,
                 }
             }
             notifyProduct.postValue(list)
-        }.start()
+        }
+//        Thread{
+//            var list = mutableListOf<Product>()
+//            for(i in mGetCartItems.invoke(oldCartId)){
+//                mGetProductsById.invoke(i.productId.toLong())?.let {
+//                    if(it.availableItems<100){
+//                        list.add(it)
+//                        println("675743 value changed ${it.productName} ")
+//                    }
+//                    println("32145 BEFORE UPDATING PRODUCT: $it")
+//                    mUpdateAvailableProducts.invoke(it.copy(availableItems = it.availableItems-i.totalItems))
+//                    println("32145 AFTER UPDATING PRODUCT: ${it.copy(availableItems = it.availableItems-i.totalItems)}")
+//                }
+//            }
+//            notifyProduct.postValue(list)
+//        }.start()
     }
 
-    fun notificationBuilder(notificationBuilder: NotificationBuilder){
 
-    }
 
     fun addMonthlySubscription(monthlyOnce: MonthlyOnce){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mAddMonthlySubscription.invoke(monthlyOnce)
             getSubscriptionDetails()
-        }.start()
+        }
+//        Thread{
+//            mAddMonthlySubscription.invoke(monthlyOnce)
+//            getSubscriptionDetails()
+//        }.start()
     }
 
     fun addWeeklySubscription(weeklyOnce: WeeklyOnce){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mAddWeeklySubscription.invoke(weeklyOnce)
             getSubscriptionDetails()
-        }.start()
+        }
+//        Thread{
+//            mAddWeeklySubscription.invoke(weeklyOnce)
+//            getSubscriptionDetails()
+//        }.start()
     }
 
     fun addDailySubscription(dailySubscription: DailySubscription){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mAddDailySubscription.invoke(dailySubscription)
             getSubscriptionDetails()
-        }.start()
+        }
+//        Thread{
+//            mAddDailySubscription.invoke(dailySubscription)
+//            getSubscriptionDetails()
+//        }.start()
     }
 
     fun addOrderToTimeSlot(timeSlot: TimeSlot){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mAddTimeSlot.invoke(timeSlot)
-        }.start()
+        }
+//        Thread{
+//            mAddTimeSlot.invoke(timeSlot)
+//        }.start()
     }
 
     fun getSubscriptionDetails(){
@@ -129,12 +179,19 @@ class OrderSuccessViewModel(private val mAddOrder: AddOrder,
     }
 
     fun updateAndAssignNewCart(cartId: Int,userId:Int){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             synchronized(lock) {
                 mUpdateCart.invoke(CartMapping(cartId, userId, "not available"))
                 mAddCartForUser.invoke(CartMapping(0, userId, "available"))
                 newCart.postValue(mGetCartForUser.invoke(userId))
             }
-        }.start()
+        }
+//        Thread {
+//            synchronized(lock) {
+//                mUpdateCart.invoke(CartMapping(cartId, userId, "not available"))
+//                mAddCartForUser.invoke(CartMapping(0, userId, "available"))
+//                newCart.postValue(mGetCartForUser.invoke(userId))
+//            }
+//        }.start()
     }
 }

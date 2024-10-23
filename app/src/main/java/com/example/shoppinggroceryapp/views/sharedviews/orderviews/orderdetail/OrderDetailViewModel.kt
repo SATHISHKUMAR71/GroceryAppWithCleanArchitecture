@@ -3,6 +3,7 @@ package com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.core.domain.order.OrderDetails
 import com.core.domain.products.CartWithProductData
 import com.core.domain.products.Product
@@ -20,6 +21,8 @@ import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderF
 import com.core.usecases.subscriptionusecase.setsubscriptionusecase.RemoveOrderFromWeeklySubscription
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
                            private val mGetSpecificAddress: GetSpecificAddress,
@@ -40,7 +43,7 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
     var date:MutableLiveData<Int> = MutableLiveData()
     var timeSlot:MutableLiveData<Int> = MutableLiveData()
     fun updateOrderDetails(orderDetails: OrderDetails){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             println("9812 $selectedOrderWithProductData")
             for(i in selectedOrderWithProductData){
                 mGetProductById.invoke(i.productId)?.let {
@@ -50,63 +53,107 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
                 }
             }
             mUpdateOrderDetails.invoke(orderDetails)
-        }.start()
+        }
+//        Thread{
+//            println("9812 $selectedOrderWithProductData")
+//            for(i in selectedOrderWithProductData){
+//                mGetProductById.invoke(i.productId)?.let {
+//                    val newProd = it.copy(availableItems = it.availableItems+i.totalItems)
+//                    mUpdateProduct.invoke(newProd)
+//                    println("9812 NEW PRODUCT DETAILS: $newProd")
+//                }
+//            }
+//            mUpdateOrderDetails.invoke(orderDetails)
+//        }.start()
     }
 
     fun getSelectedAddress(addressId:Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             selectedAddress.postValue(mGetSpecificAddress.invoke(addressId))
-        }.start()
+        }
+//        Thread{
+//            selectedAddress.postValue(mGetSpecificAddress.invoke(addressId))
+//        }.start()
     }
 
 
     fun deleteMonthly(orderId:Int){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             mGetSpecificMonthlyOrderWithOrderId.invoke(orderId)?.let {
                 mRemoveOrderFromMonthlySubscription.invoke(it)
             }
-        }.start()
+        }
+//        Thread {
+//            mGetSpecificMonthlyOrderWithOrderId.invoke(orderId)?.let {
+//                mRemoveOrderFromMonthlySubscription.invoke(it)
+//            }
+//        }.start()
     }
 
     fun deleteWeekly(orderId: Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mGetSpecificWeeklyOrderWithOrderId.invoke(orderId)?.let {
                 mRemoveOrderFromWeeklySubscription.invoke(it)
             }
-        }.start()
+        }
+//        Thread{
+//            mGetSpecificWeeklyOrderWithOrderId.invoke(orderId)?.let {
+//                mRemoveOrderFromWeeklySubscription.invoke(it)
+//            }
+//        }.start()
     }
 
     fun deleteDaily(orderId: Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mGetSpecificDailyOrderWithOrderId.invoke(orderId)?.let {
                 mRemoveOrderFromDailySubscription.invoke(it)
             }
-        }.start()
+        }
+//        Thread{
+//            mGetSpecificDailyOrderWithOrderId.invoke(orderId)?.let {
+//                mRemoveOrderFromDailySubscription.invoke(it)
+//            }
+//        }.start()
     }
 
 
     fun getMonthlySubscriptionDate(orderId:Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mGetSpecificMonthlyOrderWithOrderId.invoke(orderId)?.let {
                 date.postValue(it.dayOfMonth)
             }
-        }.start()
+        }
+//        Thread{
+//            mGetSpecificMonthlyOrderWithOrderId.invoke(orderId)?.let {
+//                date.postValue(it.dayOfMonth)
+//            }
+//        }.start()
     }
 
     fun getWeeklySubscriptionDate(orderId:Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mGetSpecificWeeklyOrderWithOrderId.invoke(orderId)?.let {
                 date.postValue(it.weekId)
             }
-        }.start()
+        }
+//        Thread{
+//            mGetSpecificWeeklyOrderWithOrderId.invoke(orderId)?.let {
+//                date.postValue(it.weekId)
+//            }
+//        }.start()
     }
 
     fun getTimeSlot(orderId: Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mGetOrderedTimeSlot.invoke(orderId)?.let {
                 timeSlot.postValue(it.timeId)
             }
-        }.start()
+        }
+//        Thread{
+//            mGetOrderedTimeSlot.invoke(orderId)?.let {
+//                timeSlot.postValue(it.timeId)
+//            }
+//        }.start()
     }
 
     fun assignText(timeSlot:Int,currentTime:Int,selectedOrder:OrderDetails?):String?{
@@ -170,9 +217,12 @@ class OrderDetailViewModel(private var mUpdateOrderDetails: UpdateOrderDetails,
 
 
     fun getProductById(productId:Long){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             selectedOrderProduct.postValue(mGetProductById.invoke(productId))
-        }.start()
+        }
+//        Thread{
+//            selectedOrderProduct.postValue(mGetProductById.invoke(productId))
+//        }.start()
     }
     fun assignDeliveryStatus(deliveryDate:String?,selectedOrder: OrderDetails?):String?{
 

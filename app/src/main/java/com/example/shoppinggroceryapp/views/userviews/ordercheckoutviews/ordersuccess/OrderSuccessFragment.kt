@@ -73,7 +73,7 @@ class OrderSuccessFragment : Fragment() {
 
         orderSuccessViewModel.placeOrder(tmpCartId,
             PaymentFragment.paymentMode,address!!.addressId,"Pending","Pending",deliveryFrequency)
-        orderSuccessViewModel.notificationBuilder(notificationBuilder)
+
         orderSuccessViewModel.notifyProduct.observe(viewLifecycleOwner){
             for(i in it) {
                 println("675743 value called in observer ${i.productName} ")

@@ -24,7 +24,6 @@ android:layout_height="wrap_content">
     style="@style/Widget.Material3.Button.TextButton"
     android:id="@+id/filterOptionsDiscountBtn"
     android:text="Filter"
-    android:textSize="18sp"
     app:cornerRadius="0dp"
     android:layout_weight="0.5"/>
 

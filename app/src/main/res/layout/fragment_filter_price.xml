@@ -12,10 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Price"
-        android:textStyle="bold"/>
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:layout_marginBottom="10dp"/>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        app:cardElevation="2dp"
+        app:cardElevation="3dp"
         app:cardCornerRadius="10dp"
         android:layout_height="wrap_content">
 

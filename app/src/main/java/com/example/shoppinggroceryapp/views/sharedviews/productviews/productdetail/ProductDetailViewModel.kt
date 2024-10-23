@@ -99,22 +99,29 @@ class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
     }
 
     fun getBrandName(brandId:Long){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             synchronized(brandLock){
                 brandName.postValue(mGetBrandName.invoke(brandId))
             }
-        }.start()
+        }
+//        Thread {
+//            synchronized(brandLock){
+//                brandName.postValue(mGetBrandName.invoke(brandId))
+//            }
+//        }.start()
     }
 
     fun getProductsByCartId(cartId:Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             cartProducts.postValue(mGetProductsByCartId.invoke(cartId))
-        }.start()
+        }
+//        Thread{
+//            cartProducts.postValue(mGetProductsByCartId.invoke(cartId))
+//        }.start()
     }
 
     fun addInRecentlyViewedItems(productId: Long){
-        Thread {
-//            mAddProductInRecentList.invoke((RecentlyViewedItems(0, MainActivity.userId.toInt(),productId)))
+        viewModelScope.launch (Dispatchers.IO){
             if(mGetProductInRecentList.invoke(productId,MainActivity.userId.toInt())==null) {
                 mAddProductInRecentList.invoke((RecentlyViewedItems(0, MainActivity.userId.toInt(),productId)))
             }
@@ -122,62 +129,103 @@ class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
                 mRemoveFromRecentlyViewedProducts.invoke(mGetProductInRecentList.invoke(productId,MainActivity.userId.toInt())!!)
                 mAddProductInRecentList.invoke((RecentlyViewedItems(0, MainActivity.userId.toInt(),productId)))
             }
-        }.start()
+        }
+//        Thread {
+////            mAddProductInRecentList.invoke((RecentlyViewedItems(0, MainActivity.userId.toInt(),productId)))
+//            if(mGetProductInRecentList.invoke(productId,MainActivity.userId.toInt())==null) {
+//                mAddProductInRecentList.invoke((RecentlyViewedItems(0, MainActivity.userId.toInt(),productId)))
+//            }
+//            else{
+//                mRemoveFromRecentlyViewedProducts.invoke(mGetProductInRecentList.invoke(productId,MainActivity.userId.toInt())!!)
+//                mAddProductInRecentList.invoke((RecentlyViewedItems(0, MainActivity.userId.toInt(),productId)))
+//            }
+//        }.start()
     }
 
     fun getCartForSpecificProduct(cartId:Int,productId:Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO){
             isCartEntityAvailable.postValue(mGetSpecificProductInCart.invoke(cartId,productId))
-        }.start()
+        }
+//        Thread{
+//            isCartEntityAvailable.postValue(mGetSpecificProductInCart.invoke(cartId,productId))
+//        }.start()
     }
 
     fun addProductInCart(cart: Cart){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             synchronized(lock){
                 mAddProductInCart.invoke(cart)
             }
-        }.start()
+        }
+//        Thread{
+//            synchronized(lock){
+//                mAddProductInCart.invoke(cart)
+//            }
+//        }.start()
     }
 
     fun updateProductInCart(cart: Cart){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO){
             synchronized(lock){
                 mUpdateCartItems.invoke(cart)
             }
-        }.start()
+        }
+//        Thread{
+//            synchronized(lock){
+//                mUpdateCartItems.invoke(cart)
+//            }
+//        }.start()
     }
 
     fun removeProductInCart(cart: Cart){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             synchronized(lock){
                 mRemoveProductInCart.invoke(cart)
             }
-        }.start()
+        }
+//        Thread{
+//            synchronized(lock){
+//                mRemoveProductInCart.invoke(cart)
+//            }
+//        }.start()
     }
 
     fun getSimilarProduct(category:String){
-        Thread{
-
+        viewModelScope.launch(Dispatchers.IO){
             similarProductsLiveData.postValue(mGetProductsByCategory.invoke(category))
-        }.start()
+        }
+//        Thread{
+//            similarProductsLiveData.postValue(mGetProductsByCategory.invoke(category))
+//        }.start()
     }
 
     fun getImagesForProducts(productId: Long){
-        Thread{
-
+        viewModelScope.launch(Dispatchers.IO){
             imageList.postValue(mGetImagesForProduct.invoke(productId))
-        }.start()
+        }
+//        Thread{
+//            imageList.postValue(mGetImagesForProduct.invoke(productId))
+//        }.start()
     }
     fun removeProduct(product: Product){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             mAddDeletedProductInDb.invoke(
                 DeletedProductList(productId = product.productId, brandId = product.brandId,
-                categoryName = product.categoryName, productName = product.productName, productDescription = product.productDescription,
-                price = product.price, offer = product.offer, productQuantity = product.productQuantity, mainImage = product.mainImage, isVeg = product.isVeg,
-                manufactureDate = product.manufactureDate, expiryDate = product.expiryDate, availableItems = product.availableItems)
+                    categoryName = product.categoryName, productName = product.productName, productDescription = product.productDescription,
+                    price = product.price, offer = product.offer, productQuantity = product.productQuantity, mainImage = product.mainImage, isVeg = product.isVeg,
+                    manufactureDate = product.manufactureDate, expiryDate = product.expiryDate, availableItems = product.availableItems)
             )
             mDeleteProduct.invoke(product)
-        }.start()
+        }
+//        Thread {
+//            mAddDeletedProductInDb.invoke(
+//                DeletedProductList(productId = product.productId, brandId = product.brandId,
+//                categoryName = product.categoryName, productName = product.productName, productDescription = product.productDescription,
+//                price = product.price, offer = product.offer, productQuantity = product.productQuantity, mainImage = product.mainImage, isVeg = product.isVeg,
+//                manufactureDate = product.manufactureDate, expiryDate = product.expiryDate, availableItems = product.availableItems)
+//            )
+//            mDeleteProduct.invoke(product)
+//        }.start()
     }
 
     fun getOrdersForThisProduct(productId:Long){
@@ -187,7 +235,7 @@ class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
     }
 
     fun updateOrders(deletedProductInfo:List<UserInfoWithOrderInfo>){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             for (i in deletedProductInfo) {
                 println("6564 ORDER ID FOR THE DETAILS ORDER ID: ${mGetAvailableProductsInOrder.invoke(i.orderId)} DELETED INFO: $i")
                 val counts = mGetAvailableProductsInOrder.invoke(i.orderId)
@@ -196,7 +244,17 @@ class ProductDetailViewModel(var mDeleteProduct: DeleteProduct,
                     mUpdateOrderDetails.invoke(mGetSpecificOrder.invoke(i.orderId).copy(deliveryStatus = "Cancelled"))
                 }
             }
-        }.start()
+        }
+//        Thread {
+//            for (i in deletedProductInfo) {
+//                println("6564 ORDER ID FOR THE DETAILS ORDER ID: ${mGetAvailableProductsInOrder.invoke(i.orderId)} DELETED INFO: $i")
+//                val counts = mGetAvailableProductsInOrder.invoke(i.orderId)
+//                if(counts.productCount==counts.deletedProductCount){
+//                    println("UPDATING ORDER DETAILS: ")
+//                    mUpdateOrderDetails.invoke(mGetSpecificOrder.invoke(i.orderId).copy(deliveryStatus = "Cancelled"))
+//                }
+//            }
+//        }.start()
     }
     fun calculateDiscountPrice(price:Float, offer:Float):Float{
         if(offer>0f) {

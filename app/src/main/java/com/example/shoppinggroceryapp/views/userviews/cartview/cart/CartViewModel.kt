@@ -2,11 +2,14 @@ package com.example.shoppinggroceryapp.views.userviews.cartview.cart
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.core.domain.products.Product
 import com.core.domain.user.Address
 import com.core.usecases.addressusecase.GetAllAddress
 import com.core.usecases.cartusecase.getcartusecase.GetCartItems
 import com.core.usecases.cartusecase.getcartusecase.GetProductsByCartId
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CartViewModel(private val mGetProductsByCartId: GetProductsByCartId,
                     private val mGetCartItems: GetCartItems,
@@ -17,14 +20,17 @@ class CartViewModel(private val mGetProductsByCartId: GetProductsByCartId,
     var totalPrice:MutableLiveData<Float> = MutableLiveData()
     var addressEntityList:MutableLiveData<List<Address>> = MutableLiveData()
     fun getProductsByCartId(cartId:Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             cartProducts.postValue(mGetProductsByCartId.invoke(cartId).toMutableList())
-        }.start()
+        }
+//        Thread{
+//            cartProducts.postValue(mGetProductsByCartId.invoke(cartId).toMutableList())
+//        }.start()
     }
 
 
     fun calculateInitialPrice(cartId: Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             val list = mGetCartItems.invoke(cartId)
             var price = 49f
             println("CART ITEMS: $list")
@@ -32,12 +38,24 @@ class CartViewModel(private val mGetProductsByCartId: GetProductsByCartId,
                 price += (i.unitPrice*i.totalItems)
             }
             totalPrice.postValue(price)
-        }.start()
+        }
+//        Thread{
+//            val list = mGetCartItems.invoke(cartId)
+//            var price = 49f
+//            println("CART ITEMS: $list")
+//            for(i in list){
+//                price += (i.unitPrice*i.totalItems)
+//            }
+//            totalPrice.postValue(price)
+//        }.start()
     }
 
     fun getAddressListForUser(userId:Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             addressEntityList.postValue(mGetAllAddress.invoke(userId))
-        }.start()
+        }
+//        Thread{
+//            addressEntityList.postValue(mGetAllAddress.invoke(userId))
+//        }.start()
     }
 }

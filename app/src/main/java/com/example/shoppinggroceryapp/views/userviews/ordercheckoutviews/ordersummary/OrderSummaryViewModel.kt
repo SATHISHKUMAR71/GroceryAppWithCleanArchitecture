@@ -3,6 +3,7 @@ package com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.orders
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.core.domain.order.DailySubscription
 import com.core.domain.order.MonthlyOnce
 import com.core.domain.order.OrderDetails
@@ -27,6 +28,8 @@ import com.example.shoppinggroceryapp.helpers.toast.ShowShortToast
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.PaymentFragment
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.TimeSlots
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class OrderSummaryViewModel(private val mGetProductsWithCartData: GetProductsWithCartData,
                             private val mUpdateOrderDetails: UpdateOrderDetails,
@@ -45,65 +48,104 @@ class OrderSummaryViewModel(private val mGetProductsWithCartData: GetProductsWit
     var cartItems:MutableLiveData<List<CartWithProductData>> = MutableLiveData()
     var timeIdForOrder:Int = -1
     fun getProductsWithCartId(cartId:Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             cartItems.postValue(mGetProductsWithCartData.invoke(cartId))
-        }.start()
+        }
+//        Thread{
+//            cartItems.postValue(mGetProductsWithCartData.invoke(cartId))
+//        }.start()
     }
 
     fun updateOrderDetails(orderDetails: OrderDetails){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mUpdateOrderDetails.invoke(orderDetails)
-        }.start()
+        }
+//        Thread{
+//            mUpdateOrderDetails.invoke(orderDetails)
+//        }.start()
     }
     fun updateTimeSlot(timeSlot: TimeSlot){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mUpdateTimeSlot.invoke(timeSlot)
-        }.start()
+        }
+//        Thread{
+//            mUpdateTimeSlot.invoke(timeSlot)
+//        }.start()
     }
     fun updateMonthly(monthlyOnce: MonthlyOnce){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mAddMonthlySubscription.invoke(monthlyOnce)
             deleteDaily(monthlyOnce.orderId)
             deleteWeekly(monthlyOnce.orderId)
-        }.start()
+        }
+//        Thread{
+//            mAddMonthlySubscription.invoke(monthlyOnce)
+//            deleteDaily(monthlyOnce.orderId)
+//            deleteWeekly(monthlyOnce.orderId)
+//        }.start()
     }
     fun deleteMonthly(orderId:Int){
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             mGetSpecificMonthlyOrderWithOrderId.invoke(orderId)?.let {
                 mRemoveOrderFromMonthlySubscription.invoke(it)
             }
-        }.start()
+        }
+//        Thread {
+//            mGetSpecificMonthlyOrderWithOrderId.invoke(orderId)?.let {
+//                mRemoveOrderFromMonthlySubscription.invoke(it)
+//            }
+//        }.start()
     }
 
     fun deleteWeekly(orderId: Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mGetSpecificWeeklyOrderWithOrderId.invoke(orderId)?.let {
                 mRemoveOrderFromWeeklySubscription.invoke(it)
             }
-        }.start()
+        }
+//        Thread{
+//            mGetSpecificWeeklyOrderWithOrderId.invoke(orderId)?.let {
+//                mRemoveOrderFromWeeklySubscription.invoke(it)
+//            }
+//        }.start()
     }
     fun updateDaily(dailySubscription: DailySubscription){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mAddDailySubscription.invoke(dailySubscription)
             deleteWeekly(dailySubscription.orderId)
             deleteMonthly(dailySubscription.orderId)
-        }.start()
+        }
+//        Thread{
+//            mAddDailySubscription.invoke(dailySubscription)
+//            deleteWeekly(dailySubscription.orderId)
+//            deleteMonthly(dailySubscription.orderId)
+//        }.start()
     }
 
     fun updateWeekly(weeklyOnce: WeeklyOnce){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mAddWeeklySubscription.invoke(weeklyOnce)
             deleteDaily(weeklyOnce.orderId)
             deleteMonthly(weeklyOnce.orderId)
-        }.start()
+        }
+//        Thread{
+//            mAddWeeklySubscription.invoke(weeklyOnce)
+//            deleteDaily(weeklyOnce.orderId)
+//            deleteMonthly(weeklyOnce.orderId)
+//        }.start()
     }
 
     fun deleteDaily(orderId: Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mGetSpecificDailyOrderWithOrderId.invoke(orderId)?.let {
                 mRemoveOrderFromDailySubscription.invoke(it)
             }
-        }.start()
+        }
+//        Thread{
+//            mGetSpecificDailyOrderWithOrderId.invoke(orderId)?.let {
+//                mRemoveOrderFromDailySubscription.invoke(it)
+//            }
+//        }.start()
     }
 
     fun updateSubscription(subscriptionType:String,orderId:Int?,dayOfMonth:Int?,dayOfWeek:Int?){

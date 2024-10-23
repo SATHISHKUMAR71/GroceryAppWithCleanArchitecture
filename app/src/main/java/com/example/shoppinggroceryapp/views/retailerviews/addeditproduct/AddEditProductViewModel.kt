@@ -32,29 +32,43 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
 //    var alertNotification:MutableLiveData<Product> =MutableLiveData()
 
     fun getBrandName(brandId:Long){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO){
             synchronized(ProductDetailViewModel.brandLock) {
                 brandName.postValue(productGetters.mGetBrandName.invoke(brandId))
             }
-        }.start()
+        }
+//        Thread{
+//            synchronized(ProductDetailViewModel.brandLock) {
+//                brandName.postValue(productGetters.mGetBrandName.invoke(brandId))
+//            }
+//        }.start()
     }
 
     fun getParentArray(){
-        Thread{
+        viewModelScope.launch (Dispatchers.IO){
             parentArray.postValue(productGetters.mGetAllParentCategoryNames.invoke())
-        }.start()
+        }
+//        Thread{
+//            parentArray.postValue(productGetters.mGetAllParentCategoryNames.invoke())
+//        }.start()
     }
 
     fun getParentCategory(childName:String){
-        Thread{
+        viewModelScope.launch (Dispatchers.IO){
             parentCategory.postValue(productGetters.mGetParentCategoryNameForChild.invoke(childName))
-        }.start()
+        }
+//        Thread{
+//            parentCategory.postValue(productGetters.mGetParentCategoryNameForChild.invoke(childName))
+//        }.start()
     }
 
     fun getChildArray(){
-        Thread {
+        viewModelScope.launch (Dispatchers.IO){
             childArray.postValue(productGetters.mGetChildCategoryNames.invoke())
-        }.start()
+        }
+//        Thread {
+//            childArray.postValue(productGetters.mGetChildCategoryNames.invoke())
+//        }.start()
     }
 
     fun parentCategoryChecker(parentCategory: String,parentArray: Array<String>):Boolean{
@@ -76,58 +90,68 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
     }
 
     fun getParentCategoryImage(childCategoryName:String){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO){
             println("#@#@ parent image: image got in view model ${productGetters.mGetParentCategoryImageUsingChild.invoke(childCategoryName)}")
             categoryImage.postValue(productGetters.mGetParentCategoryImageUsingChild.invoke(childCategoryName))
-        }.start()
+        }
+//        Thread{
+//            println("#@#@ parent image: image got in view model ${productGetters.mGetParentCategoryImageUsingChild.invoke(childCategoryName)}")
+//            categoryImage.postValue(productGetters.mGetParentCategoryImageUsingChild.invoke(childCategoryName))
+//        }.start()
     }
 
     fun getParentCategoryImageForParent(parentCategoryName:String){
-        Thread{
+        viewModelScope.launch (Dispatchers.IO){
             categoryImage.postValue(productGetters.mGetParentCategoryImageUsingParentName.invoke(parentCategoryName))
-        }.start()
+        }
+//        Thread{
+//            categoryImage.postValue(productGetters.mGetParentCategoryImageUsingParentName.invoke(parentCategoryName))
+//        }.start()
     }
 
     fun getChildArray(parentName:String){
-        Thread {
+        viewModelScope.launch (Dispatchers.IO){
             childArray.postValue(productGetters.mGetChildCategoriesForParent.invoke(parentName))
-        }.start()
+        }
+//        Thread {
+//            childArray.postValue(productGetters.mGetChildCategoriesForParent.invoke(parentName))
+//        }.start()
     }
 
     fun addParentCategory(parentCategory: ParentCategory){
-        Thread{
+        viewModelScope.launch (Dispatchers.IO){
             productSetters.mAddParentCategory.invoke(parentCategory)
-        }.start()
+        }
+//        Thread{
+//            productSetters.mAddParentCategory.invoke(parentCategory)
+//        }.start()
     }
 
     fun addSubCategory(category: Category){
-        Thread{
+        viewModelScope.launch (Dispatchers.IO){
             productSetters.mAddSubCategory.invoke(category)
-        }.start()
+        }
+//        Thread{
+//            productSetters.mAddSubCategory.invoke(category)
+//        }.start()
     }
 
     fun getImagesForProduct(productId: Long){
-        Thread{
+        viewModelScope.launch (Dispatchers.IO){
             println("IMAGES VALUE IN VM: ${productGetters.mGetImagesForProduct.invoke(productId)}")
             imageList.postValue(productGetters.mGetImagesForProduct.invoke(productId))
-        }.start()
+        }
+//        Thread{
+//            println("IMAGES VALUE IN VM: ${productGetters.mGetImagesForProduct.invoke(productId)}")
+//            imageList.postValue(productGetters.mGetImagesForProduct.invoke(productId))
+//        }.start()
     }
 
-//    fun getOrdersForTheProducts(product:Product){
-//        viewModelScope.launch(Dispatchers.IO){
-//            for(i in productGetters.mGetUserInfoForModifiedProduct.invoke(product.productId)){
-//                productGetters.mGetSpecificProductInCart.invoke(i.cartId,product.productId.toInt())?.let {
-//                    if(product.availableItems<it.totalItems){
-//                        alertNotification.postValue(product)
-//                    }
-//                }
-//            }
-//        }
-//    }
+
 
     fun updateInventory(brandName:String, isNewProduct:Boolean, product: Product, productId:Long?, imageList: List<String>, deletedImageList:MutableList<String>,oldMainImage:String){
         var brand: BrandData?
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             synchronized(ProductDetailViewModel.brandLock) {
                 brand = productGetters.mGetBandWithName.invoke(brandName)
                 var prod:Product = product
@@ -165,12 +189,50 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
                 ProductListFragment.selectedProductEntity.postValue(prod)
 //                getOrdersForTheProducts(prod)
             }
-
-        }.start()
+        }
+//        Thread{
+//            synchronized(ProductDetailViewModel.brandLock) {
+//                brand = productGetters.mGetBandWithName.invoke(brandName)
+//                var prod:Product = product
+//                var lastProduct: Product? = product
+//                if (brand == null) {
+//                    productSetters.mAddNewBrand.invoke(BrandData(0,brandName))
+//                    brand = productGetters.mGetBandWithName.invoke(brandName)
+//                }
+//
+//                if (isNewProduct) {
+//                    brand?.let {
+//                        prod = product.copy(brandId = it.brandId)
+//                        productSetters.mAddProduct.invoke(prod)
+//                        lastProduct = productGetters.mGetLastProduct.invoke()
+//                    }
+//
+//                } else {
+//                    brand?.let {
+//                        prod = product.copy(brandId = it.brandId, productId = productId!!)
+//                        productSetters.mUpdateProduct.invoke(prod)
+//                        lastProduct = prod
+//                    }
+//                }
+//
+//                for(j in deletedImageList){
+//                    deleteImage(j)
+//                }
+//
+//                for(i in imageList){
+//                    println("IMAGES LIST IN ADD EDIT FRAGMENT: $i old main image: $oldMainImage product main image: ${product.mainImage}")
+//                    lastProduct?.let {
+//                        productSetters.mAddProductImage.invoke(Images(0,it.productId,i))
+//                    }
+//                }
+//                ProductListFragment.selectedProductEntity.postValue(prod)
+////                getOrdersForTheProducts(prod)
+//            }
+//        }.start()
     }
 
     fun deleteImage(imageValue:String){
-        Thread {
+        viewModelScope.launch (Dispatchers.IO){
             productGetters.mGetImage.invoke(imageValue)
                 ?.let {
                     println(
@@ -182,7 +244,20 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
                     )
                     productDeleteUseCases.mDeleteProductImage.invoke(it)
                 }
-        }.start()
+        }
+//        Thread {
+//            productGetters.mGetImage.invoke(imageValue)
+//                ?.let {
+//                    println(
+//                        "4545 DELETE REQUESTED IMAGES in non null: $imageValue ${
+//                            productGetters.mGetImage.invoke(
+//                                imageValue
+//                            )
+//                        }"
+//                    )
+//                    productDeleteUseCases.mDeleteProductImage.invoke(it)
+//                }
+//        }.start()
     }
 
 

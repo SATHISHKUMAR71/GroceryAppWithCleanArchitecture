@@ -53,15 +53,21 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
     var productEntityList: MutableLiveData<List<Product>> = MutableLiveData()
     var productEntityCategoryList: MutableLiveData<List<Product>> = MutableLiveData()
     fun getCartItems(cartId: Int) {
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             cartEntityList.postValue(mGetCartItems.invoke(cartId))
-        }.start()
+        }
+//        Thread {
+//            cartEntityList.postValue(mGetCartItems.invoke(cartId))
+//        }.start()
     }
 
     fun getOnlyProducts() {
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             productEntityList.postValue(mGetAllProducts.invoke())
-        }.start()
+        }
+//        Thread {
+//            productEntityList.postValue(mGetAllProducts.invoke())
+//        }.start()
     }
 
     fun getImagesCountForProduct(productId: Long,callback:(Int) -> Unit){
@@ -71,80 +77,120 @@ class ProductListViewModel(private val mGetProductsByCategory: GetProductsByCate
         }
     }
     fun getProductsByCategory(category: String) {
-        Thread {
-
+        viewModelScope.launch(Dispatchers.IO) {
             var list = mGetProductsByCategory.invoke(category)
             if(list?.isEmpty() == true) {
                 list = mGetProductByName.invoke(category)
             }
             productEntityCategoryList.postValue(list?: listOf())
-        }.start()
+        }
+//        Thread {
+//            var list = mGetProductsByCategory.invoke(category)
+//            if(list?.isEmpty() == true) {
+//                list = mGetProductByName.invoke(category)
+//            }
+//            productEntityCategoryList.postValue(list?: listOf())
+//        }.start()
     }
 
     fun getSpecificCart(cartId: Int,productId:Int,callback: (Cart?) -> Unit){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             val cart: Cart? = (mGetSpecificProductInCart.invoke(cartId,productId))
             callback(cart)
-        }.start()
+        }
+//        Thread{
+//            val cart: Cart? = (mGetSpecificProductInCart.invoke(cartId,productId))
+//            callback(cart)
+//        }.start()
     }
 
     fun getWishList(productId: Long,callback: (WishList?) -> Unit){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             callback(mGetWishLists.invoke(MainActivity.userId.toInt(),productId))
-        }.start()
+        }
+//        Thread{
+//            callback(mGetWishLists.invoke(MainActivity.userId.toInt(),productId))
+//        }.start()
     }
 
 
     fun getLastlyOrderedDate(userId: Int,productId: Long,callback:(String?)->Unit){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             callback(mGetLastlyOrderedDate.invoke(userId,productId))
-        }.start()
+        }
+//        Thread{
+//            callback(mGetLastlyOrderedDate.invoke(userId,productId))
+//        }.start()
     }
     fun addItemsInCart(cart: Cart){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mAddProductInCart.invoke(cart)
-        }.start()
+        }
+//        Thread{
+//            mAddProductInCart.invoke(cart)
+//        }.start()
     }
     fun getBrandName(brandId:Long,callbackBrand: (String?) -> Unit){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             callbackBrand(mGetBrandName.invoke(brandId))
-        }.start()
+        }
+//        Thread{
+//            callbackBrand(mGetBrandName.invoke(brandId))
+//        }.start()
     }
 
     fun removeProductInCart(cart: Cart){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mRemoveProductInCart.invoke(cart)
-        }.start()
+        }
+//        Thread{
+//            mRemoveProductInCart.invoke(cart)
+//        }.start()
     }
 
     fun updateItemsInCart(cart: Cart){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mAddProductInCart.invoke(cart)
-        }.start()
+        }
+//        Thread{
+//            mAddProductInCart.invoke(cart)
+//        }.start()
     }
 
     fun updateProductInInventory(product: Product){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mUpdateAvailableProducts.invoke(product)
-        }.start()
+        }
+//        Thread{
+//            mUpdateAvailableProducts.invoke(product)
+//        }.start()
     }
 
     fun getWishedProducts(userId:Int){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             productEntityList.postValue(mGetWishListProducts.invoke(userId))
-        }.start()
+        }
+//        Thread{
+//            productEntityList.postValue(mGetWishListProducts.invoke(userId))
+//        }.start()
     }
 
     fun addProductToWishList(productId: Long){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mAddProductToWishList.invoke(WishList(productId,MainActivity.userId.toInt()))
-        }.start()
+        }
+//        Thread{
+//            mAddProductToWishList.invoke(WishList(productId,MainActivity.userId.toInt()))
+//        }.start()
     }
 
     fun removeProductFromWishList(productId: Long){
-        Thread{
+        viewModelScope.launch(Dispatchers.IO) {
             mRemoveFromWishList.invoke(WishList(productId,MainActivity.userId.toInt()))
-        }.start()
+        }
+//        Thread{
+//            mRemoveFromWishList.invoke(WishList(productId,MainActivity.userId.toInt()))
+//        }.start()
     }
 
     fun doSorting(adapter: ProductListAdapter, it:Int, productEntities:List<Product>, sorter: ProductSorter):List<Product>? {
