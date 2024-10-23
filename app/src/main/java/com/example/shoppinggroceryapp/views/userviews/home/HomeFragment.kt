@@ -211,50 +211,50 @@ class HomeFragment : Fragment() {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,productListFrag
             ,"Product List Opened")
         }
-        text.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    scaleView(cardView, 1.1f)
-                    scaleView(text,1.1f)
-                    true
-                }
-                MotionEvent.ACTION_UP -> {
-                    scaleView(cardView, 1f)
-                    scaleView(text,1f)
-                    v.performClick()
-                    true
-                }
-                MotionEvent.ACTION_CANCEL -> {
-                    scaleView(cardView, 1f)
-                    scaleView(text,1f)
-                    true
-                }
-
-                else -> false
-            }
-        }
-        cardView.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    scaleView(cardView, 1.1f)
-                    scaleView(text,1.1f)
-                    true
-                }
-                MotionEvent.ACTION_UP -> {
-                    scaleView(cardView, 1f)
-                    scaleView(text,1f)
-                    v.performClick()
-                    true
-                }
-                MotionEvent.ACTION_CANCEL -> {
-                    scaleView(cardView, 1f)
-                    scaleView(text,1f)
-                    true
-                }
-
-                else -> false
-            }
-        }
+//        text.setOnTouchListener { v, event ->
+//            when (event.action) {
+//                MotionEvent.ACTION_DOWN -> {
+//                    scaleView(cardView, 1.1f)
+//                    scaleView(text,1.1f)
+//                    true
+//                }
+//                MotionEvent.ACTION_UP -> {
+//                    scaleView(cardView, 1f)
+//                    scaleView(text,1f)
+//                    v.performClick()
+//                    true
+//                }
+//                MotionEvent.ACTION_CANCEL -> {
+//                    scaleView(cardView, 1f)
+//                    scaleView(text,1f)
+//                    true
+//                }
+//
+//                else -> false
+//            }
+//        }
+//        cardView.setOnTouchListener { v, event ->
+//            when (event.action) {
+//                MotionEvent.ACTION_DOWN -> {
+//                    scaleView(cardView, 1.1f)
+//                    scaleView(text,1.1f)
+//                    true
+//                }
+//                MotionEvent.ACTION_UP -> {
+//                    scaleView(cardView, 1f)
+//                    scaleView(text,1f)
+//                    v.performClick()
+//                    true
+//                }
+//                MotionEvent.ACTION_CANCEL -> {
+//                    scaleView(cardView, 1f)
+//                    scaleView(text,1f)
+//                    true
+//                }
+//
+//                else -> false
+//            }
+//        }
         cardView.setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,productListFrag
                 ,"Product List Opened")
@@ -273,13 +273,13 @@ class HomeFragment : Fragment() {
         recentItems.stopScroll()
         homeViewModel.recentlyViewedList.removeObservers(viewLifecycleOwner)
     }
-    private fun scaleView(view: View, scale: Float) {
-        view.animate()
-            .scaleX(scale)
-            .scaleY(scale)
-            .setDuration(100) // Duration of the animation
-            .start()
-    }
+//    private fun scaleView(view: View, scale: Float) {
+//        view.animate()
+//            .scaleX(scale)
+//            .scaleY(scale)
+//            .setDuration(100) // Duration of the animation
+//            .start()
+//    }
 
 
 }

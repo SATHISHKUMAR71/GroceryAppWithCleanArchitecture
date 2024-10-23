@@ -7,15 +7,19 @@
     android:focusable="true"
     android:background="?attr/selectableItemBackground"
     android:paddingTop="10dp"
+    android:paddingBottom="10dp"
     android:layout_height="wrap_content">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
     <LinearLayout
         android:id="@+id/linearLayoutImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:gravity="center"
+        android:layout_gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,6 +81,7 @@
         </LinearLayout>
 
 
+    </LinearLayout>
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -141,6 +146,7 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
             android:id="@+id/checkedUnCheckedButtons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">

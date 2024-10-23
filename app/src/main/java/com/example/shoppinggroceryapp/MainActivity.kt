@@ -78,46 +78,47 @@ class MainActivity : AppCompatActivity() {
         if(isSigned) {
             assignCart(db2)
         }
-        intent?.let {
-            var isEdit = it.getBooleanExtra("isEditProduct",false)
-            if(isEdit) {
-                val productId: Long = it.getLongExtra("productId", 1)
-                val brandId: Long = it.getLongExtra("brandId", 1)
-                val categoryName: String = it.getStringExtra("categoryName").toString()
-                val productName: String = it.getStringExtra("productName").toString()
-                val productDescription: String = it.getStringExtra("productDescription").toString()
-                val price: Float = it.getFloatExtra("price", 0f)
-                val offer: Float = it.getFloatExtra("offer", 0f)
-                val productQuantity: String = it.getStringExtra("productQuantity").toString()
-                val mainImage: String = it.getStringExtra("mainImage").toString()
-                val isVeg: Boolean = it.getBooleanExtra("isVeg", false)
-                val manufactureDate: String = it.getStringExtra("manufactureDate").toString()
-                val expiryDate: String = it.getStringExtra("expiryDate").toString()
-                val availableItems: Int = it.getIntExtra("availableItems", 0)
-                val product: Product = Product(
-                    productId,
-                    brandId,
-                    categoryName,
-                    productName,
-                    productDescription,
-                    price,
-                    offer,
-                    productQuantity,
-                    mainImage,
-                    isVeg,
-                    manufactureDate,
-                    expiryDate,
-                    availableItems
-                )
-                println("INTENT PRODUCT: $product")
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentBody,InitialFragment().apply { arguments = Bundle().apply {
-                        putBoolean("isEdit",true)
-                        PutExtras.putProductExtras(product,this)
-                    } })
-                    .commit()
-            }
-        }
+//        intent?.let {
+//            var isEdit = it.getBooleanExtra("isEditProduct",false)
+//            if(isEdit) {
+//                val productId: Long = it.getLongExtra("productId", 1)
+//                val brandId: Long = it.getLongExtra("brandId", 1)
+//                val categoryName: String = it.getStringExtra("categoryName").toString()
+//                val productName: String = it.getStringExtra("productName").toString()
+//                val productDescription: String = it.getStringExtra("productDescription").toString()
+//                val price: Float = it.getFloatExtra("price", 0f)
+//                val offer: Float = it.getFloatExtra("offer", 0f)
+//                val productQuantity: String = it.getStringExtra("productQuantity").toString()
+//                val mainImage: String = it.getStringExtra("mainImage").toString()
+//                val isVeg: Boolean = it.getBooleanExtra("isVeg", false)
+//                val manufactureDate: String = it.getStringExtra("manufactureDate").toString()
+//                val expiryDate: String = it.getStringExtra("expiryDate").toString()
+//                val availableItems: Int = it.getIntExtra("availableItems", 0)
+//                val product: Product = Product(
+//                    productId,
+//                    brandId,
+//                    categoryName,
+//                    productName,
+//                    productDescription,
+//                    price,
+//                    offer,
+//                    productQuantity,
+//                    mainImage,
+//                    isVeg,
+//                    manufactureDate,
+//                    expiryDate,
+//                    availableItems
+//                )
+//                println("INTENT PRODUCT: $product")
+//                supportFragmentManager.beginTransaction()
+//                    .replace(R.id.fragmentBody,InitialFragment().apply { arguments = Bundle().apply {
+//                        putBoolean("isEdit",true)
+//                        PutExtras.putProductExtras(product,this)
+//                    } })
+//                    .commit()
+//            }
+//        }
+
     }
 
 

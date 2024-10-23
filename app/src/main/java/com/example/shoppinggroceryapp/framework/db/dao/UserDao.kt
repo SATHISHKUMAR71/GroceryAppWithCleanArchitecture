@@ -45,6 +45,9 @@ interface UserDao {
     @Query("SELECT * FROM WISHLISTENTITY where productId=:productId and userId=:userId")
     fun getSpecificProductInWishList(userId: Int,productId: Long):WishListEntity?
 
+    @Query("SELECT * FROM ProductEntity order by price DESC LIMIT 1")
+    fun getMaxPrice():ProductEntity
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addUser(userEntity: UserEntity):Long
 

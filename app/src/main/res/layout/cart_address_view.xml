@@ -117,6 +117,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addMoreGroceryButton"
             app:icon="@drawable/add_24px"
+            app:cornerRadius="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"

@@ -63,6 +63,8 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
                 <LinearLayout
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:id="@+id/editLayout"
                     android:layout_width="match_parent"
                     android:background="?attr/selectableItemBackground"
@@ -75,11 +77,12 @@
                         android:background="@android:color/transparent"
                         android:clickable="false"
                         android:focusable="false"
+                        android:textColor="#534B4B"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:layout_weight="0.5"
-                        android:text="Edit Profile"
+                        android:text="    Edit Profile"
                         app:iconSize="24dp"
                         android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                         android:textAlignment="viewStart"
@@ -88,8 +91,8 @@
                         app:iconGravity="textStart" />
                     <ImageView
                         android:id="@+id/editProfileImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:src="@drawable/arrow_forward_ios_24px"
                         android:layout_gravity="center"
                         android:layout_marginEnd="20dp"
@@ -97,9 +100,13 @@
                 </LinearLayout>
                 <View android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:backgroundTint="#A8A5A5"
+                    android:backgroundTint="@color/guideLineColor"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@drawable/vertical_grey_line" />
             <LinearLayout
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_width="match_parent"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
@@ -113,10 +120,11 @@
                     android:clickable="false"
                     android:focusable="false"
                     android:layout_width="0dp"
+                    android:textColor="#534B4B"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="0.5"
-                    android:text="Order History"
+                    android:text="    Order History"
                     app:iconSize="24dp"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                     android:textAlignment="viewStart"
@@ -124,8 +132,8 @@
                     app:icon="@drawable/history_24px"
                     app:iconGravity="textStart" />
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:id="@+id/orderHistoryImage"
                     android:src="@drawable/arrow_forward_ios_24px"
                     android:layout_gravity="center"
@@ -134,9 +142,13 @@
             </LinearLayout>
                 <View android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:backgroundTint="#A8A5A5"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:backgroundTint="@color/guideLineColor"
                     android:background="@drawable/vertical_grey_line" />
             <LinearLayout
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_width="match_parent"
                 android:id="@+id/helpLayout"
                 android:background="?attr/selectableItemBackground"
@@ -152,8 +164,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:textColor="#534B4B"
                     android:layout_weight="0.5"
-                    android:text="Help"
+                    android:text="    Help"
                     app:iconSize="24dp"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                     android:textAlignment="viewStart"
@@ -162,22 +175,26 @@
                     app:iconGravity="textStart" />
                 <ImageView
                     android:id="@+id/helpImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:src="@drawable/arrow_forward_ios_24px"
                     android:layout_gravity="center"
                     android:layout_marginEnd="20dp"
                     app:tint="?attr/colorPrimary" />
             </LinearLayout>
                 <View android:layout_width="match_parent"
-                    android:backgroundTint="#A8A5A5"
+                    android:backgroundTint="@color/guideLineColor"
                     android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:id="@+id/helpLine"
                     android:background="@drawable/vertical_grey_line" />
             <LinearLayout
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_width="match_parent"
                 android:id="@+id/savedAddressLayout"
                 android:layout_height="wrap_content">
@@ -192,23 +209,26 @@
                     app:iconSize="24dp"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                     android:layout_margin="10dp"
+                    android:textColor="#534B4B"
                     android:layout_weight="0.5"
-                    android:text="Saved Address"
+                    android:text="    Saved Address"
                     android:textAlignment="viewStart"
                     app:cornerRadius="4dp"
                     app:icon="@drawable/location_on_24px"
                     app:iconGravity="textStart" />
                 <ImageView
                     android:id="@+id/savedAddressImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:src="@drawable/arrow_forward_ios_24px"
                     android:layout_gravity="center"
                     android:layout_marginEnd="20dp"
                     app:tint="?attr/colorPrimary" />
             </LinearLayout>
                 <View android:layout_width="match_parent"
-                    android:backgroundTint="#A8A5A5"
+                    android:backgroundTint="@color/guideLineColor"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_height="1dp"
                     android:id="@+id/savedAddressLine"
                     android:background="@drawable/vertical_grey_line" />
@@ -217,6 +237,8 @@
                 android:id="@+id/yourReqLayout"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:focusable="true"
                 android:layout_height="wrap_content">
                 <com.google.android.material.button.MaterialButton
@@ -229,17 +251,18 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     app:iconSize="24dp"
+                    android:textColor="#534B4B"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                     android:layout_weight="0.5"
-                    android:text="Your Requests"
+                    android:text="    Your Requests"
                     android:textAlignment="viewStart"
                     app:cornerRadius="4dp"
                     app:icon="@drawable/history_24px"
                     app:iconGravity="textStart" />
                 <ImageView
                     android:id="@+id/customerReqHistoryImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:src="@drawable/arrow_forward_ios_24px"
                     android:layout_gravity="center"
                     android:layout_marginEnd="20dp"
@@ -247,14 +270,18 @@
             </LinearLayout>
                 <View android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:id="@+id/requestLine"
-                    android:backgroundTint="#A8A5A5"
+                    android:backgroundTint="@color/guideLineColor"
                     android:background="@drawable/vertical_grey_line" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:id="@+id/wishListLayout"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:focusable="true"
                 android:layout_height="wrap_content">
                 <com.google.android.material.button.MaterialButton
@@ -267,7 +294,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="0.5"
-                    android:text="WishList"
+                    android:textColor="#534B4B"
+                    android:text="    WishList"
                     app:iconSize="24dp"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                     android:textAlignment="viewStart"
@@ -276,8 +304,8 @@
                     app:iconGravity="textStart" />
                 <ImageView
                     android:id="@+id/wishlistImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:src="@drawable/arrow_forward_ios_24px"
                     android:layout_gravity="center"
                     android:layout_marginEnd="20dp"
@@ -285,7 +313,9 @@
             </LinearLayout>
                 <View android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:backgroundTint="#A8A5A5"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:backgroundTint="@color/guideLineColor"
                     android:id="@+id/wishListLine"
                     android:background="@drawable/vertical_grey_line" />
             </LinearLayout>

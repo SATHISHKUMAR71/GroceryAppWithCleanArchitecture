@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FilterViewModel(var mGetAllBrands: GetAllBrands):ViewModel() {
-
+    
     var brandList:MutableLiveData<List<String>> = MutableLiveData()
     var brandMap:List<BrandData> = mutableListOf()
     fun getBrandNames(){
@@ -30,7 +30,6 @@ class FilterViewModel(var mGetAllBrands: GetAllBrands):ViewModel() {
 
 
     fun doFilter(productEntityList: List<Product>):List<Product>{
-        println("432456 BRAND CHECK LIST: ${FilterFragmentSearch.checkedList} DISCOUNT CHECK LIST: ${FilterFragmentSearch.checkedDiscountList}")
         var list:List<Product> = productEntityList
         if(FilterExpiry.startExpiryDate.isNotEmpty()){
             list = list.filter { it.expiryDate>=FilterExpiry.startExpiryDate }
@@ -48,7 +47,6 @@ class FilterViewModel(var mGetAllBrands: GetAllBrands):ViewModel() {
         if(FilterPrice.priceEndTo<=2000F){
             list = list.filter { ((it.price) - ((it.offer/100) * it.price))<=FilterPrice.priceEndTo }
         }
-        println("78978 LIST SIZE before IN 46: ${list.size}")
         brandMap = (mGetAllBrands.invoke())
         if(FilterFragmentSearch.checkedList.isNotEmpty()) {
             var tmpBrandData =
@@ -57,7 +55,6 @@ class FilterViewModel(var mGetAllBrands: GetAllBrands):ViewModel() {
             tmpBrandIds.let { brandIdList ->
                 list = list.filter { it.brandId in brandIdList }
             }
-            println("78978 LIST SIZE on is empty IN 46 :${FilterFragmentSearch.checkedList} ${list.size} $tmpBrandIds $tmpBrandData ${brandMap}")
         }
         if(FilterFragmentSearch.checkedDiscountList.isNotEmpty()){
             list = list.filter { it.offer in FilterFragmentSearch.checkedDiscountList }
