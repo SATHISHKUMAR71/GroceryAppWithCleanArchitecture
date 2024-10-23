@@ -21,6 +21,7 @@
             tools:layout_editor_absoluteX="10dp">
 
             <ImageView
+                android:layout_marginStart="10dp"
                 android:id="@+id/addSymbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="10dp"
                 android:orientation="vertical">
 
@@ -57,7 +58,8 @@
                     android:layout_marginEnd="20dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+
                     android:text="Rice,Wheat,Oats,Barley,Millets,White Rice,White Flour,Pasta,Beans" />
 
             </LinearLayout>

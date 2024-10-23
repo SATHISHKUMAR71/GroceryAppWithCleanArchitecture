@@ -50,6 +50,7 @@ import com.example.shoppinggroceryapp.views.retailerviews.addeditproduct.AddOrEd
 import com.example.shoppinggroceryapp.views.sharedviews.sort.BottomSheetDialogFragment
 import com.example.shoppinggroceryapp.views.sharedviews.sort.ProductSorter
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
+import com.example.shoppinggroceryapp.views.sharedviews.filter.ResetFilterValues
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailFragment
 import com.google.android.material.appbar.MaterialToolbar
@@ -96,6 +97,7 @@ class ProductListFragment : Fragment() {
         BottomSheetDialogFragment.selectedOption.value = null
         category = arguments?.getString("category")
         FilterFragment.list = null
+        ResetFilterValues.resetFilterValues()
 //        OfferFragment.offerFilterCount = 0
         OfferFragment.dis10Val = false
         OfferFragment.dis20Val = false
@@ -513,36 +515,32 @@ class ProductListFragment : Fragment() {
 
     private fun showProductRV() {
         println("89890090 show called")
-//        productRV.animate()
-//            .alpha(1f)
-//            .setDuration(50)
-//            .withEndAction { productRV.visibility = View.VISIBLE
-//            }
-//            .start()
-        productRV.visibility = View.VISIBLE
-        notifyNoItems.visibility = View.GONE
-//        notifyNoItems.animate()
-//            .alpha(0f)
-//            .setDuration(50)
-//            .withEndAction { notifyNoItems.visibility = View.GONE }
-//            .start()
+        productRV.animate()
+            .alpha(1f)
+            .setDuration(50)
+            .withEndAction { productRV.visibility = View.VISIBLE
+            }
+            .start()
+        notifyNoItems.animate()
+            .alpha(0f)
+            .setDuration(50)
+            .withEndAction { notifyNoItems.visibility = View.GONE }
+            .start()
 
     }
 
     private fun hideProductRV(){
         println("89890090 before HIDE PRODUCT RV IS CALLED ${productRV.isVisible} ${notifyNoItems.isVisible}")
-        productRV.visibility = View.GONE
-//        productRV.animate()
-//            .alpha(0f)
-//            .setDuration(50)
-//            .withEndAction { productRV.visibility = View.GONE }
-//            .start()
-        notifyNoItems.visibility = View.VISIBLE
-//        notifyNoItems.animate()
-//            .alpha(1f)
-//            .setDuration(50)
-//            .withEndAction { notifyNoItems.visibility = View.VISIBLE }
-//            .start()
+        productRV.animate()
+            .alpha(0f)
+            .setDuration(50)
+            .withEndAction { productRV.visibility = View.GONE }
+            .start()
+        notifyNoItems.animate()
+            .alpha(1f)
+            .setDuration(50)
+            .withEndAction { notifyNoItems.visibility = View.VISIBLE }
+            .start()
         println("89890090 after HIDE PRODUCT RV IS CALLED ${productRV.isVisible} ${notifyNoItems.isVisible}")
     }
 }

@@ -31,12 +31,13 @@
                 app:cardCornerRadius="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:layout_height="150dp">
             <TextView
                 android:id="@+id/offerText"
+                android:elevation="1dp"
                 android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
                 android:background="@color/offerColor"
                 android:layout_width="wrap_content"
@@ -47,12 +48,12 @@
         <ImageView
             android:id="@+id/productImageLong"
             android:layout_width="100dp"
-            android:layout_height="120dp"
+            android:layout_height="150dp"
             android:layout_gravity="center"
             android:clipToOutline="true"
-            android:src="@drawable/grains_and_pulses"
+
             android:scaleType="fitXY"/>
-            </LinearLayout>
+            </FrameLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
                 android:id="@+id/moreImagesView"

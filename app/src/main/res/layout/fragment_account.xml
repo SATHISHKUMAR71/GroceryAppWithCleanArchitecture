@@ -63,11 +63,18 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
                 <LinearLayout
+                    android:id="@+id/editLayout"
                     android:layout_width="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_height="wrap_content">
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/editProfile"
                         style="@style/Widget.Material3.Button.TextButton.Dialog.Icon"
+                        android:background="@android:color/transparent"
+                        android:clickable="false"
+                        android:focusable="false"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
@@ -94,10 +101,17 @@
                     android:background="@drawable/vertical_grey_line" />
             <LinearLayout
                 android:layout_width="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:id="@+id/orderHistoryLayout"
+                android:focusable="true"
                 android:layout_height="wrap_content">
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/orderHistory"
                     style="@style/Widget.Material3.Button.TextButton.Dialog.Icon"
+                    android:background="@android:color/transparent"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -125,10 +139,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:id="@+id/helpLayout"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_height="wrap_content">
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/help"
                     style="@style/Widget.Material3.Button.TextButton.Dialog.Icon"
+                    android:background="@android:color/transparent"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -155,12 +175,18 @@
                     android:id="@+id/helpLine"
                     android:background="@drawable/vertical_grey_line" />
             <LinearLayout
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="match_parent"
                 android:id="@+id/savedAddressLayout"
                 android:layout_height="wrap_content">
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/savedAddress"
                     style="@style/Widget.Material3.Button.TextButton.Dialog.Icon"
+                    android:background="@android:color/transparent"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:iconSize="24dp"
@@ -189,10 +215,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:id="@+id/yourReqLayout"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_height="wrap_content">
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/customerReqHistory"
                     style="@style/Widget.Material3.Button.TextButton.Dialog.Icon"
+                    android:background="@android:color/transparent"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -221,10 +253,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:id="@+id/wishListLayout"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_height="wrap_content">
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/wishlist"
                     style="@style/Widget.Material3.Button.TextButton.Dialog.Icon"
+                    android:background="@android:color/transparent"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"

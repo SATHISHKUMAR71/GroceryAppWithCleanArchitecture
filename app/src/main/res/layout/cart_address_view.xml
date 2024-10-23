@@ -116,7 +116,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addMoreGroceryButton"
-            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+            app:icon="@drawable/add_24px"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
@@ -124,7 +124,7 @@
             android:padding="20dp"
             android:text="Add More Grocery Items"
             android:textAlignment="center"
-            app:iconGravity="textEnd"
+            app:iconGravity="textStart"
             app:layout_constraintTop_toBottomOf="@+id/deliveryAddressLayout"
             app:rippleColor="?attr/colorControlHighlight" />
     </LinearLayout>

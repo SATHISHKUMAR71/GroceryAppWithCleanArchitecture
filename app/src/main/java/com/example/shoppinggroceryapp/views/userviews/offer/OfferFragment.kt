@@ -43,6 +43,7 @@ import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
+import com.example.shoppinggroceryapp.views.sharedviews.filter.ResetFilterValues
 import com.example.shoppinggroceryapp.views.sharedviews.sort.BottomSheetDialogFragment
 import com.example.shoppinggroceryapp.views.sharedviews.sort.ProductSorter
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListViewModel
@@ -82,6 +83,7 @@ class OfferFragment : Fragment() {
         val db1 = AppDatabase.getAppDatabase(requireContext())
         userDao = db1.getUserDao()
         retailerDao = db1.getRetailerDao()
+        ResetFilterValues.resetFilterValues()
     }
 
     private fun initStaticVariable() {
@@ -241,6 +243,7 @@ class OfferFragment : Fragment() {
         FilterFragment.list = null
 //        offerFilterCount = 0
         offerListFirstVisiblePos = null
+        ResetFilterValues.resetFilterValues()
         dis10Val = false
         dis20Val = false
         dis30Val = false

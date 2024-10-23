@@ -70,13 +70,12 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
             adapter = FilterAdapter(listOf("Discounts","Brand","Expiry Date","Price","Manufacture Date"),it,this,
                 listOf("10% or more","20% or more","30% or more","40% or more","50% or more")
             )
-
+            adapter.setBadges()
             if(recyclerViewFilterType.adapter==null){
                 recyclerViewFilterType.adapter = adapter
                 recyclerViewFilterType.layoutManager = LinearLayoutManager(context)
             }
         }
-
         applyButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
@@ -86,7 +85,7 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
                 list = filterViewModel.doFilter(products).toMutableList()
                 MainActivity.handler.post {
                     availableProducts.text = list?.size.toString()
-                    setBadges()
+//                    setBadges()
                 }
             }.start()
         }
@@ -167,35 +166,61 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
                 }
             }.start()
         }
+//        setBadges()
         return view
     }
 
-    private fun setBadges() {
-        if(FilterExpiry.endExpiryDate.isEmpty() && FilterExpiry.startExpiryDate.isEmpty()){
-            adapter.setBadgeForExpiryDate(0)
-        }
-        else if(FilterExpiry.endExpiryDate.isEmpty() && FilterExpiry.startExpiryDate.isNotEmpty()){
-            adapter.setBadgeForExpiryDate(1)
-        }
-        else if(FilterExpiry.endExpiryDate.isNotEmpty() && FilterExpiry.startExpiryDate.isEmpty()){
-            adapter.setBadgeForExpiryDate(1)
-        }
-        else if(FilterExpiry.endExpiryDate.isNotEmpty() && FilterExpiry.startExpiryDate.isNotEmpty()){
-            adapter.setBadgeForExpiryDate(2)
-        }
-        if(FilterExpiry.endManufactureDate.isEmpty() && FilterExpiry.startManufactureDate.isEmpty()){
-            adapter.setBadgeForManufactureDate(0)
-        }
-        else if(FilterExpiry.endManufactureDate.isEmpty() && FilterExpiry.startManufactureDate.isNotEmpty()){
-            adapter.setBadgeForManufactureDate(1)
-        }
-        else if(FilterExpiry.endManufactureDate.isNotEmpty() && FilterExpiry.startManufactureDate.isEmpty()){
-            adapter.setBadgeForManufactureDate(1)
-        }
-        else if(FilterExpiry.endManufactureDate.isNotEmpty() && FilterExpiry.startManufactureDate.isNotEmpty()){
-            adapter.setBadgeForManufactureDate(2)
-        }
-    }
+//    private fun setBadges() {
+//        println("987654 ADAPTER SET BADGES CALLED")
+//        if(FilterExpiry.endExpiryDate.isEmpty() && FilterExpiry.startExpiryDate.isEmpty()){
+//            adapter.setBadgeForExpiryDate(0)
+//            println("987654 ADAPTER SET EXPIRY BADGES CALLED 177")
+//        }
+//        else if(FilterExpiry.endExpiryDate.isEmpty() && FilterExpiry.startExpiryDate.isNotEmpty()){
+//            adapter.setBadgeForExpiryDate(1)
+//            println("987654 ADAPTER SET EXPIRY BADGES CALLED 181")
+//        }
+//        else if(FilterExpiry.endExpiryDate.isNotEmpty() && FilterExpiry.startExpiryDate.isEmpty()){
+//            adapter.setBadgeForExpiryDate(1)
+//            println("987654 ADAPTER SET EXPIRY BADGES CALLED 185")
+//        }
+//        else if(FilterExpiry.endExpiryDate.isNotEmpty() && FilterExpiry.startExpiryDate.isNotEmpty()){
+//            adapter.setBadgeForExpiryDate(2)
+//            println("987654 ADAPTER SET EXPIRY BADGES CALLED 189")
+//        }
+//        if(FilterExpiry.endManufactureDate.isEmpty() && FilterExpiry.startManufactureDate.isEmpty()){
+//            adapter.setBadgeForManufactureDate(0)
+//            println("987654 ADAPTER SET EXPIRY BADGES CALLED 193")
+//        }
+//        else if(FilterExpiry.endManufactureDate.isEmpty() && FilterExpiry.startManufactureDate.isNotEmpty()){
+//            adapter.setBadgeForManufactureDate(1)
+//            println("987654 ADAPTER SET EXPIRY BADGES CALLED 197")
+//        }
+//        else if(FilterExpiry.endManufactureDate.isNotEmpty() && FilterExpiry.startManufactureDate.isEmpty()){
+//            adapter.setBadgeForManufactureDate(1)
+//            println("987654 ADAPTER SET EXPIRY BADGES CALLED 201")
+//        }
+//        else if(FilterExpiry.endManufactureDate.isNotEmpty() && FilterExpiry.startManufactureDate.isNotEmpty()){
+//            adapter.setBadgeForManufactureDate(2)
+//            println("987654 ADAPTER SET EXPIRY BADGES CALLED 205")
+//        }
+//        if(FilterPrice.priceStartFrom!=0f && FilterPrice.priceEndTo!=2010f){
+//            adapter.setBadgeForPrice(2)
+//            println("987654 ADAPTER SET EXPIRY BADGES CALLED 209")
+//        }
+//        else if(FilterPrice.priceStartFrom==0f && FilterPrice.priceEndTo!=2010f){
+//            adapter.setBadgeForPrice(1)
+//            println("987654 ADAPTER SET EXPIRY BADGES CALLED 213")
+//        }
+//        else if(FilterPrice.priceStartFrom!=0f && FilterPrice.priceEndTo==2010f){
+//            adapter.setBadgeForPrice(1)
+//            println("987654 ADAPTER SET EXPIRY BADGES CALLED 217")
+//        }
+//        else{
+//            adapter.setBadgeForPrice(2)
+//            println("987654 ADAPTER SET EXPIRY BADGES CALLED 221")
+//        }
+//    }
 
 
     override fun onResume() {
