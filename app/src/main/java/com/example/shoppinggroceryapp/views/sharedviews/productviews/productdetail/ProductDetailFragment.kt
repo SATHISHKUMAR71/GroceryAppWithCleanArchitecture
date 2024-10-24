@@ -136,7 +136,7 @@ class ProductDetailFragment : Fragment() {
         removeProductImgButton = view.findViewById(R.id.productRemoveSymbolButtonProductDetail)
         addProductImgButton = view.findViewById(R.id.productAddSymbolButtonProductDetail)
         addRemoveLayout = view.findViewById(R.id.productAddRemoveLayoutProductDetail)
-
+        recyclerView = view.findViewById(R.id.productListInProductDetailFragment)
 
         if(MainActivity.isRetailer){
             productDetailToolBar.menu.findItem(R.id.edit).setVisible(true)
@@ -144,11 +144,13 @@ class ProductDetailFragment : Fragment() {
             productDetailToolBar.menu.findItem(R.id.cart).setVisible(false)
             productDetailToolBar.menu.findItem(R.id.addedInWishlist).setVisible(false)
             productDetailToolBar.menu.findItem(R.id.addToWishlist).setVisible(false)
+            recyclerView.setPadding(0,0,0,250)
             view.findViewById<ScrollView>(R.id.productDetailScrollView).setPadding(0)
             view.findViewById<LinearLayout>(R.id.exploreBottomLayout).visibility = View.GONE
         }
 
         else{
+            recyclerView.setPadding(10)
             productDetailToolBar.menu.findItem(R.id.edit).setVisible(false)
             productDetailToolBar.menu.findItem(R.id.cart).setVisible(true)
             productDetailToolBar.menu.findItem(R.id.delete).setVisible(false)
@@ -272,7 +274,6 @@ class ProductDetailFragment : Fragment() {
             productDetailViewModel.addInRecentlyViewedItems(it.productId)
         }
 
-        recyclerView = view.findViewById(R.id.productListInProductDetailFragment)
         productDetailViewModel.similarProductsLiveData.observe(viewLifecycleOwner){
             if(it.size ==1) {
                 view.findViewById<LinearLayout>(R.id.similarProductsLayout).visibility = View.GONE

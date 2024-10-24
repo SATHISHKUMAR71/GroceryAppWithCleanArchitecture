@@ -58,7 +58,7 @@ class CartFragment : Fragment() {
     private lateinit var price:MaterialButton
     private lateinit var adapter: ProductListAdapter
     private lateinit var cartViewModel: CartViewModel
-
+    private lateinit var cartAppBar:AppBarLayout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -73,13 +73,7 @@ class CartFragment : Fragment() {
         FilterFragment.badgeNumber = 0
         ResetFilterValues.resetFilterValues()
         val continueButton = view.findViewById<MaterialButton>(R.id.continueButton)
-        val cartAppBar = view.findViewById<AppBarLayout>(R.id.carttoolbar)
-        cartAppBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            println("987983 OFFSET LISTENER CALLED $verticalOffset")
-        }
-//        toolBar.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-//
-//        }
+        cartAppBar = view.findViewById<AppBarLayout>(R.id.carttoolbar)
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
@@ -89,17 +83,13 @@ class CartFragment : Fragment() {
         adapter = ProductListAdapter(this,fileDir,"C",false,productListViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(retailerDao, userDao)
         )[ProductListViewModel::class.java],cartViewModel)
-//        adapter.setProducts(listOf())
         if(recyclerView.adapter == null){
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
         }
 
         price.setOnClickListener {
-//            (recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(noOfItemsInt+1,500)
             (recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(noOfItemsInt+1)
-
-//            (recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(noOfItemsInt+1,5000)
         }
         cartViewModel.getProductsByCartId(MainActivity.cartId)
         cartViewModel.cartProducts.observe(viewLifecycleOwner){
@@ -128,10 +118,12 @@ class CartFragment : Fragment() {
                 noOfItemsInt = ProductListAdapter.productsSize
                 mrpProductsText = "MRP ($noOfItemsInt) Products"
             }
+            if(noOfItemsInt==1){
+                cartAppBar.setExpanded(true)
+            }
             val str = "₹$it\nView Price Details"
             val grandTot = "₹$it"
             val totalAmt = "₹${it-49}"
-
             price.text = str
             adapter.updatePriceDetails(totalAmt,grandTot,mrpProductsText)
         }
@@ -190,7 +182,22 @@ class CartFragment : Fragment() {
         savedPosition = (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        cartAppBar.setExpanded(true)
 
+//        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            val params = bottomL3ayout.layoutParams as CoordinatorLayout.LayoutParams
+//            params.behavior = null
+//            bottomLayout.layoutParams = params
+//            bottomLayout.requestLayout()
+//        } else {
+//
+//            val params = bottomLayout.layoutParams as CoordinatorLayout.LayoutParams
+//            bottomLayout.layoutParams = params
+//            bottomLayout.requestLayout() // Request layout update
+//        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()

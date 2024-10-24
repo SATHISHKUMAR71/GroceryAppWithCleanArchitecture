@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.sharedviews.orderviews.orderlist.OrderListFragment">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
 
+        android:layout_height="wrap_content">
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:contentScrim="@android:color/transparent"
+        app:layout_scrollFlags="scroll|enterAlways">
+    <LinearLayout
+        app:layout_collapseMode="pin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/materialToolbarOrderList"
         android:layout_width="match_parent"
@@ -16,11 +28,19 @@
         app:navigationIconTint="@color/white"
         app:title="My Orders"
         app:titleTextColor="@color/white" />
+    </LinearLayout>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
 
+    </com.google.android.material.appbar.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:layout_height="wrap_content">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/orderList"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialToolbarOrderList" />
 
@@ -33,5 +53,6 @@
         android:textSize="20dp"
         app:layout_constraintTop_toBottomOf="@+id/materialToolbarOrderList"
         tools:layout_editor_absoluteX="0dp" />
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

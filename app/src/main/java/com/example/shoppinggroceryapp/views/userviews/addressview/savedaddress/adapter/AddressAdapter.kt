@@ -16,6 +16,7 @@ import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.framework.db.entity.user.AddressEntity
 import com.example.shoppinggroceryapp.helpers.extensions.putAddress
+import com.example.shoppinggroceryapp.helpers.toast.ShowShortToast
 import com.example.shoppinggroceryapp.views.userviews.addressview.getaddress.GetNewAddress
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressList
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
@@ -72,7 +73,6 @@ class AddressAdapter(var addressEntityList: List<Address>, var fragment: Fragmen
                 this.putString("state",addressEntityList[position].state)
                 this.putString("postalCode",addressEntityList[position].postalCode)
             }
-//            SavedAddressList.editAddressEntity = addressEntityList[position]
             FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, getNewAddress,"Edit Address")
         }
         if(clickable){
@@ -82,6 +82,7 @@ class AddressAdapter(var addressEntityList: List<Address>, var fragment: Fragmen
                 CartFragment.selectedAddressPosition = position
                 CartFragment.selectedAddressEntity = addressEntityList[position]
                 clickable =false
+                ShowShortToast.show("Address Changed Successfully",fragment.requireContext())
                 fragment.parentFragmentManager.popBackStack()
             }
         }

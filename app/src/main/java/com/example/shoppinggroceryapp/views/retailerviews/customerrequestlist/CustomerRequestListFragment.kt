@@ -88,7 +88,6 @@ class CustomerRequestListFragment : Fragment() {
         if(MainActivity.isRetailer) {
             customerViewModel.getCustomerRequest()
             navToolBar.navigationIcon = null
-            navToolBar.isTitleCentered = true
         }
         else{
             customerReqRV.setPadding(0)

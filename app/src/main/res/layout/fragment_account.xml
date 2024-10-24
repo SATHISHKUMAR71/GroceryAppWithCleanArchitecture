@@ -358,8 +358,7 @@
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:text="Recently Purchased Items"
-                    android:textSize="20sp" />
+                    android:text="Recently Purchased Items" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recentlyPurchasedItemsList"

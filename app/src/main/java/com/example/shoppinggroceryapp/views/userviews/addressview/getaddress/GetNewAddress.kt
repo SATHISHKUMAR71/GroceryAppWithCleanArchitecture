@@ -152,7 +152,7 @@ class GetNewAddress : Fragment() {
 
     private fun validateInput() {
         fullNameLayout.error = addressInputChecker.nameCheck(fullName)
-        phoneLayout.error = addressInputChecker.lengthAndEmptyCheck("Phone Number",phone,10)
+        phoneLayout.error = addressInputChecker.lengthAndEmptyCheckForPhone("Phone Number",phone,10)
         houseLayout.error = addressInputChecker.emptyCheck(houseNo)
         streetLayout.error = addressInputChecker.emptyCheck(street)
         cityLayout.error = addressInputChecker.emptyCheck(city)

@@ -58,7 +58,7 @@ class OrderHistoryFragment : Fragment() {
         if(MainActivity.isRetailer){
             toolbar.title = "Orders"
             toolbar.navigationIcon = null
-            toolbar.isTitleCentered = true
+//            toolbar.isTitleCentered = true
         }
         if(clickable==true){
             toolbar.title= "Select an Order Type"

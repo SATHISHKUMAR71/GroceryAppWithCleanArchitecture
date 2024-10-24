@@ -45,13 +45,8 @@ class TextLayoutInputChecker: InputChecker {
         else if(text.text.toString().length<length){
             return "$textName should contain atLeast $length characters"
         }
-        else{
-
-            for(i in text.text.toString()){
-                if(i.code !in 48..57){
-                    return "Invalid Phone Number ONly Numbers are Allowed"
-                }
-            }
+        else if(!InputValidator.checkPhone(text.text.toString())){
+            return "Invalid Phone Number"
         }
         return null
     }
