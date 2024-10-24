@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="offerColor">#0D8713</color>
     <color name="guideLineColor">#C7C4C4</color>
+    <color name="strikenColor">#6B6868</color>
 </resources>

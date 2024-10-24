@@ -38,7 +38,7 @@ class SubCategoryAdapter(var fragment: Fragment,var categoryList: List<String>):
         else{
             holder.categoryName.text = categoryList[position]
             holder.itemView.setOnClickListener {
-                Toast.makeText(fragment.context,"Item Clicked",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(fragment.context,"Item Clicked",Toast.LENGTH_SHORT).show()
             }
         }
         holder.categoryName.setOnClickListener {

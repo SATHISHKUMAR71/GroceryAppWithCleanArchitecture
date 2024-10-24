@@ -11,7 +11,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class DataLossAlertDialog {
     fun showDataLossAlertDialog(context: Context,parentFragmentManager:FragmentManager){
 
-        var dialog = MaterialAlertDialogBuilder(context)
+        MaterialAlertDialogBuilder(context)
             .setTitle("Confirm to Exit?")
             .setMessage("Your changes will not be saved. Do you want to exit?")
             .setPositiveButton("Exit", DialogInterface.OnClickListener { dialog, which ->
@@ -22,14 +22,14 @@ class DataLossAlertDialog {
             .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which ->
                 dialog.dismiss()
             })
-            .create()
+            .show()
 
-        dialog.setOnShowListener {
-            var positiveBtn = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            positiveBtn.setTextColor(Color.WHITE)
-            positiveBtn.setBackgroundColor(com.google.android.material.R.attr.colorErrorContainer)
-        }
-        dialog.show()
+//        dialog.setOnShowListener {
+//            var positiveBtn = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+//            positiveBtn.setTextColor(Color.WHITE)
+//            positiveBtn.setBackgroundColor(com.google.android.material.R.attr.colorErrorContainer)
+//        }
+//        dialog.show()
 
     }
 }

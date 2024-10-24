@@ -23,9 +23,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:fontFamily="sans-serif-condensed-medium"
+                android:textStyle="bold"
                 android:text="Popular Categories"
-                android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,13 +60,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
-                    android:fontFamily="sans-serif-condensed-medium"
+                    android:textStyle="bold"
                     android:text="Recently Viewed Items"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_weight="1"
                     android:layout_height="0dp"
+                    android:paddingBottom="20dp"
                     android:id="@+id/recentlyViewedItemsHomeFrag"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

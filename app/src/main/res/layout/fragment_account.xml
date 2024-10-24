@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".views.sharedviews.profileviews.AccountFragment">
 
 
@@ -318,6 +319,7 @@
                     android:backgroundTint="@color/guideLineColor"
                     android:id="@+id/wishListLine"
                     android:background="@drawable/vertical_grey_line" />
+
             </LinearLayout>
 
 

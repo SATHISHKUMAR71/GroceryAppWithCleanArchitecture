@@ -15,6 +15,10 @@
         app:layout_scrollFlags="scroll">
 
 
+        <androidx.cardview.widget.CardView
+            android:elevation="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <LinearLayout
             android:id="@+id/deliveryAddressLayoutNotFound"
             tools:layout_editor_absoluteX="10dp"
@@ -118,7 +122,12 @@
                 app:cornerRadius="4dp"
                 app:rippleColor="?attr/colorControlHighlight" />
         </LinearLayout>
-<!--        </androidx.cardview.widget.CardView>-->
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_marginTop="3dp"
+            android:elevation="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
@@ -128,6 +137,7 @@
                 android:layout_weight="1"
                 android:id="@+id/hintText"
                 android:layout_marginStart="10dp"
+                android:layout_marginEnd="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Missed Something ? "/>
@@ -138,17 +148,18 @@
             android:layout_weight="0.1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add More Grocery Items"
+            android:text="Add More Items"
             android:textAlignment="center"
             app:iconGravity="textStart"
             app:layout_constraintTop_toBottomOf="@+id/deliveryAddressLayout"
             app:rippleColor="?attr/colorControlHighlight" />
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="10dp"
-            android:background="@color/guideLineColor"/>
+        </androidx.cardview.widget.CardView>
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:background="@color/guideLineColor"/>-->
     </LinearLayout>
 
 

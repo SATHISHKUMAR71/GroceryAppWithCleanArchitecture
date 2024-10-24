@@ -14,6 +14,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
     <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <LinearLayout
         android:id="@+id/linearLayoutImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,6 +57,8 @@
             android:id="@+id/productImageLong"
             android:layout_width="100dp"
             android:layout_height="150dp"
+            android:adjustViewBounds="true"
+
             android:layout_gravity="center"
             android:clipToOutline="true"
 
@@ -60,14 +66,19 @@
             </FrameLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:id="@+id/moreImagesView"
-                android:elevation="4dp"
-                android:visibility="invisible"
+                android:elevation="2dp"
+                app:cardCornerRadius="5dp"
+                android:visibility="gone"
+                android:backgroundTint="?attr/colorSecondaryContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_gravity="center"
                     android:orientation="vertical"
+                    android:padding="2dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
@@ -83,7 +94,7 @@
 
     </LinearLayout>
     </LinearLayout>
-
+    </LinearLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -100,10 +111,12 @@
             android:layout_gravity="start"
             android:ellipsize="end"
             android:maxLines="1"
-            android:fontFamily="@font/agbalumo"
+
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:text="Classic"
+            android:textColor="@color/strikenColor"
+            android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
             app:layout_constraintEnd_toStartOf="@+id/checkedUnCheckedButtons"
             app:layout_constraintStart_toStartOf="parent"
@@ -259,6 +272,7 @@
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                 android:text="MRP"
+                android:paddingEnd="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/productExpiryDate" />
@@ -268,7 +282,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:paddingStart="10dp"
+                android:paddingStart="5dp"
                 android:paddingEnd="10dp"
                 android:text="₹2000"
                 android:textAppearance="@style/TextAppearance.Material3.TitleLarge"

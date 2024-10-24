@@ -3,6 +3,7 @@ package com.example.shoppinggroceryapp.views.sharedviews.profileviews
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -37,6 +38,7 @@ import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListViewModel
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressList
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 
 class AccountFragment : Fragment() {
@@ -102,7 +104,8 @@ class AccountFragment : Fragment() {
             recent.visibility =View.GONE
         }
         else{
-            recent.visibility =View.VISIBLE
+            recent.visibility =View.GONE
+//            recent.visibility =View.VISIBLE
         }
         if(image!=null){
             profileView.setImageBitmap(imageLoader.getImageInApp(requireContext(),MainActivity.userImage))
@@ -187,7 +190,7 @@ class AccountFragment : Fragment() {
     }
 
     private fun showAlertDialog() {
-        AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("Logout Confirmation")
             .setMessage("Are you sure to Logout?")
             .setPositiveButton("Yes"){_,_ ->

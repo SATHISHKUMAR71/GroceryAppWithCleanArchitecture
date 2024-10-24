@@ -2,6 +2,7 @@ package com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter
 
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
@@ -237,7 +239,13 @@ class ProductListAdapter(var fragment: Fragment,
                 productListViewModel.getImagesCountForProduct(productEntityList[position].productId){
                     MainActivity.handler.post{
                         if(it==0){
-                            holder.itemView.findViewById<CardView>(R.id.moreImagesView).visibility = View.INVISIBLE
+                            if(isShort){
+                                holder.itemView.findViewById<CardView>(R.id.moreImagesView).visibility = View.INVISIBLE
+                            }
+                            else {
+                                holder.itemView.findViewById<CardView>(R.id.moreImagesView).visibility =
+                                    View.GONE
+                            }
                         }
                         else {
                             holder.itemView.findViewById<CardView>(R.id.moreImagesView).visibility = View.VISIBLE
@@ -296,11 +304,19 @@ class ProductListAdapter(var fragment: Fragment,
                     }
                 }
                 if (productEntityList[position].offer > 0f) {
-                    val str = "MRP ₹" + productEntityList[position].price
+                    val str = "₹" + productEntityList[position].price
                     holder.itemView.findViewById<TextView>(R.id.productMrpText).apply {
                         text = str
                         paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+//                        setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyLarge)
+                        setTextColor(ContextCompat.getColor(fragment.requireContext(),R.color.strikenColor))
                         visibility = View.VISIBLE
+                        if(isShort) {
+                            setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
+                        }
+                        else{
+                            setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                        }
                     }
                     val offerText = productEntityList[position].offer.toInt().toString() + "% Off"
                     holder.itemView.findViewById<TextView>(R.id.offerText).apply {
@@ -312,6 +328,15 @@ class ProductListAdapter(var fragment: Fragment,
                     holder.itemView.findViewById<TextView>(R.id.productMrpText).apply {
                         text = str
                         paintFlags = 0
+                        if(isShort) {
+                            setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
+                            visibility = View.INVISIBLE
+                        }
+                        else{
+                            setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                            visibility = View.GONE
+                        }
+
                     }
                     holder.itemView.findViewById<TextView>(R.id.offerText).apply {
                         text = null

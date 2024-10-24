@@ -17,9 +17,7 @@
         app:navigationIcon="@drawable/arrow_back_24px"
         app:navigationIconTint="@color/white"
         app:titleTextColor="@color/white"/>
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -116,5 +114,5 @@
         android:text="Monthly Orders"/>
         </LinearLayout>
     </LinearLayout>
-    </androidx.cardview.widget.CardView>
+
 </LinearLayout>

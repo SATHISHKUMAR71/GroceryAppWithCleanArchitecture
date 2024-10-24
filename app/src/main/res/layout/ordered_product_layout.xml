@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    app:cardCornerRadius="0dp"
+    app:strokeWidth="0dp"
+    android:backgroundTint="@color/white"
+    android:focusable="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent">
     <LinearLayout
-        android:layout_margin="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="20dp"
         android:layout_width="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="100dp"
@@ -39,19 +51,21 @@
                 android:background="#e23"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:textStyle="bold"
+                android:textColor="@color/strikenColor"
                 android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
                 android:id="@+id/orderedProductBrandName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Brand Name"/>
             <TextView
-                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                 android:id="@+id/orderedProductFullName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Product Full Name"/>
             <TextView
-                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
                 android:id="@+id/orderedProductQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,36 +75,41 @@
                 android:layout_marginTop="5dp"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
                     android:id="@+id/orderedProductTotalPrice"
                     android:layout_width="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_height="wrap_content"
                     android:text="Total Price ₹200"/>
+
                 <TextView
                     android:id="@+id/eachTextViewOrderDetail"
                     android:layout_width="wrap_content"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_marginStart="5dp"
                     android:layout_height="wrap_content"
-                    android:text="each @ "/>
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:text="each @ "
+                    android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
+
                 <TextView
-                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     android:id="@+id/orderedEachProductPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="₹20"/>
+                    android:layout_gravity="center"
+                    android:text="₹20"
+                    android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
             </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="No of Items"/>
                 <TextView
-                    android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     android:id="@+id/orderedNoOfProducts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -100,3 +119,4 @@
         </LinearLayout>
 
     </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

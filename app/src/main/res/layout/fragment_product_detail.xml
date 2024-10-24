@@ -36,6 +36,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/productImageViewer"
                     android:layout_width="match_parent"
@@ -51,16 +58,16 @@
                     app:tabSelectedTextColor="@android:color/transparent"
                     app:tabTextColor="@android:color/transparent"
                     android:layout_height="wrap_content"/>
+                </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-<!--                <androidx.cardview.widget.CardView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_marginStart="20dp"-->
-<!--                    android:layout_marginEnd="20dp"-->
-<!--                    android:layout_height="wrap_content">-->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:padding="20dp"
                     android:id="@+id/productNameLayout"
-                    android:layout_marginStart="20dp"
                     android:orientation="vertical"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
@@ -75,6 +82,17 @@
                         android:layout_marginBottom="10dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/brandNameProductDetail" />
+                    <TextView
+                        android:id="@+id/productQuantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Product Quantity"
+                        style="@style/TextAppearance.Material3.TitleSmall"
+                        android:textColor="@color/strikenColor"
+                        android:layout_marginBottom="10dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/brandNameProductDetail" />
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -85,9 +103,8 @@
                         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                         android:text="13% Off"
                         android:textColor="@color/white"/>
-
                     <LinearLayout
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/priceDetail"
@@ -104,12 +121,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="MRP ₹44"
+                                android:textStyle="bold"
                                 android:layout_gravity="center"
                                 android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                                 app:layout_constraintStart_toEndOf="@+id/mrpTextProductDetail"
                                 app:layout_constraintTop_toBottomOf="@+id/productNameProductDetail" />
 
                             <TextView
+                                android:textStyle="bold"
                                 android:layout_marginStart="10dp"
                                 android:id="@+id/discountedPrice"
                                 android:layout_gravity="center"
@@ -117,6 +136,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="MRP ₹44"/>
+
                         </LinearLayout>
                         <TextView
                             android:id="@+id/productDiscountedPriceProductDetail"
@@ -133,18 +153,17 @@
 
                     </LinearLayout>
                 </LinearLayout>
-<!--                </androidx.cardview.widget.CardView>-->
+                </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:elevation="4dp"
                     app:cardCornerRadius="4dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="3dp"
                     android:layout_height="wrap_content">
                     <LinearLayout
                         android:padding="10dp"
+                        android:layout_margin="10dp"
                         android:layout_width="match_parent"
                         android:orientation="vertical"
                         android:layout_height="wrap_content">
@@ -165,13 +184,12 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:elevation="4dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="3dp"
                     app:cardCornerRadius="4dp"
                     android:layout_height="wrap_content">
                 <LinearLayout
                     android:padding="10dp"
+                    android:layout_margin="10dp"
                     android:id="@+id/linearLayout7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -214,14 +232,11 @@
 <!--                    android:layout_marginTop="20dp"-->
 <!--                    android:layout_width="match_parent"-->
 <!--                    android:layout_height="wrap_content">-->
-                <View
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+
+                <androidx.cardview.widget.CardView
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/guideLineColor"
-                    />
+                    android:layout_height="wrap_content">
                 <LinearLayout
                     android:id="@+id/similarProductsLayout"
                     android:layout_width="match_parent"
@@ -243,7 +258,7 @@
                         android:orientation="horizontal">
                     </androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
-<!--                </androidx.cardview.widget.CardView>-->
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

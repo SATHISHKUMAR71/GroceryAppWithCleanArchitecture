@@ -428,8 +428,6 @@ class OrderDetailFragment : Fragment() {
         val newView =LayoutInflater.from(requireContext()).inflate(R.layout.ordered_product_layout,container,false)
         newView.findViewById<ImageView>(R.id.orderedProductImage)
         newView.setOnClickListener {
-            println("SLECTED ORDER PRODUCT: in listener: ${productInfo.productId} ${productInfo.productName}")
-            println("989891  in observer in add view value ${productInfo.productId}")
             orderDetailViewModel.getProductById(productInfo.productId)
         }
         SetProductImage.setImageView(newView.findViewById(R.id.orderedProductImage),productInfo.mainImage?:"",

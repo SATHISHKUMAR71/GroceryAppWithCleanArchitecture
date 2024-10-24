@@ -13,15 +13,15 @@ class SetProductImage {
                 if (url.isNotEmpty()) {
                     try {
                         if (MainActivity.imageCache.get(url) == null) {
-                            println("ON ELSE IN SET IMAGE VIEW ON IF $url")
                             val imagePath = File(file, url)
                             val bitmap = BitmapFactory.decodeFile(imagePath.absolutePath)
-                            MainActivity.imageCache.put(url, bitmap)
+                            synchronized(MainActivity.imageCache){
+                                MainActivity.imageCache.put(url, bitmap)
+                            }
                             MainActivity.handler.post {
                                 imageView.setImageBitmap(bitmap)
                             }
                         } else {
-                            println("ON ELSE IN SET IMAGE VIEW ON ELSE $url")
                             MainActivity.handler.post {
                                 imageView.setImageBitmap(MainActivity.imageCache.get(url))
                             }

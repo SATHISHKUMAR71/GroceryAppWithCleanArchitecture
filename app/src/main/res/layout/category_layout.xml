@@ -36,7 +36,7 @@
     </LinearLayout>
     </androidx.cardview.widget.CardView>
         <TextView
-            android:padding="10dp"
+            android:paddingTop="5dp"
             android:layout_gravity="center"
             android:id="@+id/categoryType0"
             android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
@@ -78,8 +78,8 @@
     </androidx.cardview.widget.CardView>
         <TextView
             android:layout_gravity="center"
+            android:paddingTop="5dp"
             android:id="@+id/categoryType1"
-            android:padding="10dp"
             android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
             android:gravity="center"
             android:layout_width="100dp"
@@ -120,7 +120,7 @@
         <TextView
             android:id="@+id/categoryType2"
             android:layout_gravity="center"
-            android:padding="10dp"
+            android:paddingTop="5dp"
             android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
             android:gravity="center"
             android:layout_width="100dp"

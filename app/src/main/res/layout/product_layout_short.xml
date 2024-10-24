@@ -63,9 +63,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:adjustViewBounds="true"
                     android:clipToOutline="true"
-                    android:src="@drawable/bannanas"
+
                     android:scaleType="fitXY"/>
+                <TextView
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:background="@color/white"
+                    android:layout_gravity="bottom"
+                    android:id="@+id/outOfStock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorError"
+                    android:text="Out Of Stocks"/>
 
             </FrameLayout>
 
@@ -115,8 +127,13 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:id="@+id/moreImagesView"
+            android:elevation="2dp"
+            app:cardCornerRadius="5dp"
             android:visibility="invisible"
+            android:backgroundTint="?attr/colorSecondaryContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -147,7 +164,8 @@
         <TextView
             android:id="@+id/brandName"
             android:layout_width="wrap_content"
-            android:fontFamily="@font/agbalumo"
+            android:textColor="@color/strikenColor"
+            android:textStyle="bold"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ellipsize="end"
@@ -194,11 +212,13 @@
                 android:src="@drawable/history_24px"/>
             <TextView
                 android:id="@+id/productExpiryDate"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.Material3.BodySmall"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:maxLines="1"
+                android:ellipsize="end"
                 android:text="Expiry Date"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/productQuantity" />
@@ -234,20 +254,20 @@
                 android:paddingStart="10dp"
                 android:maxLines="1"
                 android:paddingEnd="10dp"
-                android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                 android:textStyle="bold"
                 android:text="₹2000"
                 tools:layout_editor_absoluteY="118dp" />
         </LinearLayout>
-        <TextView
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-            android:layout_margin="10dp"
-            android:id="@+id/outOfStock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#F42031"
-            android:text="Out Of Stocks"/>
+<!--        <TextView-->
+<!--            android:textAlignment="center"-->
+<!--            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:id="@+id/outOfStock"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textColor="#F42031"-->
+<!--            android:text="Out Of Stocks"/>-->
         <LinearLayout
             android:id="@+id/buttonLayout"
             android:layout_width="110dp"

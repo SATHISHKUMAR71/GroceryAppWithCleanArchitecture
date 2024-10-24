@@ -15,7 +15,6 @@
         app:navigationIcon="@drawable/arrow_back_24px"
         app:navigationIconTint="@color/white"
         app:title="Saved Address"
-        app:titleCentered="true"
         app:titleTextColor="@color/white"/>
 
     <LinearLayout
@@ -29,6 +28,7 @@
             android:layout_height="wrap_content"
             style="@style/Widget.Material3.Button"
             android:elevation="4dp"
+            app:iconGravity="textStart"
             app:icon="@drawable/add_24px"
             android:text="Add New Address"/>
     </LinearLayout>

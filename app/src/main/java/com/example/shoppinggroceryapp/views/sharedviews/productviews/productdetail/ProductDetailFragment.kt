@@ -15,6 +15,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.OptIn
+import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
@@ -437,8 +438,9 @@ class ProductDetailFragment : Fragment() {
                 view?.findViewById<TextView>(R.id.productDescriptionProductDetail)?.text =
                     selectedProduct.productDescription
                 productDetailViewModel.getImagesForProducts(selectedProduct.productId)
+                view?.findViewById<TextView>(R.id.productQuantity)?.text = ProductListFragment.selectedProductEntity.value?.productQuantity
                 val productNameWithQuantity =
-                    "${ProductListFragment.selectedProductEntity.value?.productName} (${ProductListFragment.selectedProductEntity.value?.productQuantity})"
+                    "${ProductListFragment.selectedProductEntity.value?.productName}"
                 view?.findViewById<TextView>(R.id.productNameProductDetail)?.text =
                     productNameWithQuantity
                 productDetailViewModel.brandName.observe(viewLifecycleOwner){
@@ -448,7 +450,8 @@ class ProductDetailFragment : Fragment() {
                 if ((ProductListFragment.selectedProductEntity.value?.offer ?: -1f) > 0f) {
                     mrpTextView.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyLarge)
                     mrpTextView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                    val discountedPriceStr = " MRP ₹${
+                    mrpTextView.setTextColor(ContextCompat.getColor(requireContext(),R.color.strikenColor))
+                    val discountedPriceStr = "₹${
                         productDetailViewModel.calculateDiscountPrice(
                             ProductListFragment.selectedProductEntity.value!!.price,
                             ProductListFragment.selectedProductEntity.value!!.offer
@@ -460,7 +463,7 @@ class ProductDetailFragment : Fragment() {
                     mrpTextView.paintFlags = 0
                     discountedPrice.visibility = View.GONE
                 }
-                price = "MRP ₹${ProductListFragment.selectedProductEntity.value?.price}"
+                price = "₹${ProductListFragment.selectedProductEntity.value?.price}"
                 ProductListFragment.selectedProductEntity.value?.brandId?.let {
                     productDetailViewModel.getBrandName(it)
                 }
