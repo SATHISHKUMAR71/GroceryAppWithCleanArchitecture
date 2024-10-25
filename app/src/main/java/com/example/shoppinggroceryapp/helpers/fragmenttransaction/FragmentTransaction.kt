@@ -7,6 +7,7 @@ import com.example.shoppinggroceryapp.R
 class FragmentTransaction {
     companion object{
         fun navigateWithBackstack(fragmentManager:FragmentManager,fragment:Fragment,backstack:String){
+            println("87678 TAG VALUE: $backstack")
             fragmentManager.beginTransaction()
                 .setCustomAnimations(
                     R.anim.fade_in,
@@ -15,7 +16,7 @@ class FragmentTransaction {
                     R.anim.fade_out
                 )
                 .setReorderingAllowed(true)
-                .replace(R.id.fragmentMainLayout,fragment)
+                .replace(R.id.fragmentMainLayout,fragment,backstack)
                 .addToBackStack(backstack)
                 .commit()
         }

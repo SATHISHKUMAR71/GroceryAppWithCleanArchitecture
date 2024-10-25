@@ -17,6 +17,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.core.data.datasource.productdatasource.RetailerProductDataSource
@@ -49,6 +50,8 @@ import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Locale
 
@@ -91,7 +94,6 @@ class InitialFragment : Fragment() {
         val productRepository = ProductRepository(productDataSource,productDataSource)
         SetInitialDataForUser().loadImages(this, GetOfferedProducts(productRepository),
             GetParentAndChildCategories(productRepository), File(requireContext().filesDir,"AppImages"))
-
     }
 
 

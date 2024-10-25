@@ -32,19 +32,19 @@ class SetInitialDataForUser(){
     }
 
     fun loadImages(fragment:Fragment,mGetOfferedProducts: GetOfferedProducts,mGetParentAndChildNames: GetParentAndChildCategories,file:File){
-        Thread{
-            fragment.lifecycleScope.launch (Dispatchers.IO){
-                mGetOfferedProducts.invoke()?.let {
-                    for(i in it){
-                        SetProductImage.loadImage(i.mainImage,file)
-                    }
-                }
-                mGetParentAndChildNames.invoke().let {
-                    for(i in it.keys){
-                        SetProductImage.loadImage(i.parentCategoryImage,file)
-                    }
+
+        fragment.lifecycleScope.launch (Dispatchers.IO){
+            mGetOfferedProducts.invoke()?.let {
+                for(i in it){
+                    SetProductImage.loadImage(i.mainImage,file)
                 }
             }
-        }.start()
+            mGetParentAndChildNames.invoke().let {
+                for(i in it.keys){
+                    SetProductImage.loadImage(i.parentCategoryImage,file)
+                }
+            }
+        }
+
     }
 }

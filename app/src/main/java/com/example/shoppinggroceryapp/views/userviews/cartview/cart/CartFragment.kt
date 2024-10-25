@@ -12,9 +12,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toolbar
+import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -105,14 +107,20 @@ class CartFragment : Fragment() {
                 }
             }
         }
-
+        view.findViewById<MaterialButton>(R.id.browseProducts).setOnClickListener {
+            parentFragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
         viewPriceDetailData.observe(viewLifecycleOwner){
             var mrpProductsText = ""
             if(it==49f){
                 adapter.isVisible.value = false
                 bottomLayout.visibility =View.GONE
+                view.findViewById<CardView>(R.id.emptyCartNotes).visibility = View.VISIBLE
+                recyclerView.visibility = View.GONE
             }
             else{
+                view.findViewById<CardView>(R.id.emptyCartNotes).visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
                 adapter.isVisible.value = true
                 bottomLayout.visibility =View.VISIBLE
                 noOfItemsInt = ProductListAdapter.productsSize
@@ -185,18 +193,6 @@ class CartFragment : Fragment() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         cartAppBar.setExpanded(true)
-
-//        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-//            val params = bottomL3ayout.layoutParams as CoordinatorLayout.LayoutParams
-//            params.behavior = null
-//            bottomLayout.layoutParams = params
-//            bottomLayout.requestLayout()
-//        } else {
-//
-//            val params = bottomLayout.layoutParams as CoordinatorLayout.LayoutParams
-//            bottomLayout.layoutParams = params
-//            bottomLayout.requestLayout() // Request layout update
-//        }
     }
 
     override fun onDestroy() {

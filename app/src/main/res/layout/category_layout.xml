@@ -28,9 +28,9 @@
         android:layout_weight="1"
         android:orientation="vertical">
         <ImageView
-            android:layout_width="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:id="@+id/categoryImage0"
-            android:layout_height="100dp"
             android:src="@drawable/grains_and_pulses"
             android:scaleType="centerCrop"/>
     </LinearLayout>
@@ -70,9 +70,9 @@
         android:orientation="vertical">
         <ImageView
             android:scaleType="centerCrop"
-            android:layout_width="100dp"
             android:id="@+id/categoryImage1"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@drawable/grains_and_pulses" />
     </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -109,9 +109,9 @@
         android:layout_weight="1"
         android:orientation="vertical">
         <ImageView
-            android:layout_width="100dp"
             android:id="@+id/categoryImage2"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@drawable/grains_and_pulses"
             android:scaleType="centerCrop"/>
 
