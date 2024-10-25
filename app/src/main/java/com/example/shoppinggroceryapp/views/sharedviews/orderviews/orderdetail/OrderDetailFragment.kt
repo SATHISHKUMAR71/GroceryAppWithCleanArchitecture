@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.core.domain.order.OrderDetails
 import com.core.domain.products.CartWithProductData
 import com.example.shoppinggroceryapp.MainActivity
@@ -35,6 +36,7 @@ import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdeta
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.launch
 import java.io.File
 
 
@@ -430,9 +432,12 @@ class OrderDetailFragment : Fragment() {
         newView.setOnClickListener {
             orderDetailViewModel.getProductById(productInfo.productId)
         }
-        SetProductImage.setImageView(newView.findViewById(R.id.orderedProductImage),productInfo.mainImage?:"",
-            File(requireContext().filesDir,"AppImages")
-        )
+        lifecycleScope.launch {
+            SetProductImage.setImageView(newView.findViewById(R.id.orderedProductImage),productInfo.mainImage?:"",
+                File(requireContext().filesDir,"AppImages")
+            )
+        }
+
         val eachPriceText = newView.findViewById<TextView>(R.id.orderedEachProductPrice)
         newView.findViewById<TextView>(R.id.orderedProductFullName).text = productInfo.productName
         newView.findViewById<TextView>(R.id.orderedProductQuantity).text = productInfo.productQuantity

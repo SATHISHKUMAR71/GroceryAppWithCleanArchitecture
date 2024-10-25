@@ -19,9 +19,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.core.data.datasource.productdatasource.RetailerProductDataSource
+import com.core.data.repository.ProductRepository
+import com.core.usecases.productusecase.getproductusecase.GetOfferedProducts
+import com.core.usecases.productusecase.getproductusecase.GetParentAndChildCategories
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.MainActivity.Companion.isRetailer
 import com.example.shoppinggroceryapp.R
+import com.example.shoppinggroceryapp.framework.data.product.ProductDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.PutExtras
 import com.example.shoppinggroceryapp.views.userviews.cartview.FindNumberOfCartItems
@@ -44,6 +49,7 @@ import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
+import java.io.File
 import java.util.Locale
 
 
@@ -79,6 +85,13 @@ class InitialFragment : Fragment() {
             this
         )
         permissionHandler.initMicResults()
+        val db1 = AppDatabase.getAppDatabase(requireContext())
+        val retailerDao = db1.getRetailerDao()
+        val productDataSource = ProductDataSourceImpl(retailerDao)
+        val productRepository = ProductRepository(productDataSource,productDataSource)
+        SetInitialDataForUser().loadImages(this, GetOfferedProducts(productRepository),
+            GetParentAndChildCategories(productRepository), File(requireContext().filesDir,"AppImages"))
+
     }
 
 
@@ -156,8 +169,11 @@ class InitialFragment : Fragment() {
         }
         homeFragment = HomeFragment()
         val customerRequestListFragment = CustomerRequestListFragment()
+
         val pref = requireActivity().getSharedPreferences("freshCart", Context.MODE_PRIVATE)
         SetInitialDataForUser().invoke(pref)
+
+
         if(isRetailer){
             bottomNav.menu.clear()
             bottomNav.inflateMenu(R.menu.admin_menu)

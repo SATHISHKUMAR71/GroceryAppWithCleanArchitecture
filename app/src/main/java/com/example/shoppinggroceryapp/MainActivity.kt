@@ -22,6 +22,8 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import com.core.domain.products.Product
+import com.example.shoppinggroceryapp.MainActivity.Companion.cacheLock
+import com.example.shoppinggroceryapp.MainActivity.Companion.imageCache
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.login.LoginFragment
 import com.example.shoppinggroceryapp.framework.db.dao.UserDao
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         var selectedAddress = -1
         var cartId = 0
         var userImage = ""
+        var cacheLock = Any()
         var isRetailer = false
     }
 
@@ -142,4 +145,8 @@ class MainActivity : AppCompatActivity() {
         super.onLowMemory()
         AccountFragment().restartApp()
     }
+
+
 }
+
+

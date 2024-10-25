@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.core.domain.order.Cart
@@ -40,6 +41,7 @@ import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartViewModel
 import com.example.shoppinggroceryapp.views.userviews.category.CategoryFragment
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.launch
 import java.io.File
 
 class ProductListAdapter(var fragment: Fragment,
@@ -362,7 +364,9 @@ class ProductListAdapter(var fragment: Fragment,
                 )
                 holder.itemView.findViewById<TextView>(R.id.productPriceLong).text = price
                 val url = (productEntityList[position].mainImage)
-                SetProductImage.setImageView(holder.itemView.findViewById(R.id.productImageLong), url, file)
+                fragment.lifecycleScope.launch {
+                    SetProductImage.setImageView(holder.itemView.findViewById(R.id.productImageLong), url, file)
+                }
                 setUpListeners(holder, position)
                 if(tag=="C"){
 

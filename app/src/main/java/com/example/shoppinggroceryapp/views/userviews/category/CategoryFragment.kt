@@ -36,6 +36,7 @@ import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.views.sharedviews.filter.ResetFilterValues
 import com.example.shoppinggroceryapp.views.userviews.category.adapter.MainCategoryAdapter
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
+import java.io.File
 
 
 class CategoryFragment: Fragment() {
@@ -83,7 +84,9 @@ class CategoryFragment: Fragment() {
             val parentList1 = categoryViewModel.getParentList(it)
             if(mainCategoryRV.adapter==null) {
                 mainCategoryRV.adapter =
-                    MainCategoryAdapter(this, parentList1, childList1, imageLoader)
+                    MainCategoryAdapter(this, parentList1, childList1, imageLoader,
+                        File(requireContext().filesDir,"AppImages")
+                    )
                 mainCategoryRV.layoutManager = LinearLayoutManager(requireContext())
             }
         }

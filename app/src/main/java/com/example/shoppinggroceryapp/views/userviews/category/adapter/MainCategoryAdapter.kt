@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.core.domain.products.ParentCategory
@@ -17,8 +18,12 @@ import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.dataclass.ChildCategoryName
 import com.example.shoppinggroceryapp.framework.db.entity.products.ParentCategoryEntity
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
+import com.example.shoppinggroceryapp.helpers.imagehandlers.SetProductImage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.File
 
-class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: List<ParentCategory>, private var childCategoryList:List<List<String>>, var imageLoader: ImageLoaderAndGetter):RecyclerView.Adapter<MainCategoryAdapter.MainCategoryHolder>() {
+class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: List<ParentCategory>, private var childCategoryList:List<List<String>>, var imageLoader: ImageLoaderAndGetter,var file:File):RecyclerView.Adapter<MainCategoryAdapter.MainCategoryHolder>() {
 
     companion object{
         var expandedData = mutableSetOf<Int>()
@@ -43,12 +48,15 @@ class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: 
     override fun onBindViewHolder(holder: MainCategoryHolder, position: Int) {
         holder.parentCategoryName.text = mainCategoryList[position].parentCategoryName
         holder.parentCategoryDescription.text = mainCategoryList[position].parentCategoryDescription
-        Thread{
-            val i = imageLoader.getImageInApp(fragment.requireContext(),mainCategoryList[position].parentCategoryImage)
-            MainActivity.handler.post {
-                holder.parentCategoryImage.setImageBitmap(i)
-            }
-        }.start()
+        fragment.lifecycleScope.launch(Dispatchers.IO) {
+            SetProductImage.setImageView(holder.parentCategoryImage,mainCategoryList[position].parentCategoryImage,file)
+        }
+//        Thread{
+//            val i = imageLoader.getImageInApp(fragment.requireContext(),mainCategoryList[position].parentCategoryImage)
+//            MainActivity.handler.post {
+//                holder.parentCategoryImage.setImageBitmap(i)
+//            }
+//        }.start()
 //        holder.parentCategoryImage.setImageBitmap(imageLoader.getImageInApp(fragment.requireContext(),mainCategoryList[position].parentCategoryImage))
         refreshViews(fragment.requireContext(),position,holder)
         holder.itemView.setOnClickListener {

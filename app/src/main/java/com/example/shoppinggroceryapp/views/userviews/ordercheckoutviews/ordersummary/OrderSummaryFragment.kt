@@ -19,6 +19,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.core.data.repository.AddressRepository
@@ -170,7 +171,7 @@ class OrderSummaryFragment : Fragment() {
         }
         orderSummaryViewModel.cartItems.observe(viewLifecycleOwner){
             ProductViewAdapter.productsList = it
-            recyclerViewProducts.adapter = ProductViewAdapter(File(requireContext().filesDir,"AppImages"))
+            recyclerViewProducts.adapter = ProductViewAdapter(File(requireContext().filesDir,"AppImages"),this)
             recyclerViewProducts.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         }
         val addressVal = "${CartFragment.selectedAddressEntity?.buildingName}, ${CartFragment.selectedAddressEntity?.streetName}, ${CartFragment.selectedAddressEntity?.city}, ${CartFragment.selectedAddressEntity?.state}, ${CartFragment.selectedAddressEntity?.postalCode}"

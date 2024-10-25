@@ -116,7 +116,8 @@ class OfferFragment : Fragment() {
         filterAndSortLayout = view.findViewById(R.id.linearLayout15)
         sortButton = view.findViewById(R.id.sortButton)
         filterButton = view.findViewById(R.id.filterButton)
-        adapter = ProductListAdapter(this,File(requireContext().filesDir,"AppImages"),"O",false,productListViewModel = ViewModelProvider(this,
+        var fileDir = File(requireContext().filesDir,"AppImages")
+        adapter = ProductListAdapter(this,fileDir,"O",false,productListViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(retailerDao, userDao)
         )[ProductListViewModel::class.java],null)
 
@@ -133,7 +134,7 @@ class OfferFragment : Fragment() {
                 offerList.layoutManager = LinearLayoutManager(context)
             }
         }
-        offerViewModel.getOfferedProducts()
+        offerViewModel.getOfferedProducts(fileDir)
 
         setUpOnCLickListeners()
         setUpObservers()

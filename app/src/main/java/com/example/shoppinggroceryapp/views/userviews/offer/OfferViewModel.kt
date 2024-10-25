@@ -5,17 +5,33 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.core.domain.products.Product
 import com.core.usecases.productusecase.getproductusecase.GetOfferedProducts
+import com.example.shoppinggroceryapp.helpers.imagehandlers.SetProductImage
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
 import com.example.shoppinggroceryapp.views.sharedviews.sort.ProductSorter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 
 class OfferViewModel(private val mGetOfferedProducts: GetOfferedProducts):ViewModel() {
     var offeredProductEntityList:MutableLiveData<List<Product>> = MutableLiveData()
-    fun getOfferedProducts(){
+    fun getOfferedProducts(file:File){
         viewModelScope.launch(Dispatchers.IO) {
+            val products = mGetOfferedProducts.invoke()
             offeredProductEntityList.postValue(mGetOfferedProducts.invoke())
+//            Thread{
+//                if (products != null) {
+//                    launch {
+//                        for(i in products){
+//                            withContext(Dispatchers.IO){
+//                                SetProductImage.loadImage(i.mainImage,file)
+//                            }
+//                        }
+//                    }
+//                }
+//            }.start()
+
         }
 //        Thread {
 //            offeredProductEntityList.postValue(mGetOfferedProducts.invoke())

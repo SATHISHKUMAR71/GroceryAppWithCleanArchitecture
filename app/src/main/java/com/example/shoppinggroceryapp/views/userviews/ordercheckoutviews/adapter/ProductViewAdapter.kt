@@ -5,15 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.core.domain.products.CartWithProductData
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.entity.products.CartWithProductDataEntity
 import com.example.shoppinggroceryapp.helpers.imagehandlers.SetProductImage
+import kotlinx.coroutines.launch
 
 import java.io.File
 
-class ProductViewAdapter(var file:File):RecyclerView.Adapter<ProductViewAdapter.ProductViewPagerHolder>() {
+class ProductViewAdapter(var file:File,var fragment:Fragment):RecyclerView.Adapter<ProductViewAdapter.ProductViewPagerHolder>() {
 
     companion object{
         var productsList = listOf<CartWithProductData>()
@@ -40,6 +43,8 @@ class ProductViewAdapter(var file:File):RecyclerView.Adapter<ProductViewAdapter.
         var price = "₹${productsList[position].unitPrice}"
         holder.orderSummaryPrice.text = price
         var url = productsList[position].mainImage
-        SetProductImage.setImageView(holder.imageView,url?:"",file)
+        fragment.lifecycleScope.launch {
+            SetProductImage.setImageView(holder.imageView,url?:"",file)
+        }
     }
 }
