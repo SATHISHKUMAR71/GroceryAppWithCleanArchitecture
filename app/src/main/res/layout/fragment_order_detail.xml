@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.sharedviews.orderviews.orderdetail.OrderDetailFragment">
 
@@ -129,7 +129,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="5dp"
-                        android:background="@color/guideLineColor" />
+                        android:background="@color/guideLineColorDim" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -203,7 +203,7 @@
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="15dp"
-                        android:background="@color/guideLineColor" />
+                        android:background="@color/guideLineColorDim" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -366,7 +366,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/guideLineColor" />
+                    android:background="@color/guideLineColorDim" />
             </LinearLayout>
 
 
@@ -404,7 +404,7 @@
                         android:layout_marginStart="15dp"
                         android:layout_marginEnd="15dp"
                         android:layout_marginBottom="10dp"
-                        android:background="@color/guideLineColor" />
+                        android:background="@color/guideLineColorDim" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

@@ -13,14 +13,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/startDate">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/event_24px"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
+            app:startIconDrawable="@drawable/event_24px"
             android:layout_weight="1"
             android:id="@+id/startDateLayout"
             android:layout_margin="20dp"
@@ -47,18 +42,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/endDate">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/event_24px"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:id="@+id/endDateLayout"
             app:endIconMode="clear_text"
             android:layout_margin="20dp"
+            app:startIconDrawable="@drawable/event_24px"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"

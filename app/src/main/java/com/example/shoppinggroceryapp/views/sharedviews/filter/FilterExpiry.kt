@@ -92,16 +92,17 @@ class FilterExpiry : Fragment() {
         var formatter = SimpleDateFormat("yyyy-MM-dd",Locale.getDefault())
         dateManufacturePicker.addOnPositiveButtonClickListener {
             startDate = formatter.format(it)
-            if(isExpiry==true) {
-                startExpiryDate = startDate!!
-            }
-            else if(isExpiry == false){
-                startManufactureDate = startDate!!
-            }
+
             if(endDate!=null){
                 val status = DateGenerator.compareDeliveryStatus(startDate!!,endDate!!)
                 if(status=="Pending"){
                     startDateTextInput.setText(DateGenerator.getDayAndMonth(formatter.format(it)))
+                    if(isExpiry==true) {
+                        startExpiryDate = startDate!!
+                    }
+                    else if(isExpiry == false){
+                        startManufactureDate = startDate!!
+                    }
                     clearStartDate.visibility = View.VISIBLE
                     isDataChanged.value = true
                 }
@@ -111,22 +112,29 @@ class FilterExpiry : Fragment() {
             }
             else{
                 startDateTextInput.setText(DateGenerator.getDayAndMonth(formatter.format(it)))
+                if(isExpiry==true) {
+                    startExpiryDate = startDate!!
+                }
+                else if(isExpiry == false){
+                    startManufactureDate = startDate!!
+                }
                 isDataChanged.value = true
                 clearStartDate.visibility = View.VISIBLE
             }
         }
         dateExpiryPicker.addOnPositiveButtonClickListener {
             endDate = formatter.format(it)
-            if(isExpiry==true) {
-                endExpiryDate= endDate!!
-            }
-            else if(isExpiry==false){
-                endManufactureDate = endDate!!
-            }
+
             if(startDate!=null){
                 val status = DateGenerator.compareDeliveryStatus(startDate!!,endDate!!)
                 if(status=="Pending"){
                     endDateTextInput.setText(DateGenerator.getDayAndMonth(formatter.format(it)))
+                    if(isExpiry==true) {
+                        endExpiryDate= endDate!!
+                    }
+                    else if(isExpiry==false){
+                        endManufactureDate = endDate!!
+                    }
                     clearEndDate.visibility = View.VISIBLE
                     isDataChanged.value = true
                 }
@@ -136,6 +144,12 @@ class FilterExpiry : Fragment() {
             }
             else{
                 endDateTextInput.setText(DateGenerator.getDayAndMonth(formatter.format(it)))
+                if(isExpiry==true) {
+                    endExpiryDate= endDate!!
+                }
+                else if(isExpiry==false){
+                    endManufactureDate = endDate!!
+                }
                 clearEndDate.visibility = View.VISIBLE
                 isDataChanged.value = true
             }

@@ -174,7 +174,7 @@ class EditProfileFragment : Fragment() {
             }
             firstNameLayout.error = editProfileInputChecker.nameCheck(firstName)
             emailLayout.error = editProfileInputChecker.lengthAndEmailCheck(email)
-            phoneLayout.error = editProfileInputChecker.lengthAndEmptyCheck("Phone Number",phone,10)
+            phoneLayout.error = editProfileInputChecker.lengthAndEmptyCheckForPhone("Phone Number",phone,10)
             if(firstNameLayout.error==null && emailLayout.error==null && phoneLayout.error == null) {
                 val oldEmail = MainActivity.userEmail
                 MainActivity.userEmail = email.text.toString()

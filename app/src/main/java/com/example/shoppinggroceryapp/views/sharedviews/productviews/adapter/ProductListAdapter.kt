@@ -178,15 +178,18 @@ class ProductListAdapter(var fragment: Fragment,
                 val totalAmtWithDeliveryFee = holder.itemView.findViewById<TextView>(R.id.priceDetailsTotalAmount)
                 val noOfItems = holder.itemView.findViewById<TextView>(R.id.priceDetailsMrpTotalItems)
                 holder.itemView.findViewById<LinearLayout>(R.id.cartPriceDetailsLayout).visibility = View.GONE
+                holder.itemView.findViewById<CardView>(R.id.duplicateCardView).visibility = View.GONE
                 isVisible.observe(fragment.viewLifecycleOwner){
                     if(it) {
                         holder.itemView.findViewById<LinearLayout>(R.id.cartPriceDetailsLayout).visibility =
                             View.VISIBLE
+                        holder.itemView.findViewById<CardView>(R.id.duplicateCardView).visibility = View.VISIBLE
                         holder.itemView.findViewById<ImageView>(R.id.emptyCartImage).visibility = View.GONE
                     }
                     else{
                         holder.itemView.findViewById<LinearLayout>(R.id.cartPriceDetailsLayout).visibility =
                             View.GONE
+                        holder.itemView.findViewById<CardView>(R.id.duplicateCardView).visibility = View.GONE
                         holder.itemView.findViewById<ImageView>(R.id.emptyCartImage).visibility = View.VISIBLE
                     }
                 }
