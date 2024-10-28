@@ -47,7 +47,7 @@ class CategoryFragment: Fragment(),OnItemClick {
     private lateinit var mainCategoryRV:RecyclerView
     private lateinit var imageLoader: ImageLoaderAndGetter
 
-
+    private var maxSize = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         imageLoader = ImageLoaderAndGetter()
@@ -89,6 +89,7 @@ class CategoryFragment: Fragment(),OnItemClick {
         categoryViewModel.mappedList.observe(viewLifecycleOwner){
             val childList1 = categoryViewModel.getChildList(it)
             val parentList1 = categoryViewModel.getParentList(it)
+            maxSize = parentList1.size
             if(mainCategoryRV.adapter==null) {
                 mainCategoryRV.adapter =
                     MainCategoryAdapter(this, parentList1, childList1, imageLoader,
@@ -110,13 +111,20 @@ class CategoryFragment: Fragment(),OnItemClick {
         mainCategoryRV.adapter = null
     }
 
-    override fun onItemClicked(position:Int):Boolean {
-        println("POSITION DETERMINED ARE: ${(mainCategoryRV.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()} position is determined in fragment")
-        val data = (position>(mainCategoryRV.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition())
-        if(data) {
-            (mainCategoryRV.layoutManager as LinearLayoutManager).scrollToPosition(position)
+    override fun onItemClicked(position:Int,itemView:View):Boolean {
+        println("POSITION DETERMINED ARE: max size: $maxSize data ${(mainCategoryRV.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()} position is determined in fragment $position")
+        val data = (mainCategoryRV.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+        if(maxSize-1==position){
+            println("POSITION DETERMINED ARE on IF")
+            (mainCategoryRV.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(position,20)
         }
-        return data
+        else{
+            println("POSITION DETERMINED ARE on ELSE offset value  position $position ${mainCategoryRV.height} offset value: ${mainCategoryRV.height-itemView.height}")
+            if((mainCategoryRV.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()<=position){
+                (mainCategoryRV.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(position,mainCategoryRV.height-itemView.height-300)
+            }
+        }
+        return position>data
     }
 
 }

@@ -56,7 +56,6 @@ class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: 
         holder.itemView.setOnClickListener {
             if (holder.adapterPosition == position) {
                 if (holder.invisibleView.isVisible) {
-//                    onItemClick.onItemClicked(holder.absoluteAdapterPosition)
                     holder.invisibleView.animate()
                         .alpha(0f)
                         .scaleY(0f)
@@ -72,7 +71,7 @@ class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: 
                             )
                         }
                 } else {
-                    onItemClick.onItemClicked(holder.absoluteAdapterPosition)
+                    onItemClick.onItemClicked(holder.absoluteAdapterPosition,holder.itemView)
                     val categoryList = childCategoryList[position]
                     holder.addSymbol.setImageDrawable(
                         ContextCompat.getDrawable(
