@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
@@ -34,23 +35,23 @@ class OrderHistoryFragment : Fragment() {
         noSubscriptionButton.setOnClickListener {
             bundle.putString("subscriptionType","Once")
             orderListFragment.arguments = bundle
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"No Subscription Fragment")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Order List Fragment")
         }
 
         dailySubscription.setOnClickListener {
             bundle.putString("subscriptionType","Daily")
             orderListFragment.arguments = bundle
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Daily Fragment")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Order List Fragment")
         }
         weeklySubscription.setOnClickListener {
             bundle.putString("subscriptionType","Weekly Once")
             orderListFragment.arguments = bundle
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Weekly Fragment")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Order List Fragment")
         }
         monthlySubscription.setOnClickListener {
             bundle.putString("subscriptionType","Monthly Once")
             orderListFragment.arguments = bundle
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Monthly Fragment")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Order List Fragment")
         }
         toolbar.setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
@@ -65,6 +66,13 @@ class OrderHistoryFragment : Fragment() {
             bundle.putBoolean("isClickable",true)
             orderListFragment.arguments = bundle
         }
+        val onBackPressedCallback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                parentFragmentManager.popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onBackPressedCallback)
+
         return view
     }
 

@@ -10,9 +10,11 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.OptIn
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -158,8 +160,10 @@ class ProductListFragment : Fragment() {
                     InitialFragment.openMicSearch.value = true
                 }
                 R.id.cart ->{
+
+//                    parentFragmentManager.popBackStack("Cart Fragment",FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     FragmentTransaction.navigateWithBackstack(parentFragmentManager,
-                        CartFragment(),"Going to cart")
+                        CartFragment(),"Cart Fragment")
                 }
             }
             true
@@ -194,17 +198,19 @@ class ProductListFragment : Fragment() {
             var filterFragment = FilterFragment(realProductEntityList).apply {
                 arguments = Bundle().apply { putString("category",category) }
             }
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager,filterFragment,"Filter")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,filterFragment,"Filter Fragment")
         }
         totalCost.observe(viewLifecycleOwner){
             val str ="₹"+ (it?:0).toString()
             totalCostButton.text =str
         }
         totalCostButton.setOnClickListener {
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager, CartFragment(),"Going to cart")
+//            for(i in 0 until parentFragmentManager.backStackEntryCount){
+//
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager, CartFragment(),"Cart Fragment")
         }
         exploreCategoryButton.setOnClickListener {
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Exploring Category")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Category Fragment")
         }
         attachBadge()
 
@@ -345,9 +351,19 @@ class ProductListFragment : Fragment() {
                 }
             }
         }
+        val onBackPressedCallback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                parentFragmentManager.popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onBackPressedCallback)
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        println("#232 tag set on destroy in product list category called ")
+    }
     @OptIn(ExperimentalBadgeUtils::class)
     private fun attachBadge() {
         val filterBadge = BadgeDrawable.create(requireContext())
@@ -368,7 +384,7 @@ class ProductListFragment : Fragment() {
             fab?.visibility = View.VISIBLE
             view?.findViewById<FloatingActionButton>(R.id.addProductsToInventory)?.setOnClickListener {
                 Companion.selectedProductEntity.value = null
-                FragmentTransaction.navigateWithBackstack(parentFragmentManager, AddOrEditProductFragment(),"Edit in Product Fragment")
+                FragmentTransaction.navigateWithBackstack(parentFragmentManager, AddOrEditProductFragment(),"Add Or Edit Fragment")
             }
             view?.findViewById<LinearLayout>(R.id.linearLayout8)?.visibility = View.GONE
         }

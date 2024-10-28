@@ -4,6 +4,7 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
@@ -137,7 +138,6 @@ class ProductListAdapter(var fragment: Fragment,
                 val address = holder.itemView.findViewById<TextView>(R.id.address)
                 val addNewAddress = holder.itemView.findViewById<MaterialButton>(R.id.addNewAddressButton)
                 val changeAddress = holder.itemView.findViewById<MaterialButton>(R.id.changeAddressButton)
-                val addMoreGrocery = holder.itemView.findViewById<MaterialButton>(R.id.addMoreGroceryButton)
                 val addressContactNumber = holder.itemView.findViewById<TextView>(R.id.addressPhone)
                 val db1 = AppDatabase.getAppDatabase(fragment.requireContext())
                 val userDao = db1.getUserDao()
@@ -161,7 +161,7 @@ class ProductListAdapter(var fragment: Fragment,
                     }
                 }
                 addNewAddress.setOnClickListener {
-                    FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, GetNewAddress(),"Add New Address")
+                    FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, GetNewAddress(),"Get New Address Fragment")
                 }
 
                 changeAddress.setOnClickListener {
@@ -169,16 +169,15 @@ class ProductListAdapter(var fragment: Fragment,
                     savedAddressListFragment.arguments = Bundle().apply {
                         putBoolean("clickable",true)
                     }
-                    FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager,savedAddressListFragment,"Add New Address")
+                    FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager,savedAddressListFragment,"Saved Address List Fragment")
                 }
-                addMoreGrocery.setOnClickListener {
-                    FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, CategoryFragment(),"Added More Groceries")
-                }
+
             }
             else if(tag=="C" && position==productEntityList.size+1){
                 val grandTotalAmountMrp = holder.itemView.findViewById<TextView>(R.id.priceDetailsMrpPrice)
                 val totalAmtWithDeliveryFee = holder.itemView.findViewById<TextView>(R.id.priceDetailsTotalAmount)
                 val noOfItems = holder.itemView.findViewById<TextView>(R.id.priceDetailsMrpTotalItems)
+                val addMoreGrocery = holder.itemView.findViewById<MaterialButton>(R.id.addMoreGroceryButton)
                 holder.itemView.findViewById<LinearLayout>(R.id.cartPriceDetailsLayout).visibility = View.GONE
                 holder.itemView.findViewById<CardView>(R.id.duplicateCardView).visibility = View.GONE
                 isVisible.observe(fragment.viewLifecycleOwner){
@@ -204,7 +203,9 @@ class ProductListAdapter(var fragment: Fragment,
                 grandTolAmtLiveData.observe(fragment.viewLifecycleOwner){
                     grandTotalAmountMrp.text = it
                 }
-
+                addMoreGrocery.setOnClickListener {
+                    FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, CategoryFragment(),"Category Fragment")
+                }
             }
             else {
                 if(tag=="C"){
@@ -414,8 +415,45 @@ class ProductListAdapter(var fragment: Fragment,
     }
 
     private fun setUpListeners(holder: ProductLargeImageHolder, position: Int) {
+//        holder.itemView.setOnTouchListener { v, event ->
+//            when(event.action){
+//                MotionEvent.ACTION_UP ->{
+//                    holder.itemView.animate()
+//                        .scaleX(1f)
+//                        .scaleY(1f)
+//                        .setDuration(100)
+//                        .start()
+//                    v.performClick()
+//                    true
+//                }
+//                MotionEvent.ACTION_DOWN -> {
+//                    holder.itemView.animate()
+//                        .scaleX(0.9f)
+//                        .scaleY(0.9f)
+//                        .setDuration(100)
+//                        .start()
+//                    true
+//                }
+//                MotionEvent.ACTION_CANCEL -> {
+//                    holder.itemView.animate()
+//                        .scaleX(1f)
+//                        .scaleY(1f)
+//                        .setDuration(100)
+//                        .start()
+//                    true
+//                }
+//                else -> {
+//                    false
+//                }
+//            }
+//        }
         holder.itemView.setOnClickListener {
             try {
+                holder.itemView.animate()
+                    .scaleX(0.9f)
+                    .scaleY(0.9f)
+                    .setDuration(2000)
+                    .start()
                 ProductListFragment.selectedPos = position
                 ProductListFragment.selectedProductEntity.value =
                     productEntityList[position]
@@ -426,9 +464,10 @@ class ProductListAdapter(var fragment: Fragment,
                         R.anim.fade_in,
                         R.anim.fade_out
                     )
-                    .replace(R.id.fragmentMainLayout, ProductDetailFragment())
+                    .replace(R.id.fragmentMainLayout, ProductDetailFragment(),"Product Detail Fragment")
                     .addToBackStack("Product Detail Fragment")
                     .commit()
+//                FragmentTransaction.fragmentSequenceSet.add("Product Detail Fragment")
             }
             catch (e:Exception){
 

@@ -16,6 +16,7 @@ import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.helpers.alertdialog.DataLossAlertDialog
 import com.example.shoppinggroceryapp.helpers.extensions.getAddress
+import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
@@ -147,6 +148,7 @@ class GetNewAddress : Fragment() {
 //                DataLossAlertDialog().showDataLossAlertDialog(requireContext(), parentFragmentManager = parentFragmentManager)
             }
         })
+
         return view
     }
 

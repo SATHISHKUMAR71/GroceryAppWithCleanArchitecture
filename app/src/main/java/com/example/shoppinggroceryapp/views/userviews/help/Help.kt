@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import com.core.domain.help.CustomerRequest
 import com.core.domain.order.OrderDetails
@@ -52,7 +53,7 @@ class Help : Fragment() {
             orderListFragment.arguments = Bundle().apply {
                 putBoolean("isClickable",true)
             }
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Select the order")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Order List Fragment")
         }
         else{
             val selectOrderFrag = parentFragmentManager.findFragmentByTag("SelectOrder")
@@ -73,6 +74,13 @@ class Help : Fragment() {
             orderLayout.addView(selectedOrderView)
             setOnClickListeners(view,requestTextView)
         }
+        val onBackPressedCallback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                parentFragmentManager.popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onBackPressedCallback)
+
         return view
     }
 

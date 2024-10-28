@@ -196,7 +196,7 @@ class OrderSummaryFragment : Fragment() {
             savedAddressList.arguments = Bundle().apply {
                 putBoolean("clickable",true)
             }
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager,savedAddressList,"Get the address from saved address")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,savedAddressList,"Saved Address List Fragment")
         }
 
         deliveryFrequency.addTextChangedListener(object :TextWatcher{

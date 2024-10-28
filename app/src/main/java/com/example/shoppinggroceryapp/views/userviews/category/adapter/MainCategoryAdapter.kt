@@ -23,7 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 
-class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: List<ParentCategory>, private var childCategoryList:List<List<String>>, var imageLoader: ImageLoaderAndGetter,var file:File):RecyclerView.Adapter<MainCategoryAdapter.MainCategoryHolder>() {
+class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: List<ParentCategory>, private var childCategoryList:List<List<String>>, var imageLoader: ImageLoaderAndGetter,var file:File,val onItemClick: OnItemClick):RecyclerView.Adapter<MainCategoryAdapter.MainCategoryHolder>() {
 
     companion object{
         var expandedData = mutableSetOf<Int>()
@@ -51,17 +51,12 @@ class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: 
         fragment.lifecycleScope.launch(Dispatchers.IO) {
             SetProductImage.setImageView(holder.parentCategoryImage,mainCategoryList[position].parentCategoryImage,file)
         }
-//        Thread{
-//            val i = imageLoader.getImageInApp(fragment.requireContext(),mainCategoryList[position].parentCategoryImage)
-//            MainActivity.handler.post {
-//                holder.parentCategoryImage.setImageBitmap(i)
-//            }
-//        }.start()
-//        holder.parentCategoryImage.setImageBitmap(imageLoader.getImageInApp(fragment.requireContext(),mainCategoryList[position].parentCategoryImage))
         refreshViews(fragment.requireContext(),position,holder)
+
         holder.itemView.setOnClickListener {
             if (holder.adapterPosition == position) {
                 if (holder.invisibleView.isVisible) {
+//                    onItemClick.onItemClicked(holder.absoluteAdapterPosition)
                     holder.invisibleView.animate()
                         .alpha(0f)
                         .scaleY(0f)
@@ -77,6 +72,7 @@ class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: 
                             )
                         }
                 } else {
+                    onItemClick.onItemClicked(holder.absoluteAdapterPosition)
                     val categoryList = childCategoryList[position]
                     holder.addSymbol.setImageDrawable(
                         ContextCompat.getDrawable(
@@ -109,12 +105,9 @@ class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: 
                     R.drawable.expand_circle_up_24px
                 )
             )
-
             val categoryList = childCategoryList[position]
             holder.invisibleView.adapter = SubCategoryAdapter(fragment, categoryList)
             holder.invisibleView.layoutManager = LinearLayoutManager(context)
-
-
         }
         else{
             holder.addSymbol.setImageDrawable(

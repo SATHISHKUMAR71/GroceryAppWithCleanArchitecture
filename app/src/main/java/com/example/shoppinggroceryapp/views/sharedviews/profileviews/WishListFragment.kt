@@ -62,7 +62,7 @@ class WishListFragment : Fragment() {
                 }
                 R.id.cart ->{
                     FragmentTransaction.navigateWithBackstack(parentFragmentManager,
-                        CartFragment(),"Going to cart")
+                        CartFragment(),"Cart Fragment")
                 }
             }
             true

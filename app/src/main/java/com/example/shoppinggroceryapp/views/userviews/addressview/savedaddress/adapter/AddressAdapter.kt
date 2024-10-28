@@ -73,7 +73,7 @@ class AddressAdapter(var addressEntityList: List<Address>, var fragment: Fragmen
                 this.putString("state",addressEntityList[position].state)
                 this.putString("postalCode",addressEntityList[position].postalCode)
             }
-            FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, getNewAddress,"Edit Address")
+            FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, getNewAddress,"Get New Address Fragment")
         }
         if(clickable){
             holder.checkedAddress.visibility = View.VISIBLE

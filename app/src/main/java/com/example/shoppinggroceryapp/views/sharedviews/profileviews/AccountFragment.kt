@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.setPadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -90,7 +91,7 @@ class AccountFragment : Fragment() {
         val customerReqHistory = view.findViewById<MaterialButton>(R.id.customerReqHistory)
 
         view.findViewById<LinearLayout>(R.id.yourReqLayout).setOnClickListener {
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager,CustomerRequestListFragment(),"customer request fragment")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,CustomerRequestListFragment(),"Customer Request List Fragment")
         }
         val retailerDao = db1.getRetailerDao()
         editUser = ViewModelProvider(this,
@@ -157,21 +158,21 @@ class AccountFragment : Fragment() {
         savedAddress = view.findViewById(R.id.savedAddress)
         logoutUser = view.findViewById(R.id.logout)
         view.findViewById<LinearLayout>(R.id.editLayout).setOnClickListener {
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager, EditProfileFragment(),"Edit Profile")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager, EditProfileFragment(),"Edit Profile Fragment")
         }
         view.findViewById<LinearLayout>(R.id.orderHistoryLayout).setOnClickListener {
             var orderHistoryFragment = OrderHistoryFragment()
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderHistoryFragment,"Order List Fragment")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderHistoryFragment,"Order History Fragment")
         }
         view.findViewById<LinearLayout>(R.id.helpLayout).setOnClickListener {
             val orderListFragment = OrderHistoryFragment()
             orderListFragment.arguments = Bundle().apply {
                 putBoolean("isClickable",true)
             }
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Help")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderListFragment,"Help Fragment")
         }
         view.findViewById<LinearLayout>(R.id.savedAddressLayout).setOnClickListener {
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager, SavedAddressList(),"Saved Address")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager, SavedAddressList(),"Saved Address List Fragment")
         }
         logoutUser.setOnClickListener {
             showAlertDialog()

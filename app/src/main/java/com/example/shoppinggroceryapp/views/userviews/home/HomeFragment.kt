@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -135,7 +136,8 @@ class HomeFragment : Fragment() {
         }
 
         view.findViewById<MaterialButton>(R.id.viewAllCategoriesBtn).setOnClickListener {
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Opened Category Fragment")
+//            parentFragmentManager.popBackStack("Category Fragment",FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Category Fragment")
         }
         val categoryContainer = view.findViewById<LinearLayout>(R.id.categoryLayoutRow)
 
@@ -206,10 +208,9 @@ class HomeFragment : Fragment() {
 //        image.setOnClickListener {
 //            FragmentTransaction.navigateWithBackstack(parentFragmentManager,productListFrag,
 //                "Product List Opened")
-//        }
         text.setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,productListFrag
-            ,"Product List Opened")
+            ,"Product List Fragment")
         }
         text.setOnTouchListener { v, event ->
             when (event.action) {
@@ -257,7 +258,7 @@ class HomeFragment : Fragment() {
         }
         cardView.setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,productListFrag
-                ,"Product List Opened")
+                ,"Product List Fragment")
         }
     }
 

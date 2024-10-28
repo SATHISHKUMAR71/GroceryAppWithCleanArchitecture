@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -88,8 +89,15 @@ class SavedAddressList : Fragment() {
         }
         savedAddressViewModel.getAddressListForUser(userId)
         view.findViewById<MaterialButton>(R.id.addNewAddress).setOnClickListener {
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager, GetNewAddress(),"Get Address")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager, GetNewAddress(),"Get New Address Fragment")
         }
+        val onBackPressedCallback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                parentFragmentManager.popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onBackPressedCallback)
+
         return view
     }
 

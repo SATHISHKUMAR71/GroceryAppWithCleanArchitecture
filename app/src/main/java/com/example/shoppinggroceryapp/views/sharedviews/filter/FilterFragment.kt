@@ -1,12 +1,14 @@
 package com.example.shoppinggroceryapp.views.sharedviews.filter
 
+import android.icu.util.TimeUnit
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,9 +18,10 @@ import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
-import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.delay
+import java.sql.Time
 
 
 class FilterFragment(var products:MutableList<Product>) : Fragment() {
@@ -41,7 +44,7 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         category = arguments?.getString("category",null)
@@ -75,6 +78,8 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
                 recyclerViewFilterType.adapter = adapter
                 recyclerViewFilterType.layoutManager = LinearLayoutManager(context)
             }
+
+//            adapter.performFirstClick()
         }
         applyButton.setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -167,15 +172,27 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
             }.start()
         }
 //        setBadges()
+
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
 
 
     override fun onResume() {
         super.onResume()
         InitialFragment.hideBottomNav.value = true
         InitialFragment.hideSearchBar.value = true
+        view?.postDelayed({
+            view?.findViewById<RecyclerView>(R.id.categoryType)?.post{
+                println("78687 on view created on click ${view?.findViewById<RecyclerView>(R.id.categoryType)?.findViewHolderForAdapterPosition(0)?.itemView}")
+                view?.findViewById<RecyclerView>(R.id.categoryType)?.findViewHolderForAdapterPosition(0)?.itemView?.findViewById<MaterialButton>(R.id.filterOptionsDiscountBtn)?.performClick()
+            }
+        },5L)
+
     }
 
     override fun onPause() {

@@ -132,47 +132,42 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:elevation="4dp">
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="3dp"-->
+<!--                android:layout_marginBottom="3dp"-->
+<!--                android:elevation="4dp">-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:orientation="horizontal">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="10dp"-->
+<!--                    android:orientation="horizontal">-->
 
-                    <TextView
-                        android:id="@+id/hintText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_weight="1"
-                        android:text="Missed Something ? " />
+<!--                    <TextView-->
+<!--                        android:id="@+id/hintText"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginStart="10dp"-->
+<!--                        android:layout_marginEnd="20dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:text="Missed Something ? " />-->
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/addMoreGroceryButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.1"
-                        android:text="Add More Items"
-                        android:textAlignment="center"
-                        app:cornerRadius="8dp"
-                        app:icon="@drawable/add_24px"
-                        app:iconGravity="textStart"
-                        app:layout_constraintTop_toBottomOf="@+id/deliveryAddressLayout"
-                        app:rippleColor="?attr/colorControlHighlight" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-            <!--        <View-->
-            <!--            android:layout_width="match_parent"-->
-            <!--            android:layout_height="1dp"-->
-            <!--            android:layout_margin="10dp"-->
-            <!--            android:background="@color/guideLineColor"/>-->
+<!--                    <com.google.android.material.button.MaterialButton-->
+<!--                        android:id="@+id/addMoreGroceryButton"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="0.1"-->
+<!--                        android:text="Add More Items"-->
+<!--                        android:textAlignment="center"-->
+<!--                        app:cornerRadius="8dp"-->
+<!--                        app:icon="@drawable/add_24px"-->
+<!--                        app:iconGravity="textStart"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/deliveryAddressLayout"-->
+<!--                        app:rippleColor="?attr/colorControlHighlight" />-->
+<!--                </LinearLayout>-->
+<!--            </androidx.cardview.widget.CardView>-->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"/>

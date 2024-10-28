@@ -185,7 +185,7 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
         holder.itemView.setOnClickListener {
             if(clickable==true){
                 Help.selectedOrder = orderedItems[position]
-                FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, Help(),"Help")
+                FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager, Help(),"Help Fragment")
             }
             else {
                 val orderDetailFragment = OrderDetailFragment()

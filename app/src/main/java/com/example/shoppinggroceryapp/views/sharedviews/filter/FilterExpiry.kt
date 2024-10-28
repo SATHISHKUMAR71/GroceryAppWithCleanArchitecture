@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.lifecycle.MutableLiveData
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
@@ -67,7 +68,8 @@ class FilterExpiry : Fragment() {
                 startManufactureDate = ""
             }
             startDateTextInput.setText("")
-            clearStartDate.visibility = View.INVISIBLE
+            view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.GONE
+//            clearStartDate.visibility = View.INVISIBLE
             isDataChanged.value = true
         }
 
@@ -80,7 +82,8 @@ class FilterExpiry : Fragment() {
             else if(isExpiry==false){
                 endManufactureDate = ""
             }
-            clearEndDate.visibility = View.INVISIBLE
+            view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.GONE
+//            clearEndDate.visibility = View.INVISIBLE
             isDataChanged.value = true
         }
         startDateTextInput.setOnClickListener {
@@ -103,7 +106,8 @@ class FilterExpiry : Fragment() {
                     else if(isExpiry == false){
                         startManufactureDate = startDate!!
                     }
-                    clearStartDate.visibility = View.VISIBLE
+//                    clearStartDate.visibility = View.VISIBLE
+                    view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.VISIBLE
                     isDataChanged.value = true
                 }
                 else{
@@ -119,7 +123,8 @@ class FilterExpiry : Fragment() {
                     startManufactureDate = startDate!!
                 }
                 isDataChanged.value = true
-                clearStartDate.visibility = View.VISIBLE
+//                clearStartDate.visibility = View.VISIBLE
+                view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.VISIBLE
             }
         }
         dateExpiryPicker.addOnPositiveButtonClickListener {
@@ -135,7 +140,8 @@ class FilterExpiry : Fragment() {
                     else if(isExpiry==false){
                         endManufactureDate = endDate!!
                     }
-                    clearEndDate.visibility = View.VISIBLE
+//                    clearEndDate.visibility = View.VISIBLE
+                    view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.VISIBLE
                     isDataChanged.value = true
                 }
                 else{
@@ -150,35 +156,42 @@ class FilterExpiry : Fragment() {
                 else if(isExpiry==false){
                     endManufactureDate = endDate!!
                 }
-                clearEndDate.visibility = View.VISIBLE
+//                clearEndDate.visibility = View.VISIBLE
+                view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.VISIBLE
                 isDataChanged.value = true
             }
         }
         if(isExpiry==true){
             if(startExpiryDate.isNotEmpty()){
                 startDateTextInput.setText(DateGenerator.getDayAndMonth(startExpiryDate))
-                clearStartDate.visibility = View.VISIBLE
+//                clearStartDate.visibility = View.VISIBLE
+                view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.VISIBLE
             }
             if(endExpiryDate.isNotEmpty()){
                 endDateTextInput.setText(DateGenerator.getDayAndMonth(endExpiryDate))
-                clearEndDate.visibility = View.VISIBLE
+                view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.VISIBLE
+//                clearEndDate.visibility = View.VISIBLE
             }
         }
         else if(isExpiry==false) {
             if (startManufactureDate.isNotEmpty()) {
                 startDateTextInput.setText(DateGenerator.getDayAndMonth(startManufactureDate))
-                clearStartDate.visibility = View.VISIBLE
+//                clearStartDate.visibility = View.VISIBLE
+                view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.VISIBLE
             }
             if (endManufactureDate.isNotEmpty()) {
                 endDateTextInput.setText(DateGenerator.getDayAndMonth(endManufactureDate))
-                clearEndDate.visibility = View.VISIBLE
+//                clearEndDate.visibility = View.VISIBLE
+                view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.VISIBLE
             }
         }
         clearAll.observe(viewLifecycleOwner){
             startDateTextInput.setText("")
             endDateTextInput.setText("")
-            clearStartDate.visibility = View.INVISIBLE
-            clearEndDate.visibility = View.INVISIBLE
+            view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.GONE
+            view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.GONE
+//            clearStartDate.visibility = View.INVISIBLE
+//            clearEndDate.visibility = View.INVISIBLE
         }
         return view
     }

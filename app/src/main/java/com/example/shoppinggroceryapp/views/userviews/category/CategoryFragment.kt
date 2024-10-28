@@ -30,17 +30,19 @@ import com.example.shoppinggroceryapp.framework.data.search.SearchDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.subscription.SubscriptionDataSourceImpl
 import com.example.shoppinggroceryapp.framework.data.user.UserDataSourceImpl
 import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
+import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
 import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.views.sharedviews.filter.ResetFilterValues
 import com.example.shoppinggroceryapp.views.userviews.category.adapter.MainCategoryAdapter
+import com.example.shoppinggroceryapp.views.userviews.category.adapter.OnItemClick
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
 import java.io.File
 
 
-class CategoryFragment: Fragment() {
+class CategoryFragment: Fragment(),OnItemClick {
 
     private lateinit var mainCategoryRV:RecyclerView
     private lateinit var imageLoader: ImageLoaderAndGetter
@@ -49,6 +51,11 @@ class CategoryFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         imageLoader = ImageLoaderAndGetter()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        println("#232 tag set on destroy in category called deleted")
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,8 +92,7 @@ class CategoryFragment: Fragment() {
             if(mainCategoryRV.adapter==null) {
                 mainCategoryRV.adapter =
                     MainCategoryAdapter(this, parentList1, childList1, imageLoader,
-                        File(requireContext().filesDir,"AppImages")
-                    )
+                        File(requireContext().filesDir,"AppImages"),this)
                 mainCategoryRV.layoutManager = LinearLayoutManager(requireContext())
             }
         }
@@ -102,6 +108,15 @@ class CategoryFragment: Fragment() {
         super.onDestroy()
         MainCategoryAdapter.expandedData = mutableSetOf()
         mainCategoryRV.adapter = null
+    }
+
+    override fun onItemClicked(position:Int):Boolean {
+        println("POSITION DETERMINED ARE: ${(mainCategoryRV.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()} position is determined in fragment")
+        val data = (position>(mainCategoryRV.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition())
+        if(data) {
+            (mainCategoryRV.layoutManager as LinearLayoutManager).scrollToPosition(position)
+        }
+        return data
     }
 
 }

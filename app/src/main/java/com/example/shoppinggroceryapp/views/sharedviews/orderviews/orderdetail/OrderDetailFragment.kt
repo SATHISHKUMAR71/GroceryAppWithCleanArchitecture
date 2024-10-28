@@ -5,6 +5,7 @@ package com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail
 import androidx.fragment.app.Fragment
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +14,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
@@ -105,7 +108,7 @@ class OrderDetailFragment : Fragment() {
 
             }
             changeSubscription.setOnClickListener {
-                FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderSummary,"Edit Order")
+                FragmentTransaction.navigateWithBackstack(parentFragmentManager,orderSummary,"Order Summary Fragment")
             }
         }
         setUpViewModel()
@@ -122,6 +125,17 @@ class OrderDetailFragment : Fragment() {
         val hideCancelOrderButton = arguments?.getBoolean("hideCancelOrderButton")
         if(arguments?.getBoolean("hideToolBar")==true){
             view.findViewById<MaterialToolbar>(R.id.materialToolbarOrderDetail).visibility = View.GONE
+            view.findViewById<TextView>(R.id.orderId).apply {
+                setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_TitleMedium)
+                setTextColor(ContextCompat.getColor(requireContext(),R.color.strikenColor))
+                setTypeface(this.typeface,Typeface.BOLD)
+            }
+            view.findViewById<TextView>(R.id.orderIdValue).apply {
+                setTypeface(this.typeface,Typeface.BOLD)
+                setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_TitleMedium)
+                setTextColor(ContextCompat.getColor(requireContext(),R.color.strikenColor))
+            }
+
         }
 
         view.findViewById<MaterialToolbar>(R.id.materialToolbarOrderDetail).setNavigationOnClickListener {
@@ -376,7 +390,7 @@ class OrderDetailFragment : Fragment() {
                 FragmentTransaction.navigateWithBackstack(
                     parentFragmentManager,
                     ProductDetailFragment(),
-                    "product List"
+                    "product Detail Fragment"
                 )
             }
             else{
@@ -387,6 +401,13 @@ class OrderDetailFragment : Fragment() {
             deleteSubscription.visibility = View.GONE
             changeSubscription.visibility = View.GONE
         }
+        val onBackPressedCallback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                parentFragmentManager.popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onBackPressedCallback)
+
         return view
     }
 

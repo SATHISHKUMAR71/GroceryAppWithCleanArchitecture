@@ -83,7 +83,9 @@ class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,
             holder.layout.setBackgroundColor(Color.TRANSPARENT)
         }
         holder.button.setOnClickListener {
+            println("78687 ON CLICK LISTENER IN FILTER ADAPTER")
             highlightedPos = holder.absoluteAdapterPosition
+
             resetViews()
             when(filterTypeList[position]){
                 "Brand" -> {
@@ -210,4 +212,7 @@ class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,
         setBadgeForBrand(FilterFragmentSearch.checkedList.size)
 
     }
+
+
+
 }

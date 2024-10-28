@@ -127,17 +127,27 @@
     <LinearLayout
         android:id="@+id/linearLayout8"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="?attr/actionBarSize"
         android:layout_gravity="bottom"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent">
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/guideLineColorDim" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
         <com.google.android.material.button.MaterialButton
             android:id="@+id/categoryButtonProductList"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="180dp"
+            android:gravity="center"
             android:layout_height="wrap_content"
             app:cornerRadius="8dp"
+            android:layout_gravity="center"
             android:text="Explore Categories"
             android:textSize="16sp"
             app:rippleColor="?attr/colorControlHighlight" />
@@ -145,15 +155,19 @@
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="0dp"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
             app:iconGravity="textStart"
             android:layout_weight="1"
-            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:id="@+id/totalPriceWorthInCart"
             app:icon="@drawable/shopping_bag_24px"
             android:text="₹000"
             android:textSize="16sp"
             app:cornerRadius="8dp" />
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

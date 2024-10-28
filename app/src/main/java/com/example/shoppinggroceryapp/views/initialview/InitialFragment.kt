@@ -47,6 +47,7 @@ import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.category.CategoryFragment
 import com.example.shoppinggroceryapp.views.userviews.home.HomeFragment
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
@@ -206,14 +207,14 @@ class InitialFragment : Fragment() {
                 when(it.itemId){
                     R.id.inventory -> {
                         FragmentTransaction.navigateWithBackstack(parentFragmentManager,
-                            ProductListFragment(),"Products Fragment")
+                            ProductListFragment(),"Product List Fragment")
                     }
                     R.id.customerRequest -> {
-                        FragmentTransaction.navigateWithBackstack(parentFragmentManager,customerRequestListFragment,"Customer Request Fragment")
+                        FragmentTransaction.navigateWithBackstack(parentFragmentManager,customerRequestListFragment,"Customer Request List Fragment")
                     }
                     R.id.addOtherAdmin->{
                         FragmentTransaction.navigateWithBackstack(parentFragmentManager,
-                            SignUpFragment(),"Adding Other Admins")
+                            SignUpFragment(),"Adding Other Admin Fragment")
                     }
                     R.id.account-> {
                         FragmentTransaction.navigateWithBackstack(parentFragmentManager,
@@ -221,7 +222,7 @@ class InitialFragment : Fragment() {
                     }
                     R.id.ordersReceived -> {
                         FragmentTransaction.navigateWithBackstack(parentFragmentManager,
-                            OrderHistoryFragment(),"Orders Received Fragment")
+                            OrderHistoryFragment(),"Orders History Fragment")
                     }
                 }
                 true
@@ -230,7 +231,7 @@ class InitialFragment : Fragment() {
         else{
             if(savedInstanceState==null) {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentMainLayout, homeFragment)
+                    .replace(R.id.fragmentMainLayout, homeFragment,"Home Fragment")
                     .commit()
             }
             parentFragmentManager.registerFragmentLifecycleCallbacks(object :FragmentManager.FragmentLifecycleCallbacks(){
@@ -267,7 +268,7 @@ class InitialFragment : Fragment() {
                             CartFragment(),"Cart Fragment")
                     }
                     R.id.homeMenu -> {
-                        FragmentTransaction.navigateWithBackstack(parentFragmentManager,homeFragment,"Initial Fragment")
+                        FragmentTransaction.navigateWithBackstack(parentFragmentManager,homeFragment,"Home Fragment")
                     }
                     R.id.offer -> {
                         FragmentTransaction.navigateWithBackstack(parentFragmentManager,
@@ -282,6 +283,24 @@ class InitialFragment : Fragment() {
             }
         }
 
+        parentFragmentManager.registerFragmentLifecycleCallbacks(object :FragmentManager.FragmentLifecycleCallbacks() {
+            override fun onFragmentPreCreated(
+                fm: FragmentManager,
+                f: Fragment,
+                savedInstanceState: Bundle?
+            ) {
+                super.onFragmentPreCreated(fm, f, savedInstanceState)
+                println("#232 tag set on create: ${f.tag}")
+            }
+        },true)
+
+        parentFragmentManager.registerFragmentLifecycleCallbacks(object :FragmentManager.FragmentLifecycleCallbacks(){
+
+            override fun onFragmentDestroyed(fm: FragmentManager, f: Fragment) {
+                super.onFragmentDestroyed(fm, f)
+                println("#232 tag set on destroy: tag name ${f.tag}")
+            }
+        },true)
 
         searchViewModel.getSearchedList()
         searchedQuery.observe(viewLifecycleOwner){
@@ -296,8 +315,18 @@ class InitialFragment : Fragment() {
                     searchView.hide()
                 }
                 else{
+                    println("8769283 REMOVING THE FRAGMENTS ON ELSE")
                     isEnabled = false
+
                     requireActivity().onBackPressed()
+//                    if(homeFragment.isVisible){
+//                        isEnabled = false
+//                        requireActivity().onBackPressed()
+//                    }
+//                    else{
+//                        println("REMOVING THE FRAGMENTS ON IF")
+//                        parentFragmentManager.popBackStack("SubFragment From Home",FragmentManager.POP_BACK_STACK_INCLUSIVE)
+//                    }
                 }
             }
         }
@@ -352,7 +381,7 @@ class InitialFragment : Fragment() {
             searchRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         }
 
-        val searchBarTop = view.findViewById<LinearLayout>(R.id.searchBarTop)
+//        val searchBarTop = view.findViewById<LinearLayout>(R.id.searchBarTop)
 
         closeSearchView.observe(viewLifecycleOwner){
             if(it){
@@ -360,7 +389,9 @@ class InitialFragment : Fragment() {
 
             }
         }
+
         searchView.addTransitionListener { searchView, previousState, newState ->
+
             if(newState==SearchView.TransitionState.SHOWING){
                 backPressedCallback.isEnabled = true
             }
@@ -375,7 +406,7 @@ class InitialFragment : Fragment() {
                     FragmentTransaction.navigateWithBackstack(
                         parentFragmentManager,
                         productListFragment,
-                        "Product List Fragment in List"
+                        "Product List Fragment"
                     )
                 }
             }
@@ -383,10 +414,13 @@ class InitialFragment : Fragment() {
 
         hideSearchBar.observe(viewLifecycleOwner){
             if(it){
-                searchBarTop.visibility = View.GONE
+                view.findViewById<AppBarLayout>(R.id.appbarLayout).visibility = View.GONE
+//                searchBarTop.visibility = View.GONE
             }
             else{
-                searchBarTop.visibility = View.VISIBLE
+
+                view.findViewById<AppBarLayout>(R.id.appbarLayout).visibility = View.VISIBLE
+//                searchBarTop.visibility = View.VISIBLE
             }
         }
         hideBottomNav.observe(viewLifecycleOwner){
@@ -405,7 +439,7 @@ class InitialFragment : Fragment() {
             arguments?.let {
                 ProductListFragment.selectedProductEntity.value = PutExtras.getProductFromExtras(it)
             }
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager,AddOrEditProductFragment().apply { arguments = Bundle().apply { putBoolean("isEdit",true) } },"productList")
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager,AddOrEditProductFragment().apply { arguments = Bundle().apply { putBoolean("isEdit",true) } },"Add Or Edit Fragment")
         }
         return view
     }
@@ -413,6 +447,16 @@ class InitialFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         searchedQuery = MutableLiveData()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        println("321432 INITIAL FRAGMENT ON STOP ")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        println("321432 INITIAL FRAGMENT ON Pause ")
     }
 
 }

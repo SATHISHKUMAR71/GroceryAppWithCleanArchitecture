@@ -98,8 +98,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
-                            android:layout_marginStart="5dp"
-                            app:cornerRadius="0dp"
+                            android:padding="15dp"
                             app:icon="@drawable/send_24px" />
                     </LinearLayout>
                 </LinearLayout>

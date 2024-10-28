@@ -59,7 +59,7 @@ class SubCategoryAdapter(var fragment: Fragment,var categoryList: List<String>):
                     R.anim.fade_out
                 )
                 .replace(R.id.fragmentMainLayout,
-                    productListFrag
+                    productListFrag,"Product List Fragment"
                 )
                 .addToBackStack("Product List")
                 .commit()

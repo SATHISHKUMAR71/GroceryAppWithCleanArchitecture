@@ -206,7 +206,7 @@ class OfferFragment : Fragment() {
             FragmentTransaction.navigateWithBackstack(
                 parentFragmentManager,
                 FilterFragment(realList),
-                "Filter"
+                "Filter Fragment"
             )
         }
     }

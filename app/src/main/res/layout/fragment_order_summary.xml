@@ -140,6 +140,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="none"
+                                android:backgroundTint="@color/white"
+                                app:dropDownBackgroundTint="@color/white"
                                 app:simpleItems = "@array/deliveryType"/>
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -171,6 +173,8 @@
                             android:id="@+id/deliveryFrequencyDay"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:backgroundTint="@color/white"
+                            app:dropDownBackgroundTint="@color/white"
                             android:inputType="none" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -202,6 +206,8 @@
                             android:id="@+id/deliveryFrequencyDayMonth"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:backgroundTint="@color/white"
+                            app:dropDownBackgroundTint="@color/white"
                             android:inputType="none" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>

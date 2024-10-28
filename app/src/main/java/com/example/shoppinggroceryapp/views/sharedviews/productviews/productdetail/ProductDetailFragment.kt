@@ -17,6 +17,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.OptIn
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -109,6 +110,7 @@ class ProductDetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
         imageLoader = ImageLoaderAndGetter()
         oneTimeFragmentIn = 0
+
     }
 
     @OptIn(ExperimentalBadgeUtils::class)
@@ -166,13 +168,13 @@ class ProductDetailFragment : Fragment() {
                 R.id.cart -> {
                     if (!MainActivity.isRetailer) {
                         FragmentTransaction.navigateWithBackstack(parentFragmentManager,
-                            CartFragment(),"Cart In Product Detail")
+                            CartFragment(),"Cart Fragment")
                     }
                 }
                 R.id.edit -> {
                     if (MainActivity.isRetailer) {
                         FragmentTransaction.navigateWithBackstack(parentFragmentManager,
-                            AddOrEditProductFragment(),"Edit in Product Detail")
+                            AddOrEditProductFragment(),"Add Or Edit Fragment")
                     }
                 }
                 R.id.addedInWishlist -> {
@@ -244,7 +246,9 @@ class ProductDetailFragment : Fragment() {
         badgeDrawable = BadgeDrawable.create(requireContext())
 
         view.findViewById<MaterialButton>(R.id.categoryButton).setOnClickListener {
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Category Opened From Product Detail")
+
+//            parentFragmentManager.popBackStack("Category Fragment",FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Category Fragment")
         }
 
         productDetailViewModel.getProductsByCartId(MainActivity.cartId)
