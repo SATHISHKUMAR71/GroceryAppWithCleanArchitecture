@@ -170,6 +170,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            app:cornerRadius="4dp"
             app:iconTint="?attr/colorPrimaryDark"
             app:icon="@drawable/favorite_24px"
             app:layout_constraintEnd_toEndOf="parent"
@@ -183,6 +184,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:visibility="gone"
+            app:cornerRadius="4dp"
             app:icon="@drawable/heart_filled_primary"
             app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"
             app:layout_constraintTop_toTopOf="parent" />

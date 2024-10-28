@@ -449,11 +449,11 @@ class ProductListAdapter(var fragment: Fragment,
 //        }
         holder.itemView.setOnClickListener {
             try {
-                holder.itemView.animate()
-                    .scaleX(0.9f)
-                    .scaleY(0.9f)
-                    .setDuration(2000)
-                    .start()
+//                holder.itemView.animate()
+//                    .scaleX(0.9f)
+//                    .scaleY(0.9f)
+//                    .setDuration(2000)
+//                    .start()
                 ProductListFragment.selectedPos = position
                 ProductListFragment.selectedProductEntity.value =
                     productEntityList[position]
