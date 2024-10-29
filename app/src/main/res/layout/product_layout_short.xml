@@ -5,373 +5,789 @@
     android:layout_width="wrap_content"
     android:clickable="true"
     android:focusable="true"
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
     app:cardCornerRadius="12dp"
     android:background="?attr/selectableItemBackground"
     android:orientation="vertical"
     android:layout_height="wrap_content">
+<!--    <TextView-->
+<!--        android:elevation="1dp"-->
+<!--        android:id="@+id/offerText"-->
+<!--        android:background="?attr/colorPrimary"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:paddingStart="10dp"-->
+<!--        android:paddingEnd="5dp"-->
+<!--        android:textAppearance="@style/TextAppearance.Material3.TitleSmall"-->
+<!--        android:textStyle="bold"-->
+<!--        android:text="Buy 1 Free"/>-->
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:background="?attr/selectableItemBackground"
-        android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="150dp"
         android:clickable="false"
         android:focusable="false"
-        android:layout_margin="5dp"
+        android:background="?attr/selectableItemBackground"
         android:orientation="vertical"
         android:layout_height="wrap_content">
-    <LinearLayout
-        android:id="@+id/linearLayoutImage"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-
-
-        <androidx.cardview.widget.CardView
-            app:cardCornerRadius="4dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-<!--            <CheckBox-->
-<!--                android:visibility="gone"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:id="@+id/favourites"-->
-<!--                android:layout_gravity="end"-->
-<!--                android:elevation="1dp"-->
-<!--                android:backgroundTint="@android:color/transparent"-->
-<!--                android:background="@drawable/checkbox_heart_bg"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:button="@drawable/favourite_chckbox_background" />-->
-            <FrameLayout
-                android:layout_width="95dp"
-                android:layout_height="130dp"
-                android:orientation="vertical"
-                android:layout_gravity="center">
-                <TextView
-                    android:elevation="1dp"
-                    android:id="@+id/offerText"
-                    android:background="@color/offerColor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:padding="2dp"
-                    android:textSize="12sp"
-                    android:text="Buy 1 Free"/>
-                <ImageView
-                    android:id="@+id/productImageLong"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:clipToOutline="true"
-
-                    android:scaleType="fitXY"/>
-                <TextView
-                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:textAlignment="center"
-                    android:gravity="center_horizontal"
-                    android:background="@color/white"
-                    android:layout_gravity="bottom"
-                    android:id="@+id/outOfStock"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorError"
-                    android:text="Out Of Stocks"/>
-
-            </FrameLayout>
-
-<!--            <ImageButton-->
-<!--                android:id="@+id/uncheckedButton"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="end"-->
-<!--                android:visibility="gone"-->
-<!--                android:background="?attr/selectableItemBackground"-->
-<!--                app:iconTint="@color/white"-->
-<!--                android:src="@drawable/heart_filled_white"-->
-<!--                style="@style/Widget.Material3.Button.IconButton" />-->
-<!--            <ImageButton-->
-<!--                android:visibility="gone"-->
-<!--                android:id="@+id/checkedButton"-->
-<!--                android:src="@drawable/heart_filled_primary"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:background="?attr/selectableItemBackground"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="end"-->
-<!--                style="@style/Widget.Material3.Button.IconButton"-->
-<!--                app:icon="@drawable/heart_filled_white"/>-->
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/uncheckedButton"-->
-<!--                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="end"-->
-<!--                android:visibility="gone"-->
-<!--                app:iconTint="?attr/colorPrimaryDark"-->
-<!--                app:icon="@drawable/favorite_24px"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/checkedButton"-->
-<!--                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                app:iconTint="?attr/colorPrimaryDark"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="end"-->
-<!--                android:visibility="gone"-->
-<!--                app:icon="@drawable/heart_filled_primary"-->
-<!--                app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:id="@+id/moreImagesView"
-            android:elevation="2dp"
-            app:cardCornerRadius="5dp"
-            android:visibility="invisible"
-            android:backgroundTint="?attr/colorSecondaryContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/moreImagesText"
-                    android:textAlignment="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="+2 more"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/linearLayoutImage"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/brandName"
-            android:layout_width="wrap_content"
-            android:textColor="@color/strikenColor"
-            android:textStyle="bold"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:text="Classic"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/productNameLong"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:padding="2dp"
-            android:text="Wheat Flour Atta by Flipkart Grocery (godhumai maavu)"
-            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/brandName" />
-
-        <TextView
-            android:id="@+id/productQuantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:maxLines="1"
-            android:text="500 g"
-            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/productNameLong" />
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:id="@+id/productExpiryLayout"
+            android:id="@+id/linearLayoutImage"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:src="@drawable/history_24px"/>
-            <TextView
-                android:id="@+id/productExpiryDate"
-                android:layout_width="wrap_content"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text="Expiry Date"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/productQuantity" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/productExpiryDate">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/productMrpText"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:text="MRP"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                android:maxLines="1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/productExpiryDate" />
 
-            <TextView
-                android:id="@+id/productPriceLong"
+
+
+            <androidx.cardview.widget.CardView
+                app:cardCornerRadius="4dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:paddingStart="10dp"
-                android:maxLines="1"
-                android:paddingEnd="10dp"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                android:textStyle="bold"
-                android:text="₹2000"
-                tools:layout_editor_absoluteY="118dp" />
+                android:layout_height="wrap_content">
+
+                <!--            <CheckBox-->
+                <!--                android:visibility="gone"-->
+                <!--                android:layout_width="wrap_content"-->
+                <!--                android:id="@+id/favourites"-->
+                <!--                android:layout_gravity="end"-->
+                <!--                android:elevation="1dp"-->
+                <!--                android:backgroundTint="@android:color/transparent"-->
+                <!--                android:background="@drawable/checkbox_heart_bg"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:button="@drawable/favourite_chckbox_background" />-->
+                <FrameLayout
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:elevation="1dp"
+                        android:id="@+id/offerText"
+                        android:background="?attr/colorPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="5dp"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                        android:textStyle="bold"
+                        android:text="Buy 1 Free"/>
+                    <ImageView
+                        android:id="@+id/productImageLong"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:clipToOutline="true"
+
+                        android:scaleType="fitXY"/>
+                    <TextView
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:background="@color/white"
+                        android:layout_gravity="bottom"
+                        android:id="@+id/outOfStock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/colorError"
+                        android:text="Out Of Stocks"/>
+
+                </FrameLayout>
+
+                <!--            <ImageButton-->
+                <!--                android:id="@+id/uncheckedButton"-->
+                <!--                android:layout_width="wrap_content"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:layout_gravity="end"-->
+                <!--                android:visibility="gone"-->
+                <!--                android:background="?attr/selectableItemBackground"-->
+                <!--                app:iconTint="@color/white"-->
+                <!--                android:src="@drawable/heart_filled_white"-->
+                <!--                style="@style/Widget.Material3.Button.IconButton" />-->
+                <!--            <ImageButton-->
+                <!--                android:visibility="gone"-->
+                <!--                android:id="@+id/checkedButton"-->
+                <!--                android:src="@drawable/heart_filled_primary"-->
+                <!--                android:layout_width="wrap_content"-->
+                <!--                android:background="?attr/selectableItemBackground"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:layout_gravity="end"-->
+                <!--                style="@style/Widget.Material3.Button.IconButton"-->
+                <!--                app:icon="@drawable/heart_filled_white"/>-->
+                <!--            <com.google.android.material.button.MaterialButton-->
+                <!--                android:id="@+id/uncheckedButton"-->
+                <!--                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"-->
+                <!--                android:layout_width="wrap_content"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:layout_gravity="end"-->
+                <!--                android:visibility="gone"-->
+                <!--                app:iconTint="?attr/colorPrimaryDark"-->
+                <!--                app:icon="@drawable/favorite_24px"-->
+                <!--                app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                app:layout_constraintTop_toTopOf="parent" />-->
+                <!--            <com.google.android.material.button.MaterialButton-->
+                <!--                android:id="@+id/checkedButton"-->
+                <!--                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"-->
+                <!--                android:layout_width="wrap_content"-->
+                <!--                app:iconTint="?attr/colorPrimaryDark"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:layout_gravity="end"-->
+                <!--                android:visibility="gone"-->
+                <!--                app:icon="@drawable/heart_filled_primary"-->
+                <!--                app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"-->
+                <!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/moreImagesView"
+                android:elevation="2dp"
+                app:cardCornerRadius="5dp"
+                android:visibility="invisible"
+                android:backgroundTint="?attr/colorSecondaryContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:layout_gravity="center"
+                        android:id="@+id/moreImagesText"
+                        android:textAlignment="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+2 more"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
-<!--        <TextView-->
-<!--            android:textAlignment="center"-->
-<!--            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"-->
-<!--            android:layout_margin="10dp"-->
-<!--            android:id="@+id/outOfStock"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textColor="#F42031"-->
-<!--            android:text="Out Of Stocks"/>-->
+
         <LinearLayout
-            android:id="@+id/buttonLayout"
             android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/uncheckedButton"
-                style="@style/Widget.Material3.Button.IconButton.Outlined"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                app:cornerRadius="4dp"
-                app:iconGravity="textStart"
-                android:visibility="gone"
-                app:iconTint="?attr/colorPrimaryDark"
-                app:icon="@drawable/favorite_24px"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/checkedButton"
-                style="@style/Widget.Material3.Button.IconButton.Outlined"
-                android:layout_width="40dp"
-                app:iconTint="?attr/colorPrimaryDark"
-                app:iconGravity="textStart"
-                android:layout_height="40dp"
-                android:layout_gravity="end"
-                app:cornerRadius="4dp"
-                android:visibility="gone"
-                app:icon="@drawable/heart_filled_primary"
-                app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"
-                app:layout_constraintTop_toTopOf="parent" />
-            <LinearLayout
-                android:id="@+id/productAddRemoveLayout"
-                android:layout_width="110dp"
-                android:visibility="gone"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/linearLayoutImage"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/brandName"
+                android:layout_width="wrap_content"
+                android:textColor="@color/strikenColor"
+                android:textStyle="bold"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_gravity="center"
-                app:layout_constraintBottom_toBottomOf="@+id/linearLayout9"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Classic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/productNameLong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="2dp"
+                android:text="Wheat Flour Atta by Flipkart Grocery (godhumai maavu)"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/brandName" />
+
+            <TextView
+                android:id="@+id/productQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:text="500 g"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/productNameLong" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/productExpiryLayout"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/history_24px"/>
+                <TextView
+                    android:id="@+id/productExpiryDate"
+                    android:layout_width="wrap_content"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="Expiry Date"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/productQuantity" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/productExpiryDate">
 
-                <ImageButton
-                    android:id="@+id/productRemoveSymbolButton"
+                <TextView
+                    android:id="@+id/productMrpText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:text="MRP"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:maxLines="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/productExpiryDate" />
+
+                <TextView
+                    android:id="@+id/productPriceLong"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:paddingStart="10dp"
+                    android:maxLines="1"
+                    android:paddingEnd="10dp"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:textStyle="bold"
+                    android:text="₹2000"
+                    tools:layout_editor_absoluteY="118dp" />
+            </LinearLayout>
+            <!--        <TextView-->
+            <!--            android:textAlignment="center"-->
+            <!--            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"-->
+            <!--            android:layout_margin="10dp"-->
+            <!--            android:id="@+id/outOfStock"-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:textColor="#F42031"-->
+            <!--            android:text="Out Of Stocks"/>-->
+            <LinearLayout
+                android:id="@+id/buttonLayout"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/uncheckedButton"
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:backgroundTint="?attr/colorPrimaryDark"
-                    android:src="@drawable/remove_24px" />
-                <TextView
-                    android:id="@+id/totalItemsAdded"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    app:strokeColor="@color/guideLineColor"
                     android:layout_gravity="center"
+                    app:cornerRadius="4dp"
+                    app:iconGravity="textStart"
+
+                    app:iconTint="?attr/colorPrimaryDark"
+                    app:icon="@drawable/favorite_24px"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/checkedButton"
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
+                    android:layout_width="40dp"
+                    app:iconTint="?attr/colorPrimaryDark"
+                    app:iconGravity="textStart"
+                    android:layout_height="40dp"
+                    app:strokeColor="@color/guideLineColor"
+                    android:layout_gravity="end"
+                    app:cornerRadius="4dp"
+                    android:visibility="gone"
+                    app:icon="@drawable/heart_filled_primary"
+                    app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <LinearLayout
+                    android:id="@+id/productAddRemoveLayout"
+                    android:layout_width="110dp"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/linearLayout9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/productExpiryDate">
+
+                    <ImageButton
+                        android:id="@+id/productRemoveSymbolButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:backgroundTint="?attr/colorPrimaryDark"
+                        android:src="@drawable/remove_24px" />
+                    <TextView
+                        android:id="@+id/totalItemsAdded"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="000"
+                        android:textAlignment="center"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/productAddSymbolButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:backgroundTint="?attr/colorPrimaryDark"
+                        android:src="@drawable/add_24px" />
+
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/productAddLayoutOneTime"
+                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="000"
+                    android:layout_gravity="center"
+                    android:text="Add"
+                    android:layout_marginEnd="5dp"
+                    app:strokeColor="@color/guideLineColor"
                     android:textAlignment="center"
                     android:textColor="?attr/colorPrimary"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <ImageButton
-                    android:id="@+id/productAddSymbolButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:backgroundTint="?attr/colorPrimaryDark"
-                    android:src="@drawable/add_24px" />
-
+                    app:cornerRadius="4dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/linearLayout9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/productExpiryDate"
+                    app:rippleColor="?attr/colorControlHighlight" />
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/productAddLayoutOneTime"
-                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:text="Add"
-                android:textAlignment="center"
-                android:textColor="?attr/colorPrimary"
-                app:cornerRadius="4dp"
-                app:layout_constraintBottom_toBottomOf="@+id/linearLayout9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/productExpiryDate"
-                app:rippleColor="?attr/colorControlHighlight" />
+
+
         </LinearLayout>
-
-
-
     </LinearLayout>
-    </LinearLayout>
-    </LinearLayout>
+
 </androidx.cardview.widget.CardView>
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:clickable="true"-->
+<!--    android:focusable="true"-->
+<!--    app:cardCornerRadius="12dp"-->
+<!--    android:background="?attr/selectableItemBackground"-->
+<!--    android:orientation="vertical"-->
+<!--    android:layout_height="wrap_content">-->
+
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:background="?attr/selectableItemBackground"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="120dp"-->
+<!--            android:clickable="false"-->
+<!--            android:focusable="false"-->
+<!--            android:layout_margin="5dp"-->
+<!--            android:orientation="vertical"-->
+<!--            android:layout_height="wrap_content">-->
+<!--            <LinearLayout-->
+<!--                android:id="@+id/linearLayoutImage"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:orientation="vertical"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent">-->
+
+
+
+
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    app:cardCornerRadius="4dp"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
+
+<!--                    &lt;!&ndash;            <CheckBox&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:visibility="gone"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:id="@+id/favourites"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_gravity="end"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:elevation="1dp"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:backgroundTint="@android:color/transparent"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:background="@drawable/checkbox_heart_bg"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:button="@drawable/favourite_chckbox_background" />&ndash;&gt;-->
+<!--                    <FrameLayout-->
+<!--                        android:layout_width="95dp"-->
+<!--                        android:layout_height="130dp"-->
+<!--                        android:orientation="vertical"-->
+<!--                        android:layout_gravity="center">-->
+<!--                        <TextView-->
+<!--                            android:elevation="1dp"-->
+<!--                            android:id="@+id/offerText"-->
+<!--                            android:background="@color/offerColor"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textStyle="bold"-->
+<!--                            android:padding="2dp"-->
+<!--                            android:textSize="12sp"-->
+<!--                            android:text="Buy 1 Free"/>-->
+<!--                        <ImageView-->
+<!--                            android:id="@+id/productImageLong"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:layout_gravity="center"-->
+<!--                            android:adjustViewBounds="true"-->
+<!--                            android:clipToOutline="true"-->
+
+<!--                            android:scaleType="fitXY"/>-->
+<!--                        <TextView-->
+<!--                            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"-->
+<!--                            android:textAlignment="center"-->
+<!--                            android:gravity="center_horizontal"-->
+<!--                            android:background="@color/white"-->
+<!--                            android:layout_gravity="bottom"-->
+<!--                            android:id="@+id/outOfStock"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textColor="?attr/colorError"-->
+<!--                            android:text="Out Of Stocks"/>-->
+<!--                        <com.google.android.material.button.MaterialButton-->
+<!--                            android:id="@+id/uncheckedButton"-->
+<!--                            style="@style/Widget.Material3.Button.IconButton.Outlined"-->
+<!--                            android:layout_width="40dp"-->
+<!--                            android:layout_height="40dp"-->
+<!--                            android:layout_gravity="end"-->
+<!--                            app:cornerRadius="4dp"-->
+<!--                            android:visibility="gone"-->
+<!--                            app:iconGravity="textStart"-->
+<!--                            app:iconTint="?attr/colorPrimaryDark"-->
+<!--                            app:icon="@drawable/favorite_24px"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
+<!--                        <com.google.android.material.button.MaterialButton-->
+<!--                            android:id="@+id/checkedButton"-->
+<!--                            style="@style/Widget.Material3.Button.IconButton.Outlined"-->
+<!--                            android:layout_width="40dp"-->
+<!--                            app:iconTint="?attr/colorPrimaryDark"-->
+<!--                            app:iconGravity="textStart"-->
+<!--                            android:layout_height="40dp"-->
+<!--                            android:layout_gravity="end"-->
+<!--                            app:cornerRadius="4dp"-->
+<!--                            android:visibility="gone"-->
+<!--                            app:icon="@drawable/heart_filled_primary"-->
+<!--                            app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
+<!--                    </FrameLayout>-->
+
+<!--                    &lt;!&ndash;            <ImageButton&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:id="@+id/uncheckedButton"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_gravity="end"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:visibility="gone"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:background="?attr/selectableItemBackground"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                app:iconTint="@color/white"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:src="@drawable/heart_filled_white"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                style="@style/Widget.Material3.Button.IconButton" />&ndash;&gt;-->
+<!--                    &lt;!&ndash;            <ImageButton&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:visibility="gone"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:id="@+id/checkedButton"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:src="@drawable/heart_filled_primary"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:background="?attr/selectableItemBackground"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_gravity="end"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                style="@style/Widget.Material3.Button.IconButton"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                app:icon="@drawable/heart_filled_white"/>&ndash;&gt;-->
+<!--                    &lt;!&ndash;            <com.google.android.material.button.MaterialButton&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:id="@+id/uncheckedButton"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_gravity="end"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:visibility="gone"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                app:iconTint="?attr/colorPrimaryDark"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                app:icon="@drawable/favorite_24px"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                app:layout_constraintTop_toTopOf="parent" />&ndash;&gt;-->
+<!--                    &lt;!&ndash;            <com.google.android.material.button.MaterialButton&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:id="@+id/checkedButton"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                app:iconTint="?attr/colorPrimaryDark"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:layout_gravity="end"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                android:visibility="gone"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                app:icon="@drawable/heart_filled_primary"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                app:layout_constraintTop_toTopOf="parent" />&ndash;&gt;-->
+
+<!--                </androidx.cardview.widget.CardView>-->
+
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    android:layout_marginTop="5dp"-->
+<!--                    android:layout_marginBottom="5dp"-->
+<!--                    android:id="@+id/moreImagesView"-->
+<!--                    android:elevation="2dp"-->
+<!--                    app:cardCornerRadius="5dp"-->
+<!--                    android:visibility="invisible"-->
+<!--                    android:backgroundTint="?attr/colorSecondaryContainer"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:orientation="vertical"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content">-->
+<!--                        <TextView-->
+<!--                            android:id="@+id/moreImagesText"-->
+<!--                            android:textAlignment="center"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="+2 more"/>-->
+<!--                    </LinearLayout>-->
+<!--                </androidx.cardview.widget.CardView>-->
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_weight="1"-->
+<!--                android:orientation="vertical"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/linearLayoutImage"-->
+<!--                app:layout_constraintTop_toTopOf="parent">-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/brandName"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:textColor="@color/strikenColor"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:ellipsize="end"-->
+<!--                    android:maxLines="1"-->
+<!--                    android:textAppearance="@style/TextAppearance.Material3.TitleSmall"-->
+<!--                    android:paddingStart="10dp"-->
+<!--                    android:paddingEnd="10dp"-->
+<!--                    android:text="Classic"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/productNameLong"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:ellipsize="end"-->
+<!--                    android:maxLines="1"-->
+<!--                    android:padding="2dp"-->
+<!--                    android:text="Wheat Flour Atta by Flipkart Grocery (godhumai maavu)"-->
+<!--                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/brandName" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/productQuantity"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:maxLines="1"-->
+<!--                    android:text="500 g"-->
+<!--                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/productNameLong" />-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:id="@+id/productExpiryLayout"-->
+<!--                    android:gravity="center"-->
+<!--                    android:layout_height="wrap_content">-->
+<!--                    <ImageView-->
+<!--                        android:layout_width="15dp"-->
+<!--                        android:layout_height="15dp"-->
+<!--                        android:src="@drawable/history_24px"/>-->
+<!--                    <TextView-->
+<!--                        android:id="@+id/productExpiryDate"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:textAppearance="@style/TextAppearance.Material3.BodySmall"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:maxLines="1"-->
+<!--                        android:ellipsize="end"-->
+<!--                        android:text="Expiry Date"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/productQuantity" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/linearLayout9"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:orientation="vertical"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/productExpiryDate">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/productMrpText"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:text="MRP"-->
+<!--                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"-->
+<!--                        android:maxLines="1"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/productExpiryDate" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/productPriceLong"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:ellipsize="end"-->
+<!--                        android:paddingStart="10dp"-->
+<!--                        android:maxLines="1"-->
+<!--                        android:paddingEnd="10dp"-->
+<!--                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:text="₹2000"-->
+<!--                        tools:layout_editor_absoluteY="118dp" />-->
+<!--                </LinearLayout>-->
+<!--                &lt;!&ndash;        <TextView&ndash;&gt;-->
+<!--                &lt;!&ndash;            android:textAlignment="center"&ndash;&gt;-->
+<!--                &lt;!&ndash;            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"&ndash;&gt;-->
+<!--                &lt;!&ndash;            android:layout_margin="10dp"&ndash;&gt;-->
+<!--                &lt;!&ndash;            android:id="@+id/outOfStock"&ndash;&gt;-->
+<!--                &lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+<!--                &lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--                &lt;!&ndash;            android:textColor="#F42031"&ndash;&gt;-->
+<!--                &lt;!&ndash;            android:text="Out Of Stocks"/>&ndash;&gt;-->
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/buttonLayout"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/linearLayout9">-->
+<!--&lt;!&ndash;                    <com.google.android.material.button.MaterialButton&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:id="@+id/uncheckedButton"&ndash;&gt;-->
+<!--&lt;!&ndash;                        style="@style/Widget.Material3.Button.IconButton.Outlined"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_width="40dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_height="40dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_gravity="center"&ndash;&gt;-->
+<!--&lt;!&ndash;                        app:cornerRadius="4dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        app:iconGravity="textStart"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:visibility="gone"&ndash;&gt;-->
+<!--&lt;!&ndash;                        app:iconTint="?attr/colorPrimaryDark"&ndash;&gt;-->
+<!--&lt;!&ndash;                        app:icon="@drawable/favorite_24px"&ndash;&gt;-->
+<!--&lt;!&ndash;                        app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                        app:layout_constraintTop_toTopOf="parent" />&ndash;&gt;-->
+<!--&lt;!&ndash;                    <com.google.android.material.button.MaterialButton&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:id="@+id/checkedButton"&ndash;&gt;-->
+<!--&lt;!&ndash;                        style="@style/Widget.Material3.Button.IconButton.Outlined"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_width="40dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        app:iconTint="?attr/colorPrimaryDark"&ndash;&gt;-->
+<!--&lt;!&ndash;                        app:iconGravity="textStart"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_height="40dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_gravity="end"&ndash;&gt;-->
+<!--&lt;!&ndash;                        app:cornerRadius="4dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:visibility="gone"&ndash;&gt;-->
+<!--&lt;!&ndash;                        app:icon="@drawable/heart_filled_primary"&ndash;&gt;-->
+<!--&lt;!&ndash;                        app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"&ndash;&gt;-->
+<!--&lt;!&ndash;                        app:layout_constraintTop_toTopOf="parent" />&ndash;&gt;-->
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/productAddRemoveLayout"-->
+<!--                        android:layout_width="110dp"-->
+<!--                        android:visibility="gone"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="horizontal"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        app:layout_constraintBottom_toBottomOf="@+id/linearLayout9"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/productExpiryDate">-->
+
+<!--                        <ImageButton-->
+<!--                            android:id="@+id/productRemoveSymbolButton"-->
+<!--                            android:layout_width="40dp"-->
+<!--                            android:layout_height="40dp"-->
+<!--                            android:backgroundTint="?attr/colorPrimaryDark"-->
+<!--                            android:src="@drawable/remove_24px" />-->
+<!--                        <TextView-->
+<!--                            android:id="@+id/totalItemsAdded"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_gravity="center"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:gravity="center"-->
+<!--                            android:text="000"-->
+<!--                            android:textAlignment="center"-->
+<!--                            android:textColor="?attr/colorPrimary"-->
+<!--                            android:textSize="16sp"-->
+<!--                            android:textStyle="bold" />-->
+
+<!--                        <ImageButton-->
+<!--                            android:id="@+id/productAddSymbolButton"-->
+<!--                            android:layout_width="40dp"-->
+<!--                            android:layout_height="40dp"-->
+<!--                            android:backgroundTint="?attr/colorPrimaryDark"-->
+<!--                            android:src="@drawable/add_24px" />-->
+
+<!--                    </LinearLayout>-->
+
+<!--                    <com.google.android.material.button.MaterialButton-->
+<!--                        android:id="@+id/productAddLayoutOneTime"-->
+<!--                        style="@style/Widget.Material3.Button.OutlinedButton.Icon"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="40dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:text="Add"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:textColor="?attr/colorPrimary"-->
+<!--                        app:cornerRadius="4dp"-->
+<!--                        app:layout_constraintBottom_toBottomOf="@+id/linearLayout9"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/productExpiryDate"-->
+<!--                        app:rippleColor="?attr/colorControlHighlight" />-->
+<!--                </LinearLayout>-->
+
+
+
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+<!--</LinearLayout>-->
+

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.core.domain.order.DailySubscription
 import com.core.domain.order.MonthlyOnce
@@ -26,6 +27,7 @@ import com.example.shoppinggroceryapp.helpers.NotificationBuilder
 import com.example.shoppinggroceryapp.views.GroceryAppUserVMFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail.OrderDetailFragment
+import com.example.shoppinggroceryapp.views.userviews.cartview.FindNumberOfCartItems
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.PaymentFragment
 import com.google.android.material.appbar.MaterialToolbar
@@ -191,10 +193,12 @@ class OrderSuccessFragment : Fragment() {
 
     private fun restartApp() {
         PaymentFragment.paymentMode =""
-        val intent = Intent(context,MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)
-        requireActivity().finish()
+        FindNumberOfCartItems.productCount.value = 0
+        parentFragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE)
+//        val intent = Intent(context,MainActivity::class.java)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//        startActivity(intent)
+//        requireActivity().finish()
     }
 
 

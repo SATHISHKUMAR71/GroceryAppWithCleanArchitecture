@@ -93,6 +93,7 @@
                     android:id="@+id/changeAddressButtonOrderSummary"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
+                    app:icon="@drawable/edit_24px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
                     android:text="Change"
@@ -435,7 +436,7 @@
     </ScrollView>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         app:cardElevation="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/white"
@@ -449,12 +450,11 @@
                 android:background="@color/guideLineColorDim" />
         </LinearLayout>
     <LinearLayout
+        android:layout_marginStart="10dp"
         android:id="@+id/linearLayout11"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_height="match_parent"
         android:layout_marginEnd="10dp"
-        android:paddingBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/white"
         tools:layout_editor_absoluteX="10dp">
@@ -481,6 +481,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="0.2"
             android:text="Continue"
             android:textSize="18sp"
             app:cornerRadius="4dp" />

@@ -28,7 +28,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout10">
 
@@ -52,7 +51,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
-                android:text="Add New Address"
+                android:text="Add Address"
+                app:icon="@drawable/add_24px"
                 app:cornerRadius="4dp"
                 app:rippleColor="?attr/colorControlHighlight" />
         </LinearLayout>
@@ -114,6 +114,7 @@
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:icon="@drawable/edit_24px"
                 android:layout_gravity="bottom"
                 android:text="Change"
                 app:cornerRadius="4dp"

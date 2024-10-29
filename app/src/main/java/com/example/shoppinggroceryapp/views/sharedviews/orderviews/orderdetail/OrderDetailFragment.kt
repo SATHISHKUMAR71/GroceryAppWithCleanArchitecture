@@ -19,6 +19,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -38,6 +39,7 @@ import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
+import com.example.shoppinggroceryapp.views.userviews.cartview.FindNumberOfCartItems
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.PaymentFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -506,9 +508,11 @@ class OrderDetailFragment : Fragment() {
     }
     private fun restartApp() {
         PaymentFragment.paymentMode =""
-        val intent = Intent(context,MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)
-        requireActivity().finish()
+        FindNumberOfCartItems.productCount.value = 0
+        parentFragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE)
+//        val intent = Intent(context,MainActivity::class.java)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//        startActivity(intent)
+//        requireActivity().finish()
     }
 }

@@ -95,15 +95,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/brandNameProductDetail" />
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:id="@+id/productOffer"
-                        android:background="@color/offerColor"
-                        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-                        android:text="13% Off"
-                        android:textColor="@color/white"/>
+
                     <LinearLayout
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
@@ -151,7 +143,23 @@
                             android:textStyle="bold"
                             app:layout_constraintStart_toEndOf="@+id/mrpTextProductDetail"
                             app:layout_constraintTop_toBottomOf="@+id/productNameProductDetail" />
-
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/productOfferLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_marginStart="10dp"
+                            app:cardCornerRadius="8dp"
+                            android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="5dp"
+                            android:id="@+id/productOffer"
+                            android:background="@color/offerColor"
+                            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                            android:text="13% Off"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"/>
+                        </androidx.cardview.widget.CardView>
                     </LinearLayout>
                 </LinearLayout>
                 </androidx.cardview.widget.CardView>
