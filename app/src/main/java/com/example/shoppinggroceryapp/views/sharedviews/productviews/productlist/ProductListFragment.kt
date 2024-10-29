@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.OptIn
+import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
@@ -386,11 +387,11 @@ class ProductListFragment : Fragment() {
                 Companion.selectedProductEntity.value = null
                 FragmentTransaction.navigateWithBackstack(parentFragmentManager, AddOrEditProductFragment(),"Add Or Edit Fragment")
             }
-            view?.findViewById<LinearLayout>(R.id.linearLayout8)?.visibility = View.GONE
+            view?.findViewById<CardView>(R.id.linearLayout8)?.visibility = View.GONE
         }
         else{
             fab?.visibility = View.GONE
-            view?.findViewById<LinearLayout>(R.id.linearLayout8)?.visibility = View.VISIBLE
+            view?.findViewById<CardView>(R.id.linearLayout8)?.visibility = View.VISIBLE
         }
         if(!MainActivity.isRetailer) {
             InitialFragment.hideSearchBar.value = true

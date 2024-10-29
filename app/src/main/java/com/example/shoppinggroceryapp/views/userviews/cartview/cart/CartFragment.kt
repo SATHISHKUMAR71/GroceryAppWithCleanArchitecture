@@ -56,7 +56,7 @@ class CartFragment : Fragment() {
     var noOfItemsInt = 0
     var savedPosition:Int? = null
     private lateinit var recyclerView:RecyclerView
-    private lateinit var bottomLayout:LinearLayout
+    private lateinit var bottomLayout:CardView
     private lateinit var price:MaterialButton
     private lateinit var adapter: ProductListAdapter
     private lateinit var cartViewModel: CartViewModel

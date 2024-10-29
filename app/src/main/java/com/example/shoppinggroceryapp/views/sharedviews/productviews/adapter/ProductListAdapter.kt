@@ -211,33 +211,37 @@ class ProductListAdapter(var fragment: Fragment,
                 if(tag=="C"){
                     position-=1
                 }
-                if (MainActivity.isRetailer) {
+                if ((MainActivity.isRetailer)) {
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
                     holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.GONE
                     holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.GONE
                 } else {
+                    if(tag!="C"){
+                        holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.VISIBLE
+                        holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.VISIBLE
+                    }
                     holder.itemView.findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.VISIBLE
-                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.VISIBLE
-                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.VISIBLE
                 }
 
                 isProductAvailable(holder, position)
                 if(!MainActivity.isRetailer) {
-                    productListViewModel.getWishList(productEntityList[position].productId) {
-                        if (it != null) {
-                            checkedList[position] = true
-                            MainActivity.handler.post {
-                                holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
-                                    View.VISIBLE
-                                holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
-                                    View.GONE
-                            }
-                        } else {
-                            MainActivity.handler.post {
-                                holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
-                                    View.GONE
-                                holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
-                                    View.VISIBLE
+                    if(tag!="C") {
+                        productListViewModel.getWishList(productEntityList[position].productId) {
+                            if (it != null) {
+                                checkedList[position] = true
+                                MainActivity.handler.post {
+                                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
+                                        View.VISIBLE
+                                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
+                                        View.GONE
+                                }
+                            } else {
+                                MainActivity.handler.post {
+                                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
+                                        View.GONE
+                                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
+                                        View.VISIBLE
+                                }
                             }
                         }
                     }
@@ -457,16 +461,17 @@ class ProductListAdapter(var fragment: Fragment,
                 ProductListFragment.selectedPos = position
                 ProductListFragment.selectedProductEntity.value =
                     productEntityList[position]
-                fragment.parentFragmentManager.beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.fade_in,
-                        R.anim.fade_out,
-                        R.anim.fade_in,
-                        R.anim.fade_out
-                    )
-                    .replace(R.id.fragmentMainLayout, ProductDetailFragment(),"Product Detail Fragment")
-                    .addToBackStack("Product Detail Fragment")
-                    .commit()
+                FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager,ProductDetailFragment(),"${productEntityList[position].productId}")
+//                fragment.parentFragmentManager.beginTransaction()
+//                    .setCustomAnimations(
+//                        R.anim.fade_in,
+//                        R.anim.fade_out,
+//                        R.anim.fade_in,
+//                        R.anim.fade_out
+//                    )
+//                    .replace(R.id.fragmentMainLayout, ProductDetailFragment(),"Product Detail Fragment")
+//                    .addToBackStack("Product Detail Fragment")
+//                    .commit()
 //                FragmentTransaction.fragmentSequenceSet.add("Product Detail Fragment")
             }
             catch (e:Exception){
@@ -546,35 +551,47 @@ class ProductListAdapter(var fragment: Fragment,
         }
         holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).setOnClickListener {
             if((holder.absoluteAdapterPosition==position) || ((tag=="C") && (holder.absoluteAdapterPosition==position+1))) {
-                if (!checkedList[position]) {
-                    checkedList[position] = true
-                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.VISIBLE
-                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.GONE
-                    productListViewModel.addProductToWishList(productEntityList[position].productId)
-                    ShowShortToast.show("Added to WishList", fragment.requireContext())
-                } else {
-                    checkedList[position] = false
-                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.GONE
-                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.VISIBLE
-                    productListViewModel.removeProductFromWishList((productEntityList[position].productId))
-                    ShowShortToast.show("Removed from WishList", fragment.requireContext())
+                if(tag!="C") {
+                    if (!checkedList[position]) {
+                        checkedList[position] = true
+                        holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
+                            View.VISIBLE
+                        holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
+                            View.GONE
+                        productListViewModel.addProductToWishList(productEntityList[position].productId)
+                        ShowShortToast.show("Added to WishList", fragment.requireContext())
+                    } else {
+                        checkedList[position] = false
+                        holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
+                            View.GONE
+                        holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
+                            View.VISIBLE
+                        productListViewModel.removeProductFromWishList((productEntityList[position].productId))
+                        ShowShortToast.show("Removed from WishList", fragment.requireContext())
+                    }
                 }
             }
         }
         holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).setOnClickListener {
             if((holder.absoluteAdapterPosition==position) || ((tag=="C") && (holder.absoluteAdapterPosition==position+1))) {
-                if (!checkedList[position]) {
-                    checkedList[position] = true
-                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.VISIBLE
-                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.GONE
-                    productListViewModel.addProductToWishList(productEntityList[position].productId)
-                    ShowShortToast.show("Added to WishList", fragment.requireContext())
-                } else {
-                    checkedList[position] = false
-                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =View.GONE
-                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =View.VISIBLE
-                    productListViewModel.removeProductFromWishList((productEntityList[position].productId))
-                    ShowShortToast.show("Removed from WishList", fragment.requireContext())
+                if(tag!="C") {
+                    if (!checkedList[position]) {
+                        checkedList[position] = true
+                        holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
+                            View.VISIBLE
+                        holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
+                            View.GONE
+                        productListViewModel.addProductToWishList(productEntityList[position].productId)
+                        ShowShortToast.show("Added to WishList", fragment.requireContext())
+                    } else {
+                        checkedList[position] = false
+                        holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
+                            View.GONE
+                        holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
+                            View.VISIBLE
+                        productListViewModel.removeProductFromWishList((productEntityList[position].productId))
+                        ShowShortToast.show("Removed from WishList", fragment.requireContext())
+                    }
                 }
             }
         }

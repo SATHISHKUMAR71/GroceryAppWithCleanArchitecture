@@ -5,6 +5,7 @@ package com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail
 import androidx.fragment.app.Fragment
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
@@ -37,6 +38,7 @@ import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
+import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.PaymentFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
@@ -67,6 +69,7 @@ class OrderDetailFragment : Fragment() {
         val changeSubscription = view.findViewById<MaterialButton>(R.id.modifySubscriptionOrder)
         val mrpPrice = view.findViewById<TextView>(R.id.priceDetailsMrpPrice)
         val grandTot = view.findViewById<TextView>(R.id.priceDetailsTotalAmount)
+        val isRestartApp  = arguments?.getBoolean("restartApp")==true
         selectedOrder = arguments?.let {
             OrderDetails(
                 it.getInt("orderId",-1),
@@ -123,7 +126,8 @@ class OrderDetailFragment : Fragment() {
         val deliveryTimeSlot = view.findViewById<TextView>(R.id.productNextDeliveryTimeSlot)
         val nextDeliveryDate = view.findViewById<TextView>(R.id.productNextDeliveryDate)
         val hideCancelOrderButton = arguments?.getBoolean("hideCancelOrderButton")
-        if(arguments?.getBoolean("hideToolBar")==true){
+        val isOrderedProducts = arguments?.getBoolean("hideToolBar")
+        if(isOrderedProducts==true){
             view.findViewById<MaterialToolbar>(R.id.materialToolbarOrderDetail).visibility = View.GONE
             view.findViewById<TextView>(R.id.orderId).apply {
                 setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_TitleMedium)
@@ -397,13 +401,20 @@ class OrderDetailFragment : Fragment() {
                 ShowShortToast.show("Product has been removed from inventory",requireContext())
             }
         }
-        if(arguments?.getBoolean("hideButtons")==true){
+        val isOrderedProduct = arguments?.getBoolean("hideButtons")
+        if(isOrderedProduct==true){
             deleteSubscription.visibility = View.GONE
             changeSubscription.visibility = View.GONE
         }
         val onBackPressedCallback = object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                parentFragmentManager.popBackStack()
+                println("ON ORDER SUCCESS FRAGMENT BACKUP value: $isOrderedProducts")
+                if(isRestartApp){
+                    restartApp()
+                }
+                else {
+                    parentFragmentManager.popBackStack()
+                }
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onBackPressedCallback)
@@ -493,5 +504,11 @@ class OrderDetailFragment : Fragment() {
         InitialFragment.hideSearchBar.value = false
         InitialFragment.hideBottomNav.value = false
     }
-
+    private fun restartApp() {
+        PaymentFragment.paymentMode =""
+        val intent = Intent(context,MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+        requireActivity().finish()
+    }
 }

@@ -54,6 +54,7 @@ class OrderSuccessFragment : Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object :OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
+                println("ON ORDER SUCCESS FRAGMENT BACKUP")
                 restartApp()
             }
         })
@@ -143,6 +144,7 @@ class OrderSuccessFragment : Fragment() {
         orderDetailFrag.arguments = Bundle().apply {
             putBoolean("hideToolBar",true)
             putBoolean("hideCancelOrderButton",true)
+            putBoolean("restartApp",arguments?.getBoolean("restartApp")==true)
             this.putInt("orderId",selectedOrder.orderId)
             this.putInt("cartId",selectedOrder.cartId)
             this.putInt("addressId",selectedOrder.addressId)

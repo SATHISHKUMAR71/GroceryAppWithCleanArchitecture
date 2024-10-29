@@ -13,87 +13,87 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    <LinearLayout
-        android:id="@+id/linearLayoutImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
         <LinearLayout
-            android:layout_width="95dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center">
-            <androidx.cardview.widget.CardView
-                app:cardCornerRadius="4dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="150dp">
-            <TextView
-                android:id="@+id/offerText"
-                android:elevation="1dp"
-                android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-                android:background="@color/offerColor"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/linearLayoutImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:padding="2dp"
-                android:text="Buy 1 Get 1 Free"/>
-        <ImageView
-            android:id="@+id/productImageLong"
-            android:layout_width="100dp"
-            android:layout_height="150dp"
-            android:adjustViewBounds="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            android:layout_gravity="center"
-            android:clipToOutline="true"
 
-            android:scaleType="fitXY"/>
-            </FrameLayout>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:id="@+id/moreImagesView"
-                android:elevation="2dp"
-                app:cardCornerRadius="5dp"
-                android:visibility="gone"
-                android:backgroundTint="?attr/colorSecondaryContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
                 <LinearLayout
-                    android:layout_gravity="center"
+                    android:layout_width="95dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="2dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/moreImagesText"
-                        android:textAlignment="center"
+                    android:layout_gravity="center">
+                    <androidx.cardview.widget.CardView
+                        app:cardCornerRadius="4dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="+2 more"/>
+                        android:layout_height="wrap_content">
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_height="150dp">
+                            <TextView
+                                android:id="@+id/offerText"
+                                android:elevation="1dp"
+                                android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                                android:background="@color/offerColor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:padding="2dp"
+                                android:text="Buy 1 Get 1 Free"/>
+                            <ImageView
+                                android:id="@+id/productImageLong"
+                                android:layout_width="100dp"
+                                android:layout_height="150dp"
+                                android:adjustViewBounds="true"
+
+                                android:layout_gravity="center"
+                                android:clipToOutline="true"
+
+                                android:scaleType="fitXY"/>
+                        </FrameLayout>
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/moreImagesView"
+                        android:elevation="2dp"
+                        app:cardCornerRadius="5dp"
+                        android:visibility="gone"
+                        android:backgroundTint="?attr/colorSecondaryContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_gravity="center"
+                            android:orientation="vertical"
+                            android:padding="2dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/moreImagesText"
+                                android:textAlignment="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="+2 more"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
         </LinearLayout>
-
-
-    </LinearLayout>
-    </LinearLayout>
     </LinearLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -122,41 +122,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <CheckBox-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:id="@+id/favourites"-->
-<!--            android:visibility="gone"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:button="@drawable/favourite_chckbox_background"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/brandName"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/brandName"/>-->
+        <!--        <CheckBox-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:id="@+id/favourites"-->
+        <!--            android:visibility="gone"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:button="@drawable/favourite_chckbox_background"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/brandName"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/brandName"/>-->
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/uncheckedButton"-->
-<!--            style="@style/Widget.Material3.Button.IconButton"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@drawable/favorite_24px"-->
-<!--            android:layout_gravity="end"-->
-<!--            app:icon="@drawable/favorite_24px"-->
-<!--            android:background="?attr/selectableItemBackground"-->
-<!--            android:visibility="gone"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/uncheckedButton"-->
+        <!--            style="@style/Widget.Material3.Button.IconButton"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:src="@drawable/favorite_24px"-->
+        <!--            android:layout_gravity="end"-->
+        <!--            app:icon="@drawable/favorite_24px"-->
+        <!--            android:background="?attr/selectableItemBackground"-->
+        <!--            android:visibility="gone"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/checkedButton"-->
-<!--            style="@style/Widget.Material3.Button.IconButton"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@drawable/heart_filled_primary"-->
-<!--            android:layout_gravity="end"-->
-<!--            android:background="?attr/selectableItemBackground"-->
-<!--            app:icon="@drawable/heart_filled_white"-->
-<!--            android:visibility="gone"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/checkedButton"-->
+        <!--            style="@style/Widget.Material3.Button.IconButton"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:src="@drawable/heart_filled_primary"-->
+        <!--            android:layout_gravity="end"-->
+        <!--            android:background="?attr/selectableItemBackground"-->
+        <!--            app:icon="@drawable/heart_filled_white"-->
+        <!--            android:visibility="gone"-->
+        <!--            app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -164,30 +164,30 @@
             android:id="@+id/checkedUnCheckedButtons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/uncheckedButton"
-            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:cornerRadius="4dp"
-            app:iconTint="?attr/colorPrimaryDark"
-            app:icon="@drawable/favorite_24px"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/uncheckedButton"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:cornerRadius="4dp"
+                app:iconTint="?attr/colorPrimaryDark"
+                app:icon="@drawable/favorite_24px"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/checkedButton"
-            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-            android:layout_width="wrap_content"
-            app:iconTint="?attr/colorPrimaryDark"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:visibility="gone"
-            app:cornerRadius="4dp"
-            app:icon="@drawable/heart_filled_primary"
-            app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"
-            app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/checkedButton"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="wrap_content"
+                app:iconTint="?attr/colorPrimaryDark"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                app:cornerRadius="4dp"
+                app:icon="@drawable/heart_filled_primary"
+                app:layout_constraintEnd_toEndOf="@+id/uncheckedButton"
+                app:layout_constraintTop_toTopOf="parent" />
         </FrameLayout>
 
         <TextView

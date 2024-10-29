@@ -316,6 +316,7 @@ class InitialFragment : Fragment() {
                 }
                 else{
                     println("8769283 REMOVING THE FRAGMENTS ON ELSE")
+                    println("ON ORDER SUCCESS FRAGMENT BACKUP in initial")
                     isEnabled = false
 
                     requireActivity().onBackPressed()

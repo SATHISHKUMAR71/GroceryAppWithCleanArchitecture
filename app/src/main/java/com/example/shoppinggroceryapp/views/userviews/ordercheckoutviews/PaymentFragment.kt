@@ -44,6 +44,7 @@ class PaymentFragment : Fragment() {
         placeOrder.setOnClickListener {
             var orderSuccessFragment = OrderSuccessFragment()
             orderSuccessFragment.arguments = Bundle().apply {
+                putBoolean("restartApp",true)
                 putString("deliveryFrequency",arguments?.getString("deliveryFrequency")?:"Not Available")
                 putString("timeSlot",arguments?.getString("timeSlot")?:"Not Available")
                 putInt("timeSlotInt",arguments?.getInt("timeSlotInt")?:-1)
