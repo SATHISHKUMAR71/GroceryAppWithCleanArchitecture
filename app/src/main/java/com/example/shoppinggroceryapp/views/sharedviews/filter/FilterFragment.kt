@@ -65,6 +65,10 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
         view.findViewById<MaterialToolbar>(R.id.materialToolbarFilter).setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }
+        lifecycleScope.launch (Dispatchers.IO){
+            FilterPrice.MAX_PRICE_VALUE = AppDatabase.getAppDatabase(requireContext()).getUserDao().getMaxPrice().price
+            FilterPrice.priceEndTo = FilterPrice.MAX_PRICE_VALUE
+        }
         val recyclerViewFilterType = view.findViewById<RecyclerView>(R.id.categoryType)
         adapter = FilterAdapter(listOf("Discounts","Brand","Expiry Date","Price","Manufacture Date"),
             listOf(),this,
@@ -151,15 +155,18 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
         FilterFragmentSearch.checkboxClear.observe(viewLifecycleOwner){
             if(FilterFragmentSearch.checkedList.isEmpty()){
                 adapter.setBadgeForBrand(0)
+                println("323232 ON IF FOR BRAND LIST EMPTY")
             }
-            else if(FilterFragmentSearch.checkedDiscountList.isEmpty()){
+            if(FilterFragmentSearch.checkedDiscountList.isEmpty()){
                 adapter.setBadgeForDiscount(0)
+                println("323232 ON IF FOR DISCOUNT LIST EMPTY")
             }
             lifecycleScope.launch(Dispatchers.IO){
-                filterViewModel.doFilter(products)
-                list = null
+                list = filterViewModel.doFilter(products).toMutableList()
                 MainActivity.handler.post {
-                    availableProducts.text = products.size.toString()
+                    list?.let {
+                        availableProducts.text = it.size.toString()
+                    }
                 }
             }
         }
