@@ -10,7 +10,7 @@ object ResetFilterValues {
         FilterFragmentSearch.checkedDiscountList = mutableListOf()
         FilterFragmentSearch.clearAll= MutableLiveData()
         FilterPrice.priceStartFrom = 0f
-        FilterPrice.priceEndTo = 2010f
+        FilterPrice.priceEndTo = FilterPrice.MAX_PRICE_VALUE
         FilterPrice.clearAll = MutableLiveData()
         FilterPrice.isPriceDataChanged = MutableLiveData()
         FilterExpiry.startManufactureDate = ""

@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.helpers.toast.ShowShortToast
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -39,24 +41,26 @@ class FilterExpiry : Fragment() {
         val startDateTextInputLayout = view.findViewById<TextInputLayout>(R.id.startDateLayout)
         val endDateTextInput = view.findViewById<TextInputEditText>(R.id.endDateTextInput)
         val endDateTextInputLayout = view.findViewById<TextInputLayout>(R.id.endDateLayout)
-        val clearStartDate = view.findViewById<ImageButton>(R.id.clearStartDate)
-        val clearEndDate = view.findViewById<ImageButton>(R.id.clearEndDate)
+//        val startDateTextInput = view.findViewById<TextView>(R.id.startDateTextView)
+//        val endDateTextInput = view.findViewById<TextView>(R.id.endDateTextView)
+        val clearStartDate = view.findViewById<MaterialButton>(R.id.clearStartDate)
+        val clearEndDate = view.findViewById<MaterialButton>(R.id.clearEndDate)
         var endDate:String? = null
         var startDate:String? = null
 
         val dateManufacturePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select the Start Date")
+            .setTitleText("Select the From Date")
             .setTextInputFormat(SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()))
             .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
             .build()
         val dateExpiryPicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select the End Date")
+            .setTitleText("Select the To Date")
             .setTextInputFormat(SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()))
             .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
             .build()
 //        startDateTextInput.setOnFocusChangeListener { v, hasFocus ->
 //            if(hasFocus){
-//                dateManufacturePicker.show(parentFragmentManager,"Start Date Picker")
+//                dateManufacturePicker.show(parentFragmentManager,"From Date Picker")
 //            }
 //        }
         clearStartDate.setOnClickListener {
@@ -68,13 +72,18 @@ class FilterExpiry : Fragment() {
                 startManufactureDate = ""
             }
             startDateTextInput.setText("")
-            view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.GONE
+//            startDateTextInput.hint = "Select From Date"
+            startDateTextInputLayout.hint = "Select From Date"
+            println("12345 set hint is called on line")
+            clearStartDate.visibility = View.GONE
+//            view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.GONE
 //            clearStartDate.visibility = View.INVISIBLE
             isDataChanged.value = true
         }
 
         clearEndDate.setOnClickListener {
             endDateTextInput.setText("")
+            endDateTextInputLayout.hint = "Select To Date"
             endDate = null
             if(isExpiry==true){
                 endExpiryDate = ""
@@ -82,15 +91,16 @@ class FilterExpiry : Fragment() {
             else if(isExpiry==false){
                 endManufactureDate = ""
             }
-            view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.GONE
+            clearEndDate.visibility = View.GONE
+//            view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.GONE
 //            clearEndDate.visibility = View.INVISIBLE
             isDataChanged.value = true
         }
         startDateTextInput.setOnClickListener {
-            dateManufacturePicker.show(parentFragmentManager,"Start Date Picker")
+            dateManufacturePicker.show(parentFragmentManager,"From Date Picker")
         }
         endDateTextInput.setOnClickListener {
-            dateExpiryPicker.show(parentFragmentManager,"End Date Picker")
+            dateExpiryPicker.show(parentFragmentManager,"To Date Picker")
         }
         var formatter = SimpleDateFormat("yyyy-MM-dd",Locale.getDefault())
         dateManufacturePicker.addOnPositiveButtonClickListener {
@@ -100,22 +110,28 @@ class FilterExpiry : Fragment() {
                 val status = DateGenerator.compareDeliveryStatus(startDate!!,endDate!!)
                 if(status=="Pending"){
                     startDateTextInput.setText(DateGenerator.getDayAndMonth(formatter.format(it)))
+//                    startDateTextInput.hint = "From Date"
+                    startDateTextInputLayout.hint = "From Date"
+                    println("12345 set hint is called on line")
                     if(isExpiry==true) {
                         startExpiryDate = startDate!!
                     }
                     else if(isExpiry == false){
                         startManufactureDate = startDate!!
                     }
-//                    clearStartDate.visibility = View.VISIBLE
-                    view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.VISIBLE
+                    clearStartDate.visibility = View.VISIBLE
+//                    view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.VISIBLE
                     isDataChanged.value = true
                 }
                 else{
-                    ShowShortToast.show("Start Date Should Be Minimum then End Date",requireContext())
+                    ShowShortToast.show("From Date Should Be Minimum then To Date",requireContext())
                 }
             }
             else{
                 startDateTextInput.setText(DateGenerator.getDayAndMonth(formatter.format(it)))
+//                startDateTextInput.hint = "From Date"
+                startDateTextInputLayout.hint = "From Date"
+                println("12345 set hint is called on line")
                 if(isExpiry==true) {
                     startExpiryDate = startDate!!
                 }
@@ -123,8 +139,8 @@ class FilterExpiry : Fragment() {
                     startManufactureDate = startDate!!
                 }
                 isDataChanged.value = true
-//                clearStartDate.visibility = View.VISIBLE
-                view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.VISIBLE
+                clearStartDate.visibility = View.VISIBLE
+//                view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.VISIBLE
             }
         }
         dateExpiryPicker.addOnPositiveButtonClickListener {
@@ -134,64 +150,78 @@ class FilterExpiry : Fragment() {
                 val status = DateGenerator.compareDeliveryStatus(startDate!!,endDate!!)
                 if(status=="Pending"){
                     endDateTextInput.setText(DateGenerator.getDayAndMonth(formatter.format(it)))
+                    endDateTextInputLayout.hint = "To Date"
                     if(isExpiry==true) {
                         endExpiryDate= endDate!!
                     }
                     else if(isExpiry==false){
                         endManufactureDate = endDate!!
                     }
-//                    clearEndDate.visibility = View.VISIBLE
-                    view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.VISIBLE
+                    clearEndDate.visibility = View.VISIBLE
+//                    view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.VISIBLE
                     isDataChanged.value = true
                 }
                 else{
-                    ShowShortToast.show("End Date Should Be Maximum then Start Date",requireContext())
+                    ShowShortToast.show("To Date Should Be Maximum then From Date",requireContext())
                 }
             }
             else{
                 endDateTextInput.setText(DateGenerator.getDayAndMonth(formatter.format(it)))
+                endDateTextInputLayout.hint = "To Date"
                 if(isExpiry==true) {
                     endExpiryDate= endDate!!
                 }
                 else if(isExpiry==false){
                     endManufactureDate = endDate!!
                 }
-//                clearEndDate.visibility = View.VISIBLE
-                view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.VISIBLE
+                clearEndDate.visibility = View.VISIBLE
+//                view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.VISIBLE
                 isDataChanged.value = true
             }
         }
         if(isExpiry==true){
             if(startExpiryDate.isNotEmpty()){
                 startDateTextInput.setText(DateGenerator.getDayAndMonth(startExpiryDate))
-//                clearStartDate.visibility = View.VISIBLE
-                view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.VISIBLE
+//                startDateTextInput.hint = "From Date"
+                startDateTextInputLayout.hint = "From Date"
+                println("12345 set hint is called on line")
+                clearStartDate.visibility = View.VISIBLE
+//                view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.VISIBLE
             }
             if(endExpiryDate.isNotEmpty()){
                 endDateTextInput.setText(DateGenerator.getDayAndMonth(endExpiryDate))
-                view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.VISIBLE
-//                clearEndDate.visibility = View.VISIBLE
+                endDateTextInputLayout.hint = "To Date"
+//                view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.VISIBLE
+                clearEndDate.visibility = View.VISIBLE
             }
         }
         else if(isExpiry==false) {
             if (startManufactureDate.isNotEmpty()) {
                 startDateTextInput.setText(DateGenerator.getDayAndMonth(startManufactureDate))
-//                clearStartDate.visibility = View.VISIBLE
-                view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.VISIBLE
+//                startDateTextInput.hint = "From Date"
+                startDateTextInputLayout.hint = "From Date"
+                println("12345 set hint is called on line")
+                clearStartDate.visibility = View.VISIBLE
+//                view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.VISIBLE
             }
             if (endManufactureDate.isNotEmpty()) {
                 endDateTextInput.setText(DateGenerator.getDayAndMonth(endManufactureDate))
-//                clearEndDate.visibility = View.VISIBLE
-                view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.VISIBLE
+                endDateTextInputLayout.hint = "To Date"
+                clearEndDate.visibility = View.VISIBLE
+//                view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.VISIBLE
             }
         }
         clearAll.observe(viewLifecycleOwner){
             startDateTextInput.setText("")
+//            startDateTextInput.hint = "Select From Date"
+            startDateTextInputLayout.hint = "Select From Date"
+            println("12345 set hint is called on line")
             endDateTextInput.setText("")
-            view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.GONE
-            view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.GONE
-//            clearStartDate.visibility = View.INVISIBLE
-//            clearEndDate.visibility = View.INVISIBLE
+            endDateTextInputLayout.hint = "Select To Date"
+//            view.findViewById<LinearLayout>(R.id.clearEndDateLayout).visibility = View.GONE
+//            view.findViewById<LinearLayout>(R.id.clearStartDateLayout).visibility = View.GONE
+            clearStartDate.visibility = View.GONE
+            clearEndDate.visibility = View.GONE
         }
         return view
     }

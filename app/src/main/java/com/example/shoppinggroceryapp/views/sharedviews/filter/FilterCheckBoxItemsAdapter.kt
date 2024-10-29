@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinggroceryapp.R
 
-class FilterCheckBoxItemsAdapter(var items:List<String>, var isChecked:List<Boolean>,var isDiscount:Boolean):RecyclerView.Adapter<FilterCheckBoxItemsAdapter.FilterCheckBoxHolder>() {
+class FilterCheckBoxItemsAdapter(var items:List<String>, var isChecked:List<Boolean>,var isDiscount:Boolean,var buttonVisibleCheck: ButtonVisibleCheck):RecyclerView.Adapter<FilterCheckBoxItemsAdapter.FilterCheckBoxHolder>() {
 
 
     inner class FilterCheckBoxHolder(checkBoxHolder:View):RecyclerView.ViewHolder(checkBoxHolder){
@@ -43,20 +44,6 @@ class FilterCheckBoxItemsAdapter(var items:List<String>, var isChecked:List<Bool
 
             }
             else{
-//                println("98982  on else ${FilterFragmentSearch.checkedDiscountList}")
-//                when(items[position]){
-//                    "10% or more" -> {
-//                        checkDiscounts(holder,position,10f)
-//                    }
-//                    "20% or more" -> {
-//                        checkDiscounts(holder,position,20f)
-//                    }
-//                    "30% or more" -> {
-//                        checkDiscounts(holder,position,30f)
-//                    }
-//                    "40% or more" -> checkDiscounts(holder,position,40f)
-//                    "50% or more" -> checkDiscounts(holder,position,50f)
-//                }
                 println("98982  on else ${FilterFragmentSearch.checkedDiscountList}")
                 if (items[position] in FilterFragmentSearch.checkedList) {
                     println("980123 980123 980123 980123 980123 980123  is checked called for ${items[position]}")
@@ -66,9 +53,7 @@ class FilterCheckBoxItemsAdapter(var items:List<String>, var isChecked:List<Bool
                 }
 
             }
-
             holder.isItemChecked.setOnClickListener {
-
                 if(holder.isItemChecked.isChecked){
                     if(isDiscount){
                         when(holder.isItemChecked.text.toString()) {
@@ -104,6 +89,7 @@ class FilterCheckBoxItemsAdapter(var items:List<String>, var isChecked:List<Bool
                     FilterFragmentSearch.isCheckBoxBrandClicked.value = true
                 }
 //                FilterFragmentSearch.isCheckBoxClicked.value = true
+                buttonVisibleCheck.checkClearButtonIsVisible()
             }
         }
     }

@@ -44,7 +44,7 @@ class FilterViewModel(var mGetAllBrands: GetAllBrands):ViewModel() {
             list = list.filter { it.manufactureDate<=FilterExpiry.endManufactureDate }
         }
         list = list.filter { ((it.price) - ((it.offer/100) * it.price))>=FilterPrice.priceStartFrom }
-        if(FilterPrice.priceEndTo<=2000F){
+        if(FilterPrice.priceEndTo<=FilterPrice.MAX_PRICE_VALUE){
             list = list.filter { ((it.price) - ((it.offer/100) * it.price))<=FilterPrice.priceEndTo }
         }
         brandMap = (mGetAllBrands.invoke())

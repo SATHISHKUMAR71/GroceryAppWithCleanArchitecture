@@ -10,6 +10,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.core.domain.products.Product
@@ -20,7 +21,9 @@ import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.sql.Time
 
 
@@ -37,7 +40,6 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
     private lateinit var dis10:CheckBox
     private lateinit var availableProducts:TextView
     var PRICE_START_VALUE = 0F
-    var PRICE_MAX_VALUE = 2010f
     companion object{
         var list:MutableList<Product>? = null
         var badgeNumber = 0
@@ -100,16 +102,16 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
                 list = filterViewModel.doFilter(products).toMutableList()
                 MainActivity.handler.post {
                     availableProducts.text = list?.size.toString()
-                    if(FilterPrice.priceStartFrom!=PRICE_START_VALUE && FilterPrice.priceEndTo!=PRICE_MAX_VALUE){
+                    if(FilterPrice.priceStartFrom!=PRICE_START_VALUE && FilterPrice.priceEndTo!=FilterPrice.MAX_PRICE_VALUE){
                         adapter.setBadgeForPrice(2)
                     }
-                    else if(FilterPrice.priceStartFrom==PRICE_START_VALUE && FilterPrice.priceEndTo!=PRICE_MAX_VALUE){
+                    else if(FilterPrice.priceStartFrom==PRICE_START_VALUE && FilterPrice.priceEndTo!=FilterPrice.MAX_PRICE_VALUE){
                         adapter.setBadgeForPrice(1)
                     }
-                    else if(FilterPrice.priceStartFrom!=PRICE_START_VALUE && FilterPrice.priceEndTo==PRICE_MAX_VALUE){
+                    else if(FilterPrice.priceStartFrom!=PRICE_START_VALUE && FilterPrice.priceEndTo==FilterPrice.MAX_PRICE_VALUE){
                         adapter.setBadgeForPrice(1)
                     }
-                    else if(FilterPrice.priceStartFrom==PRICE_START_VALUE && FilterPrice.priceEndTo==PRICE_MAX_VALUE){
+                    else if(FilterPrice.priceStartFrom==PRICE_START_VALUE && FilterPrice.priceEndTo==FilterPrice.MAX_PRICE_VALUE){
                         adapter.setBadgeForPrice(0)
                     }
                 }
@@ -145,13 +147,30 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
             }.start()
         }
 
+
+        FilterFragmentSearch.checkboxClear.observe(viewLifecycleOwner){
+            if(FilterFragmentSearch.checkedList.isEmpty()){
+                adapter.setBadgeForBrand(0)
+            }
+            else if(FilterFragmentSearch.checkedDiscountList.isEmpty()){
+                adapter.setBadgeForDiscount(0)
+            }
+            lifecycleScope.launch(Dispatchers.IO){
+                filterViewModel.doFilter(products)
+                list = null
+                MainActivity.handler.post {
+                    availableProducts.text = products.size.toString()
+                }
+            }
+        }
+
         clearAllButton.setOnClickListener {
             FilterExpiry.startExpiryDate = ""
             FilterExpiry.startManufactureDate = ""
             FilterExpiry.endExpiryDate = ""
             FilterExpiry.endManufactureDate = ""
             FilterPrice.priceStartFrom = PRICE_START_VALUE
-            FilterPrice.priceEndTo = PRICE_MAX_VALUE
+            FilterPrice.priceEndTo = FilterPrice.MAX_PRICE_VALUE
             FilterFragmentSearch.checkedList = mutableListOf()
             FilterFragmentSearch.checkedDiscountList = mutableListOf()
             adapter.resetViews()
@@ -163,7 +182,7 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
             adapter.setBadgeForPrice(0)
             adapter.setBadgeForExpiryDate(0)
             adapter.setBadgeForManufactureDate(0)
-            Thread {
+            lifecycleScope.launch(Dispatchers.IO){
                 filterViewModel.doFilter(products)
                 list = null
                 MainActivity.handler.post {

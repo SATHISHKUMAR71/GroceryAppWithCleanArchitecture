@@ -196,13 +196,13 @@ class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,
         else if(FilterExpiry.endManufactureDate.isNotEmpty() && FilterExpiry.startManufactureDate.isNotEmpty()){
             setBadgeForManufactureDate(2)
         }
-        if(FilterPrice.priceStartFrom!=0f && FilterPrice.priceEndTo!=2010f){
+        if(FilterPrice.priceStartFrom!=0f && FilterPrice.priceEndTo!=FilterPrice.MAX_PRICE_VALUE){
             setBadgeForPrice(2)
         }
-        else if(FilterPrice.priceStartFrom==0f && FilterPrice.priceEndTo!=2010f){
+        else if(FilterPrice.priceStartFrom==0f && FilterPrice.priceEndTo!=FilterPrice.MAX_PRICE_VALUE){
             setBadgeForPrice(1)
         }
-        else if(FilterPrice.priceStartFrom!=0f && FilterPrice.priceEndTo==2010f){
+        else if(FilterPrice.priceStartFrom!=0f && FilterPrice.priceEndTo==FilterPrice.MAX_PRICE_VALUE){
             setBadgeForPrice(1)
         }
         else{

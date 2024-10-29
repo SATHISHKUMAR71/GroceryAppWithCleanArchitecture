@@ -5,13 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinggroceryapp.R
+import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterCheckBoxItemsAdapter.FilterCheckBoxHolder
+import com.google.android.material.button.MaterialButton
 
 
-class FilterFragmentSearch(private var brandList:List<String>) : Fragment() {
+class FilterFragmentSearch(private var brandList:List<String>) : Fragment(),ButtonVisibleCheck {
 
 
     companion object{
@@ -20,7 +23,9 @@ class FilterFragmentSearch(private var brandList:List<String>) : Fragment() {
         var checkedList:MutableList<String> = mutableListOf()
         var checkedDiscountList:MutableList<Float> = mutableListOf()
         var clearAll:MutableLiveData<Boolean> = MutableLiveData()
+        var checkboxClear:MutableLiveData<Boolean> = MutableLiveData()
     }
+    var isDiscount:Boolean? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -31,20 +36,66 @@ class FilterFragmentSearch(private var brandList:List<String>) : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_filter_search, container, false)
-        var isDiscount = arguments?.getBoolean("isDiscount")
+        isDiscount = arguments?.getBoolean("isDiscount")
         val recyclerView = view.findViewById<RecyclerView>(R.id.brandList)
         val newList = mutableListOf<Boolean>()
         for(i in brandList){
             newList.add(false)
         }
-        var adapter = FilterCheckBoxItemsAdapter(brandList,newList,isDiscount?:false)
+        var adapter = FilterCheckBoxItemsAdapter(brandList,newList,isDiscount?:false,this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
         clearAll.observe(viewLifecycleOwner){
             adapter.notifyDataSetChanged()
         }
+        view.findViewById<MaterialButton>(R.id.clearButton).setOnClickListener {
+            if(isDiscount==true) {
+                FilterFragmentSearch.checkedDiscountList = mutableListOf()
+            }
+            else{
+                FilterFragmentSearch.checkedList = mutableListOf()
+            }
+            checkboxClear.value = true
+            adapter.notifyDataSetChanged()
+            view.findViewById<LinearLayout>(R.id.clearFilterTypeLayout).visibility = View.GONE
+        }
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        checkClearButtonIsVisible()
+    }
+
+
+    override fun checkClearButtonIsVisible(){
+        println("878787 CALLED FROM THE FRAGMENT ${FilterFragmentSearch.checkedList.isEmpty()} ${checkedDiscountList.isEmpty()}")
+        if(isDiscount==true) {
+            println("878787 CALLED FROM THE FRAGMENT on discount if ${FilterFragmentSearch.checkedList.isEmpty()} ${checkedDiscountList.isEmpty()}")
+            if (FilterFragmentSearch.checkedDiscountList.isNotEmpty()) {
+                view?.findViewById<LinearLayout>(R.id.clearFilterTypeLayout)?.apply {
+                    visibility = View.VISIBLE
+                    view?.findViewById<MaterialButton>(R.id.clearButton)?.text = "Clear Discount Filters"
+                }
+            }
+            else{
+                view?.findViewById<LinearLayout>(R.id.clearFilterTypeLayout)?.visibility =
+                    View.GONE
+            }
+        }
+        else{
+            println("878787 CALLED FROM THE FRAGMENT on discount else  $isDiscount ${FilterFragmentSearch.checkedList.isEmpty()} ${checkedDiscountList.isEmpty()}")
+            if (FilterFragmentSearch.checkedList.isNotEmpty()) {
+                view?.findViewById<LinearLayout>(R.id.clearFilterTypeLayout)?.apply {
+                    view?.findViewById<MaterialButton>(R.id.clearButton)?.text = "Clear Brand Filters"
+                    visibility = View.VISIBLE
+                }
+            }
+            else{
+                view?.findViewById<LinearLayout>(R.id.clearFilterTypeLayout)?.visibility =
+                    View.GONE
+            }
+        }
+    }
 
 }

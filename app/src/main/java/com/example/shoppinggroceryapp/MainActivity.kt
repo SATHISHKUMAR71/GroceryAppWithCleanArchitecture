@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
+import androidx.lifecycle.lifecycleScope
 import com.core.domain.products.Product
 import com.example.shoppinggroceryapp.MainActivity.Companion.cacheLock
 import com.example.shoppinggroceryapp.MainActivity.Companion.imageCache
@@ -31,9 +32,12 @@ import com.example.shoppinggroceryapp.framework.db.database.AppDatabase.Companio
 import com.example.shoppinggroceryapp.framework.db.entity.order.CartMappingEntity
 import com.example.shoppinggroceryapp.helpers.PutExtras
 import com.example.shoppinggroceryapp.views.initialview.SetInitialDataForUser
+import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterPrice
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.profileviews.AccountFragment
 import com.example.shoppinggroceryapp.views.sharedviews.profileviews.EditProfileViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -80,6 +84,10 @@ class MainActivity : AppCompatActivity() {
         val db2 = getAppDatabase(baseContext).getUserDao()
         if(isSigned) {
             assignCart(db2)
+        }
+        lifecycleScope.launch (Dispatchers.IO){
+            FilterPrice.MAX_PRICE_VALUE = db2.getMaxPrice().price
+            FilterPrice.priceEndTo = FilterPrice.MAX_PRICE_VALUE
         }
 //        intent?.let {
 //            var isEdit = it.getBooleanExtra("isEditProduct",false)
