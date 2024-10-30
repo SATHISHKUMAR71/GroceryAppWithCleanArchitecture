@@ -194,7 +194,7 @@ class AccountFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Logout Confirmation")
             .setMessage("Are you sure to Logout?")
-            .setPositiveButton("Yes"){_,_ ->
+            .setPositiveButton("Logout"){_,_ ->
                 restartApp()
             }
             .setNegativeButton("No"){dialog,_ ->

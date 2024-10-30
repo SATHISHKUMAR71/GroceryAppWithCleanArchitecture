@@ -352,12 +352,12 @@ class ProductListFragment : Fragment() {
                 }
             }
         }
-        val onBackPressedCallback = object : OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                parentFragmentManager.popBackStack()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onBackPressedCallback)
+//        val onBackPressedCallback = object : OnBackPressedCallback(true){
+//            override fun handleOnBackPressed() {
+//                parentFragmentManager.popBackStack()
+//            }
+//        }
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onBackPressedCallback)
         return view
     }
 

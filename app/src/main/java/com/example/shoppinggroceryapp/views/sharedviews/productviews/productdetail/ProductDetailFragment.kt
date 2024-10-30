@@ -15,6 +15,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.OptIn
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.fragment.app.FragmentManager
@@ -147,19 +148,20 @@ class ProductDetailFragment : Fragment() {
             productDetailToolBar.menu.findItem(R.id.cart).setVisible(false)
             productDetailToolBar.menu.findItem(R.id.addedInWishlist).setVisible(false)
             productDetailToolBar.menu.findItem(R.id.addToWishlist).setVisible(false)
-            recyclerView.setPadding(0,0,0,250)
+//            recyclerView.setPadding(0,0,0,250)
+            recyclerView.setPadding(recyclerView.paddingLeft,recyclerView.paddingTop,recyclerView.paddingRight,250)
             view.findViewById<ScrollView>(R.id.productDetailScrollView).setPadding(0)
-            view.findViewById<LinearLayout>(R.id.exploreBottomLayout).visibility = View.GONE
+            view.findViewById<CardView>(R.id.exploreBottomLayoutCard).visibility = View.GONE
         }
 
         else{
-            recyclerView.setPadding(10)
+//            recyclerView.setPadding(10)
             productDetailToolBar.menu.findItem(R.id.edit).setVisible(false)
             productDetailToolBar.menu.findItem(R.id.cart).setVisible(true)
             productDetailToolBar.menu.findItem(R.id.delete).setVisible(false)
             productDetailToolBar.menu.findItem(R.id.addedInWishlist).setVisible(true)
             productDetailToolBar.menu.findItem(R.id.addToWishlist).setVisible(true)
-            view.findViewById<LinearLayout>(R.id.exploreBottomLayout).visibility = View.VISIBLE
+            view.findViewById<CardView>(R.id.exploreBottomLayoutCard).visibility = View.VISIBLE
         }
 
 

@@ -81,20 +81,32 @@
                         android:id="@+id/moreImagesView"
                         android:elevation="2dp"
                         app:cardCornerRadius="5dp"
-                        android:visibility="gone"
-                        android:backgroundTint="?attr/colorSecondaryContainer"
+                        android:visibility="invisible"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <LinearLayout
                             android:layout_gravity="center"
-                            android:orientation="vertical"
-                            android:padding="2dp"
+                            android:paddingTop="2dp"
+                            android:paddingBottom="2dp"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:gravity="center"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/info_24px"
+                                app:tint="?attr/colorPrimary" />
+
                             <TextView
+                                android:textColor="?attr/colorPrimary"
+                                android:textStyle="bold"
+                                android:paddingStart="5dp"
+                                android:paddingEnd="5dp"
                                 android:id="@+id/moreImagesText"
                                 android:textAlignment="center"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="+2 more"/>
                         </LinearLayout>
@@ -107,7 +119,7 @@
     </LinearLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -324,8 +336,8 @@
                     android:gravity="center"
                     android:text="000"
                     android:textAlignment="center"
-                    android:textColor="?attr/colorPrimary"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <ImageButton
@@ -338,11 +350,11 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/productAddLayoutOneTime"
-                android:elevation="4dp"
                 android:layout_width="110dp"
                 android:layout_height="40dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
+                android:elevation="4dp"
                 android:text="Add"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
@@ -352,6 +364,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/productExpiryDate"
                 app:rippleColor="?attr/colorControlHighlight" />
         </LinearLayout>
+
 
         <TextView
             android:layout_marginStart="10dp"

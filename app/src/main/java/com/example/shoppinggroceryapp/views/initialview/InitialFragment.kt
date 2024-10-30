@@ -403,12 +403,12 @@ class InitialFragment : Fragment() {
                         putBoolean("searchViewOpened", true)
                         putString("category", category)
                     }
-                    category =""
                     FragmentTransaction.navigateWithBackstack(
                         parentFragmentManager,
                         productListFragment,
-                        "Product List Fragment"
+                        category
                     )
+                    category =""
                 }
             }
         }

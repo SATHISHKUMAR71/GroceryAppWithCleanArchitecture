@@ -256,15 +256,17 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginStart="20dp"
                         android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                        android:layout_marginBottom="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="You May Also Like"/>
                     <androidx.recyclerview.widget.RecyclerView
+                        android:paddingStart="25dp"
+                        android:paddingBottom="20dp"
+                        android:clipToPadding="false"
+                        android:layout_marginTop="10dp"
                         android:id="@+id/productListInProductDetailFragment"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_height="wrap_content">
                     </androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -273,6 +275,7 @@
     </ScrollView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/exploreBottomLayoutCard"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:cardElevation="12dp"

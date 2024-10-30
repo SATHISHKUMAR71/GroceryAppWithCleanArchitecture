@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.widget.TooltipCompat
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -42,6 +43,7 @@ import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartViewModel
 import com.example.shoppinggroceryapp.views.userviews.category.CategoryFragment
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.tooltip.TooltipDrawable
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -56,6 +58,7 @@ class ProductListAdapter(var fragment: Fragment,
     var grandTolAmt = ""
     var totAmtWithFee = ""
     var noOfItem = ""
+    var isClicked = false
     var isVisible:MutableLiveData<Boolean> = MutableLiveData()
     var grandTolAmtLiveData:MutableLiveData<String> = MutableLiveData()
     var totAmtWithFeeLiveData:MutableLiveData<String> = MutableLiveData()
@@ -258,8 +261,19 @@ class ProductListAdapter(var fragment: Fragment,
                             }
                         }
                         else {
-                            holder.itemView.findViewById<CardView>(R.id.moreImagesView).visibility = View.VISIBLE
-                            holder.itemView.findViewById<TextView>(R.id.moreImagesText).text = "+$it more"
+                            holder.itemView.findViewById<TextView>(R.id.moreImagesText).apply {
+                                text = "+$it more"
+                                tooltipText = "This Product has $it more Images"
+                                this.setOnClickListener{
+                                    this.performLongClick()
+                                }
+                            }
+                            holder.itemView.findViewById<CardView>(R.id.moreImagesView).apply {
+                                visibility = View.VISIBLE
+                                this.setOnClickListener{
+                                    holder.itemView.findViewById<TextView>(R.id.moreImagesText).performLongClick()
+                                }
+                            }
                         }
                     }
                 }
@@ -419,60 +433,12 @@ class ProductListAdapter(var fragment: Fragment,
     }
 
     private fun setUpListeners(holder: ProductLargeImageHolder, position: Int) {
-//        holder.itemView.setOnTouchListener { v, event ->
-//            when(event.action){
-//                MotionEvent.ACTION_UP ->{
-//                    holder.itemView.animate()
-//                        .scaleX(1f)
-//                        .scaleY(1f)
-//                        .setDuration(100)
-//                        .start()
-//                    v.performClick()
-//                    true
-//                }
-//                MotionEvent.ACTION_DOWN -> {
-//                    holder.itemView.animate()
-//                        .scaleX(0.9f)
-//                        .scaleY(0.9f)
-//                        .setDuration(100)
-//                        .start()
-//                    true
-//                }
-//                MotionEvent.ACTION_CANCEL -> {
-//                    holder.itemView.animate()
-//                        .scaleX(1f)
-//                        .scaleY(1f)
-//                        .setDuration(100)
-//                        .start()
-//                    true
-//                }
-//                else -> {
-//                    false
-//                }
-//            }
-//        }
         holder.itemView.setOnClickListener {
             try {
-//                holder.itemView.animate()
-//                    .scaleX(0.9f)
-//                    .scaleY(0.9f)
-//                    .setDuration(2000)
-//                    .start()
                 ProductListFragment.selectedPos = position
                 ProductListFragment.selectedProductEntity.value =
                     productEntityList[position]
                 FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager,ProductDetailFragment(),"${productEntityList[position].productId}")
-//                fragment.parentFragmentManager.beginTransaction()
-//                    .setCustomAnimations(
-//                        R.anim.fade_in,
-//                        R.anim.fade_out,
-//                        R.anim.fade_in,
-//                        R.anim.fade_out
-//                    )
-//                    .replace(R.id.fragmentMainLayout, ProductDetailFragment(),"Product Detail Fragment")
-//                    .addToBackStack("Product Detail Fragment")
-//                    .commit()
-//                FragmentTransaction.fragmentSequenceSet.add("Product Detail Fragment")
             }
             catch (e:Exception){
 

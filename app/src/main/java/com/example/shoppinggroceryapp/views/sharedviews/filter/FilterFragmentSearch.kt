@@ -47,6 +47,7 @@ class FilterFragmentSearch(private var brandList:List<String>) : Fragment(),Butt
         recyclerView.layoutManager = LinearLayoutManager(context)
         clearAll.observe(viewLifecycleOwner){
             adapter.notifyDataSetChanged()
+            checkClearButtonIsVisible()
         }
         view.findViewById<MaterialButton>(R.id.clearButton).setOnClickListener {
             if(isDiscount==true) {
