@@ -9,25 +9,27 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout2"
         android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
         android:layout_height="wrap_content"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
         app:layout_constraintTop_toTopOf="parent">
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             app:titleTextColor="@color/white"
             android:id="@+id/productDetailToolbar"
+            android:elevation="0dp"
             app:navigationIcon="@drawable/arrow_back_24px"
             app:navigationIconTint="@color/white"
             app:menu="@menu/product_detail_menu"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
             android:background="?attr/colorPrimaryDark" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/productDetailScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="122dp"
+        android:paddingBottom="?attr/actionBarSize"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,6 +49,8 @@
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/productImageViewer"
                     android:layout_width="match_parent"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
                     android:layout_height="350dp"/>
                 <com.google.android.material.tabs.TabLayout
                     android:layout_width="match_parent"
@@ -261,6 +265,7 @@
                         android:text="You May Also Like"/>
                     <androidx.recyclerview.widget.RecyclerView
                         android:paddingStart="25dp"
+                        android:nestedScrollingEnabled="false"
                         android:paddingBottom="20dp"
                         android:clipToPadding="false"
                         android:layout_marginTop="10dp"
@@ -272,7 +277,7 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/exploreBottomLayoutCard"

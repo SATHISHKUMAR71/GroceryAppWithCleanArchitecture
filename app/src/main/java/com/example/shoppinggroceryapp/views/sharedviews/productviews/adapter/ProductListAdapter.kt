@@ -518,46 +518,25 @@ class ProductListAdapter(var fragment: Fragment,
         holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).setOnClickListener {
             if((holder.absoluteAdapterPosition==position) || ((tag=="C") && (holder.absoluteAdapterPosition==position+1))) {
                 if(tag!="C") {
-                    if (!checkedList[position]) {
-                        checkedList[position] = true
-                        holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
-                            View.VISIBLE
-                        holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
-                            View.GONE
-                        productListViewModel.addProductToWishList(productEntityList[position].productId)
-                        ShowShortToast.show("Added to WishList", fragment.requireContext())
-                    } else {
-                        checkedList[position] = false
-                        holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
-                            View.GONE
-                        holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
-                            View.VISIBLE
-                        productListViewModel.removeProductFromWishList((productEntityList[position].productId))
-                        ShowShortToast.show("Removed from WishList", fragment.requireContext())
-                    }
+                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
+                        View.VISIBLE
+                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
+                        View.GONE
+                    productListViewModel.addProductToWishList(productEntityList[position].productId)
+                    ShowShortToast.show("Added to WishList", fragment.requireContext())
+
                 }
             }
         }
         holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).setOnClickListener {
             if((holder.absoluteAdapterPosition==position) || ((tag=="C") && (holder.absoluteAdapterPosition==position+1))) {
                 if(tag!="C") {
-                    if (!checkedList[position]) {
-                        checkedList[position] = true
-                        holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
-                            View.VISIBLE
-                        holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
-                            View.GONE
-                        productListViewModel.addProductToWishList(productEntityList[position].productId)
-                        ShowShortToast.show("Added to WishList", fragment.requireContext())
-                    } else {
-                        checkedList[position] = false
-                        holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
-                            View.GONE
-                        holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
-                            View.VISIBLE
-                        productListViewModel.removeProductFromWishList((productEntityList[position].productId))
-                        ShowShortToast.show("Removed from WishList", fragment.requireContext())
-                    }
+                    holder.itemView.findViewById<MaterialButton>(R.id.checkedButton).visibility =
+                        View.GONE
+                    holder.itemView.findViewById<MaterialButton>(R.id.uncheckedButton).visibility =
+                        View.VISIBLE
+                    productListViewModel.removeProductFromWishList((productEntityList[position].productId))
+                    ShowShortToast.show("Removed from WishList", fragment.requireContext())
                 }
             }
         }

@@ -18,6 +18,10 @@
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways">
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <LinearLayout
                 android:id="@+id/linearLayout15"
                 android:layout_width="match_parent"
                 app:layout_collapseMode="pin"
@@ -27,13 +31,13 @@
                 tools:layout_editor_absoluteX="10dp">
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/sortButton"
-                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                    style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
+                    app:cornerRadius="4dp"
                     android:layout_weight="0.5"
-                    android:text="Sort"
-                    app:cornerRadius="4dp" />
+                    android:text="Sort" />
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -42,9 +46,11 @@
                     <com.google.android.material.button.MaterialButton
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                         android:id="@+id/filterButton"
+                        style="@style/Widget.Material3.Button.TonalButton"
                         android:text="Filter"
+                        app:icon="@drawable/baseline_filter_list_24"
+                        app:iconGravity="textStart"
                         app:cornerRadius="4dp"
                         android:layout_marginStart="10dp"
                         android:layout_weight="0.5"/>
@@ -64,6 +70,12 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/guideLineColorDim"
+                android:elevation="1dp"/>
+            </LinearLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
     <TextView
@@ -72,7 +84,7 @@
         android:visibility="gone"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginTop="100dp"
         android:textSize="20sp"
         android:text="No Items Available (^_^)"/>
 

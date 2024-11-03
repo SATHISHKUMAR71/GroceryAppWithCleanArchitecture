@@ -83,6 +83,8 @@ class GetNewAddress : Fragment() {
 //        }
         if(editAddress !=null){
             editAddress?.let {
+                addressTopBar.title = "Edit Address"
+                saveAddress.text = "Update Address"
                 fullName.setText(it.addressContactName)
                 phone.setText(it.addressContactNumber)
                 houseNo.setText(it.buildingName)

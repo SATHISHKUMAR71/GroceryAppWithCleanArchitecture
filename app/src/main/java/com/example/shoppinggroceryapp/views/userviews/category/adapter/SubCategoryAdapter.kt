@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.framework.db.dataclass.ChildCategoryName
+import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.google.android.material.button.MaterialButton
 
@@ -51,18 +52,19 @@ class SubCategoryAdapter(var fragment: Fragment,var categoryList: List<String>):
 //            productListFrag.arguments = Bundle().apply {
 //
 //            }
-            fragment.parentFragmentManager.beginTransaction()
-                .setCustomAnimations(
-                    R.anim.fade_in,
-                    R.anim.fade_out,
-                    R.anim.fade_in,
-                    R.anim.fade_out
-                )
-                .replace(R.id.fragmentMainLayout,
-                    productListFrag,"Product List Fragment"
-                )
-                .addToBackStack("Product List")
-                .commit()
+            FragmentTransaction.navigateWithBackstack(fragment.parentFragmentManager,productListFrag,categoryList[position])
+//            fragment.parentFragmentManager.beginTransaction()
+//                .setCustomAnimations(
+//                    R.anim.fade_in,
+//                    R.anim.fade_out,
+//                    R.anim.fade_in,
+//                    R.anim.fade_out
+//                )
+//                .replace(R.id.fragmentMainLayout,
+//                    productListFrag,"Product List Fragment"
+//                )
+//                .addToBackStack("Product List")
+//                .commit()
         }
     }
 }

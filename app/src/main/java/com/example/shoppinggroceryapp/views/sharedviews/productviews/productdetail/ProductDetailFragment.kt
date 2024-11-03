@@ -18,6 +18,7 @@ import androidx.annotation.OptIn
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
@@ -63,6 +64,7 @@ import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductImageAdapter
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListViewModel
+import com.example.shoppinggroceryapp.views.sharedviews.search.adapter.SearchListAdapter.Companion.searchList
 import com.google.android.material.R.attr.textAppearanceBodyLarge
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.badge.BadgeDrawable
@@ -150,7 +152,7 @@ class ProductDetailFragment : Fragment() {
             productDetailToolBar.menu.findItem(R.id.addToWishlist).setVisible(false)
 //            recyclerView.setPadding(0,0,0,250)
             recyclerView.setPadding(recyclerView.paddingLeft,recyclerView.paddingTop,recyclerView.paddingRight,250)
-            view.findViewById<ScrollView>(R.id.productDetailScrollView).setPadding(0)
+            view.findViewById<NestedScrollView>(R.id.productDetailScrollView).setPadding(0)
             view.findViewById<CardView>(R.id.exploreBottomLayoutCard).visibility = View.GONE
         }
 
@@ -247,11 +249,7 @@ class ProductDetailFragment : Fragment() {
         }
         badgeDrawable = BadgeDrawable.create(requireContext())
 
-        view.findViewById<MaterialButton>(R.id.categoryButton).setOnClickListener {
 
-//            parentFragmentManager.popBackStack("Category Fragment",FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            FragmentTransaction.navigateWithBackstack(parentFragmentManager, CategoryFragment(),"Category Fragment")
-        }
 
         productDetailViewModel.getProductsByCartId(MainActivity.cartId)
         productDetailViewModel.cartProducts.observe(viewLifecycleOwner){
@@ -282,7 +280,7 @@ class ProductDetailFragment : Fragment() {
         }
 
         productDetailViewModel.similarProductsLiveData.observe(viewLifecycleOwner){
-            if(it.size ==1) {
+            if(it.size == 1) {
                 view.findViewById<LinearLayout>(R.id.similarProductsLayout).visibility = View.GONE
             }
             else {
@@ -296,12 +294,18 @@ class ProductDetailFragment : Fragment() {
                 recyclerView.adapter = adapter
                 val tmpList = mutableListOf<Product>()
                 for (i in it.toMutableList()) {
+                    println("09890 product name and id: ${i.productId}  and ${i.productName}")
                     if (i.productId == ProductListFragment.selectedProductEntity.value?.productId) {
                         continue
                     }
                     tmpList.add(i)
                 }
-                adapter.setProducts(tmpList)
+                if(tmpList.size<8){
+                    adapter.setProducts(tmpList.subList(0,tmpList.size))
+                }
+                else{
+                    adapter.setProducts(tmpList.subList(0,8))
+                }
                 recyclerView.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             }
@@ -534,6 +538,13 @@ class ProductDetailFragment : Fragment() {
             }
             once = 1
             productDetailViewModel.getSimilarProduct(selectedProduct.categoryName)
+            view?.findViewById<MaterialButton>(R.id.categoryButton)?.setOnClickListener {
+                var productListFragment = ProductListFragment()
+                productListFragment.arguments = Bundle().apply {
+                    putString("category", selectedProduct.categoryName)
+                }
+                FragmentTransaction.navigateWithBackstack(parentFragmentManager, productListFragment,selectedProduct.categoryName)
+            }
         }
 
         InitialFragment.hideBottomNav.value = true

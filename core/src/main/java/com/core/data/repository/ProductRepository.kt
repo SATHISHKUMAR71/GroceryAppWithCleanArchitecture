@@ -25,6 +25,9 @@ class ProductRepository(private val productDataSource: ProductDataSource,private
     fun getAvailableProductsInOrderId(orderId: Int): ProductAndDeletedCounts {
         return retailerProductDataSource.getAvailableProductsInOrderId(orderId)
     }
+    fun getMaxPriceInInventory():Float{
+        return productDataSource.getMaxPrice()
+    }
 
     fun getSpecificOrder(orderId: Int):OrderDetails{
         return retailerProductDataSource.getSpecificOrder(orderId)

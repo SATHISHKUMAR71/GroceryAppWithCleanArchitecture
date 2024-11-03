@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.core.domain.products.BrandData
 import com.core.domain.products.Category
@@ -15,7 +16,9 @@ import com.core.domain.user.UserInfoWithOrderInfo
 import com.core.usecases.productusecase.productmanagement.ProductManagementDeleteUseCases
 import com.core.usecases.productusecase.productmanagement.ProductManagementGetterUseCases
 import com.core.usecases.productusecase.productmanagement.ProductManagementSetterUseCases
+import com.example.shoppinggroceryapp.framework.db.database.AppDatabase
 import com.example.shoppinggroceryapp.framework.db.dataclass.IntWithCheckedData
+import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterPrice
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailViewModel
 import kotlinx.coroutines.Dispatchers
@@ -186,6 +189,11 @@ class AddEditProductViewModel(private var productGetters: ProductManagementGette
                         productSetters.mAddProductImage.invoke(Images(0,it.productId,i))
                     }
                 }
+                viewModelScope.launch (Dispatchers.IO){
+                    FilterPrice.MAX_PRICE_VALUE = productGetters.mGetMaxPrice.invoke()
+                    FilterPrice.priceEndTo = FilterPrice.MAX_PRICE_VALUE
+                }
+
                 ProductListFragment.selectedProductEntity.postValue(prod)
 //                getOrdersForTheProducts(prod)
             }

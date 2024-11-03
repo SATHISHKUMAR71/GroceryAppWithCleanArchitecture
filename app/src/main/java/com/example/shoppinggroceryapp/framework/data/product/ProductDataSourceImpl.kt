@@ -257,6 +257,10 @@ class ProductDataSourceImpl(private val retailerDao: RetailerDao):ProductDataSou
         return null
     }
 
+    override fun getMaxPrice(): Float {
+        return retailerDao.getMaxPrice().price
+    }
+
     override fun getImagesForProduct(productId: Long): List<Images>? {
         return retailerDao.getImagesForProduct(productId)?.map { Images(it.imageId,it.productId,it.images) }
     }

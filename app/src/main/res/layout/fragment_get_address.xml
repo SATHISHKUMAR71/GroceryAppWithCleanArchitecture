@@ -17,10 +17,10 @@
             android:id="@+id/getAddressToolbar"
             android:background="?attr/colorPrimaryDark"
             app:titleTextColor="?attr/colorOnPrimary"
-            app:navigationIcon="@drawable/close_24px"
+            app:navigationIcon="@drawable/arrow_back_24px"
+            app:navigationIconTint="@color/white"
             android:layout_height="wrap_content"
-            app:title="Add New Address"
-            app:titleCentered="true"/>
+            app:title="Add New Address" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
@@ -31,6 +31,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
             android:layout_height="wrap_content">
 
                 <LinearLayout

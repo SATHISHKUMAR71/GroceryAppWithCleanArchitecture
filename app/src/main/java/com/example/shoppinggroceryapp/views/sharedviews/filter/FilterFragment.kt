@@ -65,18 +65,15 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
         view.findViewById<MaterialToolbar>(R.id.materialToolbarFilter).setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }
-        lifecycleScope.launch (Dispatchers.IO){
-            FilterPrice.MAX_PRICE_VALUE = AppDatabase.getAppDatabase(requireContext()).getUserDao().getMaxPrice().price
-            FilterPrice.priceEndTo = FilterPrice.MAX_PRICE_VALUE
-        }
+
         val recyclerViewFilterType = view.findViewById<RecyclerView>(R.id.categoryType)
-        adapter = FilterAdapter(listOf("Discounts","Brand","Expiry Date","Price","Manufacture Date"),
+        adapter = FilterAdapter(listOf("Discounts","Brand","Expiry Date","Price"),
             listOf(),this,
             listOf("10% or more","20% or more","30% or more","40% or more","50% or more")
         )
         filterViewModel.getBrandNames()
         filterViewModel.brandList.observe(viewLifecycleOwner){
-            adapter = FilterAdapter(listOf("Discounts","Brand","Expiry Date","Price","Manufacture Date"),it,this,
+            adapter = FilterAdapter(listOf("Discounts","Brand","Expiry Date","Price"),it,this,
                 listOf("10% or more","20% or more","30% or more","40% or more","50% or more")
             )
             adapter.setBadges()
@@ -204,7 +201,12 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+//        view?.postDelayed({
+//            view?.findViewById<RecyclerView>(R.id.categoryType)?.post{
+//                println("78687 on view created on click ${view?.findViewById<RecyclerView>(R.id.categoryType)?.findViewHolderForAdapterPosition(0)?.itemView}")
+//                view?.findViewById<RecyclerView>(R.id.categoryType)?.findViewHolderForAdapterPosition(0)?.itemView?.findViewById<MaterialButton>(R.id.filterOptionsDiscountBtn)?.performClick()
+//            }
+//        },5L)
     }
 
 

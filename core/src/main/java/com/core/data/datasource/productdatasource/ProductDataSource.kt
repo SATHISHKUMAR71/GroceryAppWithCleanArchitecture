@@ -35,4 +35,5 @@ interface ProductDataSource {
     fun getAllWishList(userId:Int,productId: Long):WishList?
     fun getWishedProductsList(userId: Int):List<Product>
     fun getSpecificWishList(userId:Int,productId:Long):WishList?
+    fun getMaxPrice():Float
 }

@@ -210,7 +210,7 @@ class HomeFragment : Fragment() {
 //                "Product List Opened")
         text.setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,productListFrag
-            ,"Product List Fragment")
+            ,text.text.toString())
         }
         text.setOnTouchListener { v, event ->
             when (event.action) {
@@ -258,7 +258,7 @@ class HomeFragment : Fragment() {
         }
         cardView.setOnClickListener {
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,productListFrag
-                ,"Product List Fragment")
+                ,text.text.toString())
         }
     }
 

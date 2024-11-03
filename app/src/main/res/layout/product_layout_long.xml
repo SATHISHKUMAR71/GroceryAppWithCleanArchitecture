@@ -153,7 +153,7 @@
             app:layout_constraintTop_toTopOf="parent">
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/uncheckedButton"
-                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cornerRadius="4dp"
@@ -165,7 +165,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/checkedButton"
-                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 app:iconTint="?attr/colorPrimaryDark"
                 android:layout_height="wrap_content"
@@ -294,6 +294,7 @@
         <LinearLayout
             android:id="@+id/buttonLayout"
             android:layout_width="110dp"
+            android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             app:layout_constraintEnd_toEndOf="parent"
