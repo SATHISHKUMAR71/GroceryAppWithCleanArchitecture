@@ -1,16 +1,19 @@
 package com.example.shoppinggroceryapp.views.sharedviews.filter
 
+import android.media.Image
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinggroceryapp.R
-import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterCheckBoxItemsAdapter.FilterCheckBoxHolder
 import com.google.android.material.button.MaterialButton
 
 
@@ -42,13 +45,42 @@ class FilterFragmentSearch(private var brandList:List<String>) : Fragment(),Butt
         for(i in brandList){
             newList.add(false)
         }
-        var adapter = FilterCheckBoxItemsAdapter(brandList,newList,isDiscount?:false,this)
+        val searchBar = view.findViewById<SearchView>(R.id.searchViewBrand)
+        var adapter = FilterCheckBoxItemsAdapter(brandList.toMutableList(),newList,isDiscount?:false,this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
         clearAll.observe(viewLifecycleOwner){
             adapter.notifyDataSetChanged()
             checkClearButtonIsVisible()
         }
+        searchBar.setOnCloseListener{
+            println("123 ON CLOSE LISTENER")
+            true
+        }
+
+
+        searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                var list = brandList.filter { it.contains(newText?:"",ignoreCase = true) }
+                println("NEW LIST 1234 $list")
+                println("NEW LIST 1234 old $brandList")
+                adapter.updateBrandName(list)
+                return true
+            }
+
+        })
+        println("IS DISCOUNT VALUE: $isDiscount")
+        if(isDiscount==true){
+            searchBar?.visibility = View.GONE
+        }
+        else{
+            searchBar?.visibility = View.VISIBLE
+        }
+
         view.findViewById<MaterialButton>(R.id.clearButton).setOnClickListener {
             if(isDiscount==true) {
                 FilterFragmentSearch.checkedDiscountList = mutableListOf()

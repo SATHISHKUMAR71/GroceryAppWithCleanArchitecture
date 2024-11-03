@@ -5,10 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinggroceryapp.R
+import com.example.shoppinggroceryapp.views.sharedviews.search.adapter.SearchListAdapter.Companion.searchList
+import com.example.shoppinggroceryapp.views.sharedviews.search.diffutil.SearchListDiffUtil
 
-class FilterCheckBoxItemsAdapter(var items:List<String>, var isChecked:List<Boolean>,var isDiscount:Boolean,var buttonVisibleCheck: ButtonVisibleCheck):RecyclerView.Adapter<FilterCheckBoxItemsAdapter.FilterCheckBoxHolder>() {
+class FilterCheckBoxItemsAdapter(var items:MutableList<String>, var isChecked:List<Boolean>,var isDiscount:Boolean,var buttonVisibleCheck: ButtonVisibleCheck):RecyclerView.Adapter<FilterCheckBoxItemsAdapter.FilterCheckBoxHolder>() {
 
 
     inner class FilterCheckBoxHolder(checkBoxHolder:View):RecyclerView.ViewHolder(checkBoxHolder){
@@ -106,6 +109,14 @@ class FilterCheckBoxItemsAdapter(var items:List<String>, var isChecked:List<Bool
         } else {
             holder.isItemChecked.isChecked = false
         }
+    }
+
+    fun updateBrandName(newList:List<String>){
+        val diffUtil = BrandDataDiffUtil(items,newList)
+        val diffResults = DiffUtil.calculateDiff(diffUtil)
+        items.clear()
+        items.addAll(newList)
+        diffResults.dispatchUpdatesTo(this)
     }
 
 }

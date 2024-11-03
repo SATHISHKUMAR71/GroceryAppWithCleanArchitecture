@@ -84,53 +84,58 @@ class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,
         }
         holder.button.setOnClickListener {
             println("78687 ON CLICK LISTENER IN FILTER ADAPTER")
-            highlightedPos = holder.absoluteAdapterPosition
+            if(highlightedPos!=holder.absoluteAdapterPosition) {
+                highlightedPos = holder.absoluteAdapterPosition
+                resetViews()
+                when (filterTypeList[position]) {
+                    "Brand" -> {
+                        fragment.parentFragmentManager.beginTransaction()
+                            .replace(R.id.detailOptions, FilterFragmentSearch(brandData)
+                                .apply {
+                                    arguments = Bundle().apply {
+                                        putBoolean("isDiscount", false)
+                                    }
+                                })
+                            .commit()
+                    }
 
-            resetViews()
-            when(filterTypeList[position]){
-                "Brand" -> {
-                    fragment.parentFragmentManager.beginTransaction()
-                        .replace(R.id.detailOptions,FilterFragmentSearch(brandData)
-                            .apply {
+                    "Price" -> {
+                        fragment.parentFragmentManager.beginTransaction()
+                            .replace(R.id.detailOptions, FilterPrice())
+                            .commit()
+                    }
+
+                    "Expiry Date" -> {
+
+                        fragment.parentFragmentManager.beginTransaction()
+                            .replace(R.id.detailOptions, FilterExpiry().apply {
                                 arguments = Bundle().apply {
-                                    putBoolean("isDiscount",false)
+                                    putBoolean("isExpiry", true)
                                 }
                             })
-                        .commit()
-                }
-                "Price" -> {
-                    fragment.parentFragmentManager.beginTransaction()
-                        .replace(R.id.detailOptions,FilterPrice())
-                        .commit()
-                }
-                "Expiry Date" -> {
+                            .commit()
+                    }
 
-                    fragment.parentFragmentManager.beginTransaction()
-                        .replace(R.id.detailOptions,FilterExpiry().apply {
-                            arguments = Bundle().apply {
-                                putBoolean("isExpiry",true)
-                            }
-                        })
-                        .commit()
-                }
-                "Manufacture Date" -> {
-                    fragment.parentFragmentManager.beginTransaction()
-                        .replace(R.id.detailOptions,FilterExpiry().apply {
-                            arguments = Bundle().apply {
-                                putBoolean("isExpiry",false)
-                            }
-                        })
-                        .commit()
-                }
-                "Discounts" -> {
-                    fragment.parentFragmentManager.beginTransaction()
-                        .replace(R.id.detailOptions,FilterFragmentSearch(discountList)
-                            .apply {
+                    "Manufacture Date" -> {
+                        fragment.parentFragmentManager.beginTransaction()
+                            .replace(R.id.detailOptions, FilterExpiry().apply {
                                 arguments = Bundle().apply {
-                                    putBoolean("isDiscount",true)
+                                    putBoolean("isExpiry", false)
                                 }
                             })
-                        .commit()
+                            .commit()
+                    }
+
+                    "Discounts" -> {
+                        fragment.parentFragmentManager.beginTransaction()
+                            .replace(R.id.detailOptions, FilterFragmentSearch(discountList)
+                                .apply {
+                                    arguments = Bundle().apply {
+                                        putBoolean("isDiscount", true)
+                                    }
+                                })
+                            .commit()
+                    }
                 }
             }
         }
