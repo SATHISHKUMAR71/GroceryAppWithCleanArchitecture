@@ -214,13 +214,22 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
         super.onResume()
         InitialFragment.hideBottomNav.value = true
         InitialFragment.hideSearchBar.value = true
-        view?.postDelayed({
-            view?.findViewById<RecyclerView>(R.id.categoryType)?.post{
-                println("78687 on view created on click ${view?.findViewById<RecyclerView>(R.id.categoryType)?.findViewHolderForAdapterPosition(0)?.itemView}")
-                view?.findViewById<RecyclerView>(R.id.categoryType)?.findViewHolderForAdapterPosition(0)?.itemView?.findViewById<MaterialButton>(R.id.filterOptionsDiscountBtn)?.performClick()
-            }
-        },5L)
-
+        if(adapter.highlightedPos==-1) {
+            view?.postDelayed({
+                view?.findViewById<RecyclerView>(R.id.categoryType)?.post {
+                    println(
+                        "78687 on view created on click ${
+                            view?.findViewById<RecyclerView>(R.id.categoryType)
+                                ?.findViewHolderForAdapterPosition(0)?.itemView
+                        }"
+                    )
+                    view?.findViewById<RecyclerView>(R.id.categoryType)
+                        ?.findViewHolderForAdapterPosition(0)?.itemView?.findViewById<MaterialButton>(
+                        R.id.filterOptionsDiscountBtn
+                    )?.performClick()
+                }
+            }, 5L)
+        }
     }
 
     override fun onPause() {

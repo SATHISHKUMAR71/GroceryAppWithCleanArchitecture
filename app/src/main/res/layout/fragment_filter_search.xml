@@ -48,6 +48,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/guideLineColorDim"/>
             <!--        <TextView-->
             <!--            android:id="@+id/filterName"-->
             <!--            android:layout_width="wrap_content"-->
