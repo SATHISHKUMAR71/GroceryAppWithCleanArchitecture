@@ -13,7 +13,7 @@ import com.example.shoppinggroceryapp.R
 import com.google.android.material.button.MaterialButton
 
 class FilterAdapter(var filterTypeList: List<String>,var brandData:List<String>,var fragment:Fragment,var discountList:List<String>):RecyclerView.Adapter<FilterAdapter.FilterTypeViewHolder>() {
-    var highlightedPos = -1
+    var highlightedPos = 0
     inner class FilterTypeViewHolder(filterTypeView:View):RecyclerView.ViewHolder(filterTypeView){
         val layout = filterTypeView.findViewById<ConstraintLayout>(R.id.filterOptionsDiscount)
         val button  = filterTypeView.findViewById<MaterialButton>(R.id.filterOptionsDiscountBtn)

@@ -71,6 +71,14 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
             listOf(),this,
             listOf("10% or more","20% or more","30% or more","40% or more","50% or more")
         )
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.detailOptions, FilterFragmentSearch(listOf("10% or more","20% or more","30% or more","40% or more","50% or more"))
+                .apply {
+                    arguments = Bundle().apply {
+                        putBoolean("isDiscount", true)
+                    }
+                })
+            .commit()
         filterViewModel.getBrandNames()
         filterViewModel.brandList.observe(viewLifecycleOwner){
             adapter = FilterAdapter(listOf("Discounts","Brand","Expiry Date","Price"),it,this,

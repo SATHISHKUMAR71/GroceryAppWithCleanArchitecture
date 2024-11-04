@@ -10,6 +10,7 @@ import com.example.shoppinggroceryapp.framework.db.dao.UserDao
 import com.example.shoppinggroceryapp.framework.db.entity.products.ProductEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.math.max
 
 class FilterViewModel(var mGetAllBrands: GetAllBrands):ViewModel() {
     
@@ -57,7 +58,7 @@ class FilterViewModel(var mGetAllBrands: GetAllBrands):ViewModel() {
             }
         }
         if(FilterFragmentSearch.checkedDiscountList.isNotEmpty()){
-            list = list.filter { it.offer in FilterFragmentSearch.checkedDiscountList }
+            list = list.filter { it.offer >= FilterFragmentSearch.checkedDiscountList.min() }
         }
         return list
     }

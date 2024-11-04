@@ -410,7 +410,7 @@ class OrderDetailFragment : Fragment() {
         }
         val onBackPressedCallback = object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                println("ON ORDER SUCCESS FRAGMENT BACKUP value: $isOrderedProducts")
+                println("32432 ON ORDER SUCCESS FRAGMENT BACKUP value: $isOrderedProducts $isRestartApp")
                 if(isRestartApp){
                     restartApp()
                 }
@@ -498,13 +498,25 @@ class OrderDetailFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        println("32432 on resume order detail")
         InitialFragment.hideSearchBar.value = true
         InitialFragment.hideBottomNav.value = true
     }
     override fun onStop() {
         super.onStop()
+        println("32432 on stop order detail")
         InitialFragment.hideSearchBar.value = false
         InitialFragment.hideBottomNav.value = false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        println("32432 on destroy order detail")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        println("32432 on destroy view order detail")
     }
     private fun restartApp() {
         PaymentFragment.paymentMode =""

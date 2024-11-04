@@ -414,6 +414,7 @@ class InitialFragment : Fragment() {
         }
 
         hideSearchBar.observe(viewLifecycleOwner){
+            println("321432 INITIAL FRAGMENT Hide search bar $it")
             if(it){
                 view.findViewById<AppBarLayout>(R.id.appbarLayout).visibility = View.GONE
 //                searchBarTop.visibility = View.GONE
@@ -425,6 +426,7 @@ class InitialFragment : Fragment() {
             }
         }
         hideBottomNav.observe(viewLifecycleOwner){
+            println("321432 INITIAL FRAGMENT Hide bottom nav bar $it")
             if(it){
                 bottomNav.visibility = View.GONE
             }
@@ -450,6 +452,10 @@ class InitialFragment : Fragment() {
         searchedQuery = MutableLiveData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        println("321432 INITIAL FRAGMENT ON RESUME ")
+    }
     override fun onStop() {
         super.onStop()
         println("321432 INITIAL FRAGMENT ON STOP ")

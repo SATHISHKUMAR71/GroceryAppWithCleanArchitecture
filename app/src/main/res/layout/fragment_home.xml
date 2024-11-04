@@ -44,6 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:elevation="4dp"
+                app:cornerRadius="4dp"
                 android:text="View All Categories"
                 app:iconGravity="end"
                 app:icon="@drawable/arrow_forward_ios_24px"
