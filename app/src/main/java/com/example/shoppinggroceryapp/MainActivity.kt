@@ -60,9 +60,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Thread{
+        lifecycleScope.launch(Dispatchers.IO){
             getAppDatabase(baseContext).getUserDao().initDB()
-        }.start()
+        }
         val pref = getSharedPreferences("freshCart", Context.MODE_PRIVATE)
         SetInitialDataForUser().invoke(pref)
         val isSigned = pref.getBoolean("isSigned",false)
@@ -84,10 +84,6 @@ class MainActivity : AppCompatActivity() {
         val db2 = getAppDatabase(baseContext).getUserDao()
         if(isSigned) {
             assignCart(db2)
-        }
-        lifecycleScope.launch (Dispatchers.IO){
-            FilterPrice.MAX_PRICE_VALUE = db2.getMaxPrice().price
-            FilterPrice.priceEndTo = FilterPrice.MAX_PRICE_VALUE
         }
 //        intent?.let {
 //            var isEdit = it.getBooleanExtra("isEditProduct",false)
@@ -134,7 +130,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun assignCart(db2: UserDao){
-        Thread {
+        lifecycleScope.launch(Dispatchers.IO) {
             val cart: CartMappingEntity? = db2.getCartForUser(userId.toInt())
             if (cart == null) {
                 db2.addCartForUser(CartMappingEntity(0, userId = userId.toInt(), "available"))
@@ -143,10 +139,10 @@ class MainActivity : AppCompatActivity() {
             } else {
                 cartId = cart.cartId
             }
-        }.start()
-        Thread{
+        }
+        lifecycleScope.launch(Dispatchers.IO){
             println("767676 ${db2.getProductsByCartId(MainActivity.cartId)} product list: ${db2.getProductById(8)}")
-        }.start()
+        }
     }
 
     override fun onLowMemory() {

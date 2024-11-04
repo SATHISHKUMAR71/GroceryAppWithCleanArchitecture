@@ -37,6 +37,7 @@ import com.example.shoppinggroceryapp.views.GroceryAppSharedVMFactory
 import com.example.shoppinggroceryapp.views.retailerviews.addeditproduct.AddOrEditProductFragment
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.signup.SignUpFragment
 import com.example.shoppinggroceryapp.views.retailerviews.customerrequestlist.CustomerRequestListFragment
+import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterPrice
 import com.example.shoppinggroceryapp.views.sharedviews.search.SearchViewModel
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListViewModel
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.OrderHistoryFragment
@@ -110,7 +111,10 @@ class InitialFragment : Fragment() {
         val db1 = AppDatabase.getAppDatabase(requireContext())
         val userDao = db1.getUserDao()
         val retailerDao = db1.getRetailerDao()
-
+        lifecycleScope.launch (Dispatchers.IO){
+            FilterPrice.MAX_PRICE_VALUE =userDao.getMaxPrice().price
+            FilterPrice.priceEndTo = FilterPrice.MAX_PRICE_VALUE
+        }
         searchViewModel = ViewModelProvider(this,
             GroceryAppSharedVMFactory(retailerDao, userDao)
         )[SearchViewModel::class.java]
