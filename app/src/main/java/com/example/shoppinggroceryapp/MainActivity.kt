@@ -125,7 +125,6 @@ class MainActivity : AppCompatActivity() {
 //                    .commit()
 //            }
 //        }
-
     }
 
 
@@ -140,17 +139,12 @@ class MainActivity : AppCompatActivity() {
                 cartId = cart.cartId
             }
         }
-        lifecycleScope.launch(Dispatchers.IO){
-            println("767676 ${db2.getProductsByCartId(MainActivity.cartId)} product list: ${db2.getProductById(8)}")
-        }
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
         AccountFragment().restartApp()
     }
-
-
 }
 
 
